@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PasswordLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/PasswordReg" />
 
     <Button
         android:id="@+id/RegisterBtn"
@@ -34,7 +34,7 @@
         app:layout_constraintVertical_bias="0.003" />
 
     <EditText
-        android:id="@+id/PasswordLogin"
+        android:id="@+id/PasswordReg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -46,10 +46,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EmailLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/EmailReg" />
 
     <EditText
-        android:id="@+id/EmailLogin"
+        android:id="@+id/EmailReg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="98dp"
