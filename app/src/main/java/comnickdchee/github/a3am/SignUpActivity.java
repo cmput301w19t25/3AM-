@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -13,20 +14,22 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
-
-    EditText passwordReg, emailReg;
     private FirebaseAuth mAuth;
-
+    EditText passwordReg, emailReg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        //mAuth = FirebaseAuth.getInstance();
 
         emailReg = (EditText) findViewById(R.id.EmailReg);
         passwordReg = (EditText) findViewById(R.id.PasswordReg);
-        mAuth = FirebaseAuth.getInstance();
+
+        findViewById(R.id.RegisterConfirm).setOnClickListener(this);
     }
 
     private void Register(){
@@ -56,15 +59,28 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             passwordReg.requestFocus();
             return;
         }
-        //IMPLEMENT FIREBASE AUTHENTICATION HERE.
-        
 
+        Log.d("Gay", "Ass no error ");
+
+        /*mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Toast.makeText(getApplicationContext(), "Successful Registration, login now.", Toast.LENGTH_LONG).show();
+                        }
+                        // ...
+                    }
+                });
+        */
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.RegisterConfirm:
+                Log.d("Reg", "Ass no error ");
                 Register();
             break;
             case R.id.LoginReg:
