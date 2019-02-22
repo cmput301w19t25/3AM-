@@ -1,5 +1,6 @@
 package comnickdchee.github.a3am.models;
 
+import android.location.Location;
 import android.media.Image;
 import android.media.Rating;
 
@@ -11,9 +12,10 @@ public class User implements IOwner, IBorrower {
     private String phoneNumber;
     private String email;
     private String name;
-    private String address;
+    private Location address;
     private ArrayList<Book> ownedBooks;     // list of books owned by user
     private ArrayList<Book> requestedBooks; // list of books that user is requesting
+    private ArrayList<Exchange> exchanges;  // list of exchanges involving the user
     private Rating rating;                  // wow feature: user rating
 
     /** Ctor */
