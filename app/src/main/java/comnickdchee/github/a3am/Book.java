@@ -7,10 +7,11 @@ public class Book {
     private String title;
     private String author;
     private Image image;
-    //private User Owner;
-    private enum STATUS {BORROWED, AVAILABLE};
-    //private requests ArrayList<User>;
-    //private User currentBorrower;
+    private User owner;
+    private Status status;
+    private ArrayList<User> requests;
+    private User currentBorrower;
+    private int bookID;
 
 
     public Book(String ISBN, String title, String author) {
@@ -50,4 +51,20 @@ public class Book {
     public void setImage(Image image) {
         this.image = image;
     }
+
+    public void setStatus(Status status) {this.status = status; }
+
+    public Status getStatus() { return status; }
+
+    public void setOwner(User owner) { this.owner = owner; }
+
+    public User getOwner() { return owner; }
+
+    public User getCurrentBorrower() { return currentBorrower; }
+
+    public void setCurrentBorrower(User currentBorrower) {this.currentBorrower = currentBorrower; }
+
+    public void addRequest(User requester) {requests.add(requester); }
+
+
 }
