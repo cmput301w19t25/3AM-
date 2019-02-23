@@ -12,14 +12,14 @@ public class User implements IOwner, IBorrower {
     private String phoneNumber;
     private String email;
     private String name;
-    private Location address;
+    private String address;
     private ArrayList<Book> ownedBooks;     // list of books owned by user
     private ArrayList<Book> requestedBooks; // list of books that user is requesting
     private ArrayList<Exchange> exchanges;  // list of exchanges involving the user
     private Rating rating;                  // wow feature: user rating
 
     /** Ctor */
-    User(String username, String phoneNumber, String email, String name,
+    public User(String username, String phoneNumber, String email, String name,
          String address) {
         this.username = username;
         this.phoneNumber = phoneNumber;

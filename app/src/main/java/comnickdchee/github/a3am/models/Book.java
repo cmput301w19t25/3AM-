@@ -1,6 +1,8 @@
-package comnickdchee.github.a3am;
+package comnickdchee.github.a3am.models;
 
 import android.media.Image;
+
+import java.util.ArrayList;
 
 public class Book {
     private String ISBN;
