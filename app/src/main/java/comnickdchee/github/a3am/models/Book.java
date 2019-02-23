@@ -75,5 +75,9 @@ public class Book {
 
     public void addRequest(User requester) {requests.add(requester); }
 
+    public ArrayList<User> getRequests() {
+        return requests;
+    }
+
 
 }

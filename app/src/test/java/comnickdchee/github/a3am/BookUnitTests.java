@@ -4,12 +4,37 @@ import org.junit.Test;
 
 import comnickdchee.github.a3am.models.Book;
 import comnickdchee.github.a3am.models.Status;
+import comnickdchee.github.a3am.models.User;
 
 import static org.junit.Assert.assertEquals;
 
-// TODO: Implement getOwner, setOwner, getCurrentBorrower, setCurrentBorrower, and
-// addRequest unit tests.
+// TODO: Implement addRequest unit tests.
 public class BookUnitTests {
+
+    User user1 = new User("Name","0123-123-3456","example@exm.com",
+            "Walter White","Dubai");
+
+    @Test
+    public void test_setOwner() {
+        Book b = new Book("1234567891234", "HarryPotter", "J R R martin");
+        b.setOwner(user1);
+        assertEquals(user1,b.getOwner());
+    }
+
+    @Test
+    public void test_setCurrentBorrower() {
+        Book b = new Book("1234567891234", "HarryPotter", "J R R martin");
+        b.setCurrentBorrower(user1);
+        assertEquals(b.getCurrentBorrower(),user1);
+    }
+
+    @Test
+    public void test_addRequests(){
+        Book b = new Book("1234567891234", "HarryPotter", "J R R martin");
+        b.addRequest(user1);
+        User newRequest = b.getRequests().get(b.getRequests().size() - 1);
+        assertEquals(newRequest,user1);
+    }
 
     @Test
     public void test_getISBN() {
