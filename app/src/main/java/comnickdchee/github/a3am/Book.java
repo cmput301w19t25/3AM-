@@ -20,6 +20,13 @@ public class Book {
         this.author = author;
     }
 
+    public Book(String ISBN, String title, String author, User owner) {
+        this.ISBN = ISBN;
+        this.title = title;
+        this.author = author;
+        this.owner = owner;
+    }
+
     public String getISBN() {
         return ISBN;
     }
