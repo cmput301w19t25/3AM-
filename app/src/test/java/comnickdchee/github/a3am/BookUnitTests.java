@@ -2,6 +2,9 @@ package comnickdchee.github.a3am;
 
 import org.junit.Test;
 
+import comnickdchee.github.a3am.models.Book;
+import comnickdchee.github.a3am.models.Status;
+
 import static org.junit.Assert.assertEquals;
 
 // TODO: Implement getOwner, setOwner, getCurrentBorrower, setCurrentBorrower, and

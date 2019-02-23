@@ -9,30 +9,34 @@ import java.util.Date;
 public class Exchange {
     private User owner;
     private User borrower;
-    private Location pickup;
+    private String pickup;
     private Date date;
     private ExchangeType type;
     private Boolean completed = false;
-    private int bookID;                 // uniquely identify the book involved (there is only one)
+    private Book book;                 // uniquely identify the book involved (there is only one)
 
-    public Exchange(User owner, User borrower, Location pickup, Date date, Boolean completed, int bookID) {
+    public Exchange(User owner, User borrower, String pickup, Date date, Boolean completed, Book bookID) {
         this.owner = owner;
         this.borrower = borrower;
         this.pickup = pickup;
         this.date = date;
         this.type = ExchangeType.Borrowing;
         this.completed = completed;
-        this.bookID = bookID;
+        this.book = bookID;
     }
 
-    public Exchange(User owner, User borrower, Location pickup, Boolean completed, int bookID) {
+    public Exchange(User owner, User borrower, String pickup, Boolean completed, Book bookID) {
         this.owner = owner;
         this.borrower = borrower;
         this.pickup = pickup;
         this.date = new Date();
         this.type = ExchangeType.Borrowing;
         this.completed = completed;
-        this.bookID = bookID;
+        this.book = bookID;
+    }
+
+    public String getLocation() {
+        return pickup;
     }
 
 }

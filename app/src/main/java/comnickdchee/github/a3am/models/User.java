@@ -70,8 +70,7 @@ public class User implements IOwner, IBorrower {
         requestedBooks.add(book);
     }
 
-    @Override
-    public void returnBook(int bookID) {
+    public void returnBook(Book book) {
     }
 
     public Rating getRating() {
@@ -82,11 +81,26 @@ public class User implements IOwner, IBorrower {
     public void setLocation(Exchange exchange, String location) {
     }
 
-    @Override
-    public void setImage(int bookID, Image image) {
+    public String getLocation(Exchange exchange) {
+        return exchange.getLocation();
+    }
+
+    public void setImage(Book bookID, Image image) {
+    }
+
+    public ArrayList<Exchange> getExchangeList() {
+        return exchanges;
+    }
+    public ArrayList<Book> getOwnedBookList() {
+        return ownedBooks;
+    }
+    public ArrayList<Book> getRequestedBooksList() {
+        return requestedBooks;
     }
 
     @Override
     public void removeImage(int bookID) {
     }
+
+
 }
