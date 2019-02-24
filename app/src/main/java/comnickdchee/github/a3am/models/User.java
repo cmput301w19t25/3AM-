@@ -102,5 +102,35 @@ public class User implements IOwner, IBorrower {
     public void removeImage(int bookID) {
     }
 
+    @Override
+    public void returnBook(int bookID) {
+    }
 
+    @Override
+    public void setImage(int bookID, Image image) {
+    }
+
+    public void setUserName(String username) {
+        this.username = username;
+    }
+
+    public void setPhoneNumber(String phoneNum) {
+        this.phoneNumber = phoneNum;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String getUserName() {
+        return this.username;
+    }
+
+    public String getPhoneNumber() {
+        return this.phoneNumber;
+    }
 }

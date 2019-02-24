@@ -104,4 +104,46 @@ public class UserUnitTest {
         assertTrue(x);
     }
 
+
+    @Test
+    public void test_editBook() {
+
+        User user = new User ("username1", "780-111-2222", "email.yahoo.com", "name", "2132-52Ave");             //book owner
+
+        User user2 = new User("userName2", "780-111-4444", "email@gmailcom", "name2", "1111-25Ave");            //book borrower 1
+
+        User user3 = new User("userName3", "780-111-6666", "email@hotmail.com", "name3", "1111-22Street");      //book borrower 2
+
+        Book book1 = new Book("9876543211234", "harry Potter", "j k rowling");
+        book1.setCurrentBorrower(user2);
+
+        user.addOwnedBook(book1);               //add book to the list of owned book
+
+        //edit some of the book descriptions
+        book1.setCurrentBorrower(user3);        //edit the borrower of the book
+        book1.setISBN("9876543211234");         //edit ISBN
+        book1.setTitle("Harry Potter");         //edit title
+        book1.setAuthor("J K Rowlings");        //edit author
+
+        //check if book descriptions were edited successfully?
+        assertEquals(user3, book1.getCurrentBorrower());
+        assertEquals("J K Rowlings", book1.getAuthor());
+        assertEquals("Harry Potter", book1.getTitle());
+    }
+
+
+    @Test
+    public void test_editProfile() {
+        User user = new User("username1", "780-111-2222", "email.yahoo.com", "name", "2132-52Ave");
+
+        //edit contact info
+        user.setEmail("email@gmailcom");
+        user.setUserName("user_name");
+        user.setPhoneNumber("780-222-4444");
+
+        //check if contact info was edited successfully
+        assertEquals("email@gmail.com", user.getEmail());
+        assertEquals("780-222-4444", user.getPhoneNumber());
+        assertEquals("user_name", user.getUserName());
+    }
 }
