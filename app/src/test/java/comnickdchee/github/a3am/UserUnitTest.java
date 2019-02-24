@@ -9,22 +9,17 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 import comnickdchee.github.a3am.models.Book;
 import comnickdchee.github.a3am.models.Exchange;
+import comnickdchee.github.a3am.models.ExchangeType;
+import comnickdchee.github.a3am.models.Status;
 import comnickdchee.github.a3am.models.User;
 
 
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
 public class UserUnitTest {
     User user1 = new User("Name","0123-123-3456","example@exm.com",
             "Walter White","Dubai");
 
     @Test
-    public void test_acceptRequests()
-    {
+    public void test_acceptRequests() {
         User user2 = new User("Gorib","0124-123-3456","mod@exm.com",
                 "Sefat Ullah","Dhaka, Bangladesh");
         Book book = new Book("12345","Harry Potta","J.K. Rolling",user1);
@@ -35,28 +30,24 @@ public class UserUnitTest {
         assertEquals(exchange1, exchange2);
     }
 
-    public void test_rejectRequest()
-    {
+    @Test
+    public void test_rejectRequest() {
         User user2 = new User("Gorib","0124-123-3456","mod@exm.com",
                 "Sefat Ullah","Dhaka, Bangladesh");
         Book book = new Book("12345","Harry Potta","J.K. Rolling",user1);
-
-
         user1.rejectRequest(book, user2);
-
-
     }
 
+    @Test
     public void test_addOwnedBooks(){
-
         Book book = new Book("12345","Harry Potta","J.K. Rolling",user1);
         user1.addOwnedBook(book);
         ArrayList<Book> books = user1.getOwnedBookList();
         Book newBook = books.get(books.size() - 1);
         assertEquals(newBook,book);
-
     }
 
+    @Test
     public void test_addRequestedBook() {
         Book request = new Book("12345","Harry Potta","J.K. Rolling",user1);
         user1.addRequestedBook(request);
@@ -65,16 +56,19 @@ public class UserUnitTest {
         assertEquals(newRequest,request);
     }
 
+    @Test
     public void test_returnBook() {
         User user2 = new User("Gorib","0124-123-3456","mod@exm.com",
                 "Sefat Ullah","Dhaka, Bangladesh");
         Book request = new Book("12345","Harry Potta","J.K. Rolling",user2);
-        user1.returnBook(request);
+        int requestID = request.getBookID();
+        Exchange exchange = new Exchange(user2, user1, "test location", false, requestID);
+        user1.returnBook(request.getBookID());
 
-        user2.getExchangeList().get(user2.getExchangeList().size() - 1);
-        //????????????????????????????
+        assertEquals(Status.Available, request.getStatus());
     }
 
+    @Test
     public void test_setLocation() {
         User user2 = new User("Gorib","0124-123-3456","mod@exm.com",
                 "Sefat Ullah","Dhaka, Bangladesh");
@@ -83,16 +77,22 @@ public class UserUnitTest {
         user1.setLocation(exchange, "Dhaka");
         assertEquals(user1.getLocation(exchange), "Dhaka");
     }
+
+    @Test
     public void test_setImage() {
         Image image = null;
         Book book = new Book("12345","Harry Potta","J.K. Rolling",user1);
         user1.setImage(book, image);
         assertEquals(book.getImage(), image);
     }
+
+    @Test
     public void test_removeImage() {
         Book book = new Book("12345","Harry Potta","J.K. Rolling",user1);
         assertEquals(book.getImage(),null);
     }
+
+    @Test
     public void test_removeOwnedBook() {
         Book book = new Book("12345","Harry Potta","J.K. Rolling",user1);
         user1.removeOwnedBook(book);
@@ -107,16 +107,14 @@ public class UserUnitTest {
 
     @Test
     public void test_editBook() {
-
-        User user = new User ("username1", "780-111-2222", "email.yahoo.com", "name", "2132-52Ave");             //book owner
-
-        User user2 = new User("userName2", "780-111-4444", "email@gmailcom", "name2", "1111-25Ave");            //book borrower 1
-
-        User user3 = new User("userName3", "780-111-6666", "email@hotmail.com", "name3", "1111-22Street");      //book borrower 2
-
+        User user = new User ("username1", "780-111-2222",
+                "email.yahoo.com", "name", "2132-52Ave");
+        User user2 = new User("userName2", "780-111-4444",
+                "email@gmailcom", "name2", "1111-25Ave");
+        User user3 = new User("userName3", "780-111-6666",
+                "email@hotmail.com", "name3", "1111-22Street");
         Book book1 = new Book("9876543211234", "harry Potter", "j k rowling");
         book1.setCurrentBorrower(user2);
-
         user.addOwnedBook(book1);               //add book to the list of owned book
 
         //edit some of the book descriptions
@@ -134,7 +132,8 @@ public class UserUnitTest {
 
     @Test
     public void test_editProfile() {
-        User user = new User("username1", "780-111-2222", "email.yahoo.com", "name", "2132-52Ave");
+        User user = new User("username1", "780-111-2222",
+                "email.yahoo.com", "name", "2132-52Ave");
 
         //edit contact info
         user.setEmail("email@gmailcom");

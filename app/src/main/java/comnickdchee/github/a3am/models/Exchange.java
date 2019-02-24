@@ -13,26 +13,36 @@ public class Exchange {
     private Date date;
     private ExchangeType type;
     private Boolean completed = false;
-    private Book book;                 // uniquely identify the book involved (there is only one)
+    private int bookID;                 // uniquely identify the book involved (there is only one)
 
-    public Exchange(User owner, User borrower, String pickup, Date date, Boolean completed, Book bookID) {
+    public Exchange(User owner, User borrower, String pickup, Date date, Boolean completed, Book book) {
         this.owner = owner;
         this.borrower = borrower;
         this.pickup = pickup;
         this.date = date;
         this.type = ExchangeType.Borrowing;
         this.completed = completed;
-        this.book = bookID;
+        this.bookID = book.getBookID();
     }
 
-    public Exchange(User owner, User borrower, String pickup, Boolean completed, Book bookID) {
+    public Exchange(User owner, User borrower, String pickup, Boolean completed, Book book) {
         this.owner = owner;
         this.borrower = borrower;
         this.pickup = pickup;
         this.date = new Date();
         this.type = ExchangeType.Borrowing;
         this.completed = completed;
-        this.book = bookID;
+        this.bookID = book.getBookID();
+    }
+
+    public Exchange(User owner, User borrower, String pickup, Boolean completed, int bookID) {
+        this.owner = owner;
+        this.borrower = borrower;
+        this.pickup = pickup;
+        this.date = new Date();
+        this.type = ExchangeType.Borrowing;
+        this.completed = completed;
+        this.bookID = bookID;
     }
 
     public String getLocation() {

@@ -70,9 +70,6 @@ public class User implements IOwner, IBorrower {
         requestedBooks.add(book);
     }
 
-    public void returnBook(Book book) {
-    }
-
     public Rating getRating() {
         return rating;
     }
