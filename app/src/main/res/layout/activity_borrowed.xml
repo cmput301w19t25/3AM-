@@ -1,52 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BorrowedActivity">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/navToolbar"
+    tools:context=".Activities.BorrowedActivity"
+    android:orientation="vertical"
+    >
+    <include
+        layout="@layout/toolbar_layout"/>
+    <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/AppTheme.NoActionBar"
-        app:popupTheme="@style/AppTheme.NoActionBar">
+        android:layout_height="match_parent"
+        android:id="@+id/pagerHomepage"
+    />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/linToolbar"
-            android:orientation="horizontal"
-            android:layout_gravity="start"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_menu_white_24dp"
-                android:layout_marginRight="20dp"/>
-
-            <TextView
-                android:id="@+id/tvUsername"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Homepage"
-                android:textColor="@android:color/background_light"
-                android:textSize="18sp" />
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="end"
-                android:src="@drawable/ic_search_white_24dp"
-                android:layout_marginRight="10dp"/>
-
-        </LinearLayout>
-
-    </android.support.v7.widget.Toolbar>
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
