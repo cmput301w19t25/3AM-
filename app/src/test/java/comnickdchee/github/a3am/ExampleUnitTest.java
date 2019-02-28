@@ -1,5 +1,8 @@
 package comnickdchee.github.a3am;
 
+import android.media.Image;
+import android.support.annotation.DrawableRes;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
