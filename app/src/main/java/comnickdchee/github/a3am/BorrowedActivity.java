@@ -10,9 +10,11 @@ import com.google.android.gms.common.oob.SignUp;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class BorrowedActivity extends AppCompatActivity implements View.OnClickListener{
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_borrowed);
         findViewById(R.id.RegisterBtn).setOnClickListener(this);
     }
