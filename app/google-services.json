@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "144321365215",
+    "firebase_url": "https://am-d5edb.firebaseio.com",
+    "project_id": "am-d5edb",
+    "storage_bucket": "am-d5edb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144321365215:android:72666835620f4ee3",
+        "android_client_info": {
+          "package_name": "comnickdchee.github.a3am"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "144321365215-u90eue3og8s97jhnceq17mcpsd8ddl2c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "comnickdchee.github.a3am",
+            "certificate_hash": "504a7583f3aa1bec6a48a7f4d32f34625053c239"
+          }
+        },
+        {
+          "client_id": "144321365215-bf5p5oiqpq8039f3qv35drb4pc7safr9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcAasb5M7Wl2xho2LVQQt0q80xXUv1Jeo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "144321365215-bf5p5oiqpq8039f3qv35drb4pc7safr9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
