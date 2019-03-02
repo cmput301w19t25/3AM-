@@ -86,9 +86,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 Log.d("Reg", "Ass no error ");
                 Register();
             break;
-            case R.id.LoginReg:
-                startActivity(new Intent(this, BorrowedActivity.class));
-                break;
+
         }
     }
 }
