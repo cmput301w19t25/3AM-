@@ -23,7 +23,7 @@ import static java.lang.Boolean.TRUE;
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
     Boolean flag;
-    EditText passwordReg, emailReg;
+    EditText passwordReg, emailReg, userName, address, phoneNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,13 +32,25 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         emailReg = (EditText) findViewById(R.id.EmailReg);
         passwordReg = (EditText) findViewById(R.id.PasswordReg);
+        userName = (EditText) findViewById(R.id.userName);
+        address = (EditText) findViewById(R.id.address);
+        phoneNumber = (EditText) findViewById(R.id.phoneNumber);
 
         findViewById(R.id.RegisterConfirm).setOnClickListener(this);
     }
 
     private void Register(){
+        String userN = userName.getText().toString().trim();
         String email = emailReg.getText().toString().trim();
         String password = passwordReg.getText().toString().trim();
+        String addr = address.getText().toString().trim();
+        String phoneN = phoneNumber.getText().toString().trim();
+
+        if(userN.isEmpty()){
+            userName.setError("User Name Required!");
+            userName.requestFocus();
+            return;
+        }
 
         if(email.isEmpty()){
             emailReg.setError("Need an email!");
@@ -58,11 +70,32 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
+        if(userN.length() > 25){
+            userName.setError("Username too Long!");
+            userName.requestFocus();
+            return;
+        }
+
         if(password.length() < 6){
             passwordReg.setError("Password needs to be of length greater than 6.");
             passwordReg.requestFocus();
             return;
         }
+
+
+        if(addr.isEmpty()){
+            address.setError("Address Required!");
+            address.requestFocus();
+            return;
+        }
+
+
+        if(phoneN.isEmpty()){
+            phoneNumber.setError("Phone Number Required!");
+            phoneNumber.requestFocus();
+            return;
+        }
+
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
