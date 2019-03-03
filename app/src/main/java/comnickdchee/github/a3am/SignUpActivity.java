@@ -15,13 +15,19 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 
@@ -36,9 +42,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     Uri ProfileImage;
     private FirebaseAuth mAuth;
     private FirebaseDatabase Fd;
+    private FirebaseStorage firebaseStorage;
     Boolean flag;
     EditText passwordReg, emailReg, userName, address, phoneNumber;
-    String userN, email, password, addR, phoneN;
+    String userN, email, password, addR, phoneN, profileImageUrl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,9 +134,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             Log.d("Donkey","Work pls..");
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(getApplicationContext(), "Successful Registration.", Toast.LENGTH_LONG).show();
+                            uploadImageToFirebase();
                             mAuth.signOut();
                             finish();
-                            flag = TRUE;
                         }else{
                             if(task.getException() instanceof FirebaseAuthUserCollisionException){
                                 Toast.makeText(getApplicationContext(), "Already registered with this email!", Toast.LENGTH_LONG).show();
@@ -156,9 +163,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.RegisterConfirm:
                 Log.d("Reg", "Ass no error ");
                 Register();
-                if(flag == TRUE){
-                    startActivity(new Intent(this, BorrowedActivity.class));
-                }
             break;
 
         }
@@ -188,10 +192,31 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private void sendUserData(){
         FirebaseDatabase fD = FirebaseDatabase.getInstance();
-        DatabaseReference mRef = fD.getReference(mAuth.getUid());
         User newUser = new User(userN,email,addR,phoneN);
+
+        DatabaseReference mRef = fD.getReference(mAuth.getUid());
         mRef.setValue(newUser);
         //mRef.setValue(f);
 
+    }
+
+    private void uploadImageToFirebase(){
+        if(ProfileImage != null){
+            StorageReference profileImageRef =
+                    FirebaseStorage.getInstance().getReference("ProfilePics/"+System.currentTimeMillis()+ ".jpg");
+            profileImageRef.putFile(ProfileImage);
+            profileImageUrl = profileImageRef.getDownloadUrl().toString();
+            }
+
+            FirebaseUser u = mAuth.getCurrentUser();
+
+        if(u != null && profileImageUrl != null){
+            Log.d("Image","Got profile image data");
+            UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(userN)
+                    .setPhotoUri(Uri.parse(profileImageUrl)).build();
+            Log.d("Image", profileImageUrl.toString());
+            u.updateProfile(profile);
+        }
     }
 }
