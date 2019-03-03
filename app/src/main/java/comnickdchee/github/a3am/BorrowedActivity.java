@@ -26,6 +26,9 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
                 Log.d("Reg", "Ass no error ");
                 startActivity(new Intent(this, SignUpActivity.class));
                 break;
+            case R.id.LoginBtn:
+                Log.d("Login","No error in login");
+
         }
     }
 }

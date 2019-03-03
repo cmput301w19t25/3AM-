@@ -14,12 +14,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+
+import static java.lang.Boolean.TRUE;
 
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
-
+    Boolean flag;
     EditText passwordReg, emailReg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +72,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         if (task.isSuccessful()) {
                             Log.d("Donkey","Work pls..");
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(getApplicationContext(), "Successful Registration, login now.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Successful Registration.", Toast.LENGTH_LONG).show();
+                            flag = TRUE;
                         }else{
-                            Toast.makeText(getApplicationContext(), "Some error occured", Toast.LENGTH_LONG).show();
+                            if(task.getException() instanceof FirebaseAuthUserCollisionException){
+                                Toast.makeText(getApplicationContext(), "Already registered with this email!", Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            }
                         }
                         // ...
                     }
@@ -85,6 +94,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.RegisterConfirm:
                 Log.d("Reg", "Ass no error ");
                 Register();
+                if(flag == TRUE){
+                    startActivity(new Intent(this, BorrowedActivity.class));
+                }
             break;
 
         }
