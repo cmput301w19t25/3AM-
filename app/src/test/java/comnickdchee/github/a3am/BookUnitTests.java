@@ -2,9 +2,9 @@ package comnickdchee.github.a3am;
 
 import org.junit.Test;
 
-import comnickdchee.github.a3am.models.Book;
-import comnickdchee.github.a3am.models.Status;
-import comnickdchee.github.a3am.models.User;
+import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.Status;
+import comnickdchee.github.a3am.Models.User;
 
 import static org.junit.Assert.assertEquals;
 

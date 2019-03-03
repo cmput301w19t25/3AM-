@@ -5,9 +5,9 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Date;
 
-import comnickdchee.github.a3am.models.ChatBox;
-import comnickdchee.github.a3am.models.Message;
-import comnickdchee.github.a3am.models.User;
+import comnickdchee.github.a3am.Models.ChatBox;
+import comnickdchee.github.a3am.Models.Message;
+import comnickdchee.github.a3am.Models.User;
 
 import static org.junit.Assert.*;
 

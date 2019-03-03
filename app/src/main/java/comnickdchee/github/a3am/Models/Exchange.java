@@ -1,6 +1,4 @@
-package comnickdchee.github.a3am.models;
-
-import android.location.Location;
+package comnickdchee.github.a3am.Models;
 
 import java.util.Date;
 

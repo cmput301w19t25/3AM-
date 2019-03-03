@@ -7,11 +7,10 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
-import comnickdchee.github.a3am.models.Book;
-import comnickdchee.github.a3am.models.Exchange;
-import comnickdchee.github.a3am.models.ExchangeType;
-import comnickdchee.github.a3am.models.Status;
-import comnickdchee.github.a3am.models.User;
+import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.Exchange;
+import comnickdchee.github.a3am.Models.Status;
+import comnickdchee.github.a3am.Models.User;
 
 
 public class UserUnitTest {

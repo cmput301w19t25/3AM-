@@ -1,6 +1,5 @@
-package comnickdchee.github.a3am.models;
+package comnickdchee.github.a3am.Models;
 
-import android.location.Location;
 import android.media.Image;
 import android.media.Rating;
 
