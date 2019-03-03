@@ -21,6 +21,7 @@ import static java.lang.Boolean.TRUE;
 
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final int CHOSEN_IMAGE = 69;
     private FirebaseAuth mAuth;
     Boolean flag;
     EditText passwordReg, emailReg, userName, address, phoneNumber;
@@ -37,6 +38,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         phoneNumber = (EditText) findViewById(R.id.phoneNumber);
 
         findViewById(R.id.RegisterConfirm).setOnClickListener(this);
+        findViewById(R.id.AddProfilePicture).setOnClickListener(this);
+        findViewById(R.id.userImage).setOnClickListener(this);
+
     }
 
     private void Register(){
@@ -124,6 +128,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch(view.getId()){
+            case R.id.AddProfilePicture:
+                Log.d("Image","Image clicked");
+                findImage();
+            case R.id.userImage:
+                Log.d("Image","Image clicked");
+                findImage();
             case R.id.RegisterConfirm:
                 Log.d("Reg", "Ass no error ");
                 Register();
@@ -133,5 +143,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             break;
 
         }
+    }
+
+    private void findImage(){
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(i,"Select Profile Picture"), CHOSEN_IMAGE) ;
     }
 }
