@@ -1,4 +1,4 @@
-package comnickdchee.github.a3am.models;
+package comnickdchee.github.a3am.Models;
 
 public enum ExchangeType {
     Returning,
