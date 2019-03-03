@@ -1,6 +1,9 @@
 package comnickdchee.github.a3am;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +11,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,11 +21,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.IOException;
+
 import static java.lang.Boolean.TRUE;
 
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int CHOSEN_IMAGE = 69;
+    ImageView img;
+    Uri ProfileImage;
     private FirebaseAuth mAuth;
     Boolean flag;
     EditText passwordReg, emailReg, userName, address, phoneNumber;
@@ -40,7 +48,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         findViewById(R.id.RegisterConfirm).setOnClickListener(this);
         findViewById(R.id.AddProfilePicture).setOnClickListener(this);
         findViewById(R.id.userImage).setOnClickListener(this);
-
+        img = (ImageView) findViewById(R.id.userImage);
     }
 
     private void Register(){
@@ -142,6 +150,21 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 }
             break;
 
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+
+        if(requestCode == CHOSEN_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null){
+            ProfileImage = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), ProfileImage);
+                img.setImageBitmap(bitmap);
+            } catch (IOException e){
+                e.printStackTrace();
+            }
         }
     }
 
