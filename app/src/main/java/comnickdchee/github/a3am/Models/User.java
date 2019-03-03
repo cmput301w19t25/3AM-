@@ -18,28 +18,27 @@ public class User implements IOwner, IBorrower {
     private Rating rating;                  // wow feature: user rating
 
     /** Ctor */
-    public User(String username, String phoneNumber, String email, String name,
-         String address) {
+    public User(String username, String email, String address,
+         String phoneNumber) {
         this.username = username;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.name = name;
         this.address = address;
 
         ownedBooks = new ArrayList<Book>();
         requestedBooks = new ArrayList<Book>();
     }
 
-    /** No address specified */
-    User(String username, String phoneNumber, String email, String name) {
+    /** No address specified
+    User(String username, String phoneNumber, String email) {
         this.username = username;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.name = name;
 
         ownedBooks = new ArrayList<Book>();
         requestedBooks = new ArrayList<Book>();
     }
+     */
 
     @Override
     public void acceptRequest(Book book, User user) {
@@ -128,5 +127,13 @@ public class User implements IOwner, IBorrower {
 
     public String getPhoneNumber() {
         return this.phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

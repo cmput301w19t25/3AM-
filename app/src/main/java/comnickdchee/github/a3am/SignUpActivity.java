@@ -20,8 +20,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+
+import comnickdchee.github.a3am.Models.User;
 
 import static java.lang.Boolean.TRUE;
 
@@ -31,8 +35,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     ImageView img;
     Uri ProfileImage;
     private FirebaseAuth mAuth;
+    private FirebaseDatabase Fd;
     Boolean flag;
     EditText passwordReg, emailReg, userName, address, phoneNumber;
+    String userN, email, password, addR, phoneN;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +58,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void Register(){
-        String userN = userName.getText().toString().trim();
-        String email = emailReg.getText().toString().trim();
-        String password = passwordReg.getText().toString().trim();
-        String addr = address.getText().toString().trim();
-        String phoneN = phoneNumber.getText().toString().trim();
+        userN = userName.getText().toString().trim();
+        email = emailReg.getText().toString().trim();
+        password = passwordReg.getText().toString().trim();
+        addR = address.getText().toString().trim();
+        phoneN = phoneNumber.getText().toString().trim();
 
         if(userN.isEmpty()){
             userName.setError("User Name Required!");
@@ -95,10 +101,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
 
 
-        if(addr.isEmpty()){
+        if(addR.isEmpty()){
             address.setError("Address Required!");
             address.requestFocus();
             return;
+        }else{
+            Log.d("Address", addR.toString());
         }
 
 
@@ -115,9 +123,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            sendUserData();
                             Log.d("Donkey","Work pls..");
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(getApplicationContext(), "Successful Registration.", Toast.LENGTH_LONG).show();
+                            mAuth.signOut();
+                            finish();
                             flag = TRUE;
                         }else{
                             if(task.getException() instanceof FirebaseAuthUserCollisionException){
@@ -173,5 +184,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(i,"Select Profile Picture"), CHOSEN_IMAGE) ;
+    }
+
+    private void sendUserData(){
+        FirebaseDatabase fD = FirebaseDatabase.getInstance();
+        DatabaseReference mRef = fD.getReference(mAuth.getUid());
+        User newUser = new User(userN,email,addR,phoneN);
+        mRef.setValue(newUser);
+        //mRef.setValue(f);
+
     }
 }

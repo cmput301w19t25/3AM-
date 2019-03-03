@@ -34,7 +34,13 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
         passwordReg = (EditText) findViewById(R.id.PasswordReg);
         findViewById(R.id.RegisterBtn).setOnClickListener(this);
         findViewById(R.id.LoginBtn).setOnClickListener(this);
+
+        if(mAuth.getCurrentUser() != null){
+            startActivity(new Intent(this, HomepageActivity.class));
+        }
+
     }
+
 
     private void UserLogin(){
         String email = emailReg.getText().toString().trim();
