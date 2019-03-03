@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import comnickdchee.github.a3am.Activities.HomepageActivity;
+
 public class BorrowedActivity extends AppCompatActivity implements View.OnClickListener{
 
     FirebaseAuth mAuth;
@@ -61,7 +63,7 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
 
-                    Intent i = new Intent(BorrowedActivity.this, ProfileActivity.class);
+                    Intent i = new Intent(BorrowedActivity.this, HomepageActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }else{
