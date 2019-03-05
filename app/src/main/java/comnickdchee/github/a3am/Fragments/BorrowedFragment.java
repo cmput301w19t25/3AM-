@@ -28,10 +28,6 @@ public class BorrowedFragment extends Fragment {
         // Required empty public constructor
     }
 
-    private void initImages(){
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

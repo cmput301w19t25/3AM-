@@ -7,7 +7,7 @@
     android:layout_height="?attr/actionBarSize"
     android:background="@color/colorPrimary"
     android:elevation="4dp"
-    android:theme="@style/AppTheme.NoActionBar"
+    android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
     app:popupTheme="@style/AppTheme.NoActionBar">
 
     <LinearLayout
@@ -16,14 +16,7 @@
         android:id="@+id/linToolbar"
         android:orientation="horizontal"
         android:layout_gravity="start"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:id="@+id/ivNavImg"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/ic_menu_white_24dp" />
+        >
 
         <TextView
             android:id="@+id/tvUsername"
