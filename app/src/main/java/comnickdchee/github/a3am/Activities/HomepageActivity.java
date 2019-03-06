@@ -59,6 +59,9 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         navTabLayout = findViewById(R.id.navTabs);
         navTabLayout.setupWithViewPager(viewPager);
         // view pager
+        if (savedInstanceState == null) {
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
 
 
     }
@@ -92,7 +95,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         }
 
         drawer.closeDrawer(GravityCompat.START);
-        return false;
+        return true;
     }
 
     private void init(){
