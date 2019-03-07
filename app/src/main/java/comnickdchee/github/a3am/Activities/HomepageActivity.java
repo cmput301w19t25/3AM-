@@ -1,5 +1,6 @@
 package comnickdchee.github.a3am.Activities;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -18,7 +19,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -43,6 +46,8 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     private DrawerLayout drawer;
     private FirebaseAuth mAuth;
     private FirebaseDatabase Fd;
+    private DatabaseReference mDataRef;
+    private String DownloadLink;
     public static ArrayList<String> BorrowerList = new ArrayList<>();
     public static ArrayList<String> RequesterList = new ArrayList<>();
     public static ArrayList<String> BorrowedFromList = new ArrayList<>();
@@ -69,19 +74,23 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         mAuth = FirebaseAuth.getInstance();
         String userN = mAuth.getCurrentUser().getDisplayName();
         String userEmail = mAuth.getCurrentUser().getEmail();
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        tv.setText(userN);
 
         StorageReference profileImageRef =
                 FirebaseStorage.getInstance().getReference(userEmail+"/"+"dp"+ ".jpg");
-        StorageReference pathReference = storageRef.child(userEmail+"/"+"dp"+ ".jpg");
-        StorageReference gsReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://am-d5edb.appspot.com"+"/"+userEmail+"/"+"dp"+ ".jpg");
-        gsReference.child("/"+userEmail+"/"+"dp"+ ".jpg").getDownloadUrl();
+        String profileImageUrl = profileImageRef.getDownloadUrl().toString();
+
+        Log.d("Image to Download",Uri.parse(profileImageUrl).toString());
+        Log.d("Image to Download",profileImageUrl.toString());
+
+        /*
+        String x = gsReference.child("/"+userEmail+"/"+"dp"+ ".jpg").getDownloadUrl().toString();
 
         String profileImageUrl = profileImageRef.getDownloadUrl().toString();
-        Log.d("ProfileImage",profileImageUrl);
-        tv.setText(userN);
-        Glide.with(this).load(profileImageUrl).into(iv);
+        Log.d("ProfileImage",x);
 
+        Glide.with(this).load(profileImageUrl).into(iv);
+        */
 
         //
 
