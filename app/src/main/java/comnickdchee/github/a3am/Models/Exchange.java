@@ -27,11 +27,11 @@ public class Exchange {
 
     /**
      *
-     * @param owner
-     * @param borrower
-     * @param pickup
+     * @param owner owner of the book
+     * @param borrower borrower of the book
+     * @param pickup pickup location
      * @param completed
-     * @param book
+     * @param book book being borrowed or lend
      * @see User
      */
     public Exchange(User owner, User borrower, String pickup, Boolean completed, Book book) {
@@ -46,11 +46,11 @@ public class Exchange {
 
     /**
      *
-     * @param owner
-     * @param borrower
-     * @param pickup
+     * @param owner owner of the book
+     * @param borrower borrower of the book
+     * @param pickup pickup location
      * @param completed
-     * @param bookID
+     * @param bookID uniquely identifies book
      * @see User
      */
     public Exchange(User owner, User borrower, String pickup, Boolean completed, int bookID) {
@@ -65,7 +65,7 @@ public class Exchange {
 
     /**
      * Returns a string object
-     * @return pickup; location where the book can be picked up from
+     * @return pickup location where the book can be picked up from
      */
     public String getLocation() {
         return pickup;

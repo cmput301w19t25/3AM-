@@ -47,8 +47,8 @@ public class User implements IOwner, IBorrower {
     /**
      * Takes a book and user objects
      * Owner accepts request placed by borrower
-     * @param book
-     * @param user
+     * @param book requested book
+     * @param user book borrower
      * @see Book
      * @see User
      */
@@ -59,8 +59,8 @@ public class User implements IOwner, IBorrower {
     /**
      * Takes a book object and a user object
      * Rjects request placed by the borrower
-     * @param book
-     * @param user
+     * @param book requested book
+     * @param user book borrower
      * @see Book
      * @see User
      */
@@ -71,7 +71,7 @@ public class User implements IOwner, IBorrower {
     /**
      * Takes a book object
      * adds the book to the list of owned books
-     * @param book
+     * @param book book
      * @see Book
      */
     @Override
@@ -82,7 +82,7 @@ public class User implements IOwner, IBorrower {
     /**
      * Takes a book object
      * removes a book from the list of owned books
-     * @param book
+     * @param book book
      * @see Book
      */
     @Override
@@ -98,7 +98,7 @@ public class User implements IOwner, IBorrower {
     /**
      * Takes a book object
      * adds the book to the list of requested books
-     * @param book
+     * @param book book
      * @see Book
      */
     @Override
@@ -108,7 +108,7 @@ public class User implements IOwner, IBorrower {
 
     /**
      * Returns a rating object
-     * @return rating of the book
+     * @return rating rating of the book
      * @see Rating
      */
     public Rating getRating() {
@@ -118,7 +118,7 @@ public class User implements IOwner, IBorrower {
     /**
      * Takes an exchange object and a string object
      * @param exchange
-     * @param location of exchange
+     * @param location location of exchange
      * @see Exchange
      */
     @Override
@@ -129,7 +129,7 @@ public class User implements IOwner, IBorrower {
      * Returns a string object
      * Takes am exchange object
      * @param exchange
-     * @return location of exchange
+     * @return location location of exchange
      * @see Exchange
      */
     public String getLocation(Exchange exchange) {
@@ -139,8 +139,8 @@ public class User implements IOwner, IBorrower {
     /**
      * Takes an image object and book object
      * sets the cover photo of the given book
-     * @param bookID
-     * @param image
+     * @param bookID uniquely identifies the book
+     * @param image cover photo of the image
      * @see Book
      * @see Image
      */
@@ -159,7 +159,7 @@ public class User implements IOwner, IBorrower {
 
     /**
      * Takes an integer ID of a book and removes the cover photo associated with that book
-     * @param bookID
+     * @param bookID uniquely identifies the book
      * @see IOwner
      */
     @Override
@@ -179,8 +179,8 @@ public class User implements IOwner, IBorrower {
     /**
      * implemets method from interface Owner
      *  sets the image of the book
-     * @param bookID
-     * @param image
+     * @param bookID uniquely identifies the book
+     * @param image cover photo of the image
      * @see IOwner
      */
     @Override
@@ -189,7 +189,7 @@ public class User implements IOwner, IBorrower {
 
     /**
      * Takes a string object and stes the username of the user
-     * @param username
+     * @param username name user
      */
     public void setUserName(String username) {
         this.username = username;
@@ -197,7 +197,7 @@ public class User implements IOwner, IBorrower {
 
     /**
      * Takes a string object and sets the phoneNumber of the userr
-     * @param phoneNum
+     * @param phoneNum phone number of the user
      */
     public void setPhoneNumber(String phoneNum) {
         this.phoneNumber = phoneNum;
@@ -205,7 +205,7 @@ public class User implements IOwner, IBorrower {
 
     /**
      * Takes a string object and sets the email of the user
-     * @param email
+     * @param email email of the user
      */
     public void setEmail(String email) {
         this.email = email;

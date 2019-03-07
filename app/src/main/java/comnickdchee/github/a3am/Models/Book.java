@@ -35,7 +35,7 @@ public class Book {
 
     /**
      * Returns a string object
-     * @return ISBN which uniquely identifies the book
+     * @return ISBN uniquely identifies the book
      */
     public String getISBN() {
         return ISBN;
@@ -43,14 +43,15 @@ public class Book {
 
     /**
      * Takes a string object and sets the ISBN of the book
-     * @param ISBN which uniquely identifies the book
+     * @param ISBN uniquely identifies the book
      */
     public void setISBN(String ISBN) {
         this.ISBN = ISBN;
     }
 
     /**
-     * @return a String object; the title of the book
+     * Returns a string object
+     * @return title the title of the book
      */
     public String getTitle() {
         return title;
@@ -58,14 +59,15 @@ public class Book {
 
     /**
      * Takes a string object and sets the title of the book
-     * @param title; the name of the book
+     * @param title the title of the book
      */
     public void setTitle(String title) {
         this.title = title;
     }
 
     /**
-     * @return stirng object; the author of the book
+     * Returns a string object
+     * @return author the author of the book
      */
     public String getAuthor() {
         return author;
@@ -73,15 +75,15 @@ public class Book {
 
     /**
      * takes a string author and sets the author of the book
-     * @param author
+     * @param author the author of the book
      */
     public void setAuthor(String author) {
         this.author = author;
     }
 
     /**
-     *
-     * @return an image object; coverphoto of the book
+     * Returns an image object
+     * @return image coverphoto of the book
      * @see Image
      */
     public Image getImage() {
@@ -90,7 +92,7 @@ public class Book {
 
     /**
      * Takes in an image object and sets the book cover to it
-     * @param image
+     * @param image cover photo of the book
      */
     public void setImage(Image image) {
         this.image = image;
@@ -98,49 +100,49 @@ public class Book {
 
     /**
      * Takes in a Status object and sets the status
-     * @param status
+     * @param status status can be avilable, requested, borrowed or accepted
      * @see Status
      */
     public void setStatus(Status status) {this.status = status; }
 
     /**
      * Returns a status object
-     * @return status
+     * @return status status can be avilable, requested, borrowed or accepted
      * @see Status
      */
     public Status getStatus() { return status; }
 
     /**
      * Takes a User object and sets the owner of the book
-     * @param owner
+     * @param owner the owner of the book
      * @see User
      */
     public void setOwner(User owner) { this.owner = owner; }
 
     /**
      * Returns a User object
-     * @return user; the owner of the book
+     * @return user the owner of the book
      * @see User
      */
     public User getOwner() { return owner; }
 
     /**
      * Returns a User object
-     * @return user; the current borrower of the book
+     * @return currentBorrower the current borrower of the book
      * @see User
      */
     public User getCurrentBorrower() { return currentBorrower; }
 
     /**
      * Takes User object; and sets the current borrower of the book
-     * @param currentBorrower
+     * @param currentBorrower the current borrower of the book
      * @see User
      */
     public void setCurrentBorrower(User currentBorrower) {this.currentBorrower = currentBorrower; }
 
     /**
      * Takes a User object and adds it to the list of requests
-     * @param requester
+     * @param requester potential borrower of the book
      * @see User
      */
     public void addRequest(User requester) {requests.add(requester); }
@@ -156,7 +158,7 @@ public class Book {
 
     /**
      *  Returns an integer object; the ID of the book
-     * @return bookID
+     * @return bookID uniquely identifies a book
      */
     public int getBookID() { return bookID; }
 

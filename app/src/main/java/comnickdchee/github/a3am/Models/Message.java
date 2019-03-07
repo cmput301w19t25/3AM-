@@ -22,7 +22,7 @@ public class Message {
 
     /**
      * Returns a string objest
-     * @return message
+     * @return message message
      */
     public String getMessageText() {
         return this.message;
@@ -48,7 +48,7 @@ public class Message {
 
     /**
      * Returns a Date object
-     * @return date; the date of sending/receiving the message
+     * @return date the date of sending/receiving the message
      * @see Date
      */
     public Date getDate() {

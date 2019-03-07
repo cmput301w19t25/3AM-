@@ -21,10 +21,10 @@ public class ChatBox {
 
     /**
      *
-     * @param messageText
-     * @param date
-     * @param user1
-     * @param user2
+     * @param messageText string message
+     * @param date current date
+     * @param user1 can be sender or receiver
+     * @param user2 can be sender or receiver
      */
     public void sendMessage(String messageText, Date date, User user1, User user2) {
 
