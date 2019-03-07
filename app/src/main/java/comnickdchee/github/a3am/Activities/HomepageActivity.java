@@ -10,7 +10,20 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -28,7 +41,8 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     private ViewPagerAdapter adapter;
     private TabLayout navTabLayout;
     private DrawerLayout drawer;
-
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase Fd;
     public static ArrayList<String> BorrowerList = new ArrayList<>();
     public static ArrayList<String> RequesterList = new ArrayList<>();
     public static ArrayList<String> BorrowedFromList = new ArrayList<>();
@@ -45,6 +59,31 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        /*
+            Editing data to add in user information for navbar.
+         */
+        View hView = navigationView.getHeaderView(0);
+        TextView tv = (TextView)hView.findViewById(R.id.UsernameNavbar);
+        ImageView iv = (ImageView)hView.findViewById(R.id.UserImageNavbar);
+        mAuth = FirebaseAuth.getInstance();
+        String userN = mAuth.getCurrentUser().getDisplayName();
+        String userEmail = mAuth.getCurrentUser().getEmail();
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
+        StorageReference profileImageRef =
+                FirebaseStorage.getInstance().getReference(userEmail+"/"+"dp"+ ".jpg");
+        StorageReference pathReference = storageRef.child(userEmail+"/"+"dp"+ ".jpg");
+        StorageReference gsReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://am-d5edb.appspot.com"+"/"+userEmail+"/"+"dp"+ ".jpg");
+        gsReference.child("/"+userEmail+"/"+"dp"+ ".jpg").getDownloadUrl();
+
+        String profileImageUrl = profileImageRef.getDownloadUrl().toString();
+        Log.d("ProfileImage",profileImageUrl);
+        tv.setText(userN);
+        Glide.with(this).load(profileImageUrl).into(iv);
+
+
+        //
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, navToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
