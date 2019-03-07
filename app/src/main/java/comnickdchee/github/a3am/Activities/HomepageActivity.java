@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
+import comnickdchee.github.a3am.HomeFragment;
 import comnickdchee.github.a3am.LogoutFragment;
 import comnickdchee.github.a3am.MessageFragment;
 import comnickdchee.github.a3am.MyBooksFragment;
@@ -28,10 +29,10 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     private TabLayout navTabLayout;
     private DrawerLayout drawer;
 
-    private ArrayList<String> BorrowerList = new ArrayList<>();
-    private ArrayList<String> RequesterList = new ArrayList<>();
-    private ArrayList<String> BorrowedFromList = new ArrayList<>();
-    private ArrayList<String> RequestedFromList = new ArrayList<>();
+    public static ArrayList<String> BorrowerList = new ArrayList<>();
+    public static ArrayList<String> RequesterList = new ArrayList<>();
+    public static ArrayList<String> BorrowedFromList = new ArrayList<>();
+    public static ArrayList<String> RequestedFromList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +51,11 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        viewPager = findViewById(R.id.pagerHomepage);
-        adapter = new ViewPagerAdapter(getSupportFragmentManager(),BorrowedFromList,RequesterList,
-                BorrowerList,RequestedFromList);
-        viewPager.setAdapter(adapter);
 
-        // tabs
-        navTabLayout = findViewById(R.id.navTabs);
-        navTabLayout.setupWithViewPager(viewPager);
         // view pager
         if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
 
@@ -70,7 +66,8 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
             case R.id.nav_home:
-
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new HomeFragment()).commit();
                 break;
 
             case R.id.nav_message:
