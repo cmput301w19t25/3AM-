@@ -27,7 +27,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         this.lists.add(BorrowedFromList);
         this.lists.add(RequestedFromList);
         this.lists.add(RequesterList);
-        Log.d(TAG, "ViewPagerAdapter: Added the lists in List");
+        Log.d(TAG, "Added the lists in List");
     }
 
     @Override
@@ -39,6 +39,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         Log.d(TAG, "getItem: " + Integer.toString(i) + ": " + lists.get(i));
         args.putStringArrayList("data",this.lists.get(i));
         BL.setArguments(args);
+        Log.d(TAG, "getItem: Created a Borrowed Fragment");
         return BL;
     }
 
