@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -47,6 +48,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     private FirebaseAuth mAuth;
     private FirebaseDatabase Fd;
     private DatabaseReference mDataRef;
+    private FirebaseStorage storage;
     private String DownloadLink;
     public static ArrayList<String> BorrowerList = new ArrayList<>();
     public static ArrayList<String> RequesterList = new ArrayList<>();
@@ -78,19 +80,21 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
         StorageReference profileImageRef =
                 FirebaseStorage.getInstance().getReference(userEmail+"/"+"dp"+ ".jpg");
-        String profileImageUrl = profileImageRef.getDownloadUrl().toString();
 
-        Log.d("Image to Download",Uri.parse(profileImageUrl).toString());
-        Log.d("Image to Download",profileImageUrl.toString());
+        //StorageReference gsReference = storage.getReferenceFromUrl(profileImageRef.toString());
+        Log.d("Image to Download",profileImageRef.toString());
+       // Log.d("Image to Download",gsReference.toString());
+
 
         /*
         String x = gsReference.child("/"+userEmail+"/"+"dp"+ ".jpg").getDownloadUrl().toString();
 
         String profileImageUrl = profileImageRef.getDownloadUrl().toString();
         Log.d("ProfileImage",x);
-
-        Glide.with(this).load(profileImageUrl).into(iv);
         */
+
+        Glide.with(this).load(profileImageRef).into(iv);
+
 
         //
 
