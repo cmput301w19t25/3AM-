@@ -35,7 +35,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_list_item,parent,false);
         ViewHolder holder  = new ViewHolder(view);
         return holder;
     }
@@ -44,14 +44,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(ViewHolder holder, final int i) {
         Log.d(TAG, "onBindViewHolder: called.");
 
-
         holder.username.setText(mUsernames.get(i));
-
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked on: " + mUsernames.get(i));
-
                 Toast.makeText(mContext, mUsernames.get(i), Toast.LENGTH_SHORT).show();
             }
         });

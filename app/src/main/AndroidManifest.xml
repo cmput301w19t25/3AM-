@@ -9,21 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity
-            android:name=".ViewBookActivity">
+        <activity android:name=".Activities.HomepageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.HomepageActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".SignUpActivity" />
+        <activity android:name=".ProfileActivity"/>
+        <activity android:name=".SignUpActivity"/>
         <activity android:name=".BorrowedActivity"/>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".ViewBookActivity"></activity>
     </application>
 
 </manifest>
