@@ -10,7 +10,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/navTabs"
             android:background="@color/colorPrimary"
-            android:elevation="4dp"
             android:minHeight="?attr/actionBarSize"
             app:tabMode="fixed"
             app:tabGravity="fill"
