@@ -43,6 +43,10 @@ dependencies {
 
     //CircleImageView
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    //Pablo Use for img url -> bitmap
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
 }
 
 repositories {

@@ -1,5 +1,6 @@
 package comnickdchee.github.a3am.Activities;
 
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -26,9 +27,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
@@ -38,6 +42,7 @@ import comnickdchee.github.a3am.MessageFragment;
 import comnickdchee.github.a3am.MyBooksFragment;
 import comnickdchee.github.a3am.ProfileFragment;
 import comnickdchee.github.a3am.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomepageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Toolbar navToolbar;
@@ -48,7 +53,6 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     private FirebaseAuth mAuth;
     private FirebaseDatabase Fd;
     private DatabaseReference mDataRef;
-    private FirebaseStorage storage;
     private String DownloadLink;
     public static ArrayList<String> BorrowerList = new ArrayList<>();
     public static ArrayList<String> RequesterList = new ArrayList<>();
@@ -70,21 +74,32 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         /*
             Editing data to add in user information for navbar.
          */
-        View hView = navigationView.getHeaderView(0);
+        final View hView = navigationView.getHeaderView(0);
         TextView tv = (TextView)hView.findViewById(R.id.UsernameNavbar);
-        ImageView iv = (ImageView)hView.findViewById(R.id.UserImageNavbar);
         mAuth = FirebaseAuth.getInstance();
         String userN = mAuth.getCurrentUser().getDisplayName();
         String userEmail = mAuth.getCurrentUser().getEmail();
         tv.setText(userN);
 
-        StorageReference profileImageRef =
-                FirebaseStorage.getInstance().getReference(userEmail+"/"+"dp"+ ".jpg");
 
-        //StorageReference gsReference = storage.getReferenceFromUrl(profileImageRef.toString());
-        Log.d("Image to Download",profileImageRef.toString());
-       // Log.d("Image to Download",gsReference.toString());
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child(userEmail+"/"+"dp"+ ".jpg");
 
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e("Tuts+", "uri: " + uri.toString());
+                DownloadLink = uri.toString();
+                CircleImageView iv = (CircleImageView) hView.findViewById(R.id.UserImageNavbar);
+                Picasso.with(getApplicationContext()).load(uri.toString()).fit().into(iv);
+                //Handle whatever you're going to do with the URL here
+            }
+        });
+        //Picasso.with(this).load(DownloadLink).fit().centerCrop().into(iv);
+        //StorageReference profileImageRef = FirebaseStorage.getInstance().getReference(userEmail+"/"+"dp"+ ".jpg");
+
+        //StorageReference gsReference = storage.getReferenceFromUrl();
+        //Log.d("Image to Download",profileImageRef.toString());
 
         /*
         String x = gsReference.child("/"+userEmail+"/"+"dp"+ ".jpg").getDownloadUrl().toString();
@@ -92,8 +107,6 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         String profileImageUrl = profileImageRef.getDownloadUrl().toString();
         Log.d("ProfileImage",x);
         */
-
-        Glide.with(this).load(profileImageRef).into(iv);
 
 
         //
@@ -162,4 +175,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
             super.onBackPressed();
         }
     }
+
+
 }
+
