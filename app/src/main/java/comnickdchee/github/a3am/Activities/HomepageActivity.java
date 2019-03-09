@@ -150,6 +150,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
                 break;
 
             case R.id.nav_logout:
+                mAuth.signOut();
                 finish();
                 break;
 
