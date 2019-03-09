@@ -16,9 +16,9 @@
 
 
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             tools:ignore="ContentDescription"
-            android:id="@+id/imageView"
+            android:id="@+id/profilePicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -27,7 +27,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars[11]" />
+            android:src="@mipmap/ic_launcher_round"/>
 
         <TextView
             android:id="@+id/textView2"
@@ -40,7 +40,7 @@
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
 
 
 

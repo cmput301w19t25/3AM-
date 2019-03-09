@@ -150,8 +150,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
                 break;
 
             case R.id.nav_logout:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new LogoutFragment()).commit();
+                finish();
                 break;
 
         }
