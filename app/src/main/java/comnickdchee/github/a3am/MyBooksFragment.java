@@ -1,5 +1,6 @@
 package comnickdchee.github.a3am;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,10 +18,12 @@ import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.RecyclerViewAdapter;
 import comnickdchee.github.a3am.Fragments.BorrowedFragment;
+import comnickdchee.github.a3am.Models.Book;
 
 public class MyBooksFragment extends Fragment {
 
-    private ArrayList<String> BookList;
+    private ArrayList<String> bookList;
+    private RecyclerViewAdapter adapter;
 
     @Nullable
     @Override
@@ -43,20 +46,30 @@ public class MyBooksFragment extends Fragment {
                 // using this to get back the results of an intent
                 // Source: https://stackoverflow.com/questions/10407159/how-to-manage-startactivityforresult-on-android
                 startActivityForResult(intent, 1);
+
             }
         });
 
-        ArrayList<String> data = new ArrayList<>();
-        data.add("Hawwy Potta and the Prisoner Of Afghanistan");
-        data.add("Hawwy Potta and the Sorcerer's Stoned");
-//        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-//
-//
-//        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), data);
-//
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        bookList = new ArrayList<String>();
+        bookList.add("Hawwy Potta and the Prisoner Of Afghanistan");
+        bookList.add("Hawwy Potta and the Sorcerer's Stoned");
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        adapter = new RecyclerViewAdapter(getActivity(), bookList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
+    }
+
+    /**
+     * Fired after Add Book Activity has finished.
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            Book book = (Book) data.getSerializableExtra("NewBook");
+            bookList.add(book.getTitle());
+            adapter.notifyDataSetChanged();
+        }
     }
 }
