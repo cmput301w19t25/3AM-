@@ -32,7 +32,7 @@ public class MyBooksFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(),data);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), data);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
