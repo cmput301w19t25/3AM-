@@ -15,12 +15,15 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import comnickdchee.github.a3am.Adapters.BookRecyclerAdapter;
 import comnickdchee.github.a3am.Adapters.RecyclerViewAdapter;
 import comnickdchee.github.a3am.Fragments.BorrowedFragment;
+import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.User;
 
 public class MyBooksFragment extends Fragment {
 
-    private ArrayList<String> BookList;
+    private ArrayList<Book> BookList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -47,15 +50,19 @@ public class MyBooksFragment extends Fragment {
         });
 
         ArrayList<String> data = new ArrayList<>();
-        data.add("Hawwy Potta and the Prisoner Of Afghanistan");
-        data.add("Hawwy Potta and the Sorcerer's Stoned");
-//        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        Book book1 = new Book("11211323","Hawwy Potta and the Prisoner Of Afghanistan","Just Kidding Rowling");
+        Book book2 = new Book("12211323","Hawwy Potta and the Sorcerer's Stoned","Just Kidding Rowling");
+        BookList.add(book1);
+        BookList.add(book2);
+        User user1 = new User("nchee","nchee@mom.ca","China","1234556");
+        book2.setCurrentBorrower(user1);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 //
 //
-//        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), data);
+        BookRecyclerAdapter adapter = new BookRecyclerAdapter(getActivity(), BookList);
 //
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
     }
