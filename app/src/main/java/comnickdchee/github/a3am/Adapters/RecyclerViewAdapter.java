@@ -2,11 +2,13 @@ package comnickdchee.github.a3am.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,10 +34,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.mContext = mContext;
     }
 
+    // TODO: Ismaeel needs to comment this code.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.actions_card,parent,false);
         ViewHolder holder  = new ViewHolder(view);
         return holder;
     }
@@ -44,14 +47,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(ViewHolder holder, final int i) {
         Log.d(TAG, "onBindViewHolder: called.");
 
-
-        holder.username.setText(mUsernames.get(i));
-
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+        // TODO: Change this so that we have multiple recycler views rather than
+        // one file that contains a bunch of conditions for making a recycler view.
+        holder.tvBookTitle.setText(mUsernames.get(i));
+        holder.actionsItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked on: " + mUsernames.get(i));
-
                 Toast.makeText(mContext, mUsernames.get(i), Toast.LENGTH_SHORT).show();
             }
         });
@@ -65,15 +67,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        CircleImageView imageIcon;
-        TextView username;
-        RelativeLayout parentLayout;
+//        CircleImageView imageIcon;
+//        TextView username;
+//        RelativeLayout parentLayout;
+        public ImageView ivBook;
+        public TextView tvBookTitle;
+        public CardView actionsItemView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageIcon = itemView.findViewById(R.id.imageIcon);
-            username = itemView.findViewById(R.id.username);
-            parentLayout = itemView.findViewById(R.id.parent_layout);
+            ivBook = itemView.findViewById(R.id.ivBookPhoto);
+            tvBookTitle = itemView.findViewById(R.id.tvCardBookTitle);
+            actionsItemView = itemView.findViewById(R.id.cvActions);
+
+//            imageIcon = itemView.findViewById(R.id.imageIcon);
+//            username = itemView.findViewById(R.id.username);
+//            parentLayout = itemView.findViewById(R.id.parent_layout);
+
 
         }
     }
