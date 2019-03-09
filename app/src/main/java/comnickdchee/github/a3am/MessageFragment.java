@@ -8,6 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * @author Asma
+ *  MessageFragment extends Fragment
+ *  it overwrites onCreateView
+ */
 public class MessageFragment extends Fragment {
 
     @Nullable

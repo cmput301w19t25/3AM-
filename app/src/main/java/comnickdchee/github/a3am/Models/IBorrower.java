@@ -2,7 +2,12 @@ package comnickdchee.github.a3am.Models;
 
 public interface IBorrower {
 
-    /** Adds a book that the borrower requested. */
+    /**
+     * Takes a book object
+     * adds the book to the list of requested books
+     * @param book book
+     * @see Book
+     */
     void addRequestedBook(Book book);
 
     /** Changes the status of the book to available via finding

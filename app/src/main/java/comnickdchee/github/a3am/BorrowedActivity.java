@@ -18,6 +18,12 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import comnickdchee.github.a3am.Activities.HomepageActivity;
 
+/**
+ * @author
+ * BorrowedActivity extends AppCompatActivity
+ * BorrowedActivity implements View.onClickListener
+ * It overrides onCreate and OnClick
+ */
 public class BorrowedActivity extends AppCompatActivity implements View.OnClickListener{
 
     FirebaseAuth mAuth;

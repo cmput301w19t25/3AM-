@@ -15,6 +15,13 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import comnickdchee.github.a3am.Activities.HomepageActivity;
 
+/**
+ * @author
+ * LogooutFragment extends Fragment
+ * it overwrites onCreateView
+ *
+ */
+
 public class LogoutFragment extends Fragment {
     FirebaseAuth mAuth;
     @Nullable

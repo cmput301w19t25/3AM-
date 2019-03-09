@@ -16,6 +16,11 @@ import java.util.ArrayList;
 import comnickdchee.github.a3am.Adapters.RecyclerViewAdapter;
 import comnickdchee.github.a3am.Fragments.BorrowedFragment;
 
+/**
+ * @author Nicholas
+ * MyBooksFragment extends Fragment
+ * it overwrites onCreateView
+ */
 public class MyBooksFragment extends Fragment {
 
     private ArrayList<String> BookList;
