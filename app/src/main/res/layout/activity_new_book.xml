@@ -26,7 +26,7 @@
         </android.support.v7.widget.Toolbar>
 
         <ImageView
-            android:id="@+id/ivClose"
+            android:id="@+id/ivCloseButton"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginStart="8dp"
@@ -45,7 +45,7 @@
             android:textColor="@android:color/background_light"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/newBookToolbar"
-            app:layout_constraintStart_toEndOf="@+id/ivClose"
+            app:layout_constraintStart_toEndOf="@+id/ivCloseButton"
             app:layout_constraintTop_toTopOf="@+id/newBookToolbar" />
 
         <ImageView
@@ -92,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="New Book Title"
-            android:inputType="text|textCapCharacters"
+            android:inputType="text"
             android:singleLine="true"
             android:textColor="@android:color/darker_gray" />
     </android.support.design.widget.TextInputLayout>
@@ -113,7 +113,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Author"
-            android:inputType="text|textCapCharacters|textCapWords|textCapSentences"
+            android:inputType="text"
             android:singleLine="true"
             android:textColor="@android:color/darker_gray" />
     </android.support.design.widget.TextInputLayout>
@@ -133,6 +133,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="ISBN"
+            android:inputType="text"
             android:textColor="@android:color/darker_gray" />
     </android.support.design.widget.TextInputLayout>
 
