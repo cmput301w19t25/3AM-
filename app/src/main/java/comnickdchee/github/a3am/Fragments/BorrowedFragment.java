@@ -32,7 +32,6 @@ public class BorrowedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.d(TAG, "onCreateView: Started OnCreate");
         View view = inflater.inflate(R.layout.fragment_borrowed, container, false);
 
         Bundle args = getArguments();
@@ -40,7 +39,6 @@ public class BorrowedFragment extends Fragment {
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
-        Log.d(TAG, "onCreateView: Received Data: " );
         
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(),data);
 
