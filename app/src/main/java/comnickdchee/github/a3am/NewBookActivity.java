@@ -1,5 +1,7 @@
 package comnickdchee.github.a3am;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.media.Image;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
@@ -9,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+
+import comnickdchee.github.a3am.Models.Book;
 
 public class NewBookActivity extends AppCompatActivity {
 
@@ -44,10 +48,23 @@ public class NewBookActivity extends AppCompatActivity {
 
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                // get all the desired inputs from the user
+                String bookTitle = bookTitleText.getText().toString();
+                String bookAuthor = bookAuthorText.getText().toString();
+                String bookISBN = bookISBNText.getText().toString();
+
+                addBook(bookTitle, bookAuthor, bookISBN);
                 finish();
             }
         });
 
 
+    }
+
+    private void addBook(String title, String author, String ISBN) {
+        Book newBook = new Book(ISBN, author, title);
+        Intent newBookIntent = new Intent();
+        newBookIntent.putExtra("NewBook", newBook);
+        setResult(Activity.RESULT_OK, newBookIntent);
     }
 }
