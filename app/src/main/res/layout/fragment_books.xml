@@ -14,7 +14,7 @@
         android:layout_centerInParent="true"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton5"
+        android:id="@+id/fabAddBookButton"
         android:layout_width="123dp"
         android:layout_height="76dp"
         android:layout_alignParentEnd="true"
