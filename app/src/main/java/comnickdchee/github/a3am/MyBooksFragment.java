@@ -29,9 +29,6 @@ public class MyBooksFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_books, container, false);
-
-        Bundle args = getArguments();
-
         FloatingActionButton fab = view.findViewById(R.id.fabAddBookButton);
 
         /**
@@ -49,7 +46,6 @@ public class MyBooksFragment extends Fragment {
             }
         });
 
-        ArrayList<String> data = new ArrayList<>();
         Book book1 = new Book("11211323","Hawwy Potta and the Prisoner Of Afghanistan","Just Kidding Rowling");
         Book book2 = new Book("12211323","Hawwy Potta and the Sorcerer's Stoned","Just Kidding Rowling");
         BookList.add(book1);
