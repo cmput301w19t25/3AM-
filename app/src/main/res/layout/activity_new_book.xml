@@ -25,20 +25,38 @@
 
         </android.support.v7.widget.Toolbar>
 
+        <ImageView
+            android:id="@+id/ivClose"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvTitle"
+            app:srcCompat="@drawable/ic_close_white_24dp" />
+
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:text="New Book"
             android:textColor="@android:color/background_light"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/newBookToolbar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivClose"
             app:layout_constraintTop_toTopOf="@+id/newBookToolbar" />
+
+        <ImageView
+            android:id="@+id/ivFinishAddButton"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+            app:layout_constraintEnd_toEndOf="@+id/newBookToolbar"
+            app:layout_constraintTop_toTopOf="@+id/tvTitle"
+            app:srcCompat="@drawable/ic_check_white_24dp" />
 
         <ImageView
             android:id="@+id/ivAddBookPhoto"
