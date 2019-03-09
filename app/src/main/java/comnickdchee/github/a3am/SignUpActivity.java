@@ -203,7 +203,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private void uploadImageToFirebase(){
         if(ProfileImage != null){
             StorageReference profileImageRef =
-                    FirebaseStorage.getInstance().getReference("ProfilePics/"+System.currentTimeMillis()+ ".jpg");
+                    FirebaseStorage.getInstance().getReference(email+"/"+"dp"+ ".jpg");
             profileImageRef.putFile(ProfileImage);
             profileImageUrl = profileImageRef.getDownloadUrl().toString();
             }
@@ -216,6 +216,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     .setDisplayName(userN)
                     .setPhotoUri(Uri.parse(profileImageUrl)).build();
             Log.d("Image", profileImageUrl.toString());
+            u.updateProfile(profile);
+        }else{
+            UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(userN).build();
             u.updateProfile(profile);
         }
     }
