@@ -25,7 +25,7 @@ public class MyBooksFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_borrowed, container, false);
+        View view = inflater.inflate(R.layout.fragment_books, container, false);
 
         Bundle args = getArguments();
 
@@ -49,13 +49,13 @@ public class MyBooksFragment extends Fragment {
         ArrayList<String> data = new ArrayList<>();
         data.add("Hawwy Potta and the Prisoner Of Afghanistan");
         data.add("Hawwy Potta and the Sorcerer's Stoned");
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-
-
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), data);
-
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+//
+//
+//        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), data);
+//
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
     }

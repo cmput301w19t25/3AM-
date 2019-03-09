@@ -4,12 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
     tools:context=".NewBookActivity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="225dp"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <android.support.v7.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/newBookToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/AppTheme.NoActionBar">
+
+        </android.support.v7.widget.Toolbar>
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="New Book"
+            android:textColor="@android:color/background_light"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/newBookToolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/newBookToolbar" />
 
         <ImageView
             android:id="@+id/ivAddBookPhoto"
@@ -23,8 +52,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newBookToolbar"
             app:srcCompat="@drawable/ic_add_to_photos_grey_24dp" />
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -43,10 +73,9 @@
             android:id="@+id/tietBookTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
+            android:hint="New Book Title"
             android:inputType="text|textCapCharacters"
             android:singleLine="true"
-            android:text="New Book Title"
             android:textColor="@android:color/darker_gray" />
     </android.support.design.widget.TextInputLayout>
 
@@ -65,10 +94,9 @@
             android:id="@+id/tietAuthor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
+            android:hint="Author"
             android:inputType="text|textCapCharacters|textCapWords|textCapSentences"
             android:singleLine="true"
-            android:text="Author"
             android:textColor="@android:color/darker_gray" />
     </android.support.design.widget.TextInputLayout>
 
@@ -86,8 +114,7 @@
             android:id="@+id/tietISBN"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint"
-            android:text="ISBN"
+            android:hint="ISBN"
             android:textColor="@android:color/darker_gray" />
     </android.support.design.widget.TextInputLayout>
 
