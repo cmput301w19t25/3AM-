@@ -27,11 +27,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private static final String TAG = "In_RecyclerViewAdapter";
 
-    private ArrayList<String> mUsernames;
+    private ArrayList<Book> mBookList;
     private Context mContext;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<String> mUsernames) {
-        this.mUsernames = mUsernames;
+    public RecyclerViewAdapter(Context mContext, ArrayList<Book> BookList) {
+        this.mBookList = BookList;
         this.mContext = mContext;
     }
 
@@ -50,19 +50,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         // TODO: Change this so that we have multiple recycler views rather than
         // one file that contains a bunch of conditions for making a recycler view.
-        holder.tvBookTitle.setText(mUsernames.get(i));
+        holder.tvBookTitle.setText(mBookList.get(i).getTitle());
+        holder.tvAuthorName.setText(mBookList.get(i).getAuthor());
+        holder.tvISBN.setText(mBookList.get(i).getISBN());
+
         holder.actionsItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked on: " + mUsernames.get(i));
-                Toast.makeText(mContext, mUsernames.get(i), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onClick: clicked on: " + mBookList.get(i));
+                Toast.makeText(mContext, mBookList.get(i).getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mUsernames.size();
+        return mBookList.size();
     }
 
 
@@ -73,6 +76,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 //        RelativeLayout parentLayout;
         public ImageView ivBook;
         public TextView tvBookTitle;
+        public TextView tvAuthorName;
+        public TextView tvISBN;
         public CardView actionsItemView;
 
         public ViewHolder(@NonNull View itemView) {
@@ -80,6 +85,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             ivBook = itemView.findViewById(R.id.ivBookPhoto);
             tvBookTitle = itemView.findViewById(R.id.tvCardBookTitle);
             actionsItemView = itemView.findViewById(R.id.cvActions);
+            tvAuthorName = itemView.findViewById(R.id.tvAuthor);
+            tvISBN = itemView.findViewById(R.id.tvISBN);
+
 
 //            imageIcon = itemView.findViewById(R.id.imageIcon);
 //            username = itemView.findViewById(R.id.username);
