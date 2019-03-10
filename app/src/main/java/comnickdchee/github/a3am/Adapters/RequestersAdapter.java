@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Models.User;
+import comnickdchee.github.a3am.R;
 
 public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.ViewHolder>{
 
