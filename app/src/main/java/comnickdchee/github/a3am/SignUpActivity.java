@@ -30,7 +30,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.sql.Time;
+import java.sql.Timestamp;
 
+import java.util.Date;
+
+import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.User;
 
 import static java.lang.Boolean.TRUE;
@@ -195,7 +200,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         User newUser = new User(userN,email,addR,phoneN);
 
         DatabaseReference mRef = fD.getReference(mAuth.getUid());
+
         mRef.setValue(newUser);
+
         //mRef.setValue(f);
 
     }
@@ -223,4 +230,5 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             u.updateProfile(profile);
         }
     }
+
 }

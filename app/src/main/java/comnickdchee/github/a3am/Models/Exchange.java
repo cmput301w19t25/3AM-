@@ -20,7 +20,7 @@ public class Exchange {
         this.date = date;
         this.type = ExchangeType.Borrowing;
         this.completed = completed;
-        this.bookID = book.getBookID();
+        //this.bookID = book.getBookID();
     }
 
     public Exchange(User owner, User borrower, String pickup, Boolean completed, Book book) {
@@ -30,7 +30,7 @@ public class Exchange {
         this.date = new Date();
         this.type = ExchangeType.Borrowing;
         this.completed = completed;
-        this.bookID = book.getBookID();
+        //this.bookID = book.getBookID();
     }
 
     public Exchange(User owner, User borrower, String pickup, Boolean completed, int bookID) {
