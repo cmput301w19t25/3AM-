@@ -11,6 +11,11 @@ import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.RecyclerViewAdapter;
 
+/**
+ * View Book Activity - Activity that lets owners look at the
+ * requests on a given book that they own. The user can accept
+ * and decline requests.
+ */
 public class ViewBookActivity extends AppCompatActivity {
 
     private RecyclerView rvRequests;

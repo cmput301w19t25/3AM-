@@ -24,7 +24,7 @@
             app:srcCompat="@drawable/ic_account_circle_blue_24dp" />
 
         <TextView
-            android:id="@+id/tvCardBookTitle"
+            android:id="@+id/tvName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -41,8 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:theme="@style/RatingBar"
-            app:layout_constraintStart_toStartOf="@+id/tvCardBookTitle"
-            app:layout_constraintTop_toBottomOf="@+id/tvCardBookTitle" />
+            app:layout_constraintStart_toStartOf="@+id/tvName"
+            app:layout_constraintTop_toBottomOf="@+id/tvName" />
 
         <ImageView
             android:id="@+id/ivRejectRequestButton"
@@ -60,6 +60,7 @@
             android:id="@+id/ivAcceptRequestButton"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ivRejectRequestButton"
             app:layout_constraintTop_toTopOf="parent"
