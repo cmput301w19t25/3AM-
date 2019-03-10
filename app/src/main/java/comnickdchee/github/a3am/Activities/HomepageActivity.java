@@ -95,21 +95,6 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
                 //Handle whatever you're going to do with the URL here
             }
         });
-        //Picasso.with(this).load(DownloadLink).fit().centerCrop().into(iv);
-        //StorageReference profileImageRef = FirebaseStorage.getInstance().getReference(userEmail+"/"+"dp"+ ".jpg");
-
-        //StorageReference gsReference = storage.getReferenceFromUrl();
-        //Log.d("Image to Download",profileImageRef.toString());
-
-        /*
-        String x = gsReference.child("/"+userEmail+"/"+"dp"+ ".jpg").getDownloadUrl().toString();
-
-        String profileImageUrl = profileImageRef.getDownloadUrl().toString();
-        Log.d("ProfileImage",x);
-        */
-
-
-        //
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, navToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);

@@ -2,9 +2,10 @@ package comnickdchee.github.a3am.Models;
 
 import android.media.Image;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Book {
+public class Book implements Serializable {
     private String ISBN;
     private String title;
     private String author;
@@ -20,6 +21,8 @@ public class Book {
         this.ISBN = ISBN;
         this.title = title;
         this.author = author;
+        this.status = Status.Available;
+        this.currentBorrower = null;
     }
 
     public Book(String ISBN, String title, String author, User owner) {
@@ -27,6 +30,8 @@ public class Book {
         this.title = title;
         this.author = author;
         this.owner = owner;
+        this.status = Status.Available;
+        this.currentBorrower = null;
     }
 
     public String getISBN() {
