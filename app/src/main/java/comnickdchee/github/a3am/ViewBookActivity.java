@@ -10,12 +10,19 @@ import android.view.Window;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.RecyclerViewAdapter;
+import comnickdchee.github.a3am.Adapters.RequestersAdapter;
+import comnickdchee.github.a3am.R;
 
+/**
+ * View Book Activity - Activity that lets owners look at the
+ * requests on a given book that they own. The user can accept
+ * and decline requests.
+ */
 public class ViewBookActivity extends AppCompatActivity {
 
     private RecyclerView rvRequests;
     private static ArrayList<String> requesters;
-    private RecyclerViewAdapter requestersAdapter;
+    private RequestersAdapter requestersAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
     @Override
@@ -28,7 +35,9 @@ public class ViewBookActivity extends AppCompatActivity {
         rvRequests = findViewById(R.id.rvViewBookRequests);
         layoutManager = new LinearLayoutManager(this);
         requesters = new ArrayList<String>();
-        requestersAdapter = new RecyclerViewAdapter(this, requesters);
+        requesters.add("Zaheen Rahman");
+        requesters.add("Ismaeel Bin Mohiuddin");
+        requestersAdapter = new RequestersAdapter(this, requesters);
         rvRequests.setLayoutManager(layoutManager);
         rvRequests.setAdapter(requestersAdapter);
 
