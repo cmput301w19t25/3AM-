@@ -39,7 +39,7 @@ public class BorrowedFragment extends Fragment {
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
-        
+
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(),data);
 
         recyclerView.setAdapter(adapter);
