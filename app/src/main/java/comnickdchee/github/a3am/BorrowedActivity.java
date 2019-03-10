@@ -36,7 +36,12 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
         findViewById(R.id.LoginBtn).setOnClickListener(this);
 
         if(mAuth.getCurrentUser() != null){
-            startActivity(new Intent(this, HomepageActivity.class));
+
+            Intent homePage = new Intent(this, HomepageActivity.class);
+            homePage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            //homePage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(homePage);
+
         }
 
     }
@@ -72,6 +77,7 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
                     Intent i = new Intent(BorrowedActivity.this, HomepageActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
+                    finish();
                 }else{
                     Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
