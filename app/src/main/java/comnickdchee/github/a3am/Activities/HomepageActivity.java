@@ -111,9 +111,6 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
             navigationView.setCheckedItem(R.id.nav_home);
         }
 
-        AddBook();
-
-
     }
 
     @Override
@@ -165,16 +162,5 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         }
     }
 
-    private void AddBook(){
-        FirebaseDatabase fD = FirebaseDatabase.getInstance();
-
-        String ISBN = "11211323";
-        Book book1 = new Book(ISBN,"Hawwy Potta and the Prisoner Of Afghanistan","Just Kidding Rowling");
-        String str = Integer.toString(java.lang.System.identityHashCode(book1));
-        DatabaseReference dRef = fD.getReference(mAuth.getUid()).child("BooksListID").child(str);
-        DatabaseReference bRef = fD.getReference("BooksList").child(str);
-        bRef.setValue(book1);
-        dRef.setValue(ISBN);
-    }
 }
 

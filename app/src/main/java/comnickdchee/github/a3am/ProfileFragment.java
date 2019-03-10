@@ -38,7 +38,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-
         mAuth = FirebaseAuth.getInstance();
         String userEmail = mAuth.getCurrentUser().getEmail();
         final View view = inflater.inflate(R.layout.fragment_profile, container, false);

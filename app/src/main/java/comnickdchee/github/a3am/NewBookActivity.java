@@ -12,6 +12,10 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import comnickdchee.github.a3am.Models.Book;
 
 public class NewBookActivity extends AppCompatActivity {
@@ -62,9 +66,18 @@ public class NewBookActivity extends AppCompatActivity {
     }
 
     private void addBook(String title, String author, String ISBN) {
-        Book newBook = new Book(ISBN, author, title);
+        Book newBook = new Book(ISBN, title, author);
         Intent newBookIntent = new Intent();
         newBookIntent.putExtra("NewBook", newBook);
         setResult(Activity.RESULT_OK, newBookIntent);
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseDatabase fD = FirebaseDatabase.getInstance();
+        String str = Integer.toString(java.lang.System.identityHashCode(newBook));
+        DatabaseReference dRef = fD.getReference(mAuth.getUid()).child("BooksListID").child(str);
+        DatabaseReference bRef = fD.getReference("BooksList").child(str);
+        bRef.setValue(newBook);
+        dRef.setValue(ISBN);
     }
+
 }
