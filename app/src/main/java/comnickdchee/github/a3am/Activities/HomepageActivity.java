@@ -39,6 +39,7 @@ import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
 import comnickdchee.github.a3am.HomeFragment;
 import comnickdchee.github.a3am.LogoutFragment;
 import comnickdchee.github.a3am.MessageFragment;
+import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.MyBooksFragment;
 import comnickdchee.github.a3am.ProfileFragment;
 import comnickdchee.github.a3am.R;
@@ -54,10 +55,10 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     private FirebaseDatabase Fd;
     private DatabaseReference mDataRef;
     private String DownloadLink;
-    public static ArrayList<String> BorrowerList = new ArrayList<>();
-    public static ArrayList<String> RequesterList = new ArrayList<>();
-    public static ArrayList<String> BorrowedFromList = new ArrayList<>();
-    public static ArrayList<String> RequestedFromList = new ArrayList<>();
+    public static ArrayList<Book> BorrowedList = new ArrayList<>();
+    public static ArrayList<Book> LendingList = new ArrayList<>();
+    public static ArrayList<Book> ActionsList = new ArrayList<>();
+    public static ArrayList<Book> RequestsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,10 +147,19 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     }
 
     private void init(){
-        BorrowerList.add("LMAO");
-        BorrowedFromList.add("LMFAO");
-        RequestedFromList.add("LOLMAO");
-        RequesterList.add("????");
+        Book b1 = new Book("1111111111","Title1","AuthorName1");
+        Book b2 = new Book("1111111112","Title2","AuthorName2");
+        Book b3 = new Book("1111111113","Title3","AuthorName3");
+        ActionsList.add(b1);
+        ActionsList.add(b2);
+        ActionsList.add(b3);
+
+        Book placeHolder = new Book("PlaceHolder","PlaceHolder","PlaceHolder");
+        BorrowedList.add(placeHolder);
+        LendingList.add(placeHolder);
+        RequestsList.add(placeHolder);
+
+
     }
 
     @Override
