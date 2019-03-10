@@ -1,5 +1,6 @@
 package comnickdchee.github.a3am;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import comnickdchee.github.a3am.Models.User;
 public class MyBooksFragment extends Fragment {
 
     private ArrayList<Book> BookList = new ArrayList<>();
+    private BookRecyclerAdapter adapter;
 
     @Nullable
     @Override
@@ -43,9 +45,9 @@ public class MyBooksFragment extends Fragment {
                 // using this to get back the results of an intent
                 // Source: https://stackoverflow.com/questions/10407159/how-to-manage-startactivityforresult-on-android
                 startActivityForResult(intent, 1);
+
             }
         });
-
         Book book1 = new Book("11211323","Hawwy Potta and the Prisoner Of Afghanistan","Just Kidding Rowling");
         Book book2 = new Book("12211323","Hawwy Potta and the Sorcerer's Stoned","Just Kidding Rowling");
         BookList.add(book1);
@@ -55,11 +57,22 @@ public class MyBooksFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 //
 //
-        BookRecyclerAdapter adapter = new BookRecyclerAdapter(getActivity(), BookList);
-//
+        adapter = new BookRecyclerAdapter(getActivity(), BookList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
+    }
+
+    /**
+     * Fired after Add Book Activity has finished.
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            Book book = (Book) data.getSerializableExtra("NewBook");
+            BookList.add(book);
+            adapter.notifyDataSetChanged();
+        }
     }
 }

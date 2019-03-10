@@ -2,9 +2,10 @@ package comnickdchee.github.a3am.Models;
 
 import android.media.Image;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Book {
+public class Book implements Serializable {
     private String ISBN;
     private String title;
     private String author;
