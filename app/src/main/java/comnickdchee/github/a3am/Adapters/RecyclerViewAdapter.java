@@ -1,6 +1,7 @@
 package comnickdchee.github.a3am.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
+import comnickdchee.github.a3am.ViewBookActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -58,7 +60,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked on: " + mBookList.get(i));
-                Toast.makeText(mContext, mBookList.get(i).getTitle(), Toast.LENGTH_SHORT).show();
+                if (mBookList.get(i).getTitle() == "PlaceHolder") {
+                    Toast.makeText(mContext, mBookList.get(i).getTitle(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(mContext, ViewBookActivity.class);
+                    mContext.startActivity(intent);
+                }
             }
         });
     }
