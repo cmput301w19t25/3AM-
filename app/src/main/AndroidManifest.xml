@@ -14,19 +14,17 @@
         <activity android:name=".ProfileActivity"></activity>
         <activity android:name=".SignUpActivity" />
         <activity android:name=".BorrowedActivity">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".ViewBookActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".ViewBookActivity"></activity>
         <activity android:name=".NewBookActivity"></activity>
     </application>
 
