@@ -46,7 +46,7 @@ public class MessageFragmentTest {
 
         getInstrumentation().waitForIdleSync();
 
-        View view = fragment.getView().findViewById(R.id.fragment_container);   //view_in_fragment);
+        View view = fragment.getView().findViewById(R.id.nav_message);   //view_in_fragment);
 
         assertNotNull(view);
 
