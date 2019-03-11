@@ -20,14 +20,14 @@ import static org.junit.Assert.*;
 
 public class BorrowedActivityTest {
     @Rule
-    public ActivityTestRule<BorrowedActivity>borrowedActivityTestRule = new ActivityTestRule<BorrowedActivity>(BorrowedActivity.class);
+    public ActivityTestRule<BorrowedActivity>bActivityTestRule = new ActivityTestRule<BorrowedActivity>(BorrowedActivity.class);
 
 
     private BorrowedActivity borrowed_Activity = null;
 
     @Before //before you execute the test
     public void setUp() throws Exception {
-        borrowed_Activity = borrowedActivityTestRule.getActivity();
+        borrowed_Activity = bActivityTestRule.getActivity();
 
 
     }
@@ -36,21 +36,16 @@ public class BorrowedActivityTest {
     @Test
     public void testlaunch_signin() {
 
-        View appicon = borrowed_Activity.findViewById(R.id.imageView3);
+        View appicon = borrowed_Activity.findViewById(R.id.RegisterBtn);
         assertNotNull(appicon);
 
     }
 
     @Test
-    public void TestLaunchofsigninwhenbuttonisclicked(){
-        SystemClock.sleep(800);
+    public void SigninWithInfo(){
         assertNotNull(borrowed_Activity.findViewById(R.id.LoginBtn));
-        //onView(withId(R.id.userName)).perform(typeText("one113")).perform(closeSoftKeyboard());
         onView(withId(R.id.EmailReg)).perform(typeText("one113@gmail.com")).perform(closeSoftKeyboard());
         onView(withId(R.id.PasswordReg)).perform(typeText("one1234")).perform(closeSoftKeyboard());
-        //onView(withId(R.id.address)).perform(typeText("421 NY")).perform(closeSoftKeyboard());
-        //onView(withId(R.id.phoneNumber)).perform(typeText("7778904605")).perform(closeSoftKeyboard());
-        //Thread.sleep(250)
 
         onView(withId(R.id.LoginBtn)).perform(click());
     }
