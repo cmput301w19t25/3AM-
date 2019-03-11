@@ -24,7 +24,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".ViewBookActivity" />
+        <activity android:name=".ViewBookActivity"></activity>
         <activity android:name=".NewBookActivity"></activity>
     </application>
 

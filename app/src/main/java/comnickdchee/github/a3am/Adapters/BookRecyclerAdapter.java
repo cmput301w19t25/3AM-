@@ -40,6 +40,9 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
     @NonNull
     @Override
     public BookRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+
+        // Creates a view based on the mybooks_card.xml
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mybooks_card,parent,false);
         BookRecyclerAdapter.ViewHolder holder  = new BookRecyclerAdapter.ViewHolder(view);
         return holder;
@@ -58,7 +61,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
             holder.tvBorrowedBy.setText("Borrowed By: " + mBooks.get(i).getCurrentBorrower().getUserName());
         }
 
-
+        // On click event when a card is clicked
         holder.actionsItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -28,6 +28,12 @@ import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
 
 import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
 
+/**
+ * @auhtor
+ * HomeFragment extends Fragment
+ * It overwrites onCreateView
+ *
+ */
 public class HomeFragment extends Fragment {
 
 
@@ -38,13 +44,16 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        //Gets the layout for the fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         viewPager = view.findViewById(R.id.pagerHomepage);
-        adapter = new ViewPagerAdapter(getChildFragmentManager(), HomepageActivity.BorrowedFromList,HomepageActivity.RequesterList,
-                HomepageActivity.BorrowerList,HomepageActivity.RequestedFromList);
+
+        //Gets the ViewPage adapter based the data fed
+        adapter = new ViewPagerAdapter(getChildFragmentManager(), HomepageActivity.BorrowedList,HomepageActivity.LendingList,
+                HomepageActivity.ActionsList,HomepageActivity.RequestsList);
         viewPager.setAdapter(adapter);
 
-        // tabs
+        // Sets up the ViewPager the the layout
         navTabLayout = view.findViewById(R.id.navTabs);
         navTabLayout.setupWithViewPager(viewPager);
         return view;
