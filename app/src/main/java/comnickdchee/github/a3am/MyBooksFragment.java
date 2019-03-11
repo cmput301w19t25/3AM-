@@ -111,9 +111,9 @@ public class MyBooksFragment extends Fragment {
                     String author = dataSnapshot.child(key).child("author").getValue().toString();
                     String isbn = dataSnapshot.child(key).child("isbn").getValue().toString();
                     String title = dataSnapshot.child(key).child("title").getValue().toString();
-
                     Book b1 = new Book(isbn,title,author);
                     BookList.add(b1);
+                    adapter.notifyDataSetChanged();
                     Log.d("TestDataBook",BookList.get(0).getAuthor());
 
             }
