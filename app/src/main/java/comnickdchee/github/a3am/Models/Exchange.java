@@ -3,7 +3,9 @@ package comnickdchee.github.a3am.Models;
 import java.util.Date;
 
 /** Exchange class which keeps track of exchanges between a specific book between 2 users.
- *  This is created whenever a request is accepted by an owner of a book. */
+ *  This is created whenever a request is accepted by an owner of a book.
+ * @author Nicholas & Ismaeel
+  */
 public class Exchange {
     private User owner;
     private User borrower;
@@ -11,7 +13,19 @@ public class Exchange {
     private Date date;
     private ExchangeType type;
     private Boolean completed = false;
-    private int bookID;                 // uniquely identify the book involved (there is only one)
+    private Book book;                 // uniquely identify the book involved (there is only one)
+
+
+    /**
+     *
+     * @param owner owner of the book
+     * @param borrower borrower of the book
+     * @param pickup pickup location
+     * @param date expected return date of book
+     * @param completed tells whether exchange is complete
+     * @param book uniquely identifies book
+     * @see User
+     */
 
     public Exchange(User owner, User borrower, String pickup, Date date, Boolean completed, Book book) {
         this.owner = owner;
@@ -20,9 +34,18 @@ public class Exchange {
         this.date = date;
         this.type = ExchangeType.Borrowing;
         this.completed = completed;
-        this.bookID = book.getBookID();
+        this.book = book;
     }
 
+    /**
+     *
+     * @param owner owner of the book
+     * @param borrower borrower of the book
+     * @param pickup pickup location
+     * @param completed tells whether exchange is complete
+     * @param book book being borrowed or lend
+     * @see User
+     */
     public Exchange(User owner, User borrower, String pickup, Boolean completed, Book book) {
         this.owner = owner;
         this.borrower = borrower;
@@ -30,21 +53,43 @@ public class Exchange {
         this.date = new Date();
         this.type = ExchangeType.Borrowing;
         this.completed = completed;
-        this.bookID = book.getBookID();
+        this.book = book;
     }
 
-    public Exchange(User owner, User borrower, String pickup, Boolean completed, int bookID) {
-        this.owner = owner;
-        this.borrower = borrower;
-        this.pickup = pickup;
-        this.date = new Date();
-        this.type = ExchangeType.Borrowing;
-        this.completed = completed;
-        this.bookID = bookID;
-    }
 
+    /**
+     * Returns a string object
+     * @return pickup location where the book can be picked up from
+     */
     public String getLocation() {
         return pickup;
     }
 
+    public User getOwner() {
+        return owner;
+    }
+
+    public User getBorrower() {
+        return borrower;
+    }
+
+    public String getPickup() {
+        return pickup;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public ExchangeType getType() {
+        return type;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    public Book getBook() {
+        return book;
+    }
 }

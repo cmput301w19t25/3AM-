@@ -12,21 +12,22 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Fragments.BorrowedFragment;
+import comnickdchee.github.a3am.Models.Book;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private static final String TAG = "ViewPagerAdapter";
     
-    private ArrayList<ArrayList<String>> lists = new ArrayList<>();
+    private ArrayList<ArrayList<Book>> lists = new ArrayList<>();
 
-    public ViewPagerAdapter(FragmentManager fm, ArrayList<String> BorrowedFromList, ArrayList<String> RequesterList,
-                            ArrayList<String> BorrowerList, ArrayList<String>RequestedFromList) {
+    public ViewPagerAdapter(FragmentManager fm, ArrayList<Book> BorrowedList, ArrayList<Book> LendingList,
+                            ArrayList<Book> ActionsList, ArrayList<Book>RequestsList) {
         super(fm);
 
-        this.lists.add(BorrowerList);
-        this.lists.add(BorrowedFromList);
-        this.lists.add(RequestedFromList);
-        this.lists.add(RequesterList);
+        this.lists.add(BorrowedList);
+        this.lists.add(LendingList);
+        this.lists.add(ActionsList);
+        this.lists.add(RequestsList);
         Log.d(TAG, "Added the lists in List");
     }
 
@@ -37,7 +38,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         BorrowedFragment BL =  new BorrowedFragment();
         Bundle args = new Bundle();
         Log.d(TAG, "getItem: " + Integer.toString(i) + ": " + lists.get(i));
-        args.putStringArrayList("data",this.lists.get(i));
+        args.putSerializable("data",this.lists.get(i));
         BL.setArguments(args);
         Log.d(TAG, "getItem: Created a Borrowed Fragment");
         return BL;

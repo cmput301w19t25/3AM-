@@ -6,5 +6,6 @@
     <color name="colorPrimaryDark">#EC384A</color>
     <color name="colorAccent">#EB2C3F</color>
     <color name="dark_grey_default">#444444</color>
+    <color name="Gold">#FFD700</color>
 
 </resources>

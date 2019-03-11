@@ -30,6 +30,7 @@ public class MyBooksFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Opens a fragment which will show the books
         View view = inflater.inflate(R.layout.fragment_books, container, false);
         FloatingActionButton fab = view.findViewById(R.id.fabAddBookButton);
 
@@ -48,15 +49,18 @@ public class MyBooksFragment extends Fragment {
 
             }
         });
+
+        // Initializes some sample data to be displayed
         Book book1 = new Book("11211323","Hawwy Potta and the Prisoner Of Afghanistan","Just Kidding Rowling");
         Book book2 = new Book("12211323","Hawwy Potta and the Sorcerer's Stoned","Just Kidding Rowling");
         BookList.add(book1);
         BookList.add(book2);
+
         User user1 = new User("nchee","nchee@mom.ca","China","1234556");
+
         book2.setCurrentBorrower(user1);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-//
-//
+
         adapter = new BookRecyclerAdapter(getActivity(), BookList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
