@@ -65,6 +65,28 @@ import static junit.framework.TestCase.assertTrue;
             assertTrue(solo.searchText("Logout"));
 
 
+            //Test if Home button from the menu is clickable
+            solo.clickOnMenuItem("Home");
+
+            //Test if My Books button from the menu is clickable
+            solo.clickOnImageButton(0);
+            solo.clickOnMenuItem("My Books");
+
+            //Test if Edit Profile button from the menu is clickable
+            solo.clickOnImageButton(0);
+            solo.clickOnMenuItem("Edit Profile");
+
+            //Test if Message button from the menu is clickable
+            solo.clickOnImageButton(0);
+            solo.clickOnMenuItem("Message");
+
+
+            //Test if Logout button from the menu is clickable
+            solo.clickOnImageButton(0);
+            solo.clickOnMenuItem("Logout");
+
+
+
 
 
 
