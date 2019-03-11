@@ -14,13 +14,13 @@ import comnickdchee.github.a3am.Models.User;
 
 
 public class UserUnitTest {
-    User user1 = new User("Name","0123-123-3456","example@exm.com",
-            "Walter White","Dubai");
+    User user1 = new User("Name","example@exm.com",
+            "Dubai","0123-123-3456");
 
     @Test
     public void test_acceptRequests() {
-        User user2 = new User("Gorib","0124-123-3456","mod@exm.com",
-                "Sefat Ullah","Dhaka, Bangladesh");
+        User user2 = new User("Gorib","mod@exm.com",
+                "Sefat Ullah Dhaka, Bangladesh","0124-123-3456");
         Book book = new Book("12345","Harry Potta","J.K. Rolling",user1);
         user1.acceptRequest(book,user2);
         ArrayList<Exchange> exchangeList = user1.getExchangeList();
@@ -31,8 +31,8 @@ public class UserUnitTest {
 
     @Test
     public void test_rejectRequest() {
-        User user2 = new User("Gorib","0124-123-3456","mod@exm.com",
-                "Sefat Ullah","Dhaka, Bangladesh");
+        User user2 = new User("Gorib","mod@exm.com",
+                "Dhaka, Bangladesh", "0124-123-3456");
         Book book = new Book("12345","Harry Potta","J.K. Rolling",user1);
         user1.rejectRequest(book, user2);
     }
@@ -57,8 +57,8 @@ public class UserUnitTest {
 
     @Test
     public void test_returnBook() {
-        User user2 = new User("Gorib","0124-123-3456","mod@exm.com",
-                "Sefat Ullah","Dhaka, Bangladesh");
+        User user2 = new User("Gorib","mod@exm.com",
+                "Dhaka, Bangladesh", "0124-123-3456");
         Book request = new Book("12345","Harry Potta","J.K. Rolling",user2);
         int requestID = request.getBookID();
         Exchange exchange = new Exchange(user2, user1, "test location", false, requestID);
@@ -69,8 +69,8 @@ public class UserUnitTest {
 
     @Test
     public void test_setLocation() {
-        User user2 = new User("Gorib","0124-123-3456","mod@exm.com",
-                "Sefat Ullah","Dhaka, Bangladesh");
+        User user2 = new User("Gorib","mod@exm.com",
+                "Dhaka, Bangladesh", "0124-123-3456");
         Book book = new Book("12345","Harry Potta","J.K. Rolling",user1);
         Exchange exchange = new Exchange(user1,user2,"",false,book);
         user1.setLocation(exchange, "Dhaka");
@@ -106,12 +106,12 @@ public class UserUnitTest {
 
     @Test
     public void test_editBook() {
-        User user = new User ("username1", "780-111-2222",
-                "email.yahoo.com", "name", "2132-52Ave");
-        User user2 = new User("userName2", "780-111-4444",
-                "email@gmailcom", "name2", "1111-25Ave");
-        User user3 = new User("userName3", "780-111-6666",
-                "email@hotmail.com", "name3", "1111-22Street");
+        User user = new User ("username1",
+                "email.yahoo.com", "2132-52Ave","780-111-2222");
+        User user2 = new User("userName2",
+                "email@gmailcom", "1111-25Ave", "780-111-4444");
+        User user3 = new User("userName3",
+                "email@hotmail.com",  "1111-22Street","780-111-6666");
         Book book1 = new Book("9876543211234", "harry Potter", "j k rowling");
         book1.setCurrentBorrower(user2);
         user.addOwnedBook(book1);               //add book to the list of owned book
@@ -131,8 +131,8 @@ public class UserUnitTest {
 
     @Test
     public void test_editProfile() {
-        User user = new User("username1", "780-111-2222",
-                "email.yahoo.com", "name", "2132-52Ave");
+        User user = new User("username1",
+                "email.yahoo.com", "2132-52Ave",  "780-111-2222");
 
         //edit contact info
         user.setEmail("email@gmailcom");

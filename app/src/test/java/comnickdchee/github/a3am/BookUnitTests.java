@@ -8,11 +8,11 @@ import comnickdchee.github.a3am.Models.User;
 
 import static org.junit.Assert.assertEquals;
 
-// TODO: Implement addRequest unit tests.
+
 public class BookUnitTests {
 
-    User user1 = new User("Name","0123-123-3456","example@exm.com",
-            "Walter White","Dubai");
+    User user1 = new User("Name","example@exm.com",
+            "Dubai","0123-123-3456");
 
     @Test
     public void test_setOwner() {

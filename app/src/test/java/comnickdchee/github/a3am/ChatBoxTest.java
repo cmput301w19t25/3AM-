@@ -18,8 +18,8 @@ public class ChatBoxTest {
     @Test
     public void test_sendMessage(String messageText, Date date, User sender, User receive) {
 
-        User user1 = new User("username1", "780-111-2222", "email.yahoo.com", "name", "2132-52Ave");
-        User user2 = new User("userName2", "780-111-4444", "email@gmailcom", "name2", "1111-25Ave");
+        User user1 = new User("username1", "email.yahoo.com", "2132-52Ave","780-111-2222" );
+        User user2 = new User("userName2",  "email@gmailcom",  "1111-25Ave","780-111-4444");
         ChatBox chatbox = new ChatBox(user1,user2);
         messageText = "hello";
         Date ddate = new Date();
