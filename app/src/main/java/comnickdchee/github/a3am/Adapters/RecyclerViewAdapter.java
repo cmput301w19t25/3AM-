@@ -37,10 +37,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.mContext = mContext;
     }
 
-    // TODO: Ismaeel needs to comment this code.
     @NonNull
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+        // Creates a view based on the actions_card.xml
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.actions_card, parent, false);
         RecyclerViewAdapter.ViewHolder holder = new RecyclerViewAdapter.ViewHolder(view);
         return holder;
@@ -50,12 +51,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, final int i) {
         Log.d(TAG, "onBindViewHolder: called.");
 
-        // TODO: Change this so that we have multiple recycler views rather than
         // one file that contains a bunch of conditions for making a recycler view.
         holder.tvBookTitle.setText(mBookList.get(i).getTitle());
         holder.tvAuthorName.setText(mBookList.get(i).getAuthor());
         holder.tvISBN.setText(mBookList.get(i).getISBN());
 
+        // On click event when a card is clicked
         holder.actionsItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,9 +79,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        //        CircleImageView imageIcon;
-//        TextView username;
-//        RelativeLayout parentLayout;
+        //Sets the variables to identify each items in the view
+
         public ImageView ivBook;
         public TextView tvBookTitle;
         public TextView tvAuthorName;
@@ -95,10 +95,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tvAuthorName = itemView.findViewById(R.id.tvAuthor);
             tvISBN = itemView.findViewById(R.id.tvISBN);
 
-
-//            imageIcon = itemView.findViewById(R.id.imageIcon);
-//            username = itemView.findViewById(R.id.username);
-//            parentLayout = itemView.findViewById(R.id.parent_layout);
 
 
         }

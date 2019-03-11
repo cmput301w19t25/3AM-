@@ -39,6 +39,7 @@ public class MyBooksFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Opens a fragment which will show the books
         View view = inflater.inflate(R.layout.fragment_books, container, false);
         FloatingActionButton fab = view.findViewById(R.id.fabAddBookButton);
 

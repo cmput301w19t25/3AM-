@@ -36,10 +36,13 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
         this.mContext = mContext;
     }
 
-    // TODO: Ismaeel needs to comment this code.
+
     @NonNull
     @Override
     public BookRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+
+        // Creates a view based on the mybooks_card.xml
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mybooks_card,parent,false);
         BookRecyclerAdapter.ViewHolder holder  = new BookRecyclerAdapter.ViewHolder(view);
         return holder;
@@ -49,7 +52,6 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
     public void onBindViewHolder(BookRecyclerAdapter.ViewHolder holder, final int i) {
         Log.d(TAG, "onBindViewHolder: called.");
 
-        // TODO: Change this so that we have multiple recycler views rather than
         // one file that contains a bunch of conditions for making a recycler view.
         holder.tvBookTitle.setText(mBooks.get(i).getTitle());
         holder.tvAuthorName.setText(mBooks.get(i).getAuthor());
@@ -59,7 +61,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
             holder.tvBorrowedBy.setText("Borrowed By: " + mBooks.get(i).getCurrentBorrower().getUserName());
         }
 
-
+        // On click event when a card is clicked
         holder.actionsItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

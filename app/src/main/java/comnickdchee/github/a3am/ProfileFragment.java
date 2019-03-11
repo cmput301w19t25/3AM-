@@ -38,19 +38,25 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        //Gets Current User
         mAuth = FirebaseAuth.getInstance();
         String userEmail = mAuth.getCurrentUser().getEmail();
         final View view = inflater.inflate(R.layout.fragment_profile, container, false);
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child(userEmail+"/"+"dp"+ ".jpg");
+
+        //Gets the textView fields
         TextView ProfileName = (TextView)view.findViewById(R.id.userNameFragmentProfile);
         final TextView Address = (TextView)view.findViewById(R.id.addressEditProfileFragment);
         final TextView PhoneNumber = (TextView)view.findViewById(R.id.phoneNumberEditProfileFragment);
         final TextView Email = (TextView)view.findViewById(R.id.emailEditProfileFragment);
 
+        //Sets the name
         ProfileName.setText(mAuth.getCurrentUser().getDisplayName());
         DatabaseReference ref = database.getReference().child(mAuth.getUid());
 
+        //Sets the other details from the reference
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -69,6 +75,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        //Gets the user's profile picture
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

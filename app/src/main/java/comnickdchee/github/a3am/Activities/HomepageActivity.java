@@ -69,6 +69,8 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         navToolbar = findViewById(R.id.navToolbar);
         setSupportActionBar(navToolbar);
 
+        // Setting the side Navigation Drawer
+        // source: https://www.youtube.com/watch?v=fGcMLu1GJEc
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -76,9 +78,11 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         /*
             Editing data to add in user information for navbar.
          */
+        //Sets username to the side navigation menu
         final View hView = navigationView.getHeaderView(0);
         TextView tv = (TextView)hView.findViewById(R.id.UsernameNavbar);
         mAuth = FirebaseAuth.getInstance();
+
         String userN = mAuth.getCurrentUser().getDisplayName();
         String userEmail = mAuth.getCurrentUser().getEmail();
         tv.setText(userN);
@@ -98,13 +102,14 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
             }
         });
 
+        //Sets the states of the side navigation menu
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, navToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
 
-        // view pager
+        // Sets the home pages as the active fragment if there is no savedInstances
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
@@ -115,6 +120,9 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        // The switch cases for click of each item in the nav bar
+        // Everything except the nav_logout opens the correct fragment
         switch (menuItem.getItemId()){
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -147,6 +155,8 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     }
 
     private void init(){
+        // Initialized some sample data to be displayed
+
         Book b1 = new Book("1111111111","Title1","AuthorName1");
         Book b2 = new Book("1111111112","Title2","AuthorName2");
         Book b3 = new Book("1111111113","Title3","AuthorName3");
@@ -164,6 +174,8 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     public void onBackPressed() {
+
+        //Make the back button close the navigation menu if it is open
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
