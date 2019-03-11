@@ -39,6 +39,7 @@ import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
 import comnickdchee.github.a3am.HomeFragment;
 import comnickdchee.github.a3am.LogoutFragment;
 import comnickdchee.github.a3am.MessageFragment;
+import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.MyBooksFragment;
 import comnickdchee.github.a3am.ProfileFragment;
 import comnickdchee.github.a3am.R;
@@ -61,10 +62,10 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     private FirebaseDatabase Fd;
     private DatabaseReference mDataRef;
     private String DownloadLink;
-    public static ArrayList<String> BorrowerList = new ArrayList<>();
-    public static ArrayList<String> RequesterList = new ArrayList<>();
-    public static ArrayList<String> BorrowedFromList = new ArrayList<>();
-    public static ArrayList<String> RequestedFromList = new ArrayList<>();
+    public static ArrayList<Book> BorrowedList = new ArrayList<>();
+    public static ArrayList<Book> LendingList = new ArrayList<>();
+    public static ArrayList<Book> ActionsList = new ArrayList<>();
+    public static ArrayList<Book> RequestsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,8 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         navToolbar = findViewById(R.id.navToolbar);
         setSupportActionBar(navToolbar);
 
+        // Setting the side Navigation Drawer
+        // source: https://www.youtube.com/watch?v=fGcMLu1GJEc
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -81,9 +84,11 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         /*
             Editing data to add in user information for navbar.
          */
+        //Sets username to the side navigation menu
         final View hView = navigationView.getHeaderView(0);
         TextView tv = (TextView)hView.findViewById(R.id.UsernameNavbar);
         mAuth = FirebaseAuth.getInstance();
+
         String userN = mAuth.getCurrentUser().getDisplayName();
         String userEmail = mAuth.getCurrentUser().getEmail();
         tv.setText(userN);
@@ -102,21 +107,6 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
                 //Handle whatever you're going to do with the URL here
             }
         });
-        //Picasso.with(this).load(DownloadLink).fit().centerCrop().into(iv);
-        //StorageReference profileImageRef = FirebaseStorage.getInstance().getReference(userEmail+"/"+"dp"+ ".jpg");
-
-        //StorageReference gsReference = storage.getReferenceFromUrl();
-        //Log.d("Image to Download",profileImageRef.toString());
-
-        /*
-        String x = gsReference.child("/"+userEmail+"/"+"dp"+ ".jpg").getDownloadUrl().toString();
-
-        String profileImageUrl = profileImageRef.getDownloadUrl().toString();
-        Log.d("ProfileImage",x);
-        */
-
-
-        //
 
         /**
          * create an instance of ActionBarDrawerToggle
@@ -128,6 +118,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
          * @param R.string.navigation_drawer_open
          *
          */
+        //Sets the states of the side navigation menu
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, navToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -136,6 +127,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
         // view pager
         //AT the start of the program will open HomeFragment before clicking on anything else
+        // Sets the home pages as the active fragment if there is no savedInstances
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
@@ -154,6 +146,9 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
      */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        // The switch cases for click of each item in the nav bar
+        // Everything except the nav_logout opens the correct fragment
         switch (menuItem.getItemId()){
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -175,6 +170,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
                 break;
 
             case R.id.nav_logout:
+                mAuth.signOut();
                 finish();
                 break;
 
@@ -185,10 +181,21 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     }
 
     private void init(){
-        BorrowerList.add("LMAO");
-        BorrowedFromList.add("LMFAO");
-        RequestedFromList.add("LOLMAO");
-        RequesterList.add("????");
+        // Initialized some sample data to be displayed
+
+        Book b1 = new Book("1111111111","Title1","AuthorName1");
+        Book b2 = new Book("1111111112","Title2","AuthorName2");
+        Book b3 = new Book("1111111113","Title3","AuthorName3");
+        ActionsList.add(b1);
+        ActionsList.add(b2);
+        ActionsList.add(b3);
+
+        Book placeHolder = new Book("PlaceHolder","PlaceHolder","PlaceHolder");
+        BorrowedList.add(placeHolder);
+        LendingList.add(placeHolder);
+        RequestsList.add(placeHolder);
+
+
     }
 
     /**
@@ -198,6 +205,8 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
      */
     @Override
     public void onBackPressed() {
+
+        //Make the back button close the navigation menu if it is open
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {

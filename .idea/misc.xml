@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavadocGenerationManager">
+<<<<<<< HEAD
     <option name="OUTPUT_DIRECTORY" value="C:/javadoc" />
+=======
+    <option name="OUTPUT_DIRECTORY" value="C:/part4/3AM-" />
+>>>>>>> db38dbf39c80e1ab465a8b13d066801467bbdfb8
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

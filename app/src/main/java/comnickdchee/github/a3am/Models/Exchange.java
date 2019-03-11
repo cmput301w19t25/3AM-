@@ -13,7 +13,19 @@ public class Exchange {
     private Date date;
     private ExchangeType type;
     private Boolean completed = false;
-    private int bookID;                 // uniquely identify the book involved (there is only one)
+    private Book book;                 // uniquely identify the book involved (there is only one)
+
+
+    /**
+     *
+     * @param owner owner of the book
+     * @param borrower borrower of the book
+     * @param pickup pickup location
+     * @param date expected return date of book
+     * @param completed tells whether exchange is complete
+     * @param book uniquely identifies book
+     * @see User
+     */
 
     public Exchange(User owner, User borrower, String pickup, Date date, Boolean completed, Book book) {
         this.owner = owner;
@@ -22,7 +34,7 @@ public class Exchange {
         this.date = date;
         this.type = ExchangeType.Borrowing;
         this.completed = completed;
-        this.bookID = book.getBookID();
+        this.book = book;
     }
 
 
@@ -31,7 +43,7 @@ public class Exchange {
      * @param owner owner of the book
      * @param borrower borrower of the book
      * @param pickup pickup location
-     * @param completed
+     * @param completed tells whether exchange is complete
      * @param book book being borrowed or lend
      * @see User
      */
@@ -42,26 +54,7 @@ public class Exchange {
         this.date = new Date();
         this.type = ExchangeType.Borrowing;
         this.completed = completed;
-        this.bookID = book.getBookID();
-    }
-
-    /**
-     *
-     * @param owner owner of the book
-     * @param borrower borrower of the book
-     * @param pickup pickup location
-     * @param completed
-     * @param bookID uniquely identifies book
-     * @see User
-     */
-    public Exchange(User owner, User borrower, String pickup, Boolean completed, int bookID) {
-        this.owner = owner;
-        this.borrower = borrower;
-        this.pickup = pickup;
-        this.date = new Date();
-        this.type = ExchangeType.Borrowing;
-        this.completed = completed;
-        this.bookID = bookID;
+        this.book = book;
     }
 
     /**
@@ -72,4 +65,31 @@ public class Exchange {
         return pickup;
     }
 
+    public User getOwner() {
+        return owner;
+    }
+
+    public User getBorrower() {
+        return borrower;
+    }
+
+    public String getPickup() {
+        return pickup;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public ExchangeType getType() {
+        return type;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    public Book getBook() {
+        return book;
+    }
 }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 /**
  * @author Ismaeel & Nicholas
  */
+
 public class User implements IOwner, IBorrower {
 
     private String username;            // unique username
@@ -33,12 +34,12 @@ public class User implements IOwner, IBorrower {
     }
 
     /**
-     * acceptRequest implements IOwner
      * Takes a book and user objects
      * Owner accepts request placed by borrower
      * @param book requested book
      * @param user book borrower
      * @see Book
+     * @see User
      */
     @Override
     public void acceptRequest(Book book, User user) {
@@ -52,6 +53,7 @@ public class User implements IOwner, IBorrower {
      * @param user book borrower
      * @see Book
      * @see IOwner
+     * @see User
      */
     @Override
     public void rejectRequest(Book book, User user) {
@@ -107,6 +109,9 @@ public class User implements IOwner, IBorrower {
      * @return rating rating of the book
      * @see Rating
      * @see IBorrower
+     * Returns a rating object
+     * @return rating rating of the book
+     * @see Rating
      */
     public Rating getRating() {
         return rating;

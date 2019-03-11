@@ -18,7 +18,7 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             tools:ignore="ContentDescription"
-            android:id="@+id/profilePicture"
+            android:id="@+id/profilePictureEditFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -30,17 +30,17 @@
             android:src="@mipmap/ic_launcher_round"/>
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/userNameFragmentProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:text="@string/PlaceHolder"
+            android:text="👤Username"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
+            app:layout_constraintTop_toBottomOf="@+id/profilePictureEditFragment" />
 
 
 
@@ -81,14 +81,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email: "
+                android:text="✉ : "
                 android:textColor="@android:color/black"
-                android:textSize="18dp" />
+                android:textSize="26dp" />
 
             <TextView
+                android:id="@+id/emailEditProfileFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lmao@Lmao.ca"
                 android:textColor="@android:color/black"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -103,14 +103,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Phone: "
+                android:text="📞 : "
                 android:textColor="@android:color/black"
                 android:textSize="18dp" />
 
             <TextView
+                android:id="@+id/phoneNumberEditProfileFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="420-420-6969"
                 android:textColor="@android:color/black"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -137,14 +137,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Street Address: "
+                android:text="📌 : "
                 android:textColor="@android:color/black"
                 android:textSize="18dp" />
 
             <TextView
+                android:id="@+id/addressEditProfileFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LMAO Street 69 Ave NS"
                 android:textColor="@android:color/black"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -154,22 +154,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="City: "
-                android:textColor="@android:color/black"
-                android:textSize="18dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Edmonton"
-                android:textColor="@android:color/black"
-                android:textSize="18dp" />
-        </LinearLayout>
+            android:orientation="horizontal"/>
 
 
 
