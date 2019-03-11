@@ -78,6 +78,12 @@ public class MyBooksFragment extends Fragment {
             }
         });
 
+        Book b1 = new Book("ISBN","TITLE","AUTHOR");
+        Book b12 = new Book("ISBN","TITLE","AUTHOR");
+
+        BookList.add(b1);
+        BookList.add(b12);
+
         User user1 = new User("nchee","nchee@mom.ca","China","1234556");
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 //
