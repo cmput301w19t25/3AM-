@@ -22,6 +22,11 @@ import comnickdchee.github.a3am.Fragments.BorrowedFragment;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.User;
 
+/**
+ * @author Nicholas
+ * MyBooksFragment extends Fragment
+ * it overwrites onCreateView
+ */
 public class MyBooksFragment extends Fragment {
 
     private ArrayList<Book> BookList = new ArrayList<>();

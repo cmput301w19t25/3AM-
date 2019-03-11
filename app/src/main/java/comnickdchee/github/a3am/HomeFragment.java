@@ -28,6 +28,12 @@ import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
 
 import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
 
+/**
+ * @auhtor
+ * HomeFragment extends Fragment
+ * It overwrites onCreateView
+ *
+ */
 public class HomeFragment extends Fragment {
 
 

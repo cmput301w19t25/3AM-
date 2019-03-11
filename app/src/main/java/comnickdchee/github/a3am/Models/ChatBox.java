@@ -6,6 +6,7 @@ import java.util.Date;
 /**
  * @author Asma
  */
+
 public class ChatBox {
 
     private ArrayList<Message> messages = new ArrayList<Message>();
