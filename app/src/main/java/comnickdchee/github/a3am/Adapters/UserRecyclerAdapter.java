@@ -39,10 +39,11 @@ public class UserRecyclerAdapter extends RecyclerView.Adapter<UserRecyclerAdapte
         this.mContext = mContext;
     }
 
-    // TODO: Ismaeel needs to comment this code.
     @NonNull
     @Override
     public UserRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+        // Creates a view based on the mybooks_card.xml
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mybooks_card,parent,false);
         UserRecyclerAdapter.ViewHolder holder  = new UserRecyclerAdapter.ViewHolder(view);
         return holder;
@@ -52,7 +53,6 @@ public class UserRecyclerAdapter extends RecyclerView.Adapter<UserRecyclerAdapte
     public void onBindViewHolder(UserRecyclerAdapter.ViewHolder holder, final int i) {
         Log.d(TAG, "onBindViewHolder: called.");
 
-        // TODO: Change this so that we have multiple recycler views rather than
         // one file that contains a bunch of conditions for making a recycler view.
         holder.tvBookTitle.setText(mExchanges.get(i).getBook().getTitle());
         holder.tvAuthorName.setText(mExchanges.get(i).getBook().getAuthor());
@@ -66,6 +66,7 @@ public class UserRecyclerAdapter extends RecyclerView.Adapter<UserRecyclerAdapte
             holder.tvUserRole.setText("Owner: ");
         }
 
+        // On click event when a card is clicked
         holder.actionsItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,9 +86,7 @@ public class UserRecyclerAdapter extends RecyclerView.Adapter<UserRecyclerAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        //        CircleImageView imageIcon;
-//        TextView username;
-//        RelativeLayout parentLayout;
+        // views inside ViewHolder
         public ImageView ivBook;
         public TextView tvBookTitle;
         public TextView tvAuthorName;
@@ -99,6 +98,8 @@ public class UserRecyclerAdapter extends RecyclerView.Adapter<UserRecyclerAdapte
         // The Data inside the View Holder are set here
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            // set the views
             ivBook = itemView.findViewById(R.id.ivBookPhoto);
             tvBookTitle = itemView.findViewById(R.id.tvCardBookTitle);
             actionsItemView = itemView.findViewById(R.id.cvUserInfo);
@@ -106,11 +107,6 @@ public class UserRecyclerAdapter extends RecyclerView.Adapter<UserRecyclerAdapte
             tvISBN = itemView.findViewById(R.id.tvISBN);
             tvUser = itemView.findViewById(R.id.tvUser);
             tvUserRole = itemView.findViewById(R.id.tvUserRole);
-
-//            imageIcon = itemView.findViewById(R.id.imageIcon);
-//            username = itemView.findViewById(R.id.username);
-//            parentLayout = itemView.findViewById(R.id.parent_layout);
-
 
         }
     }

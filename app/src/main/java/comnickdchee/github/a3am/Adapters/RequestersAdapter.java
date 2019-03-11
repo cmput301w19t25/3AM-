@@ -62,6 +62,8 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
         notifyDataSetChanged();
     }
 
+    // A view Holder to hold the views of each Individual Cards
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         // views inside ViewHolder

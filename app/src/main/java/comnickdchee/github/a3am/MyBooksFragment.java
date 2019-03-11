@@ -30,6 +30,7 @@ public class MyBooksFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Opens a fragment which will show the books
         View view = inflater.inflate(R.layout.fragment_books, container, false);
         FloatingActionButton fab = view.findViewById(R.id.fabAddBookButton);
 
@@ -49,7 +50,7 @@ public class MyBooksFragment extends Fragment {
             }
         });
 
-
+        // Initializes some sample data to be displayed
         Book book1 = new Book("11211323","Hawwy Potta and the Prisoner Of Afghanistan","Just Kidding Rowling");
         Book book2 = new Book("12211323","Hawwy Potta and the Sorcerer's Stoned","Just Kidding Rowling");
         BookList.add(book1);

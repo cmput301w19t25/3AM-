@@ -35,12 +35,13 @@ public class BorrowedFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_borrowed, container, false);
 
+        //Get the data for recycler view items
         Bundle args = getArguments();
         ArrayList<Book> data = (ArrayList<Book>) args.getSerializable("data");
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
-
+        //Create and return the recyclerView
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(),data);
 
         recyclerView.setAdapter(adapter);
