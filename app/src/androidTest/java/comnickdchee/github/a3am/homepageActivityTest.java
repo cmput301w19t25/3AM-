@@ -16,6 +16,12 @@ import comnickdchee.github.a3am.Activities.HomepageActivity;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.TestCase.assertTrue;
 
+/**
+ * @author Asma
+ * Tests for HomepageActivity; Navigation menu, menuItems and tabs.
+ * Uses Robotium for testing
+ */
+
 @RunWith(AndroidJUnit4.class)
     public class homepageActivityTest extends ActivityTestRule<HomepageActivity> {
 
@@ -44,8 +50,7 @@ import static junit.framework.TestCase.assertTrue;
             solo.assertCurrentActivity("Wrong Activity", HomepageActivity.class);
 
             solo.clickOnImageButton(0);//solo.clickOnActionBarHomeButton();
-            //solo.clickOnMenuItem("Message");
-            //solo.clickLongOnText("Message");
+
             //assertTrue(solo.waitForFragmentById(R.layout.fragment_message));
 
             //Test if there exists a Home button
@@ -85,55 +90,9 @@ import static junit.framework.TestCase.assertTrue;
             solo.clickOnImageButton(0);
             solo.clickOnMenuItem("Logout");
 
-
-
-
-
-
-
-            //solo.clickOnButton("Message");
-
-            //assertTrue(solo.waitForText("Message Fragment"));
-
-
-            //solo.clickOnImageButton(0);//solo.clickOnActionBarHomeButton();
-            //solo.clickLongOnText("My Books");
-            //assertTrue(solo.waitForFragmentById(R.layout.fragment_borrowed));
-
-
-            //solo.clickOnActionBarHomeButton();
-            //solo.clickLongOnText("Edit Profile");
-            //assertTrue(solo.waitForFragmentById(R.layout.fragment_profile));
-
-
-
-            //solo.clickOnActionBarHomeButton();
-            //solo.clickLongOnText("Logout");
-            //assertTrue(solo.waitForFragmentById(R.layout.fragment_logout));
-
-
-            //solo.clickOnActionBarHomeButton();
-            //solo.clickLongOnText("Home");
-            //assertTrue(solo.waitForFragmentById(R.layout.fragment_home));
-
-
-            //solo.clickOnActionBarItem(nav_books);
-            //assertTrue(solo.waitForFragmentByTag("Message Fragment"));
-            //assertTrue(solo.searchText("Message Fragment"));
-
-            //solo.waitForFragmentById(nav_message)
-            //assertTrue(solo.isToggleButtonChecked("toggle"));
-
-
-            //solo.clickOnButton("Clear");
-
-            //solo.clickOnActionBarHomeButton();
-            //solo.clickOnMenuItem("Message");
-            //assertTrue(solo.waitForFragmentById(4));
-            //assertTrue(solo.searchText("Message Fragment"));
-
         }
 
+        
 
 
     }
