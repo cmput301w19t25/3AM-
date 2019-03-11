@@ -94,6 +94,7 @@ public class MyBooksFragment extends Fragment {
 
         adapter = new BookRecyclerAdapter(getActivity(), BookList);
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
@@ -103,9 +104,11 @@ public class MyBooksFragment extends Fragment {
     //This is the function to get data for the books. We will use it to swap out data from the dummy data.
     public void findBook(final String key){
         mAuth = FirebaseAuth.getInstance();
+        BookList.clear();
 
         DatabaseReference ref = database.getReference().child("BooksList");
         ref.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Log.d("TestDataBook",dataSnapshot.child(key).getValue().toString());
@@ -114,8 +117,11 @@ public class MyBooksFragment extends Fragment {
                     String title = dataSnapshot.child(key).child("title").getValue().toString();
                     Book b1 = new Book(isbn,title,author);
                     BookList.add(b1);
-                    adapter.notifyDataSetChanged();
                     Log.d("TestDataBook",BookList.get(0).getAuthor());
+                    adapter.notifyDataSetChanged();
+                    int i = BookList.size();
+                    String s = Integer.toString(i);
+                    Log.d("TestDataBook",s);
 
             }
 
@@ -124,16 +130,21 @@ public class MyBooksFragment extends Fragment {
 
             }
         });
+        //BookList.clear();
+        int i = BookList.size();
+        String s = Integer.toString(i);
+        Log.d("TestDataBook",s);
+
     }
     /**
      * Fired after Add Book Activity has finished.
-     */
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             Book book = (Book) data.getSerializableExtra("NewBook");
             BookList.add(book);
-            adapter.notifyDataSetChanged();
         }
     }
+    */
 }
