@@ -41,15 +41,6 @@ public class BorrowedActivityTest {
 
     }
 
-    @Test
-    public void SigninWithInfo(){
-        assertNotNull(borrowed_Activity.findViewById(R.id.LoginBtn));
-        onView(withId(R.id.EmailReg)).perform(typeText("one113@gmail.com")).perform(closeSoftKeyboard());
-        onView(withId(R.id.PasswordReg)).perform(typeText("one1234")).perform(closeSoftKeyboard());
-
-        onView(withId(R.id.LoginBtn)).perform(click());
-    }
-
 
     @After // after executing the test case
     public void tearDown() throws Exception {
