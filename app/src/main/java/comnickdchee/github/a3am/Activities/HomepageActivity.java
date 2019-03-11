@@ -48,6 +48,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * @author Asma, Ismaeel, Nicholas, Tatenda & Zaheen
  * HomePageActivity extends AppCompatActivity
  * HomePageActivity implements NavigationView.onNavigationItemSelectedListener
+ * @see AppCompatActivity
  */
 
 public class HomepageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
