@@ -13,6 +13,7 @@ public class MessageFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Opens a fragment which will show the messages
         return inflater.inflate(R.layout.fragment_message, container, false);
     }
 }
