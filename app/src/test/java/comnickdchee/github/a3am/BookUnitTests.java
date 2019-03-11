@@ -8,7 +8,7 @@ import comnickdchee.github.a3am.Models.User;
 
 import static org.junit.Assert.assertEquals;
 
-// TODO: Implement addRequest unit tests.
+
 public class BookUnitTests {
 
     User user1 = new User("Name","example@exm.com",

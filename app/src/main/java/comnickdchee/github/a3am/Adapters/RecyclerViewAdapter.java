@@ -35,7 +35,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.mContext = mContext;
     }
 
-    // TODO: Ismaeel needs to comment this code.
+
     @NonNull
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
@@ -48,7 +48,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, final int i) {
         Log.d(TAG, "onBindViewHolder: called.");
 
-        // TODO: Change this so that we have multiple recycler views rather than
         // one file that contains a bunch of conditions for making a recycler view.
         holder.tvBookTitle.setText(mUsernames.get(i));
         holder.actionsItemView.setOnClickListener(new View.OnClickListener() {

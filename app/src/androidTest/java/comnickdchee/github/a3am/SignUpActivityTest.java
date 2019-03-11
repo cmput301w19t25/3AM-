@@ -71,6 +71,7 @@ public class SignUpActivityTest {
     @After // after executing the test case
     public void tearDown() throws Exception {
 
+        nActivity = null;
         mAuth.getCurrentUser().delete();
 
 

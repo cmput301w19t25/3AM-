@@ -36,7 +36,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
         this.mContext = mContext;
     }
 
-    // TODO: Ismaeel needs to comment this code.
+
     @NonNull
     @Override
     public BookRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
@@ -49,7 +49,6 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
     public void onBindViewHolder(BookRecyclerAdapter.ViewHolder holder, final int i) {
         Log.d(TAG, "onBindViewHolder: called.");
 
-        // TODO: Change this so that we have multiple recycler views rather than
         // one file that contains a bunch of conditions for making a recycler view.
         holder.tvBookTitle.setText(mBooks.get(i).getTitle());
         holder.tvAuthorName.setText(mBooks.get(i).getAuthor());
