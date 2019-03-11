@@ -57,6 +57,7 @@ public class MyBooksFragment extends Fragment {
 
             }
         });
+
         BookList = new ArrayList<>();
         mAuth = FirebaseAuth.getInstance();
 
@@ -85,9 +86,11 @@ public class MyBooksFragment extends Fragment {
         BookList.add(b12);
 
         User user1 = new User("nchee","nchee@mom.ca","China","1234556");
+
+        b12.setCurrentBorrower(user1);
+
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-//
-//
+
         adapter = new BookRecyclerAdapter(getActivity(), BookList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

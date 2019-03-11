@@ -30,6 +30,7 @@ public class NewBookActivity extends AppCompatActivity {
     private ImageView addButton;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +38,7 @@ public class NewBookActivity extends AppCompatActivity {
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
-        bookTitleText = findViewById(R.id.tietBookTitle);
+                bookTitleText = findViewById(R.id.tietBookTitle);
         bookAuthorText = findViewById(R.id.tietAuthor);
         bookISBNText = findViewById(R.id.tietISBN);
 

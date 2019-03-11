@@ -11,7 +11,7 @@ public class Exchange {
     private Date date;
     private ExchangeType type;
     private Boolean completed = false;
-    private int bookID;                 // uniquely identify the book involved (there is only one)
+    private Book book;                 // uniquely identify the book involved (there is only one)
 
     public Exchange(User owner, User borrower, String pickup, Date date, Boolean completed, Book book) {
         this.owner = owner;
@@ -21,6 +21,7 @@ public class Exchange {
         this.type = ExchangeType.Borrowing;
         this.completed = completed;
         //this.bookID = book.getBookID();
+
     }
 
     public Exchange(User owner, User borrower, String pickup, Boolean completed, Book book) {
@@ -31,20 +32,39 @@ public class Exchange {
         this.type = ExchangeType.Borrowing;
         this.completed = completed;
         //this.bookID = book.getBookID();
+
     }
 
-    public Exchange(User owner, User borrower, String pickup, Boolean completed, int bookID) {
-        this.owner = owner;
-        this.borrower = borrower;
-        this.pickup = pickup;
-        this.date = new Date();
-        this.type = ExchangeType.Borrowing;
-        this.completed = completed;
-        this.bookID = bookID;
-    }
 
     public String getLocation() {
         return pickup;
     }
 
+    public User getOwner() {
+        return owner;
+    }
+
+    public User getBorrower() {
+        return borrower;
+    }
+
+    public String getPickup() {
+        return pickup;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public ExchangeType getType() {
+        return type;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    public Book getBook() {
+        return book;
+    }
 }

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Activities.HomepageActivity;
 import comnickdchee.github.a3am.Adapters.RecyclerViewAdapter;
+import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
 /**
@@ -22,7 +23,7 @@ import comnickdchee.github.a3am.R;
 public class BorrowedFragment extends Fragment {
 
     private static final String TAG = "BorrowedFragment";
-    private ArrayList<String> data = new ArrayList<>();
+    private ArrayList<Book> data = new ArrayList<>();
 
     public BorrowedFragment() {
         // Required empty public constructor
@@ -35,11 +36,11 @@ public class BorrowedFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_borrowed, container, false);
 
         Bundle args = getArguments();
-        ArrayList<String> data = args.getStringArrayList("data");
+        ArrayList<Book> data = (ArrayList<Book>) args.getSerializable("data");
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
-        
+
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(),data);
 
         recyclerView.setAdapter(adapter);

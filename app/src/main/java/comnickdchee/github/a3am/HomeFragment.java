@@ -40,8 +40,8 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         viewPager = view.findViewById(R.id.pagerHomepage);
-        adapter = new ViewPagerAdapter(getChildFragmentManager(), HomepageActivity.BorrowedFromList,HomepageActivity.RequesterList,
-                HomepageActivity.BorrowerList,HomepageActivity.RequestedFromList);
+        adapter = new ViewPagerAdapter(getChildFragmentManager(), HomepageActivity.BorrowedList,HomepageActivity.LendingList,
+                HomepageActivity.ActionsList,HomepageActivity.RequestsList);
         viewPager.setAdapter(adapter);
 
         // tabs
