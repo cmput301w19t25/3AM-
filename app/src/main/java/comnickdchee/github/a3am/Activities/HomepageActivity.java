@@ -46,6 +46,13 @@ import comnickdchee.github.a3am.ProfileFragment;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * @author Asma, Ismaeel, Nicholas, Tatenda & Zaheen
+ * HomePageActivity extends AppCompatActivity
+ * HomePageActivity implements NavigationView.onNavigationItemSelectedListener
+ * @see AppCompatActivity
+ */
+
 public class HomepageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Toolbar navToolbar;
     private ViewPager viewPager;
@@ -102,13 +109,25 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
             }
         });
 
+        /**
+         * create an instance of ActionBarDrawerToggle
+         * it creates menu button and handles click events
+         * @param this context which is this activity
+         * @param drawer
+         * @param navToolbar
+         * @param R.string.navigation_drawer_open
+         * @param R.string.navigation_drawer_open
+         *
+         */
         //Sets the states of the side navigation menu
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, navToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        toggle.syncState();   //rotating the hambugur item
 
 
+        // view pager
+        //AT the start of the program will open HomeFragment before clicking on anything else
         // Sets the home pages as the active fragment if there is no savedInstances
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -118,6 +137,13 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
     }
 
+    /**
+     *
+     * @param menuItem selected Item
+     * @return true if an item was selected
+     * switch statements which check for the different menu items by id
+     * opens a specific fragment depending on which item was selected from the menu
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
@@ -172,6 +198,11 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
     }
 
+    /**
+     * Overwrite onBackPressed
+     * So that when back button is pressed while navigation drawer is open, we don't exit the activity
+     * immediately instead close the navigation menu drawer first
+     */
     @Override
     public void onBackPressed() {
 

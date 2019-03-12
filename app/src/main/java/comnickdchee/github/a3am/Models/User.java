@@ -33,17 +33,6 @@ public class User implements IOwner, IBorrower {
         requestedBooks = new ArrayList<Book>();
     }
 
-    /** No address specified
-    User(String username, String phoneNumber, String email) {
-        this.username = username;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-
-        ownedBooks = new ArrayList<Book>();
-        requestedBooks = new ArrayList<Book>();
-    }
-     */
-
     /**
      * Takes a book and user objects
      * Owner accepts request placed by borrower
@@ -57,11 +46,13 @@ public class User implements IOwner, IBorrower {
     }
 
     /**
+     * rejectRequest implemets IOwner
      * Takes a book object and a user object
      * Rjects request placed by the borrower
      * @param book requested book
      * @param user book borrower
      * @see Book
+     * @see IOwner
      * @see User
      */
     @Override
@@ -69,10 +60,12 @@ public class User implements IOwner, IBorrower {
     }
 
     /**
+     * Implements method from IOwner
      * Takes a book object
      * adds the book to the list of owned books
      * @param book book
      * @see Book
+     * @see IOwner
      */
     @Override
     public void addOwnedBook(Book book) {
@@ -80,10 +73,12 @@ public class User implements IOwner, IBorrower {
     }
 
     /**
+     * Implements method from IOwner
      * Takes a book object
      * removes a book from the list of owned books
      * @param book book
      * @see Book
+     * @see IOwner
      */
     @Override
     public void removeOwnedBook(Book book) {
@@ -96,10 +91,12 @@ public class User implements IOwner, IBorrower {
     }
 
     /**
+     * Implements IBorrower
      * Takes a book object
      * adds the book to the list of requested books
      * @param book book
      * @see Book
+     * @see IBorrower
      */
     @Override
     public void addRequestedBook(Book book) {
@@ -107,6 +104,11 @@ public class User implements IOwner, IBorrower {
     }
 
     /**
+     * Implements IBorrower
+     * Returns a rating object
+     * @return rating rating of the book
+     * @see Rating
+     * @see IBorrower
      * Returns a rating object
      * @return rating rating of the book
      * @see Rating
@@ -116,10 +118,12 @@ public class User implements IOwner, IBorrower {
     }
 
     /**
+     * Implements method form IOwner
      * Takes an exchange object and a string object
      * @param exchange
      * @param location location of exchange
      * @see Exchange
+     * @see IOwner
      */
     @Override
     public void setLocation(Exchange exchange, String location) {
@@ -137,12 +141,14 @@ public class User implements IOwner, IBorrower {
     }
 
     /**
+     * Implements method from IOwner
      * Takes an image object and book object
      * sets the cover photo of the given book
      * @param bookID uniquely identifies the book
      * @param image cover photo of the image
      * @see Book
      * @see Image
+     * @see IOwner
      */
     public void setImage(Book bookID, Image image) {
     }
@@ -158,6 +164,7 @@ public class User implements IOwner, IBorrower {
     }
 
     /**
+     * Implements method from IOnwer
      * Takes an integer ID of a book and removes the cover photo associated with that book
      * @param bookID uniquely identifies the book
      * @see IOwner

@@ -5,7 +5,7 @@ import java.util.Date;
 /** Exchange class which keeps track of exchanges between a specific book between 2 users.
  *  This is created whenever a request is accepted by an owner of a book.
  * @author Nicholas & Ismaeel
-  */
+ */
 public class Exchange {
     private User owner;
     private User borrower;
@@ -38,6 +38,7 @@ public class Exchange {
 
     }
 
+
     /**
      *
      * @param owner owner of the book
@@ -57,7 +58,6 @@ public class Exchange {
         //this.bookID = book.getBookID();
 
     }
-
 
     /**
      * Returns a string object

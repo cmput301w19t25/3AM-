@@ -27,6 +27,12 @@ import com.squareup.picasso.Picasso;
 import comnickdchee.github.a3am.Models.User;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * @auhtor Tatenda
+ * ProfileFragment extends Fragment
+ * it overwrites onCreateView
+ */
+
 public class ProfileFragment extends Fragment {
 
     private FloatingActionButton edit;
