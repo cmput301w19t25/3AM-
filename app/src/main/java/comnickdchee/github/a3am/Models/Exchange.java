@@ -34,7 +34,8 @@ public class Exchange {
         this.date = date;
         this.type = ExchangeType.Borrowing;
         this.completed = completed;
-        this.book = book;
+        //this.bookID = book.getBookID();
+
     }
 
 
@@ -54,7 +55,8 @@ public class Exchange {
         this.date = new Date();
         this.type = ExchangeType.Borrowing;
         this.completed = completed;
-        this.book = book;
+        //this.bookID = book.getBookID();
+
     }
 
     /**

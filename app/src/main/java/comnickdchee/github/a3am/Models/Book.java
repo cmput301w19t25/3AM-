@@ -20,7 +20,9 @@ public class Book implements Serializable {
     private Status status;
     private ArrayList<User> requests;
     private User currentBorrower;
-    private final int bookID = 0;
+
+    //private final int bookID = 0;         // TODO: Have a way to generate a unique ID for each book.
+
 
 
     public Book(String ISBN, String title, String author) {
@@ -163,10 +165,6 @@ public class Book implements Serializable {
         return requests;
     }
 
-    /**
-     *  Returns an integer object; the ID of the book
-     * @return bookID uniquely identifies a book
-     */
-    public int getBookID() { return bookID; }
+    //public int getBookID() { return bookID; }
 
 }

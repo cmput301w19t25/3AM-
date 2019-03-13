@@ -34,6 +34,7 @@ import org.w3c.dom.Text;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 
 import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
 import comnickdchee.github.a3am.HomeFragment;
@@ -134,7 +135,6 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
             navigationView.setCheckedItem(R.id.nav_home);
         }
 
-
     }
 
     /**
@@ -213,7 +213,6 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
             super.onBackPressed();
         }
     }
-
 
 }
 
