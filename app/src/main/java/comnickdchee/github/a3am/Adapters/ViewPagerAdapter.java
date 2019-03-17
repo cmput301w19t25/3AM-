@@ -34,14 +34,44 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int i) {
         // TODO: Add list of fragments to switch between tabs.
+        switch(i) {
+            case 0:
+                BorrowedFragment BL =  new BorrowedFragment();
+                Bundle args = new Bundle();
+                Log.d(TAG, "getItem: " + Integer.toString(i) + ": " + lists.get(i));
+                args.putSerializable("data",this.lists.get(i));
+                BL.setArguments(args);
+                Log.d(TAG, "getItem: Created a Borrowed Fragment");
+                return BL;
+            case 1:
+                BorrowedFragment BL1 =  new BorrowedFragment();
+                Bundle args1 = new Bundle();
+                Log.d(TAG, "getItem: " + Integer.toString(i) + ": " + lists.get(i));
+                args1.putSerializable("data",this.lists.get(i));
+                BL1.setArguments(args1);
+                Log.d(TAG, "getItem: Created a Borrowed Fragment");
+                return BL1;
+            case 2:
+                BorrowedFragment BL2 =  new BorrowedFragment();
+                Bundle args2 = new Bundle();
+                Log.d(TAG, "getItem: " + Integer.toString(i) + ": " + lists.get(i));
+                args2.putSerializable("data",this.lists.get(i));
+                BL2.setArguments(args2);
+                Log.d(TAG, "getItem: Created a Borrowed Fragment");
+                return BL2;
+            default:
+                BorrowedFragment BL3 =  new BorrowedFragment();
+                Bundle args3 = new Bundle();
+                Log.d(TAG, "getItem: " + Integer.toString(i) + ": " + lists.get(i));
+                args3.putSerializable("data",this.lists.get(i));
+                BL3.setArguments(args3);
+                Log.d(TAG, "getItem: Created a Borrowed Fragment");
+                return BL3;
 
-        BorrowedFragment BL =  new BorrowedFragment();
-        Bundle args = new Bundle();
-        Log.d(TAG, "getItem: " + Integer.toString(i) + ": " + lists.get(i));
-        args.putSerializable("data",this.lists.get(i));
-        BL.setArguments(args);
-        Log.d(TAG, "getItem: Created a Borrowed Fragment");
-        return BL;
+        }
+
+
+
     }
 
     /** Returns number of tabs. */
