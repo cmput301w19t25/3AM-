@@ -12,6 +12,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Fragments.BorrowedFragment;
+import comnickdchee.github.a3am.Fragments.RequestsFragment;
 import comnickdchee.github.a3am.Models.Book;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -60,13 +61,13 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                 Log.d(TAG, "getItem: Created a Borrowed Fragment");
                 return BL2;
             default:
-                BorrowedFragment BL3 =  new BorrowedFragment();
+                RequestsFragment RF =  new RequestsFragment();
                 Bundle args3 = new Bundle();
                 Log.d(TAG, "getItem: " + Integer.toString(i) + ": " + lists.get(i));
                 args3.putSerializable("data",this.lists.get(i));
-                BL3.setArguments(args3);
+                RF.setArguments(args3);
                 Log.d(TAG, "getItem: Created a Borrowed Fragment");
-                return BL3;
+                return RF;
 
         }
 
