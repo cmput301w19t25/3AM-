@@ -31,32 +31,12 @@ public class RequestsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_borrowed, container, false);
 
         Bundle args = getArguments();
-        ArrayList<Book> AcceptedRequests = (ArrayList<Book>) args.getSerializable("data");
+        ArrayList<RequestStatusGroup> Requests = (ArrayList<RequestStatusGroup>) args.getSerializable("data");
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        ArrayList<RequestStatusGroup> companies = new ArrayList<>();
-
-        ArrayList<Book> googleProduct = new ArrayList<>();
-
-        User user1 = new User("User Name","sample@sc.ca","12345","98708");
-
-        googleProduct.add(new Book("Google AdSense","user1@gmail.com","XXXXX",user1));
-        googleProduct.add(new Book("Google Nonsense","user2@gmail.com","XXXXX",user1));
-        googleProduct.add(new Book("Google BalSense","user3@gmail.com","XXXXX",user1));
-
-        RequestStatusGroup google = new RequestStatusGroup("Accepted", googleProduct);
-        companies.add(google);
-
-        ArrayList<Book> microsoftProduct = new ArrayList<>();
-        microsoftProduct.add(new Book("Google ShitSense","user4@gmail.com","XXXXX",user1));
-        microsoftProduct.add(new Book("Google DickSense","user5@gmail.com","XXXXX",user1));
-
-        RequestStatusGroup microsoft = new RequestStatusGroup("Pending", microsoftProduct);
-        companies.add(microsoft);
-
-        ProductAdapter adapter = new ProductAdapter(companies);
+        ProductAdapter adapter = new ProductAdapter(Requests);
         recyclerView.setAdapter(adapter);
 
         return view;

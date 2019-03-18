@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -14,15 +15,16 @@ import java.util.ArrayList;
 import comnickdchee.github.a3am.Fragments.BorrowedFragment;
 import comnickdchee.github.a3am.Fragments.RequestsFragment;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.RequestStatusGroup;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private static final String TAG = "ViewPagerAdapter";
     
-    private ArrayList<ArrayList<Book>> lists = new ArrayList<>();
+    private ArrayList<Serializable> lists = new ArrayList<>();
 
     public ViewPagerAdapter(FragmentManager fm, ArrayList<Book> BorrowedList, ArrayList<Book> LendingList,
-                            ArrayList<Book> ActionsList, ArrayList<Book>RequestsList) {
+                            ArrayList<Book> ActionsList, ArrayList<RequestStatusGroup>RequestsList) {
         super(fm);
 
         this.lists.add(BorrowedList);
