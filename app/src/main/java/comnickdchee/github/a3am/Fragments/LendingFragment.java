@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.LendingTabAdapter;
-import comnickdchee.github.a3am.Adapters.RecyclerViewAdapter;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 

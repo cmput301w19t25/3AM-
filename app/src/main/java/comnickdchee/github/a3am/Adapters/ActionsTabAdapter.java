@@ -38,7 +38,7 @@ import comnickdchee.github.a3am.R;
 import comnickdchee.github.a3am.Activities.ViewBookActivity;
 
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.ViewHolder> {
 
 
 
@@ -46,7 +46,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<Book> mBookList;
     private Context mContext;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<Book> BookList) {
+    public ActionsTabAdapter(Context mContext, ArrayList<Book> BookList) {
         this.mBookList = BookList;
         this.mContext = mContext;
     }
@@ -55,16 +55,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @NonNull
     @Override
-    public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+    public ActionsTabAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
         // Creates a view based on the actions_card.xml
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.actions_card, parent, false);
-        RecyclerViewAdapter.ViewHolder holder = new RecyclerViewAdapter.ViewHolder(view);
+        ActionsTabAdapter.ViewHolder holder = new ActionsTabAdapter.ViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, final int i) {
+    public void onBindViewHolder(ActionsTabAdapter.ViewHolder holder, final int i) {
 
         Log.d(TAG, "onBindViewHolder: called.");
 

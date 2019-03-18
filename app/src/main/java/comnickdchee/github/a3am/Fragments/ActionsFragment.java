@@ -12,8 +12,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import comnickdchee.github.a3am.Activities.HomepageActivity;
-import comnickdchee.github.a3am.Adapters.RecyclerViewAdapter;
+import comnickdchee.github.a3am.Adapters.ActionsTabAdapter;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
@@ -45,7 +44,7 @@ public class ActionsFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         //Create and return the recyclerView
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(),data);
+        ActionsTabAdapter adapter = new ActionsTabAdapter(getActivity(),data);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

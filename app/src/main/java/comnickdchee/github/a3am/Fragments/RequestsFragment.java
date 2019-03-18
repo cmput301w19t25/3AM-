@@ -10,9 +10,8 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import comnickdchee.github.a3am.Adapters.MyRequestsAdapter;
+import comnickdchee.github.a3am.Adapters.RequestsTabAdapter;
 import comnickdchee.github.a3am.Models.RequestStatusGroup;
-import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
 public class RequestsFragment extends Fragment {
@@ -38,7 +37,7 @@ public class RequestsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // Passes argument to adapter and sets up recyclerView with that argument
-        MyRequestsAdapter adapter = new MyRequestsAdapter(getActivity(), Requests);
+        RequestsTabAdapter adapter = new RequestsTabAdapter(getActivity(), Requests);
         recyclerView.setAdapter(adapter);
 
         return view;
