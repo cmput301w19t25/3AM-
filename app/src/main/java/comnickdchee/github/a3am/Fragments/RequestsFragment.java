@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import comnickdchee.github.a3am.Adapters.ProductAdapter;
 import comnickdchee.github.a3am.Company;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.Product;
 import comnickdchee.github.a3am.R;
 
@@ -38,21 +39,20 @@ public class RequestsFragment extends Fragment {
 
         ArrayList<Company> companies = new ArrayList<>();
 
-        ArrayList<Product> googleProduct = new ArrayList<>();
-        googleProduct.add(new Product("Google AdSense"));
-        googleProduct.add(new Product("Google Drive"));
-        googleProduct.add(new Product("Google Mail"));
-        googleProduct.add(new Product("Google Doc"));
-        googleProduct.add(new Product("Android"));
+        ArrayList<Book> googleProduct = new ArrayList<>();
+
+        User user1 = new User("User Name","sample@sc.ca","12345","98708");
+
+        googleProduct.add(new Book("Google AdSense","user1@gmail.com","XXXXX",user1));
+        googleProduct.add(new Book("Google Nonsense","user2@gmail.com","XXXXX",user1));
+        googleProduct.add(new Book("Google BalSense","user3@gmail.com","XXXXX",user1));
 
         Company google = new Company("Google", googleProduct);
         companies.add(google);
 
-        ArrayList<Product> microsoftProduct = new ArrayList<>();
-        microsoftProduct.add(new Product("Windows"));
-        microsoftProduct.add(new Product("SkyDrive"));
-        microsoftProduct.add(new Product("Microsoft Store"));
-        microsoftProduct.add(new Product("Microsoft Office"));
+        ArrayList<Book> microsoftProduct = new ArrayList<>();
+        microsoftProduct.add(new Book("Google ShitSense","user4@gmail.com","XXXXX",user1));
+        microsoftProduct.add(new Book("Google DickSense","user5@gmail.com","XXXXX",user1));
 
         Company microsoft = new Company("Microsoft", microsoftProduct);
         companies.add(microsoft);

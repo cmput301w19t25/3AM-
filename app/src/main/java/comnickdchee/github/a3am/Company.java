@@ -4,6 +4,9 @@ import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 
 import java.util.List;
 
+import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.User;
+
 /*
  * Copyright (C) 2018 Levi Rizki Saputra (levirs565@gmail.com).
  *
@@ -21,8 +24,8 @@ import java.util.List;
  *
  * Created by LEVI on 22/09/2018.
  */
-public class Company extends ExpandableGroup<Product> {
-    public Company(String title, List<Product> items) {
+public class Company extends ExpandableGroup<Book> {
+    public Company(String title, List<Book> items) {
         super(title, items);
     }
 }

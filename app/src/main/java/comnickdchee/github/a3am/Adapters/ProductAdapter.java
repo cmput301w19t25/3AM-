@@ -15,12 +15,14 @@ import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 import java.util.List;
 
 import comnickdchee.github.a3am.Company;
+import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Product;
 import comnickdchee.github.a3am.R;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
 public class ProductAdapter extends ExpandableRecyclerViewAdapter<ProductAdapter.CompanyViewHolder, ProductAdapter.ProductViewHolder> {
+
     public ProductAdapter(List<? extends ExpandableGroup> groups) {
         super(groups);
     }
@@ -33,14 +35,14 @@ public class ProductAdapter extends ExpandableRecyclerViewAdapter<ProductAdapter
 
     @Override
     public ProductViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_recyclerview_product, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_card, parent, false);
         return new ProductViewHolder(v);
     }
 
     @Override
     public void onBindChildViewHolder(ProductViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
-        final Product product = (Product) group.getItems().get(childIndex);
-        holder.bind(product);
+        final Book book = (Book) group.getItems().get(childIndex);
+        holder.bind(book);
     }
 
     @Override
@@ -92,15 +94,15 @@ public class ProductAdapter extends ExpandableRecyclerViewAdapter<ProductAdapter
     }
 
     public static class ProductViewHolder extends ChildViewHolder {
-        private TextView mTextView;
+        private TextView bookTitle;
 
         public ProductViewHolder(View itemView) {
             super(itemView);
-            mTextView = itemView.findViewById(R.id.textView);
+            bookTitle = itemView.findViewById(R.id.tvCardBookTitle);
         }
 
-        public void bind(Product product) {
-            mTextView.setText(product.name);
+        public void bind(Book book) {
+            bookTitle.setText(book.getTitle());
         }
     }
 

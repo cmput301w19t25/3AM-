@@ -1,6 +1,8 @@
 package comnickdchee.github.a3am.Models;
 
 import android.media.Image;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
  * @author Tatenda & Zaheen
  */
 
-public class Book implements Serializable {
+public class Book implements Parcelable {
 
     private String ISBN;
     private String title;
@@ -41,6 +43,24 @@ public class Book implements Serializable {
         this.status = Status.Available;
         this.currentBorrower = null;
     }
+
+    protected Book(Parcel in) {
+        ISBN = in.readString();
+        title = in.readString();
+        author = in.readString();
+    }
+
+    public static final Creator<Book> CREATOR = new Creator<Book>() {
+        @Override
+        public Book createFromParcel(Parcel in) {
+            return new Book(in);
+        }
+
+        @Override
+        public Book[] newArray(int size) {
+            return new Book[size];
+        }
+    };
 
     /**
      * Returns a string object
@@ -163,6 +183,18 @@ public class Book implements Serializable {
      */
     public ArrayList<User> getRequests() {
         return requests;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(ISBN);
+        parcel.writeString(title);
+        parcel.writeString(author);
     }
 
     //public int getBookID() { return bookID; }
