@@ -1,47 +1,59 @@
 package comnickdchee.github.a3am.Fragments;
 
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import comnickdchee.github.a3am.Adapters.RequestsTabAdapter;
-import comnickdchee.github.a3am.Models.RequestStatusGroup;
+import comnickdchee.github.a3am.Adapters.ActionsTabAdapter;
+import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
-public class RequestsFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
 
-    private static final String TAG = "RequestsFragment";
-    private ArrayList<RequestStatusGroup> Requests = new ArrayList<>();
+// BLA stands for Borrowed, Lending, Actions because they all share the same type of data
 
-    public RequestsFragment() {
+public class ActionsFragment extends Fragment {
+
+    private static final String TAG = "ActionsFragment";
+    private ArrayList<Book> data = new ArrayList<>();
+
+    public ActionsFragment() {
         // Required empty public constructor
     }
 
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_borrowed, container, false);
 
-
-        // Gets arguments to feed into adapter for recyclerView
+        //Get the data for recycler view items
         Bundle args = getArguments();
-        Requests = (ArrayList<RequestStatusGroup>) args.getSerializable("data");
+        data = (ArrayList<Book>) args.getSerializable("data");
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+
+        //Create and return the recyclerView
+        ActionsTabAdapter adapter = new ActionsTabAdapter(getActivity(),data);
+
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        // Passes argument to adapter and sets up recyclerView with that argument
-        RequestsTabAdapter adapter = new RequestsTabAdapter(getActivity(), Requests);
-        recyclerView.setAdapter(adapter);
-
+        Log.d(TAG, "onCreateView: Finished View");
         return view;
 
     }
+
+
 
 }

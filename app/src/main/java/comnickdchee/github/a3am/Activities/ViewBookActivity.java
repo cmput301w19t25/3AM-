@@ -9,7 +9,6 @@ import android.view.Window;
 
 import java.util.ArrayList;
 
-import comnickdchee.github.a3am.Adapters.RecyclerViewAdapter;
 import comnickdchee.github.a3am.Adapters.RequestersAdapter;
 import comnickdchee.github.a3am.R;
 

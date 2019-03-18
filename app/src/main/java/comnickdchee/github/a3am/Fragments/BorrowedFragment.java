@@ -1,6 +1,5 @@
 package comnickdchee.github.a3am.Fragments;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,14 +11,10 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import comnickdchee.github.a3am.Activities.HomepageActivity;
-import comnickdchee.github.a3am.Adapters.RecyclerViewAdapter;
+import comnickdchee.github.a3am.Adapters.BorrowedTabAdapter;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class BorrowedFragment extends Fragment {
 
     private static final String TAG = "BorrowedFragment";
@@ -37,12 +32,12 @@ public class BorrowedFragment extends Fragment {
 
         //Get the data for recycler view items
         Bundle args = getArguments();
-        ArrayList<Book> data = (ArrayList<Book>) args.getSerializable("data");
+        data = (ArrayList<Book>) args.getSerializable("data");
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         //Create and return the recyclerView
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(),data);
+        BorrowedTabAdapter adapter = new BorrowedTabAdapter(getActivity(),data);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -51,7 +46,5 @@ public class BorrowedFragment extends Fragment {
         return view;
 
     }
-
-
 
 }
