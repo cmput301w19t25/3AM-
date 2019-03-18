@@ -22,20 +22,9 @@ import android.view.ViewGroup;
 
 import android.widget.ImageView;
 
-import android.widget.RelativeLayout;
-
 import android.widget.TextView;
 
 import android.widget.Toast;
-
-
-
-import com.bumptech.glide.Glide;
-
-
-
-import org.w3c.dom.Text;
-
 
 
 import java.util.ArrayList;
@@ -46,10 +35,7 @@ import comnickdchee.github.a3am.Models.Book;
 
 import comnickdchee.github.a3am.R;
 
-import comnickdchee.github.a3am.ViewBookActivity;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-
+import comnickdchee.github.a3am.Activities.ViewBookActivity;
 
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {

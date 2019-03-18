@@ -1,4 +1,4 @@
-package comnickdchee.github.a3am;
+package comnickdchee.github.a3am.Fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +25,7 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import comnickdchee.github.a3am.Models.User;
+import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**

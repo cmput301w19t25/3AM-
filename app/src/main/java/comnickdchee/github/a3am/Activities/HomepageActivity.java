@@ -1,6 +1,5 @@
 package comnickdchee.github.a3am.Activities;
 
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -15,12 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.auth.api.signin.internal.Storage;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -29,20 +24,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 
 import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
-import comnickdchee.github.a3am.HomeFragment;
-import comnickdchee.github.a3am.LogoutFragment;
-import comnickdchee.github.a3am.MessageFragment;
+import comnickdchee.github.a3am.Fragments.HomeFragment;
+import comnickdchee.github.a3am.Fragments.MessageFragment;
 import comnickdchee.github.a3am.Models.Book;
-import comnickdchee.github.a3am.MyBooksFragment;
-import comnickdchee.github.a3am.ProfileFragment;
+import comnickdchee.github.a3am.Fragments.MyBooksFragment;
+import comnickdchee.github.a3am.Fragments.ProfileFragment;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 

@@ -1,4 +1,4 @@
-package comnickdchee.github.a3am;
+package comnickdchee.github.a3am.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +27,7 @@ import comnickdchee.github.a3am.Activities.HomepageActivity;
 import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
 
 import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
+import comnickdchee.github.a3am.R;
 
 /**
  * @auhtor

@@ -1,4 +1,4 @@
-package comnickdchee.github.a3am;
+package comnickdchee.github.a3am.Activities;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;

@@ -1,6 +1,5 @@
-package comnickdchee.github.a3am;
+package comnickdchee.github.a3am.Fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,11 +22,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import comnickdchee.github.a3am.Activities.NewBookActivity;
 import comnickdchee.github.a3am.Adapters.BookRecyclerAdapter;
-import comnickdchee.github.a3am.Adapters.RecyclerViewAdapter;
-import comnickdchee.github.a3am.Fragments.BorrowedFragment;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.User;
+import comnickdchee.github.a3am.R;
 
 /**
  * @author Nicholas

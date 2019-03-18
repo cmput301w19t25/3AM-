@@ -1,4 +1,4 @@
-package comnickdchee.github.a3am;
+package comnickdchee.github.a3am.Fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,7 +13,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import comnickdchee.github.a3am.Activities.HomepageActivity;
+import comnickdchee.github.a3am.Activities.BorrowedActivity;
+import comnickdchee.github.a3am.R;
 
 /**
  * @author

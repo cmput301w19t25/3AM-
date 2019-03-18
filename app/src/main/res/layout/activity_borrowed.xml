@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#B84343"
-    tools:context=".BorrowedActivity">
+    tools:context=".Activities.BorrowedActivity">
 
     <Button
         android:id="@+id/LoginBtn"

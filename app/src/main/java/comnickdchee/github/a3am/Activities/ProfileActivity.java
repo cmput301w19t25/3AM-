@@ -1,7 +1,9 @@
-package comnickdchee.github.a3am;
+package comnickdchee.github.a3am.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import comnickdchee.github.a3am.R;
 
 public class ProfileActivity extends AppCompatActivity {
 

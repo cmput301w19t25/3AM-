@@ -1,4 +1,4 @@
-package comnickdchee.github.a3am;
+package comnickdchee.github.a3am.Activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -37,6 +37,7 @@ import java.util.Date;
 
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.User;
+import comnickdchee.github.a3am.R;
 
 import static java.lang.Boolean.TRUE;
 
