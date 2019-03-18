@@ -14,8 +14,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/linToolbar"
         android:orientation="horizontal"
-        android:layout_gravity="start"
-        >
+        android:layout_gravity="start">
 
         <TextView
             android:id="@+id/tvUsername"
@@ -25,7 +24,7 @@
             android:layout_weight="1"
             android:text="Homepage"
             android:textColor="@android:color/background_light"
-            android:textSize="18sp" />
+            android:textSize="18sp"/>
 
     </LinearLayout>
 

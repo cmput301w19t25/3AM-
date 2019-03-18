@@ -9,10 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".Activities.HomepageActivity">
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+
+        <provider android:name=".MySuggestionProvider"
+            android:authorities="comnickdchee.github.a3am.MySuggestionProvider"
+            android:enabled="true"/>
+
+        <activity android:name=".Activities.HomepageActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
         </activity>
         <activity android:name=".Activities.ProfileActivity" />
         <activity android:name=".Activities.SignUpActivity" />
@@ -31,10 +39,12 @@
         <activity android:name=".Activities.ViewBookActivity" />
         <activity android:name=".Activities.NewBookActivity" />
         <activity android:name=".Activities.SearchResultsActivity"
-            android:label="Search">
+            android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
         </activity>
     </application>
 
