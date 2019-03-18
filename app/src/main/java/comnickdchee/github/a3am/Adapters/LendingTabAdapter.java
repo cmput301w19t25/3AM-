@@ -1,7 +1,6 @@
 package comnickdchee.github.a3am.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,25 +8,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
-
 import java.util.ArrayList;
 
-import comnickdchee.github.a3am.Activities.ViewBookActivity;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
-public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.ViewHolder> {
+public class LendingTabAdapter extends RecyclerView.Adapter<LendingTabAdapter.ViewHolder> {
 
-    private static final String TAG = "In_BorrowedTabAdapter";
+    private static final String TAG = "In_LendingTabAdapter";
     private ArrayList<Book> mBookList;
     private Context mContext;
 
-    public BorrowedTabAdapter(Context mContext, ArrayList<Book> BookList) {
+    public LendingTabAdapter(Context mContext, ArrayList<Book> BookList) {
         this.mBookList = BookList;
         this.mContext = mContext;
     }
@@ -36,16 +31,16 @@ public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.
 
     @NonNull
     @Override
-    public BorrowedTabAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
+    public LendingTabAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
         // Creates a view based on the actions_card.xml
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_card, parent, false);
-        BorrowedTabAdapter.ViewHolder holder = new BorrowedTabAdapter.ViewHolder(view);
+        LendingTabAdapter.ViewHolder holder = new LendingTabAdapter.ViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(BorrowedTabAdapter.ViewHolder holder, final int i) {
+    public void onBindViewHolder(LendingTabAdapter.ViewHolder holder, final int i) {
 
         Log.d(TAG, "onBindViewHolder: called.");
 
