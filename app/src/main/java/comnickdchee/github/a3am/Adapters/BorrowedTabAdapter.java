@@ -21,6 +21,9 @@ import comnickdchee.github.a3am.Activities.ViewBookActivity;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
+// This is the Recycler Adapter for the Borrowed tab
+// The ViewHolder determines the view of the Requests in each of these groups
+
 public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.ViewHolder> {
 
     private static final String TAG = "In_BorrowedTabAdapter";
@@ -37,7 +40,7 @@ public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.
     @NonNull
     @Override
     public BorrowedTabAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
-        // Creates a view based on the actions_card.xml
+        // Creates a view based on the user_card.xml
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_card, parent, false);
         BorrowedTabAdapter.ViewHolder holder = new BorrowedTabAdapter.ViewHolder(view);
@@ -49,7 +52,7 @@ public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.
 
         Log.d(TAG, "onBindViewHolder: called.");
 
-        // one file that contains a bunch of conditions for making a recycler view.
+        // Puts all the data based on the bind function in the Viewholder
         holder.bind(mBookList.get(i));
 
         // On click event when a card is clicked
@@ -69,6 +72,8 @@ public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.
         return mBookList.size();
     }
 
+
+    // Here is the class for the ViewHolder that this adapter uses
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tvBookTitle;
         private TextView tvISBN;
