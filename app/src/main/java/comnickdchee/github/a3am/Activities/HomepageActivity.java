@@ -186,15 +186,25 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
         // ACTION TAB INIT ENDED _____________________________________________
 
-        //Initializing for First two tabs
-        LendingList = new ArrayList<>();
+        //Initializing for Borrowed tabs
+
+        User user2 = new User("An autistic Owner","sample@sc.ca","12345","98708");
         BorrowedList = new ArrayList<>();
 
-        Book placeHolder = new Book("PlaceHolder","PlaceHolder","PlaceHolder");
-        BorrowedList.add(placeHolder);
-        LendingList.add(placeHolder);
+        Book borrowing = new Book("???????","BorrowedTabSample","Book",user2);
+        BorrowedList.add(borrowing);
 
-        // First two TAB INIT ENDED _____________________________________________
+        // Borrowed TAB INIT ENDED _____________________________________________
+
+        //Initializing for Lending tabs
+
+        User user3 = new User("A Bosti Owner","sample@sc.ca","12345","98708");
+        LendingList = new ArrayList<>();
+
+        Book lending = new Book("!!!!!!!!!!","LendingTabSample","Someone",user2);
+        LendingList.add(lending);
+
+        // Lending TAB INIT ENDED _____________________________________________
 
 
         // Initializing for Requests tab

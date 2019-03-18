@@ -28,12 +28,12 @@ import static android.view.animation.Animation.RELATIVE_TO_SELF;
 // The RequestGroupViewHolder determines the view of the Groups. i.e. "Accepted" and "Pending"
 // The RequestsViewHolder determines the view of the Requests in each of these groups
 
-public class MyRequestsAdapter extends ExpandableRecyclerViewAdapter<MyRequestsAdapter.RequestGroupViewHolder, MyRequestsAdapter.RequestsViewHolder> {
+public class RequestsTabAdapter extends ExpandableRecyclerViewAdapter<RequestsTabAdapter.RequestGroupViewHolder, RequestsTabAdapter.RequestsViewHolder> {
 
     private static final String TAG = "In_MyRequestsAdapter";
     private Context mContext;
     // It takes an ArrayList of RequestGroupViewHolder as the argument
-    public MyRequestsAdapter(Context context, List<? extends ExpandableGroup> groups) {
+    public RequestsTabAdapter(Context context, List<? extends ExpandableGroup> groups) {
         super(groups);
         this.mContext = context;
     }
