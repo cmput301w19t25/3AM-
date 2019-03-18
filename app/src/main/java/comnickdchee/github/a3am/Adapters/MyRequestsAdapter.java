@@ -20,41 +20,54 @@ import comnickdchee.github.a3am.R;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
-public class MyRequestsAdapter extends ExpandableRecyclerViewAdapter<MyRequestsAdapter.CompanyViewHolder, MyRequestsAdapter.ProductViewHolder> {
+// This is an Expandable Recycler Adapter
+// The RequestGroupViewHolder determines the view of the Groups. i.e. "Accepted" and "Pending"
+// The RequestsViewHolder determines the view of the Requests in each of these groups
 
+public class MyRequestsAdapter extends ExpandableRecyclerViewAdapter<MyRequestsAdapter.RequestGroupViewHolder, MyRequestsAdapter.RequestsViewHolder> {
+
+    // It takes an ArrayList of RequestGroupViewHolder as the argument
     public MyRequestsAdapter(List<? extends ExpandableGroup> groups) {
         super(groups);
     }
 
+
     @Override
-    public CompanyViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
+    public RequestGroupViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
+        // This creates the RequestGroupViewHolder view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.expandable_recyclerview_company, parent, false);
-        return new CompanyViewHolder(v);
+        return new RequestGroupViewHolder(v);
     }
 
     @Override
-    public ProductViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
+    public RequestsViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
+        // This creates the RequestViewHolder view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_card, parent, false);
-        return new ProductViewHolder(v);
+        return new RequestsViewHolder(v);
     }
 
     @Override
-    public void onBindChildViewHolder(ProductViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
+    public void onBindChildViewHolder(RequestsViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
+        // This Binds the child items to the holder
         final Book book = (Book) group.getItems().get(childIndex);
         holder.bind(book);
     }
 
     @Override
-    public void onBindGroupViewHolder(CompanyViewHolder holder, int flatPosition, ExpandableGroup group) {
+    public void onBindGroupViewHolder(RequestGroupViewHolder holder, int flatPosition, ExpandableGroup group) {
+        // This Binds the group items to the holder
         final RequestStatusGroup requestStatusGroup = (RequestStatusGroup) group;
         holder.bind(requestStatusGroup);
     }
 
-    public static class CompanyViewHolder extends GroupViewHolder {
+    // Here is the class for the RequestGroupViewHolder that this adapter uses
+    public static class RequestGroupViewHolder extends GroupViewHolder {
+
         private TextView mTextView;
         private ImageView arrow;
 
-        public CompanyViewHolder(View itemView) {
+
+        public RequestGroupViewHolder(View itemView) {
             super(itemView);
 
             mTextView = itemView.findViewById(R.id.textView);
@@ -64,6 +77,8 @@ public class MyRequestsAdapter extends ExpandableRecyclerViewAdapter<MyRequestsA
         public void bind(RequestStatusGroup requestStatusGroup) {
             mTextView.setText(requestStatusGroup.getTitle());
         }
+
+        // The codes below are for animation when the groups are expanded/collapsed
 
         @Override
         public void expand() {
@@ -92,14 +107,16 @@ public class MyRequestsAdapter extends ExpandableRecyclerViewAdapter<MyRequestsA
         }
     }
 
-    public static class ProductViewHolder extends ChildViewHolder {
+
+    // Here is the class for the RequestsViewHolder that this adapter uses
+    public static class RequestsViewHolder extends ChildViewHolder {
         private TextView tvBookTitle;
         private TextView tvISBN;
         private TextView tvAuthor;
         private TextView tvUserRole;
         private TextView tvOwner;
 
-        public ProductViewHolder(View itemView) {
+        public RequestsViewHolder(View itemView) {
             super(itemView);
             tvBookTitle = itemView.findViewById(R.id.tvCardBookTitle);
             tvAuthor = itemView.findViewById(R.id.tvAuthor);
