@@ -18,7 +18,7 @@ import comnickdchee.github.a3am.R;
 public class RequestsFragment extends Fragment {
 
     private static final String TAG = "RequestsFragment";
-    private ArrayList<Book> data = new ArrayList<>();
+    private ArrayList<RequestStatusGroup> Requests = new ArrayList<>();
 
     public RequestsFragment() {
         // Required empty public constructor
@@ -32,7 +32,7 @@ public class RequestsFragment extends Fragment {
 
         // Gets arguments to feed into adapter for recyclerView
         Bundle args = getArguments();
-        ArrayList<RequestStatusGroup> Requests = (ArrayList<RequestStatusGroup>) args.getSerializable("data");
+        Requests = (ArrayList<RequestStatusGroup>) args.getSerializable("data");
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

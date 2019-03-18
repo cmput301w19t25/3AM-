@@ -15,12 +15,12 @@ import comnickdchee.github.a3am.Adapters.RecyclerViewAdapter;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
-public class BorrowedFragment extends Fragment {
+public class LendingFragment extends Fragment {
 
-    private static final String TAG = "BorrowedFragment";
+    private static final String TAG = "LendingFragment";
     private ArrayList<Book> data = new ArrayList<>();
 
-    public BorrowedFragment() {
+    public LendingFragment() {
         // Required empty public constructor
     }
 

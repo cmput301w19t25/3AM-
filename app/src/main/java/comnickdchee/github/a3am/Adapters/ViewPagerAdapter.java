@@ -8,11 +8,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import comnickdchee.github.a3am.Fragments.ActionsFragment;
 import comnickdchee.github.a3am.Fragments.BorrowedFragment;
+import comnickdchee.github.a3am.Fragments.LendingFragment;
 import comnickdchee.github.a3am.Fragments.RequestsFragment;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.RequestStatusGroup;
@@ -39,29 +39,29 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         // TODO: Add list of fragments to switch between tabs.
         switch(i) {
             case 0:
-                BorrowedFragment BL =  new BorrowedFragment();
+                BorrowedFragment BF =  new BorrowedFragment();
                 Bundle args = new Bundle();
                 Log.d(TAG, "getItem: " + Integer.toString(i) + ": " + lists.get(i));
                 args.putSerializable("data",this.lists.get(i));
-                BL.setArguments(args);
+                BF.setArguments(args);
                 Log.d(TAG, "getItem: Created a Borrowed Fragment");
-                return BL;
+                return BF;
             case 1:
-                BorrowedFragment BL1 =  new BorrowedFragment();
+                LendingFragment LF =  new LendingFragment();
                 Bundle args1 = new Bundle();
                 Log.d(TAG, "getItem: " + Integer.toString(i) + ": " + lists.get(i));
                 args1.putSerializable("data",this.lists.get(i));
-                BL1.setArguments(args1);
+                LF.setArguments(args1);
                 Log.d(TAG, "getItem: Created a Borrowed Fragment");
-                return BL1;
+                return LF;
             case 2:
-                BorrowedFragment BL2 =  new BorrowedFragment();
+                ActionsFragment AF =  new ActionsFragment();
                 Bundle args2 = new Bundle();
                 Log.d(TAG, "getItem: " + Integer.toString(i) + ": " + lists.get(i));
                 args2.putSerializable("data",this.lists.get(i));
-                BL2.setArguments(args2);
+                AF.setArguments(args2);
                 Log.d(TAG, "getItem: Created a Borrowed Fragment");
-                return BL2;
+                return AF;
             default:
                 RequestsFragment RF =  new RequestsFragment();
                 Bundle args3 = new Bundle();

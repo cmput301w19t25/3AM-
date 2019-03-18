@@ -1,5 +1,6 @@
 package comnickdchee.github.a3am.Fragments;
 
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,16 +12,23 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import comnickdchee.github.a3am.Activities.HomepageActivity;
 import comnickdchee.github.a3am.Adapters.RecyclerViewAdapter;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
-public class BorrowedFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
 
-    private static final String TAG = "BorrowedFragment";
+// BLA stands for Borrowed, Lending, Actions because they all share the same type of data
+
+public class ActionsFragment extends Fragment {
+
+    private static final String TAG = "ActionsFragment";
     private ArrayList<Book> data = new ArrayList<>();
 
-    public BorrowedFragment() {
+    public ActionsFragment() {
         // Required empty public constructor
     }
 
@@ -46,5 +54,7 @@ public class BorrowedFragment extends Fragment {
         return view;
 
     }
+
+
 
 }
