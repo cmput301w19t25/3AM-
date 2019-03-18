@@ -10,10 +10,9 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import comnickdchee.github.a3am.Adapters.ProductAdapter;
-import comnickdchee.github.a3am.Company;
+import comnickdchee.github.a3am.Adapters.MyRequestsAdapter;
+import comnickdchee.github.a3am.Models.RequestStatusGroup;
 import comnickdchee.github.a3am.Models.Book;
-import comnickdchee.github.a3am.Product;
 import comnickdchee.github.a3am.R;
 
 public class RequestsFragment extends Fragment {
@@ -30,34 +29,16 @@ public class RequestsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_borrowed, container, false);
 
+
+        // Gets arguments to feed into adapter for recyclerView
         Bundle args = getArguments();
-        ArrayList<Book> AcceptedRequests = (ArrayList<Book>) args.getSerializable("data");
+        ArrayList<RequestStatusGroup> Requests = (ArrayList<RequestStatusGroup>) args.getSerializable("data");
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        ArrayList<Company> companies = new ArrayList<>();
-
-        ArrayList<Product> googleProduct = new ArrayList<>();
-        googleProduct.add(new Product("Google AdSense"));
-        googleProduct.add(new Product("Google Drive"));
-        googleProduct.add(new Product("Google Mail"));
-        googleProduct.add(new Product("Google Doc"));
-        googleProduct.add(new Product("Android"));
-
-        Company google = new Company("Google", googleProduct);
-        companies.add(google);
-
-        ArrayList<Product> microsoftProduct = new ArrayList<>();
-        microsoftProduct.add(new Product("Windows"));
-        microsoftProduct.add(new Product("SkyDrive"));
-        microsoftProduct.add(new Product("Microsoft Store"));
-        microsoftProduct.add(new Product("Microsoft Office"));
-
-        Company microsoft = new Company("Microsoft", microsoftProduct);
-        companies.add(microsoft);
-
-        ProductAdapter adapter = new ProductAdapter(companies);
+        // Passes argument to adapter and sets up recyclerView with that argument
+        MyRequestsAdapter adapter = new MyRequestsAdapter(getActivity(), Requests);
         recyclerView.setAdapter(adapter);
 
         return view;
