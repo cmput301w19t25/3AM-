@@ -1,6 +1,5 @@
 package comnickdchee.github.a3am.Activities;
 
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -15,12 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.auth.api.signin.internal.Storage;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -29,20 +24,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 
 import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
-import comnickdchee.github.a3am.HomeFragment;
-import comnickdchee.github.a3am.LogoutFragment;
-import comnickdchee.github.a3am.MessageFragment;
+import comnickdchee.github.a3am.Fragments.HomeFragment;
+import comnickdchee.github.a3am.Fragments.MessageFragment;
 import comnickdchee.github.a3am.Models.Book;
-import comnickdchee.github.a3am.MyBooksFragment;
-import comnickdchee.github.a3am.ProfileFragment;
+import comnickdchee.github.a3am.Fragments.MyBooksFragment;
+import comnickdchee.github.a3am.Fragments.ProfileFragment;
+import comnickdchee.github.a3am.Models.RequestStatusGroup;
+import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -66,7 +57,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     public static ArrayList<Book> BorrowedList = new ArrayList<>();
     public static ArrayList<Book> LendingList = new ArrayList<>();
     public static ArrayList<Book> ActionsList = new ArrayList<>();
-    public static ArrayList<Book> RequestsList = new ArrayList<>();
+    public static ArrayList<RequestStatusGroup> RequestsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +174,9 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     private void init(){
         // Initialized some sample data to be displayed
 
+        // Initializing for Actions tab
+        ActionsList = new ArrayList<>();
+
         Book b1 = new Book("1111111111","Title1","AuthorName1");
         Book b2 = new Book("1111111112","Title2","AuthorName2");
         Book b3 = new Book("1111111113","Title3","AuthorName3");
@@ -190,10 +184,46 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         ActionsList.add(b2);
         ActionsList.add(b3);
 
+        // ACTION TAB INIT ENDED _____________________________________________
+
+        //Initializing for First two tabs
+        LendingList = new ArrayList<>();
+        BorrowedList = new ArrayList<>();
+
         Book placeHolder = new Book("PlaceHolder","PlaceHolder","PlaceHolder");
         BorrowedList.add(placeHolder);
         LendingList.add(placeHolder);
-        RequestsList.add(placeHolder);
+
+        // First two TAB INIT ENDED _____________________________________________
+
+
+        // Initializing for Requests tab
+        RequestsList = new ArrayList<>();
+
+        ArrayList<Book> AcceptedRequests = new ArrayList<>();
+
+        // A random use initialized for making books
+        User user1 = new User("User Name","sample@sc.ca","12345","98708");
+
+        // Adding things to accepted request group
+        AcceptedRequests.add(new Book("Google AdSense","Hairy Potter and the Order of his Pubic","XXXXX",user1));
+        AcceptedRequests.add(new Book("Google Nonsense","Hairy Potter and the Sorcerer's Comb","XXXXX",user1));
+        AcceptedRequests.add(new Book("Google BalSense","Hairy Potter and the Chamber of Scissors","XXXXX",user1));
+
+        // Adding those request to the AcceptedGroup (The First argument determines the name of the Group)
+        RequestStatusGroup AcceptedGroup = new RequestStatusGroup("Accepted", AcceptedRequests);
+        RequestsList.add(AcceptedGroup);
+
+        // Adding things to pending request group
+        ArrayList<Book> pendingRequests = new ArrayList<>();
+        pendingRequests.add(new Book("Google ShitSense","Hairy Potter and the Half-Breed Prince","XXXXX",user1));
+        pendingRequests.add(new Book("Google DickSense","Hairy Potter and the Goblin for Hire","XXXXX",user1));
+
+        // Adding those request to the PendingGroup (The First argument determines the name of the Group)
+        RequestStatusGroup PendingGroup = new RequestStatusGroup("Pending", pendingRequests);
+        RequestsList.add(PendingGroup);
+
+        // Request TAB INIT ENDED _____________________________________________
 
 
     }

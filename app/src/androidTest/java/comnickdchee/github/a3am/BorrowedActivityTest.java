@@ -1,8 +1,5 @@
 package comnickdchee.github.a3am;
 
-import android.app.Activity;
-import android.app.Instrumentation;
-import android.os.SystemClock;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 
@@ -11,10 +8,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.onView;
+import comnickdchee.github.a3am.Activities.BorrowedActivity;
+
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.*;
 

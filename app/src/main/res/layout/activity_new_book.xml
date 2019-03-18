@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-    tools:context=".NewBookActivity">
+    tools:context=".Activities.NewBookActivity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"

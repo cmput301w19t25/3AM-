@@ -1,6 +1,5 @@
 package comnickdchee.github.a3am;
 
-import android.app.Activity;
 import android.app.Instrumentation;
 import android.os.SystemClock;
 import android.support.test.rule.ActivityTestRule;
@@ -8,7 +7,6 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,7 +20,8 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.*;
 
-import org.junit.runner.RunWith;
+import comnickdchee.github.a3am.Activities.BorrowedActivity;
+import comnickdchee.github.a3am.Activities.SignUpActivity;
 
 public class SignUpActivityTest {
     @Rule
