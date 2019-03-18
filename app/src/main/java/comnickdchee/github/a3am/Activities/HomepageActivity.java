@@ -187,10 +187,12 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         // ACTION TAB INIT ENDED _____________________________________________
 
         //Initializing for First two tabs
+
+        User user2 = new User("An autistic Owner","sample@sc.ca","12345","98708");
         LendingList = new ArrayList<>();
         BorrowedList = new ArrayList<>();
 
-        Book placeHolder = new Book("PlaceHolder","PlaceHolder","PlaceHolder");
+        Book placeHolder = new Book("???????","BorrowedTabSample","Book",user2);
         BorrowedList.add(placeHolder);
         LendingList.add(placeHolder);
 

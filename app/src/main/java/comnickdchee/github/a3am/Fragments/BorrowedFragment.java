@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import comnickdchee.github.a3am.Adapters.BorrowedTabAdapter;
 import comnickdchee.github.a3am.Adapters.RecyclerViewAdapter;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
@@ -37,7 +38,7 @@ public class BorrowedFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         //Create and return the recyclerView
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(),data);
+        BorrowedTabAdapter adapter = new BorrowedTabAdapter(getActivity(),data);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
