@@ -10,10 +10,9 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import comnickdchee.github.a3am.Adapters.ProductAdapter;
+import comnickdchee.github.a3am.Adapters.MyRequestsAdapter;
 import comnickdchee.github.a3am.Models.RequestStatusGroup;
 import comnickdchee.github.a3am.Models.Book;
-import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 
 public class RequestsFragment extends Fragment {
@@ -36,7 +35,7 @@ public class RequestsFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        ProductAdapter adapter = new ProductAdapter(Requests);
+        MyRequestsAdapter adapter = new MyRequestsAdapter(Requests);
         recyclerView.setAdapter(adapter);
 
         return view;
