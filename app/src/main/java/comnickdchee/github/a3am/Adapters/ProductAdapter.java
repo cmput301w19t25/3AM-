@@ -14,9 +14,8 @@ import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
 import java.util.List;
 
-import comnickdchee.github.a3am.Company;
+import comnickdchee.github.a3am.Models.RequestStatusGroup;
 import comnickdchee.github.a3am.Models.Book;
-import comnickdchee.github.a3am.Product;
 import comnickdchee.github.a3am.R;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
@@ -47,8 +46,8 @@ public class ProductAdapter extends ExpandableRecyclerViewAdapter<ProductAdapter
 
     @Override
     public void onBindGroupViewHolder(CompanyViewHolder holder, int flatPosition, ExpandableGroup group) {
-        final Company company = (Company) group;
-        holder.bind(company);
+        final RequestStatusGroup requestStatusGroup = (RequestStatusGroup) group;
+        holder.bind(requestStatusGroup);
     }
 
     public static class CompanyViewHolder extends GroupViewHolder {
@@ -62,8 +61,8 @@ public class ProductAdapter extends ExpandableRecyclerViewAdapter<ProductAdapter
             arrow = itemView.findViewById(R.id.arrow);
         }
 
-        public void bind(Company company) {
-            mTextView.setText(company.getTitle());
+        public void bind(RequestStatusGroup requestStatusGroup) {
+            mTextView.setText(requestStatusGroup.getTitle());
         }
 
         @Override

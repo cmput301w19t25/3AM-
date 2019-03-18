@@ -11,10 +11,9 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.ProductAdapter;
-import comnickdchee.github.a3am.Company;
+import comnickdchee.github.a3am.Models.RequestStatusGroup;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.User;
-import comnickdchee.github.a3am.Product;
 import comnickdchee.github.a3am.R;
 
 public class RequestsFragment extends Fragment {
@@ -37,7 +36,7 @@ public class RequestsFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        ArrayList<Company> companies = new ArrayList<>();
+        ArrayList<RequestStatusGroup> companies = new ArrayList<>();
 
         ArrayList<Book> googleProduct = new ArrayList<>();
 
@@ -47,14 +46,14 @@ public class RequestsFragment extends Fragment {
         googleProduct.add(new Book("Google Nonsense","user2@gmail.com","XXXXX",user1));
         googleProduct.add(new Book("Google BalSense","user3@gmail.com","XXXXX",user1));
 
-        Company google = new Company("Google", googleProduct);
+        RequestStatusGroup google = new RequestStatusGroup("Accepted", googleProduct);
         companies.add(google);
 
         ArrayList<Book> microsoftProduct = new ArrayList<>();
         microsoftProduct.add(new Book("Google ShitSense","user4@gmail.com","XXXXX",user1));
         microsoftProduct.add(new Book("Google DickSense","user5@gmail.com","XXXXX",user1));
 
-        Company microsoft = new Company("Microsoft", microsoftProduct);
+        RequestStatusGroup microsoft = new RequestStatusGroup("Pending", microsoftProduct);
         companies.add(microsoft);
 
         ProductAdapter adapter = new ProductAdapter(companies);
