@@ -29,13 +29,16 @@ public class RequestsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_borrowed, container, false);
 
+
+        // Gets arguments to feed into adapter for recyclerView
         Bundle args = getArguments();
         ArrayList<RequestStatusGroup> Requests = (ArrayList<RequestStatusGroup>) args.getSerializable("data");
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        MyRequestsAdapter adapter = new MyRequestsAdapter(Requests);
+        // Passes argument to adapter and sets up recyclerView with that argument
+        MyRequestsAdapter adapter = new MyRequestsAdapter(getActivity(), Requests);
         recyclerView.setAdapter(adapter);
 
         return view;

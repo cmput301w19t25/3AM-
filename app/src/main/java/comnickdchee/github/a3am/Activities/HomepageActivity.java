@@ -206,20 +206,20 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         User user1 = new User("User Name","sample@sc.ca","12345","98708");
 
         // Adding things to accepted request group
-        AcceptedRequests.add(new Book("Google AdSense","user1@gmail.com","XXXXX",user1));
-        AcceptedRequests.add(new Book("Google Nonsense","user2@gmail.com","XXXXX",user1));
-        AcceptedRequests.add(new Book("Google BalSense","user3@gmail.com","XXXXX",user1));
+        AcceptedRequests.add(new Book("Google AdSense","Hairy Potter and the Order of his Pubic","XXXXX",user1));
+        AcceptedRequests.add(new Book("Google Nonsense","Hairy Potter and the Sorcerer's Comb","XXXXX",user1));
+        AcceptedRequests.add(new Book("Google BalSense","Hairy Potter and the Chamber of Scissors","XXXXX",user1));
 
-        // Adding those request to the AcceptedGroup
+        // Adding those request to the AcceptedGroup (The First argument determines the name of the Group)
         RequestStatusGroup AcceptedGroup = new RequestStatusGroup("Accepted", AcceptedRequests);
         RequestsList.add(AcceptedGroup);
 
         // Adding things to pending request group
         ArrayList<Book> pendingRequests = new ArrayList<>();
-        pendingRequests.add(new Book("Google ShitSense","user4@gmail.com","XXXXX",user1));
-        pendingRequests.add(new Book("Google DickSense","user5@gmail.com","XXXXX",user1));
+        pendingRequests.add(new Book("Google ShitSense","Hairy Potter and the Half-Breed Prince","XXXXX",user1));
+        pendingRequests.add(new Book("Google DickSense","Hairy Potter and the Goblin for Hire","XXXXX",user1));
 
-        // Adding those request to the PendingGroup
+        // Adding those request to the PendingGroup (The First argument determines the name of the Group)
         RequestStatusGroup PendingGroup = new RequestStatusGroup("Pending", pendingRequests);
         RequestsList.add(PendingGroup);
 

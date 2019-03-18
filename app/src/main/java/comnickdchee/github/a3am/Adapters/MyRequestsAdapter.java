@@ -1,11 +1,15 @@
 package comnickdchee.github.a3am.Adapters;
 
+import android.content.Context;
+import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
@@ -26,9 +30,12 @@ import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
 public class MyRequestsAdapter extends ExpandableRecyclerViewAdapter<MyRequestsAdapter.RequestGroupViewHolder, MyRequestsAdapter.RequestsViewHolder> {
 
+    private static final String TAG = "In_MyRequestsAdapter";
+    private Context mContext;
     // It takes an ArrayList of RequestGroupViewHolder as the argument
-    public MyRequestsAdapter(List<? extends ExpandableGroup> groups) {
+    public MyRequestsAdapter(Context context, List<? extends ExpandableGroup> groups) {
         super(groups);
+        this.mContext = context;
     }
 
 
@@ -51,6 +58,15 @@ public class MyRequestsAdapter extends ExpandableRecyclerViewAdapter<MyRequestsA
         // This Binds the child items to the holder
         final Book book = (Book) group.getItems().get(childIndex);
         holder.bind(book);
+
+        holder.cvUserInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: clicked on: " + ((Book) group.getItems().get(childIndex)).getTitle());
+                Toast.makeText(mContext, ((Book) group.getItems().get(childIndex)).getTitle(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @Override
@@ -115,6 +131,7 @@ public class MyRequestsAdapter extends ExpandableRecyclerViewAdapter<MyRequestsA
         private TextView tvAuthor;
         private TextView tvUserRole;
         private TextView tvOwner;
+        private CardView cvUserInfo;
 
         public RequestsViewHolder(View itemView) {
             super(itemView);
@@ -123,6 +140,7 @@ public class MyRequestsAdapter extends ExpandableRecyclerViewAdapter<MyRequestsA
             tvISBN = itemView.findViewById(R.id.tvISBN);
             tvUserRole = itemView.findViewById(R.id.tvUserRole);
             tvOwner = itemView.findViewById(R.id.tvUser);
+            cvUserInfo = itemView.findViewById(R.id.cvUserInfo);
         }
 
         public void bind(Book book) {
