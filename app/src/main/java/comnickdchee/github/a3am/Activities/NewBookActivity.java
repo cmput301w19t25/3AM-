@@ -28,11 +28,9 @@ public class NewBookActivity extends AppCompatActivity {
     private TextInputEditText bookAuthorText;
     private TextInputEditText bookISBNText;
 
-    // close or finish activity buttons
-    private ImageView closeButton;
-    private ImageView addButton;
-
-
+    // Firebase references to use for saving to database
+    private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +39,12 @@ public class NewBookActivity extends AppCompatActivity {
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
-                bookTitleText = findViewById(R.id.tietBookTitle);
+        bookTitleText = findViewById(R.id.tietBookTitle);
         bookAuthorText = findViewById(R.id.tietAuthor);
         bookISBNText = findViewById(R.id.tietISBN);
 
-        closeButton = findViewById(R.id.ivCloseButton);
-        addButton = findViewById(R.id.ivFinishAddButton);
+        ImageView closeButton = findViewById(R.id.ivCloseButton);
+        ImageView addButton = findViewById(R.id.ivFinishAddButton);
 
         closeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -69,19 +67,37 @@ public class NewBookActivity extends AppCompatActivity {
 
     }
 
+    /** Adds book to both the database and user class. */
     private void addBook(String title, String author, String ISBN) {
         Book newBook = new Book(ISBN, title, author);
         Intent newBookIntent = new Intent();
         newBookIntent.putExtra("NewBook", newBook);
         setResult(Activity.RESULT_OK, newBookIntent);
+        addBookToDatabase(newBook);
+    }
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseDatabase fD = FirebaseDatabase.getInstance();
-        String str = Integer.toString(java.lang.System.identityHashCode(newBook));
-        DatabaseReference dRef = fD.getReference(mAuth.getUid()).child("BooksListID").child(str);
-        DatabaseReference bRef = fD.getReference("BooksList").child(str);
-        bRef.setValue(newBook);
-        dRef.setValue(ISBN);
+    /**
+     * Method responsible for adding book to Firebase database, both under the
+     * owned_books nested table inside the current user's table entry, as well as
+     * the actual books table.
+     */
+    private void addBookToDatabase(Book book) {
+        if (mAuth.getCurrentUser() != null) {
+            String uid = mAuth.getCurrentUser().getUid();
+
+            // Generate a bookID for the newly created book
+            // and add to the user's table
+            DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
+            String bookID = usersRef.child(uid).child("owned_books").push().getKey();
+            usersRef.child(uid).child("owned_books").push().setValue(bookID);
+
+            // Then, we add the book to the book table with all of its proper parameters
+            mFirebaseDatabase.getReference("books").child(bookID).setValue(book);
+
+        } else {
+            // TODO: Throw exception here.
+        }
+
     }
 
 }
