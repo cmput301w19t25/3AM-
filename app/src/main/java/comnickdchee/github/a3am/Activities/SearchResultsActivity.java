@@ -9,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -24,6 +26,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
+import comnickdchee.github.a3am.Adapters.BookRecyclerAdapter;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.MySuggestionProvider;
 import comnickdchee.github.a3am.R;
@@ -31,10 +36,14 @@ import comnickdchee.github.a3am.R;
 public class SearchResultsActivity extends AppCompatActivity {
 
     private Toolbar navToolbar;
-    private TextView tvSearchTitle;
+    private RecyclerView rvSearchResults;
     private static final String TAG = "SearchResultsActivity";
     private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
-    private final DatabaseReference mDatabaseReference = mFirebaseDatabase.getReference();
+//    private final DatabaseReference mDatabaseReference = mFirebaseDatabase.getReference();
+    private final DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
+    private ArrayList<Book> searchResults;
+    private BookRecyclerAdapter searchResultsAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +52,22 @@ public class SearchResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_results);
         navToolbar = findViewById(R.id.navToolbar);
 
-        // TODO: Change this so that it reads title, or better, set the title in each activity.
-        tvSearchTitle = findViewById(R.id.tvUsername);
-        tvSearchTitle.setText("Search Results");
+        searchResults = new ArrayList<>();
+
+        rvSearchResults = findViewById(R.id.rvSearchResults);
+        searchResultsAdapter = new BookRecyclerAdapter(this, searchResults);
+        rvSearchResults.setAdapter(searchResultsAdapter);
+        rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
 
         setSupportActionBar(navToolbar);
 
         // Create a back button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
+        // Set the window color to be red
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
@@ -74,16 +89,18 @@ public class SearchResultsActivity extends AppCompatActivity {
             suggestions.saveRecentQuery(query, null);
 
             // Perform search with the given query
-            DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
             Query queryRef = booksRef.orderByChild("title").startAt(query).endAt(query + "\uf8ff");
-            Log.d(query, "Query string");
 
+            // Attach a listener to perform search on
             queryRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    searchResults.clear();
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         Book book = data.getValue(Book.class);
-                        Log.d(book.getTitle(), "Title found");
+                        Log.d(book.getTitle(), "Book title");
+                        searchResults.add(book);
+                        searchResultsAdapter.notifyDataSetChanged();
                     }
                 }
 
@@ -92,7 +109,6 @@ public class SearchResultsActivity extends AppCompatActivity {
 
                 }
             });
-
 
         }
 
