@@ -1,8 +1,12 @@
 package comnickdchee.github.a3am.Activities;
 
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.provider.SearchRecentSuggestions;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -19,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,6 +44,7 @@ import comnickdchee.github.a3am.Fragments.MyBooksFragment;
 import comnickdchee.github.a3am.Fragments.ProfileFragment;
 import comnickdchee.github.a3am.Models.RequestStatusGroup;
 import comnickdchee.github.a3am.Models.User;
+import comnickdchee.github.a3am.MySuggestionProvider;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -75,7 +81,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         navToolbar = findViewById(R.id.navToolbar);
         setSupportActionBar(navToolbar);
 
-        // Setting the side Navigation Drawer
+            // Setting the side Navigation Drawer
         // source: https://www.youtube.com/watch?v=fGcMLu1GJEc
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -274,11 +280,34 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView =
                 (SearchView) menu.findItem(R.id.search).getActionView();
+
+        ComponentName componentName = new ComponentName(this, SearchResultsActivity.class);
         searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
+                searchManager.getSearchableInfo(componentName));
 
         return true;
     }
 
+    /**
+     * Called when we get a new intent. This is used for when a search suggestion has been entered.
+     * TODO: Launch another activity with the results from the user query.
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleSearch(intent);
+    }
+
+    /** Handle search action by feeding intent to activity */
+    private void handleSearch(Intent intent) {
+
+        // Saves the query for use as a later suggestion
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+                    MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
+            suggestions.saveRecentQuery(query, null);
+        }
+    }
 }
 
