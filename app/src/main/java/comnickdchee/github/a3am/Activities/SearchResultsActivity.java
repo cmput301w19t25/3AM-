@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.SearchRecentSuggestions;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,14 @@ import android.view.MenuInflater;
 import android.view.Window;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.MySuggestionProvider;
 import comnickdchee.github.a3am.R;
 
@@ -24,6 +33,8 @@ public class SearchResultsActivity extends AppCompatActivity {
     private Toolbar navToolbar;
     private TextView tvSearchTitle;
     private static final String TAG = "SearchResultsActivity";
+    private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+    private final DatabaseReference mDatabaseReference = mFirebaseDatabase.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +74,25 @@ public class SearchResultsActivity extends AppCompatActivity {
             suggestions.saveRecentQuery(query, null);
 
             // Perform search with the given query
+            DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
+            Query queryRef = booksRef.orderByChild("title").startAt(query).endAt(query + "\uf8ff");
+            Log.d(query, "Query string");
+
+            queryRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        Book book = data.getValue(Book.class);
+                        Log.d(book.getTitle(), "Title found");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
 
         }
 
