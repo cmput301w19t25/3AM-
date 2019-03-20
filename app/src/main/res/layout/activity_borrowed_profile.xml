@@ -1,33 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/nav_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:icon="@drawable/ic_phone"
-        android:title="Phone"
-        tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="235dp" />
-
-    <ImageButton
-        android:id="@+id/nav_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:icon="@drawable/ic_message"
-        android:title="Message"
-        app:layout_constraintEnd_toEndOf="@+id/nav_phone"
-        app:layout_constraintStart_toStartOf="@+id/nav_phone"
-        tools:layout_editor_absoluteY="273dp" />
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
+        android:id="@+id/rellay"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@color/colorAccent"
@@ -36,7 +16,8 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         android:orientation="vertical">
 
-        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.constraint.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
@@ -81,29 +62,63 @@
 
         </android.support.constraint.ConstraintLayout>
 
+    </RelativeLayout>
 
-    </LinearLayout>
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/rellay"
+       android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/editText3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:ems="10"
-        android:hint="780-XXX-XXXX"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toEndOf="@+id/nav_phone"
-        tools:layout_editor_absoluteY="226dp" />
 
-    <EditText
-        android:id="@+id/editText4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:ems="10"
-        android:hint="email@mail.ca"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toEndOf="@+id/nav_message"
-        tools:layout_editor_absoluteY="272dp" />
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+           <ImageView
+               android:id="@+id/nav_phone"
+               android:layout_width="50dp"
+               android:layout_height="50dp"
+               android:layout_marginLeft="10dp"
+               android:src="@drawable/ic_phone"
+               android:title="Phone" />
+
+           <EditText
+               android:id="@+id/editText3"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginStart="76dp"
+               android:layout_marginTop="-50dp"
+               android:ems="10"
+               android:hint="780-XXX-XXXX"
+               android:inputType="textPersonName"
+               app:layout_constraintStart_toEndOf="@+id/nav_phone"
+               tools:layout_editor_absoluteY="226dp" />
+
+           <ImageView
+               android:id="@+id/mail"
+               android:layout_width="50dp"
+               android:layout_height="50dp"
+               android:layout_marginLeft="10dp"
+               android:src="@drawable/ic_message"
+               android:title="Phone" />
+
+           <EditText
+               android:id="@+id/editText4"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_vertical"
+               android:layout_marginStart="76dp"
+               android:layout_marginTop="-50dp"
+               android:ems="10"
+               android:hint="email@mail.ca"
+               android:inputType="textPersonName"
+               tools:layout_editor_absoluteY="272dp" />
+       </LinearLayout>
+
+
+   </RelativeLayout>
+
+
+</RelativeLayout>
