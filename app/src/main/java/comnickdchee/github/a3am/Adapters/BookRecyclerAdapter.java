@@ -65,8 +65,8 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
         holder.actionsItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked on: " + mBooks.get(i));
-                Toast.makeText(mContext, mBooks.get(i).getTitle(), Toast.LENGTH_SHORT).show();
+//                Log.d(TAG, "onClick: clicked on: " + mBooks.get(i));
+//                Toast.makeText(mContext, mBooks.get(i).getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
     }

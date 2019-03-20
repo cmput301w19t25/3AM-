@@ -26,6 +26,8 @@ public class Book implements Parcelable {
     //private final int bookID = 0;         // TODO: Have a way to generate a unique ID for each book.
 
 
+    /** Used for searching Firebase. */
+    public Book() {}
 
     public Book(String ISBN, String title, String author) {
         this.ISBN = ISBN;
