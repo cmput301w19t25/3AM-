@@ -68,23 +68,6 @@ public class MyBooksFragment extends Fragment {
 
         DatabaseReference ref = database.getReference().child("users").child(mAuth.getUid()).child("owned_books");
         Log.d("TestDataRef",ref.getKey());
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                dataSnapshot.getKey();
-                for(DataSnapshot child: dataSnapshot.getChildren()){
-                    Log.d("TestData",child.getValue().toString());
-                    String key = child.getValue().toString();
-                    findBook(key);
-
-
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         Book b1 = new Book("ISBN","TITLE","AUTHOR");
         Book b12 = new Book("ISBN","TITLE","AUTHOR");
@@ -103,6 +86,24 @@ public class MyBooksFragment extends Fragment {
         adapter.notifyDataSetChanged();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                dataSnapshot.getKey();
+
+                for(DataSnapshot child: dataSnapshot.getChildren()){
+                    Log.d("TestData",child.getValue().toString());
+                    String key = child.getValue().toString();
+                    findBook(key);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
         return view;
     }
 
@@ -116,8 +117,7 @@ public class MyBooksFragment extends Fragment {
         Log.d("TestDataBookDir", ref.toString());
         Log.d("TestDataBookDir", ref.getKey().toString());
         Log.d("TestDataBookDir", ref.toString());
-        ref.addValueEventListener(new ValueEventListener() {
-
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Log.d("TestDataBook",dataSnapshot.child(key).getValue().toString());
@@ -136,9 +136,9 @@ public class MyBooksFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
+
         //BookList.clear();
         int i = BookList.size();
         String s = Integer.toString(i);
