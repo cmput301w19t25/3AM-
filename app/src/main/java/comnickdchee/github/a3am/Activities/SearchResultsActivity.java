@@ -105,6 +105,10 @@ public class SearchResultsActivity extends AppCompatActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             // Save the most recent query for later search suggestion
             String query = intent.getStringExtra(SearchManager.QUERY).toLowerCase();
+
+            // Parse string using whitespaces as delimiter
+            String[] queryList = query.split(" ");
+
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                     MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
             suggestions.saveRecentQuery(query, null);
@@ -118,18 +122,23 @@ public class SearchResultsActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     // Iterate through child entries
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        Book bookToCompare = data.getValue(Book.class);
+                        // Get all the keywords in the query entered by the user
+                        // and make a direct check
+                        for (String keyword : queryList) {
+                            Book bookToCompare = data.getValue(Book.class);
 
-                        if (bookToCompare != null) {
-                            if (bookToCompare.getTitle().toLowerCase().contains(query)) {
-                                searchResults.add(bookToCompare);
-                            } else if (bookToCompare.getAuthor().toLowerCase().contains(query)) {
-                                searchResults.add(bookToCompare);
-                            } else if (bookToCompare.getISBN().toLowerCase().contains(query)) {
-                                searchResults.add(bookToCompare);
+                            if (bookToCompare != null) {
+                                if (bookToCompare.getTitle().toLowerCase().contains(keyword)) {
+                                    searchResults.add(bookToCompare);
+                                } else if (bookToCompare.getAuthor().toLowerCase().contains(keyword)) {
+                                    searchResults.add(bookToCompare);
+                                } else if (bookToCompare.getISBN().toLowerCase().contains(keyword)) {
+                                    searchResults.add(bookToCompare);
+                                }
+
+                                break;
                             }
                         }
-
                     }
 
                     searchResultsAdapter.notifyDataSetChanged();
