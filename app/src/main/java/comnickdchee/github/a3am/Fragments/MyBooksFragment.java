@@ -66,16 +66,18 @@ public class MyBooksFragment extends Fragment {
         BookList = new ArrayList<>();
         mAuth = FirebaseAuth.getInstance();
 
-        DatabaseReference ref = database.getReference().child(mAuth.getUid()).child("BooksListID");
+        DatabaseReference ref = database.getReference().child("users").child(mAuth.getUid()).child("owned_books");
+        Log.d("TestDataRef",ref.getKey());
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 dataSnapshot.getKey();
                 for(DataSnapshot child: dataSnapshot.getChildren()){
-                    String key = child.getKey();
+                    Log.d("TestData",child.getValue().toString());
+                    String key = child.getValue().toString();
                     findBook(key);
 
-                    Log.d("TestData",child.getKey());
+
                 }
             }
             @Override
@@ -110,7 +112,10 @@ public class MyBooksFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         BookList.clear();
 
-        DatabaseReference ref = database.getReference().child("BooksList");
+        DatabaseReference ref = database.getReference().child("books");
+        Log.d("TestDataBookDir", ref.toString());
+        Log.d("TestDataBookDir", ref.getKey().toString());
+        Log.d("TestDataBookDir", ref.toString());
         ref.addValueEventListener(new ValueEventListener() {
 
             @Override
