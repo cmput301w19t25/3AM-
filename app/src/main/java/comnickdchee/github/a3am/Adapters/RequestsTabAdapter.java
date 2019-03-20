@@ -1,6 +1,7 @@
 package comnickdchee.github.a3am.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
 import java.util.List;
 
+import comnickdchee.github.a3am.Activities.ViewBookActivity;
+import comnickdchee.github.a3am.Activities.ViewRBookActivity;
 import comnickdchee.github.a3am.Models.RequestStatusGroup;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
@@ -64,6 +67,9 @@ public class RequestsTabAdapter extends ExpandableRecyclerViewAdapter<RequestsTa
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked on: " + ((Book) group.getItems().get(childIndex)).getTitle());
                 Toast.makeText(mContext, ((Book) group.getItems().get(childIndex)).getTitle(), Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(mContext, ViewRBookActivity.class);
+                mContext.startActivity(intent);
             }
         });
 

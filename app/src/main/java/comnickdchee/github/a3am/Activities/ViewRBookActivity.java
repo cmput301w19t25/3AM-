@@ -23,7 +23,7 @@ import comnickdchee.github.a3am.R;
  * requests on a given book that they own. The user can accept
  * and decline requests.
  */
-public class ViewBookActivity extends AppCompatActivity {
+public class ViewRBookActivity extends AppCompatActivity {
 
     private RecyclerView rvRequests;
     private static ArrayList<String> requesters;
@@ -34,31 +34,31 @@ public class ViewBookActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_book);
+        setContentView(R.layout.activity_view_r_books);
 
-        //button click for owner to specify pick up location
+     /*   //button click for owner to specify pick up location
         button2 = (Button) findViewById(R.id.button2);
         button2.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(ViewBookActivity.this, MapsActivity.class);
-                ViewBookActivity.this.startActivity(myIntent);
-                }
-        });
+                Intent myIntent = new Intent(ViewRBookActivity.this, MapsActivity.class);
+                ViewRBookActivity.this.startActivity(myIntent);
+            }
+        });*/
 
 
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
-        rvRequests = findViewById(R.id.rvViewBookRequests);
+        /*rvRequests = findViewById(R.id.rvViewBookRequests);
         layoutManager = new LinearLayoutManager(this);
         requesters = new ArrayList<String>();
         requesters.add("Zaheen Rahman");
         requesters.add("Ismaeel Bin Mohiuddin");
         requestersAdapter = new RequestersAdapter(this, requesters);
         rvRequests.setLayoutManager(layoutManager);
-        rvRequests.setAdapter(requestersAdapter);
+        rvRequests.setAdapter(requestersAdapter);*/
 
     }
 }
