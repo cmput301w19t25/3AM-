@@ -160,6 +160,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         return true;
     }
 
+    /** Overriding options item navigating back to the homepage activity. */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
