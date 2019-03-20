@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -103,31 +104,35 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             // Save the most recent query for later search suggestion
-            String query = intent.getStringExtra(SearchManager.QUERY);
+            String query = intent.getStringExtra(SearchManager.QUERY).toLowerCase();
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                     MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
             suggestions.saveRecentQuery(query, null);
 
-            // Perform search with the given query
-            Query queryRefTitle = booksRef.orderByChild("title").startAt(query).endAt(query + "\uf8ff");
-            Query queryRefAuthor = booksRef.orderByChild("author").startAt(query).endAt(query + "\uf8ff");
+            // Brute Force Search: Use the books table as our starting reference,
+            // iterate through all child entries to get their information, then
+            // make a comparison with the query entered.
 
-            // Attach a listener to perform search on title
-            queryRefTitle.addListenerForSingleValueEvent(new ValueEventListener() {
+            booksRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // Iterate through child entries
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        // If the set already contains the key, don't do anything
-                        if (bookSet.contains(data.getKey())) {
-                            continue;
+                        Book bookToCompare = data.getValue(Book.class);
+
+                        if (bookToCompare != null) {
+                            if (bookToCompare.getTitle().toLowerCase().contains(query)) {
+                                searchResults.add(bookToCompare);
+                            } else if (bookToCompare.getAuthor().toLowerCase().contains(query)) {
+                                searchResults.add(bookToCompare);
+                            } else if (bookToCompare.getISBN().toLowerCase().contains(query)) {
+                                searchResults.add(bookToCompare);
+                            }
                         }
 
-                        // Otherwise, we add it to the set and add it to the list
-                        bookSet.add(data.getKey());
-                        Book book = data.getValue(Book.class);
-                        searchResults.add(book);
-                        searchResultsAdapter.notifyDataSetChanged();
                     }
+
+                    searchResultsAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -135,28 +140,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                 }
             });
 
-            // Attach a listener to perform search on author
-            queryRefAuthor.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        // If the set already contains the key, don't do anything
-                        if (bookSet.contains(data.getKey())) {
-                            continue;
-                        }
 
-                        // Otherwise, we add the book to the results
-                        bookSet.add(data.getKey());
-                        Book book = data.getValue(Book.class);
-                        searchResults.add(book);
-                        searchResultsAdapter.notifyDataSetChanged();
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
 
         }
 
