@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import comnickdchee.github.a3am.Adapters.BookRecyclerAdapter;
@@ -45,9 +46,9 @@ public class SearchResultsActivity extends AppCompatActivity {
 //    private final DatabaseReference mDatabaseReference = mFirebaseDatabase.getReference();
     private final DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
     private ArrayList<Book> searchResults;
-    private ArrayList<Book> titleResults;
-    private ArrayList<Book> authorResults;
-    private Set<Book> bookSet = new HashSet<>();
+    private ArrayList<Book> titleResults = new ArrayList<>();
+    private ArrayList<Book> authorResults = new ArrayList<>();
+    private Set<String> bookSet = new HashSet<>();
     private BookRecyclerAdapter searchResultsAdapter;
 
 
@@ -86,6 +87,9 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private void handleIntent(Intent intent) {
 
+        searchResults.clear();
+        bookSet.clear();
+
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             // Save the most recent query for later search suggestion
             String query = intent.getStringExtra(SearchManager.QUERY);
@@ -101,11 +105,15 @@ public class SearchResultsActivity extends AppCompatActivity {
             queryRefTitle.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    searchResults.clear();
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        // If the set already contains the key, don't do anything
+                        if (bookSet.contains(data.getKey())) {
+                            continue;
+                        }
+
+                        bookSet.add(data.getKey());
                         Book book = data.getValue(Book.class);
                         searchResults.add(book);
-
                         searchResultsAdapter.notifyDataSetChanged();
                     }
                 }
@@ -119,11 +127,16 @@ public class SearchResultsActivity extends AppCompatActivity {
             queryRefAuthor.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    searchResults.clear();
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        // If the set already contains the key, don't do anything
+                        if (bookSet.contains(data.getKey())) {
+                            continue;
+                        }
+
+                        // Otherwise, we add the book to the results
+                        bookSet.add(data.getKey());
                         Book book = data.getValue(Book.class);
                         searchResults.add(book);
-
                         searchResultsAdapter.notifyDataSetChanged();
                     }
                 }
@@ -171,5 +184,4 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }
