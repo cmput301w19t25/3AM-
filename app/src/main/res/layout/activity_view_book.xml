@@ -22,6 +22,14 @@
             android:layout_height="150dp"
             android:background="@color/dark_grey_default">
 
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Specify Location"
+                tools:layout_editor_absoluteX="234dp"
+                tools:layout_editor_absoluteY="56dp" />
+
             <ImageView
                 android:id="@+id/ivViewBookPhoto"
                 android:layout_width="65dp"
@@ -92,7 +100,10 @@
                         android:text="X-XXXXXX-XXXXXX"
                         android:textColor="@color/common_google_signin_btn_text_dark_default"
                         android:textSize="12sp" />
+
                 </LinearLayout>
+
+
 
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
@@ -160,4 +171,6 @@
 
         </LinearLayout>
     </LinearLayout>
+
+
 </android.support.constraint.ConstraintLayout>
