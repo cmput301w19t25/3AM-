@@ -44,6 +44,9 @@ public class SearchResultsActivity extends AppCompatActivity {
 //    private final DatabaseReference mDatabaseReference = mFirebaseDatabase.getReference();
     private final DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
     private ArrayList<Book> searchResults;
+    private ArrayList<Book> titleResults;
+    private ArrayList<Book> authorResults;
+    private Set<Book> bookSet = new HashSet<>();
     private BookRecyclerAdapter searchResultsAdapter;
 
 
@@ -94,18 +97,13 @@ public class SearchResultsActivity extends AppCompatActivity {
             Query queryRefAuthor = booksRef.orderByChild("author").startAt(query).endAt(query + "\uf8ff");
 
             // Attach a listener to perform search on title
-            queryRefTitle.addValueEventListener(new ValueEventListener() {
+            queryRefTitle.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     searchResults.clear();
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         Book book = data.getValue(Book.class);
                         searchResults.add(book);
-
-                        // TODO: This is very brute force. Need to implement something different.
-                        Set<Book> bookSet = new HashSet<>(searchResults);
-                        searchResults.clear();
-                        searchResults.addAll(bookSet);
 
                         searchResultsAdapter.notifyDataSetChanged();
                     }
@@ -117,7 +115,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             });
 
             // Attach a listener to perform search on author
-            queryRefAuthor.addValueEventListener(new ValueEventListener() {
+            queryRefAuthor.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     searchResults.clear();
@@ -125,17 +123,12 @@ public class SearchResultsActivity extends AppCompatActivity {
                         Book book = data.getValue(Book.class);
                         searchResults.add(book);
 
-                        Set<Book> bookSet = new HashSet<>(searchResults);
-                        searchResults.clear();
-                        searchResults.addAll(bookSet);
-
                         searchResultsAdapter.notifyDataSetChanged();
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
                 }
             });
 
