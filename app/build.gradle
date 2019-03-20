@@ -71,6 +71,8 @@ dependencies {
     //Pablo Use for img url -> bitmap
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
+    implementation 'com.google.android.gms:play-services-vision:15.0.1'
+
 }
 
 repositories {

@@ -7,6 +7,17 @@
     android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
     tools:context=".Activities.NewBookActivity">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabISBN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
