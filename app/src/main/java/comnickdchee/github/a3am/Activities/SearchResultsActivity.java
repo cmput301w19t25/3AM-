@@ -58,6 +58,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_results);
         navToolbar = findViewById(R.id.navToolbar);
 
+        // ArrayList for displaying results
         searchResults = new ArrayList<>();
 
         rvSearchResults = findViewById(R.id.rvSearchResults);
@@ -77,14 +78,24 @@ public class SearchResultsActivity extends AppCompatActivity {
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
+        // Called as soon as the the activity is created
         handleIntent(getIntent());
     }
 
+    /**
+     * Called when a new intent is passed. Note that is a "androidTop" activity,
+     * meaning that the intents are passed recursively.
+     */
     @Override
     protected void onNewIntent(Intent intent) {
         handleIntent(intent);
     }
 
+    /**
+     * Handles the action where the user presses enter on a search query.
+     * We use a set that hashes on the key of the particular snapshotted book.
+     * If the key exists, we don't add the book, otherwise we do.
+     */
     private void handleIntent(Intent intent) {
 
         searchResults.clear();
@@ -111,6 +122,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                             continue;
                         }
 
+                        // Otherwise, we add it to the set and add it to the list
                         bookSet.add(data.getKey());
                         Book book = data.getValue(Book.class);
                         searchResults.add(book);
