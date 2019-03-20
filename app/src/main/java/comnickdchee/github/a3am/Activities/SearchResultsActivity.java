@@ -27,6 +27,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import comnickdchee.github.a3am.Adapters.BookRecyclerAdapter;
 import comnickdchee.github.a3am.Models.Book;
@@ -47,7 +49,6 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate: It launched!");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
         navToolbar = findViewById(R.id.navToolbar);
@@ -89,17 +90,45 @@ public class SearchResultsActivity extends AppCompatActivity {
             suggestions.saveRecentQuery(query, null);
 
             // Perform search with the given query
-            Query queryRef = booksRef.orderByChild("title").startAt(query).endAt(query + "\uf8ff");
+            Query queryRefTitle = booksRef.orderByChild("title").startAt(query).endAt(query + "\uf8ff");
+            Query queryRefAuthor = booksRef.orderByChild("author").startAt(query).endAt(query + "\uf8ff");
 
-            // Attach a listener to perform search on
-            queryRef.addValueEventListener(new ValueEventListener() {
+            // Attach a listener to perform search on title
+            queryRefTitle.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     searchResults.clear();
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         Book book = data.getValue(Book.class);
-                        Log.d(book.getTitle(), "Book title");
                         searchResults.add(book);
+
+                        // TODO: This is very brute force. Need to implement something different.
+                        Set<Book> bookSet = new HashSet<>(searchResults);
+                        searchResults.clear();
+                        searchResults.addAll(bookSet);
+
+                        searchResultsAdapter.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+
+            // Attach a listener to perform search on author
+            queryRefAuthor.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    searchResults.clear();
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        Book book = data.getValue(Book.class);
+                        searchResults.add(book);
+
+                        Set<Book> bookSet = new HashSet<>(searchResults);
+                        searchResults.clear();
+                        searchResults.addAll(bookSet);
+
                         searchResultsAdapter.notifyDataSetChanged();
                     }
                 }
