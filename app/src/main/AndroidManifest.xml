@@ -27,7 +27,8 @@
         android:theme="@style/AppTheme.NoActionBar">
 
         <activity android:name=".Activities.HomepageActivity"></activity>
-        <activity android:name=".Activities.ProfileActivity"></activity>
+        <activity android:name=".Activities.BorrowedProfileActivity"></activity>
+        <activity android:name=".Activities.OwnerProfileActivity"></activity>
         <activity android:name=".Activities.SignUpActivity" />
         <activity android:name=".Activities.MapsActivity" />
         <activity android:name=".Activities.BorrowedActivity">
