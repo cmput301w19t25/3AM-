@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -111,7 +112,6 @@ public class MyBooksFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(key);
-                Log.d("TestImageBook", storageRef.toString());
                 StorageReference profileImageRef =
                         FirebaseStorage.getInstance().getReference("shelf@gmail.com"+"/"+"dp"+ ".jpg");
                 Log.d("TestImageBook", profileImageRef.toString());
@@ -121,20 +121,29 @@ public class MyBooksFragment extends Fragment {
                     String isbn = dataSnapshot.child(key).child("isbn").getValue().toString();
                     String title = dataSnapshot.child(key).child("title").getValue().toString();
                     Book b1 = new Book(isbn,title,author);
+
+                    /*
                     storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             String DownloadLink = uri.toString();
+                            Log.d("ImageDownload",DownloadLink);
                             b1.setImage(DownloadLink);
                         }
-                    });
-                    BookList.add(b1);
-                    Log.d("TestDataBook",BookList.get(0).getAuthor());
-                    adapter.notifyDataSetChanged();
-                    int i = BookList.size();
-                    String s = Integer.toString(i);
-                    Log.d("TestDataBook",s);
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("ImageDownload","Failed");
 
+                        }
+                    });
+                    */
+
+                    if (storageRef != null) {
+                        b1.setImage(key);
+                    }
+                    BookList.add(b1);
+                    adapter.notifyDataSetChanged();
             }
 
             @Override
