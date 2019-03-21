@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
     android:layout_height="match_parent">
 
 
@@ -52,7 +53,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/UserImageNavbar" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -104,6 +105,7 @@
                 android:layout_marginStart="76dp"
                 android:layout_marginTop="-50dp"
                 android:ems="10"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:hint="780-XXX-XXXX"
                 android:inputType="textPersonName"
                 app:layout_constraintStart_toEndOf="@+id/nav_phone"
@@ -135,6 +137,7 @@
                 android:layout_marginTop="-50dp"
                 android:ems="10"
                 android:hint="email@mail.ca"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:inputType="textPersonName"
                 tools:layout_editor_absoluteY="272dp" />
 
@@ -232,6 +235,7 @@
     </RelativeLayout>
 
     <Button
+        android:id="@+id/returned"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/rellay2"
