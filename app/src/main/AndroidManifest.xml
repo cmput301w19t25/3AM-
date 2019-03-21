@@ -16,8 +16,6 @@
     <uses-feature android:glEsVersion="0x00020000"
         android:required="true"/>
 
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -25,11 +23,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-
-
-        <activity android:name=".Activities.BorrowedProfileActivity"></activity>
-        <activity android:name=".Activities.OwnerProfileActivity"></activity>
-
         <provider android:name=".MySuggestionProvider"
             android:authorities="comnickdchee.github.a3am.MySuggestionProvider"
             android:enabled="true"/>
@@ -42,27 +35,26 @@
             <meta-data android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
-
+        <activity android:name=".Activities.BorrowedProfileActivity"
+            android:parentActivityName=".Activities.HomepageActivity">
+        </activity>
+        <activity android:name=".Activities.OwnerProfileActivity"
+            android:parentActivityName=".Activities.HomepageActivity">
+        </activity>
         <activity android:name=".Activities.SignUpActivity" />
         <activity android:name=".Activities.MapsActivity" />
         <activity android:name=".Activities.BorrowedActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
         <activity android:name=".Activities.ViewRBookActivity"></activity>
-
-
         <meta-data android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCE5ruIdklElQAH2hqkRvppEtoJxTNG9nA"/>
-
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
         <activity android:name=".Activities.ViewBookActivity" />
