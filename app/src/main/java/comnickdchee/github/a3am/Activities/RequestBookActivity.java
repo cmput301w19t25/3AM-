@@ -12,6 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.R;
 
 public class RequestBookActivity extends AppCompatActivity implements View.OnClickListener {
@@ -62,8 +63,12 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
                     // we add them to the array list on the condition
                     // that the current user is not a duplicate, and
                     // we change the view of the button
-                    book.addRequest(mAuth.getCurrentUser().getUid());
-                    updateRequests(book);
+                    if (!book.getRequests().contains(mAuth.getCurrentUser().getUid())) {
+                        book.addRequest(mAuth.getCurrentUser().getUid());
+                        updateRequests(book);
+                    }
+
+                    // TODO: UI fix; change the request button to be non-clickable.
                 }
         }
     }
@@ -72,6 +77,13 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
      with the new book in Firebase */
     private void updateRequests(Book updatedBook) {
         DatabaseReference booksRef = mDatabaseReference.child("books");
+        // Change this if its status is available
+        if (updatedBook.getStatus().equals(Status.Available)) {
+            updatedBook.setStatus(Status.Requested);
+        }
+
+        // Update the actual contents in Firebase
+        Log.d(updatedBook.getBookID(), "updateRequests: ");
         booksRef.child(updatedBook.getBookID()).setValue(updatedBook);
     }
 
