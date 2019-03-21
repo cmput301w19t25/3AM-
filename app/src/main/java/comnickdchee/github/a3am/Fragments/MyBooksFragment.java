@@ -1,6 +1,7 @@
 package comnickdchee.github.a3am.Fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,12 +14,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -27,6 +32,7 @@ import comnickdchee.github.a3am.Adapters.BookRecyclerAdapter;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * @author Nicholas
@@ -69,15 +75,6 @@ public class MyBooksFragment extends Fragment {
         DatabaseReference ref = database.getReference().child("users").child(mAuth.getUid()).child("owned_books");
         Log.d("TestDataRef",ref.getKey());
 
-        Book b1 = new Book("ISBN","TITLE","AUTHOR");
-        Book b12 = new Book("ISBN","TITLE","AUTHOR");
-
-        BookList.add(b1);
-        BookList.add(b12);
-
-        User user1 = new User("nchee","nchee@mom.ca","China","1234556");
-
-        b12.setCurrentBorrower(user1);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
@@ -103,6 +100,8 @@ public class MyBooksFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+        //Gets the user's profile picture
+
 
         return view;
     }
@@ -120,11 +119,25 @@ public class MyBooksFragment extends Fragment {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Log.d("TestDataBook",dataSnapshot.child(key).getValue().toString());
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(key);
+                Log.d("TestImageBook", storageRef.toString());
+                StorageReference profileImageRef =
+                        FirebaseStorage.getInstance().getReference("shelf@gmail.com"+"/"+"dp"+ ".jpg");
+                Log.d("TestImageBook", profileImageRef.toString());
+
+                Log.d("TestDataBook",dataSnapshot.child(key).getValue().toString());
                     String author = dataSnapshot.child(key).child("author").getValue().toString();
                     String isbn = dataSnapshot.child(key).child("isbn").getValue().toString();
                     String title = dataSnapshot.child(key).child("title").getValue().toString();
                     Book b1 = new Book(isbn,title,author);
+                    storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String DownloadLink = uri.toString();
+                            b1.setImage(DownloadLink);
+                        }
+                    });
                     BookList.add(b1);
                     Log.d("TestDataBook",BookList.get(0).getAuthor());
                     adapter.notifyDataSetChanged();

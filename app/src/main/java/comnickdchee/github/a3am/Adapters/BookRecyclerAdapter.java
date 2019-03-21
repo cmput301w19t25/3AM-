@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.w3c.dom.Text;
 
@@ -55,10 +57,12 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
         Log.d(TAG, "onBindViewHolder: called.");
 
         // one file that contains a bunch of conditions for making a recycler view.
+
         holder.tvBookTitle.setText(mBooks.get(i).getTitle());
         holder.tvAuthorName.setText(mBooks.get(i).getAuthor());
         holder.tvISBN.setText(mBooks.get(i).getISBN());
         holder.tvStatus.setText(mBooks.get(i).getStatus().name());
+
         if (mBooks.get(i).getCurrentBorrower() != null){
             holder.tvBorrowedBy.setText("Borrowed By: " + mBooks.get(i).getCurrentBorrower().getUserName());
         }
