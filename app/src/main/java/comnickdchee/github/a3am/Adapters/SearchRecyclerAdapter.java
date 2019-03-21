@@ -1,6 +1,7 @@
 package comnickdchee.github.a3am.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import comnickdchee.github.a3am.Activities.RequestBookActivity;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
@@ -60,6 +62,8 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             public void onClick(View view) {
 //                Log.d(TAG, "onClick: clicked on: " + mBooks.get(i));
                 Toast.makeText(mContext, "Searched " + mBooks.get(i).getTitle(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, RequestBookActivity.class);
+                mContext.startActivity(intent);
             }
         });
     }
