@@ -77,9 +77,7 @@ public class MyBooksFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 dataSnapshot.getKey();
-
                 for(DataSnapshot child: dataSnapshot.getChildren()){
                     Log.d("TestData",child.getValue().toString());
                     String key = child.getValue().toString();

@@ -85,8 +85,8 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked on: " + mBooks.get(i));
                 //Intent i = new Intent()
-                Intent i = new Intent(mContext, ViewOwnedBook.class);
-                mContext.startActivity(i);
+                Intent intent = new Intent(mContext, ViewOwnedBook.class);
+                mContext.startActivity(intent);
             }
         });
     }
