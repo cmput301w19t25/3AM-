@@ -51,34 +51,15 @@ public class MyBooksFragment extends Fragment {
          * Passes intent to the NewBook activity, using StartActivityForResult
          * to get back the results of an activity.
          */
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), NewBookActivity.class);
-
-                // using this to get back the results of an intent
-                // Source: https://stackoverflow.com/questions/10407159/how-to-manage-startactivityforresult-on-android
-                startActivityForResult(intent, 1);
-
-            }
+        fab.setOnClickListener((View v) -> {
+            Intent intent = new Intent(view.getContext(), NewBookActivity.class);
+            startActivityForResult(intent, 1);
         });
 
         BookList = new ArrayList<>();
         mAuth = FirebaseAuth.getInstance();
 
         DatabaseReference ref = database.getReference().child("users").child(mAuth.getUid()).child("owned_books");
-        Log.d("TestDataRef",ref.getKey());
-
-        Book b1 = new Book("ISBN","TITLE","AUTHOR");
-        Book b12 = new Book("ISBN","TITLE","AUTHOR");
-
-        BookList.add(b1);
-        BookList.add(b12);
-
-        User user1 = new User("nchee","nchee@mom.ca","China","1234556");
-
-        b12.setCurrentBorrower(user1);
-
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         adapter = new BookRecyclerAdapter(getActivity(), BookList);
