@@ -66,23 +66,8 @@ public class MyBooksFragment extends Fragment {
         BookList = new ArrayList<>();
         mAuth = FirebaseAuth.getInstance();
 
-        DatabaseReference ref = database.getReference().child(mAuth.getUid()).child("BooksListID");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                dataSnapshot.getKey();
-                for(DataSnapshot child: dataSnapshot.getChildren()){
-                    String key = child.getKey();
-                    findBook(key);
-
-                    Log.d("TestData",child.getKey());
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        DatabaseReference ref = database.getReference().child("users").child(mAuth.getUid()).child("owned_books");
+        Log.d("TestDataRef",ref.getKey());
 
         Book b1 = new Book("ISBN","TITLE","AUTHOR");
         Book b12 = new Book("ISBN","TITLE","AUTHOR");
@@ -101,6 +86,24 @@ public class MyBooksFragment extends Fragment {
         adapter.notifyDataSetChanged();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                dataSnapshot.getKey();
+
+                for(DataSnapshot child: dataSnapshot.getChildren()){
+                    Log.d("TestData",child.getValue().toString());
+                    String key = child.getValue().toString();
+                    findBook(key);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
         return view;
     }
 
@@ -110,9 +113,11 @@ public class MyBooksFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         BookList.clear();
 
-        DatabaseReference ref = database.getReference().child("BooksList");
-        ref.addValueEventListener(new ValueEventListener() {
-
+        DatabaseReference ref = database.getReference().child("books");
+        Log.d("TestDataBookDir", ref.toString());
+        Log.d("TestDataBookDir", ref.getKey().toString());
+        Log.d("TestDataBookDir", ref.toString());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Log.d("TestDataBook",dataSnapshot.child(key).getValue().toString());
@@ -131,9 +136,9 @@ public class MyBooksFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
+
         //BookList.clear();
         int i = BookList.size();
         String s = Integer.toString(i);

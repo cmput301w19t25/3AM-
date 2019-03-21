@@ -41,12 +41,9 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
         findViewById(R.id.LoginBtn).setOnClickListener(this);
 
         if(mAuth.getCurrentUser() != null){
-
             Intent homePage = new Intent(this, HomepageActivity.class);
             homePage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            //homePage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(homePage);
-
         }
 
     }
@@ -79,11 +76,11 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
 
-                    Intent i = new Intent(BorrowedActivity.this, HomepageActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
+                    Intent intent = new Intent(BorrowedActivity.this, HomepageActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                     finish();
-                }else{
+                } else {
                     Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -94,7 +91,7 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.RegisterBtn:
-                Log.d("Reg", "Ass no error ");
+                Log.d("Register","No error in register");
                 startActivity(new Intent(this, SignUpActivity.class));
                 break;
             case R.id.LoginBtn:

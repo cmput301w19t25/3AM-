@@ -1,5 +1,7 @@
 package comnickdchee.github.a3am.Activities;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -10,8 +12,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -53,7 +58,9 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     private FirebaseAuth mAuth;
     private FirebaseDatabase Fd;
     private DatabaseReference mDataRef;
+    private ActionBarDrawerToggle toggle;
     private String DownloadLink;
+    private SearchView searchView;
     public static ArrayList<Book> BorrowedList = new ArrayList<>();
     public static ArrayList<Book> LendingList = new ArrayList<>();
     public static ArrayList<Book> ActionsList = new ArrayList<>();
@@ -64,6 +71,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
         init();
+
         navToolbar = findViewById(R.id.navToolbar);
         setSupportActionBar(navToolbar);
 
@@ -110,16 +118,14 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
          * @param R.string.navigation_drawer_open
          *
          */
-        //Sets the states of the side navigation menu
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, navToolbar,
+        // sets the states of the side navigation menu
+        toggle = new ActionBarDrawerToggle(this, drawer, navToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
-        toggle.syncState();   //rotating the hambugur item
+        toggle.syncState();
 
-
-        // view pager
-        //AT the start of the program will open HomeFragment before clicking on anything else
-        // Sets the home pages as the active fragment if there is no savedInstances
+        // at the start of the program will open HomeFragment before clicking on anything else
+        // Sets the home pages as the active fragment if there is no saved instances
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
@@ -239,19 +245,39 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     }
 
     /**
-     * Overwrite onBackPressed
      * So that when back button is pressed while navigation drawer is open, we don't exit the activity
-     * immediately instead close the navigation menu drawer first
+     * immediately instead close the navigation menu drawer first.
      */
     @Override
     public void onBackPressed() {
 
-        //Make the back button close the navigation menu if it is open
+        // Make the back button close the navigation menu if it is open
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
+    }
+
+    /**
+     * Inflate the menu when the SearchView item is pressed with the
+     * search menu. The toolbar gets a search view button implemented
+     * on the right side.
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_menu, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
+        return true;
     }
 
 }

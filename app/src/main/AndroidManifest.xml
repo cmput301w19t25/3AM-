@@ -9,13 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-
-        <activity android:name=".Activities.HomepageActivity"></activity>
-        <activity android:name=".Activities.ProfileActivity"></activity>
+        <activity android:name=".Activities.HomepageActivity">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity android:name=".Activities.ProfileActivity" />
         <activity android:name=".Activities.SignUpActivity" />
         <activity android:name=".Activities.BorrowedActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -24,8 +28,14 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".Activities.ViewBookActivity"></activity>
-        <activity android:name=".Activities.NewBookActivity"></activity>
+        <activity android:name=".Activities.ViewBookActivity" />
+        <activity android:name=".Activities.NewBookActivity" />
+        <activity android:name=".Activities.SearchResultsActivity"
+            android:label="Search">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
