@@ -5,11 +5,45 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-
-    <android.support.v7.widget.RecyclerView
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/filterToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/recyclerView"/>
+        android:background="@color/colorPrimary"
+        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/AppTheme.NoActionBar">
+
+
+        <RelativeLayout
+            android:id="@+id/relative1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
+
+            <Button
+                android:id="@+id/filterbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="290dp"
+                android:elevation="10dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="0dp"
+                android:background="@color/colorPrimary"
+                android:text="FILTER"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:onClick="showPopup"
+                android:textSize="17sp" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/filterToolbar"/>
 
 
     <android.support.design.widget.FloatingActionButton
