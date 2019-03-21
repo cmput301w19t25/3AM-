@@ -3,10 +3,13 @@ package comnickdchee.github.a3am.Activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
@@ -18,8 +21,10 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
     TextView tvISBN;
     TextView tvStatus;
     TextView bRequestButton;
-    private Book book;
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+    private final DatabaseReference mDatabaseReference = mFirebaseDatabase.getReference();
+    private Book book;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +37,18 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         tvStatus = findViewById(R.id.statusTv);
         bRequestButton = findViewById(R.id.button);
 
+        // TODO: Make this error free.
         Intent intent = getIntent();
-        book = new Book();
-        book = (Book) intent.getSerializableExtra("SearchBook");
-//        tvAuthor.setText(book.getAuthor());
-//        tvBookTitle.setText(book.getTitle());
-//        tvISBN.setText(book.getISBN());
+        book = (Book) intent.getExtras().getParcelable("SearchBook");
 
+        tvAuthor.setText(book.getAuthor());
+        tvBookTitle.setText(book.getTitle());
+        tvISBN.setText(book.getISBN());
+
+        Log.d(book.getBookID(), "onCreate: BookID");
+
+        // Set request button to have an OnClick listener that fires every
+        // time the activity gets pressed
         bRequestButton.setOnClickListener(this);
 
     }
@@ -53,12 +63,19 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
                     // that the current user is not a duplicate, and
                     // we change the view of the button
                     book.addRequest(mAuth.getCurrentUser().getUid());
+                    updateRequests(book);
                 }
         }
     }
 
+    /** Overwrite the data of the original book
+     with the new book in Firebase */
+    private void updateRequests(Book updatedBook) {
+        DatabaseReference booksRef = mDatabaseReference.child("books");
+        booksRef.child(updatedBook.getBookID()).setValue(updatedBook);
+    }
+
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 }
