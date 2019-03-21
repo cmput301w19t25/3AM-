@@ -27,13 +27,14 @@ public class Book implements Parcelable {
 
 
 
-    public Book(String ISBN, String title, String author, String Image) {
+    public Book(String bookID, String ISBN, String title, String author, String Image) {
         this.ISBN = ISBN;
         this.title = title;
         this.author = author;
         this.status = Status.Available;
         this.image = Image;
         this.currentBorrower = null;
+
     }
 
 
