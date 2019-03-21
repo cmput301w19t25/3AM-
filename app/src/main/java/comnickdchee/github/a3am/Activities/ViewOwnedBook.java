@@ -26,13 +26,7 @@ public class ViewOwnedBook extends AppCompatActivity {
         EditText authorBookEditActivity = findViewById(R.id.bookAuthorOwnedBook);
         EditText bookISBNEditActivity = findViewById(R.id.bookISBNOwnedBook);
 
-        enableUserEdit(titleBookEditActivity);
     }
 
-    private void enableUserEdit(TextView t){
-        t.setFocusable(true);
-        t.setEnabled(true);
-        t.setClickable(true);
-        t.setFocusableInTouchMode(true);
-    }
+
 }

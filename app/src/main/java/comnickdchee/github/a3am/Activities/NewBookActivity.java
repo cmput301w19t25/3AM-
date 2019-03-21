@@ -2,7 +2,10 @@ package comnickdchee.github.a3am.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.Image;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -16,13 +19,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
 public class NewBookActivity extends AppCompatActivity {
-
+    private static final int CHOSEN_IMAGE = 69;
+    Uri bookImage;
+    ImageView img;
     // text fields that user entered
     private TextInputEditText bookTitleText;
     private TextInputEditText bookAuthorText;
@@ -42,6 +48,7 @@ public class NewBookActivity extends AppCompatActivity {
         bookTitleText = findViewById(R.id.tietBookTitle);
         bookAuthorText = findViewById(R.id.tietAuthor);
         bookISBNText = findViewById(R.id.tietISBN);
+        img = (ImageView) findViewById(R.id.ivAddBookPhoto);
 
         ImageView closeButton = findViewById(R.id.ivCloseButton);
         ImageView addButton = findViewById(R.id.ivFinishAddButton);
@@ -58,13 +65,41 @@ public class NewBookActivity extends AppCompatActivity {
                 String bookTitle = bookTitleText.getText().toString();
                 String bookAuthor = bookAuthorText.getText().toString();
                 String bookISBN = bookISBNText.getText().toString();
-
                 addBook(bookTitle, bookAuthor, bookISBN);
                 finish();
             }
         });
 
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findImage();
+            }
+        });
 
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+
+        if(requestCode == CHOSEN_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null){
+            bookImage = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), bookImage);
+                img.setImageBitmap(bitmap);
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void findImage(){
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(i,"Select Profile Picture"), CHOSEN_IMAGE);
     }
 
     /** Adds book to both the database and user class. */

@@ -107,6 +107,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:text="Author of the book"
+
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
