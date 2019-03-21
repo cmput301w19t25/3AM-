@@ -116,18 +116,18 @@ public class SearchResultsActivity extends AppCompatActivity {
 
             // Brute Force Search: Use the books table as our starting reference,
             // iterate through all child entries to get their information, then
-            // make a comparison with the query entered.
-
+            // make a comparison with the query entered
             booksRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     // Iterate through child entries
+                    searchResults.clear();
+                    bookSet.clear();
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         // Get all the keywords in the query entered by the user
                         // and make a direct check
                         for (String keyword : queryList) {
                             Book bookToCompare = data.getValue(Book.class);
-
                             if (bookToCompare != null) {
                                 if (bookToCompare.getTitle().toLowerCase().contains(keyword)) {
                                     searchResults.add(bookToCompare);
