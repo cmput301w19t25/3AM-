@@ -9,4 +9,8 @@
     <color name="Gold">#FFD700</color>
     <color name="Blue">#1e90ff</color>
 
+    <color name="white">#FFFF</color>
+    <color name="black">#000</color>
+
+
 </resources>
