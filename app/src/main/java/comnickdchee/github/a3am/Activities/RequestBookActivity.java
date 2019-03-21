@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import comnickdchee.github.a3am.Models.Book;
-import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 
 public class RequestBookActivity extends AppCompatActivity implements View.OnClickListener {
@@ -31,13 +30,14 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         tvBookTitle = findViewById(R.id.bookTitleTv);
         tvISBN = findViewById(R.id.ISBNTv);
         tvStatus = findViewById(R.id.statusTv);
-        bRequestButton = findViewById(R.id.bRequestButton);
+        bRequestButton = findViewById(R.id.button);
 
         Intent intent = getIntent();
+        book = new Book();
         book = (Book) intent.getSerializableExtra("SearchBook");
-        tvAuthor.setText(book.getAuthor());
-        tvBookTitle.setText(book.getTitle());
-        tvISBN.setText(book.getISBN());
+//        tvAuthor.setText(book.getAuthor());
+//        tvBookTitle.setText(book.getTitle());
+//        tvISBN.setText(book.getISBN());
 
         bRequestButton.setOnClickListener(this);
 
@@ -46,7 +46,7 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.bRequestButton:
+            case R.id.button:
                 if (mAuth.getCurrentUser() != null) {
                     // Once the user requests the current book,
                     // we add them to the array list on the condition

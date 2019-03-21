@@ -60,7 +60,6 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         holder.actionsItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Log.d(TAG, "onClick: clicked on: " + mBooks.get(i));
                 Toast.makeText(mContext, "Searched " + mBooks.get(i).getTitle(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, RequestBookActivity.class);
                 intent.putExtra("SearchBook", mBooks.get(i));
