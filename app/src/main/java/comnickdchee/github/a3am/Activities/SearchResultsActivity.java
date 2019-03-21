@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import comnickdchee.github.a3am.Adapters.BookRecyclerAdapter;
+import comnickdchee.github.a3am.Adapters.SearchRecyclerAdapter;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.MySuggestionProvider;
 import comnickdchee.github.a3am.R;
@@ -50,7 +51,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private ArrayList<Book> titleResults = new ArrayList<>();
     private ArrayList<Book> authorResults = new ArrayList<>();
     private Set<String> bookSet = new HashSet<>();
-    private BookRecyclerAdapter searchResultsAdapter;
+    private SearchRecyclerAdapter searchResultsAdapter;
 
 
     @Override
@@ -63,7 +64,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         searchResults = new ArrayList<>();
 
         rvSearchResults = findViewById(R.id.rvSearchResults);
-        searchResultsAdapter = new BookRecyclerAdapter(this, searchResults);
+        searchResultsAdapter = new SearchRecyclerAdapter(this, searchResults);
         rvSearchResults.setAdapter(searchResultsAdapter);
         rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
 

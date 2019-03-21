@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -58,7 +59,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             @Override
             public void onClick(View view) {
 //                Log.d(TAG, "onClick: clicked on: " + mBooks.get(i));
-//                Toast.makeText(mContext, mBooks.get(i).getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Searched " + mBooks.get(i).getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
     }
