@@ -16,8 +16,12 @@ import android.view.Window;
 import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -129,6 +133,13 @@ public class NewBookActivity extends AppCompatActivity {
             // Then, we add the book to the book table with all of its proper parameters
             mFirebaseDatabase.getReference("books").child(bookID).setValue(book);
 
+            if (bookImage != null) {
+                FirebaseUser u = mAuth.getCurrentUser();
+
+                StorageReference bookImageRef =
+                        FirebaseStorage.getInstance().getReference("BookImages").child(bookID);
+                bookImageRef.putFile(bookImage);
+            }
         } else {
             // TODO: Throw exception here.
         }
