@@ -1,5 +1,6 @@
 package comnickdchee.github.a3am.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -9,9 +10,12 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +30,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import comnickdchee.github.a3am.Activities.HomepageActivity;
 import comnickdchee.github.a3am.Activities.ViewOwnedBook;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
@@ -39,6 +44,8 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
     String DownloadLink;
     private ArrayList<Book> mBooks;
     private Context mContext;
+    //private ImageButton option;                         // options button for Edit/Delete
+    private int currentPos;
 
     public BookRecyclerAdapter( Context mContext, ArrayList<Book> BookList) {
         this.mBooks = BookList;
@@ -87,7 +94,66 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
                 //Intent i = new Intent()
                 Intent i = new Intent(mContext, ViewOwnedBook.class);
                 mContext.startActivity(i);
+
             }
+
+        });
+
+        /**
+         * Handles on clicks for the options button on the top right corner of the
+         * ViewHolder. Here, we create a new PopupMenu object and inflate it using
+         * the menu_book menu.
+         */
+        holder.option.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popup = new PopupMenu(view.getContext(), view);
+
+                // inflate PopupMenu from XML
+                popup.inflate(R.menu.book_menu);
+
+                // adding listeners for each item in the popup
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.itemViewEdit:
+                                clickEdit();
+                                return true;
+                            case R.id.itemDelete:
+                                //clickDelete();
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+
+                // show the popup afterwards
+                popup.show();
+            }
+
+            /**
+             * Called when Edit is clicked on the PopupMenu. This creates an intent
+             * to the "Edit Books Activity" ViewOwnedBooks
+             */
+            void clickEdit() {
+                // create intents here and start new activity
+
+             Intent intent = new Intent(mContext, ViewOwnedBook.class);
+             mContext.startActivity(intent);
+            }
+
+
+            /**
+             * Called when the user clicks on the Delete option in the PopupMenu object.
+             */
+
+          /*  void clickDelete() {
+                // delete entry based on position
+                // TODO: Make this delete book
+            }*/
+
         });
     }
 
@@ -111,6 +177,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
         public TextView tvStatus;
         public TextView tvBorrowedBy;
         public CardView actionsItemView;
+        private ImageButton option;                         // options button for Edit/Delete
 
         // The Data inside the View Holder are set here
         public ViewHolder(@NonNull View itemView) {
@@ -122,6 +189,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
             tvStatus = itemView.findViewById(R.id.tvStatus);
             tvBorrowedBy = itemView.findViewById(R.id.tvBorrowedBy);
             actionsItemView = itemView.findViewById(R.id.cvActions);
+            option = (ImageButton) itemView.findViewById(R.id.ibOption);
 
 //            imageIcon = itemView.findViewById(R.id.imageIcon);
 //            username = itemView.findViewById(R.id.username);
