@@ -17,7 +17,7 @@ public class Book implements Parcelable {
     private String ISBN;
     private String title;
     private String author;
-    private Image image;
+    private String image;                   // Stored as URL from firebase storage.
     private User owner;
     private Status status;
     private ArrayList<User> requests;
@@ -25,6 +25,16 @@ public class Book implements Parcelable {
 
     //private final int bookID = 0;         // TODO: Have a way to generate a unique ID for each book.
 
+
+
+    public Book(String ISBN, String title, String author, String Image) {
+        this.ISBN = ISBN;
+        this.title = title;
+        this.author = author;
+        this.status = Status.Available;
+        this.image = Image;
+        this.currentBorrower = null;
+    }
 
 
     public Book(String ISBN, String title, String author) {
@@ -115,7 +125,7 @@ public class Book implements Parcelable {
      * @return image coverphoto of the book
      * @see Image
      */
-    public Image getImage() {
+    public String getImage() {
         return image;
     }
 
@@ -123,7 +133,7 @@ public class Book implements Parcelable {
      * Takes in an image object and sets the book cover to it
      * @param image cover photo of the book
      */
-    public void setImage(Image image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
