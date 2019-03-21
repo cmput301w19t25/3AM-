@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,6 +43,8 @@ public class ViewOwnedBook extends AppCompatActivity {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         //Gets Current User
         mAuth = FirebaseAuth.getInstance();
+
+        //FIRST WE SET ALL OUR DATA TO THE EDIT BOOK PAGE.
         EditText titleBookEditActivity = findViewById(R.id.bookTitleOwnedBook);
         EditText authorBookEditActivity = findViewById(R.id.bookAuthorOwnedBook);
         EditText bookISBNEditActivity = findViewById(R.id.bookISBNOwnedBook);
@@ -52,10 +55,9 @@ public class ViewOwnedBook extends AppCompatActivity {
                 findImage();
             }
         });
-
         Bundle bundle = getIntent().getExtras();
         String key = bundle.getString("key");
-
+        //Downloads the data to get it to our initial view.
         DatabaseReference ref = database.getReference().child("books").child(key);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -76,7 +78,7 @@ public class ViewOwnedBook extends AppCompatActivity {
 
             }
         });
-
+        //Downloads the Image and sets it to our image view.
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(key);
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -87,10 +89,29 @@ public class ViewOwnedBook extends AppCompatActivity {
                 Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(bookImageEditActivity);
             }
         });
+
+        //Rig buttons to apply/delete changes.
+        TextView applyChanges = findViewById(R.id.ApplyChangesEditBook);
+        TextView discardChanges = findViewById(R.id.DiscardChangesEditBook);
+
+        applyChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ViewOwnedBook.this, "Changes applied to book.", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+        discardChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ViewOwnedBook.this, "Changes discarded to book.", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
     }
 
 
-
+    //Helper functions to deal with images (findImage..)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
