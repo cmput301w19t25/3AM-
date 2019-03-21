@@ -26,6 +26,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import comnickdchee.github.a3am.Activities.NewBookActivity;
 import comnickdchee.github.a3am.Adapters.BookRecyclerAdapter;
@@ -47,6 +50,9 @@ public class MyBooksFragment extends Fragment {
 
     ///new filter button added
     private Button filter;
+    //list for filtering
+    private ArrayList<Book> OrderList;
+
 
     @Nullable
     @Override
@@ -167,6 +173,7 @@ public class MyBooksFragment extends Fragment {
         Log.d("TestDataBook",s);
 
     }
+
     /**
      * Fired after Add Book Activity has finished.
 
@@ -178,6 +185,8 @@ public class MyBooksFragment extends Fragment {
         }
     }
     */
+    //code for filtering application
+
 
 
 }
