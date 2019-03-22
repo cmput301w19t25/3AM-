@@ -108,11 +108,11 @@ public class NewBookActivity extends AppCompatActivity {
 
     /** Adds book to both the database and user class. */
     private void addBook(String title, String author, String ISBN) {
-        Book newBook = new Book(ISBN, title, author);
-        //Intent newBookIntent = new Intent();
-        //newBookIntent.putExtra("NewBook", newBook);
-        //setResult(Activity.RESULT_OK, newBookIntent);
-        addBookToDatabase(newBook);
+        if (mAuth.getCurrentUser() != null) {
+            String userKey = mAuth.getCurrentUser().getUid();
+            Book newBook = new Book(ISBN, title, author, userKey);
+            addBookToDatabase(newBook);
+        }
     }
 
     /**
