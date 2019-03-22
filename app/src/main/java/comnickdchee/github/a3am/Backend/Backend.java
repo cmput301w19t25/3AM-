@@ -32,7 +32,7 @@ public class Backend {
     private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     // Have a direct reference to the user operating the app
-    private static User mCurrentUser = null;
+    private static User mCurrentUser = new User();
 
     // TODO: User should store an instance of his/her firebase user reference.
     private static final FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
@@ -90,7 +90,8 @@ public class Backend {
         if (mFirebaseUser != null) {
             // Get the actual contents of the user class
             String uid = mFirebaseUser.getUid();
-            DatabaseReference userRef = mFirebaseDatabase.getReference("users").child(uid);
+            DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
+            DatabaseReference userRef = usersRef.child(uid);
 
             // Whenever the user reference is loaded, load the data of the user
             userRef.addValueEventListener(new ValueEventListener() {

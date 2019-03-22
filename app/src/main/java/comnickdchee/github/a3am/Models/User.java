@@ -16,8 +16,8 @@ public class User implements IOwner, IBorrower {
     private String email;
     private String name;
     private String address;
-    private ArrayList<String> ownedBooks;     // list of bookIDs owned by user
-    private ArrayList<String> requestedBooks; // list of bookIDs that user is requesting
+    private ArrayList<String> ownedBooks = new ArrayList<>();     // list of bookIDs owned by user
+    private ArrayList<String> requestedBooks = new ArrayList<>(); // list of bookIDs that user is requesting
     private ArrayList<Exchange> exchanges;  // list of exchanges involving the user
     private Rating rating;                  // wow feature: user rating
 
