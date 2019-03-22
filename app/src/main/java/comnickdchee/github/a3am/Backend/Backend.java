@@ -53,11 +53,18 @@ public class Backend {
 
     /** Add book to the current user model as well as the table. */
     public void addBook(Book book) {
+        // Push book to "books" table in database
+        DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
+        DatabaseReference bookRef = booksRef.push();
+
+        // Get the key, push the book object to the table, and add it to the book object
+        String bookID = bookRef.getKey();
+        book.setBookID(bookID);
+        bookRef.setValue(book);
+
+        // Add book to user data, which we can push to the table again
         mCurrentUser.addOwnedBook(book);
         updateCurrentUserData();
-
-        // Add to the "books" table
-        updateBookData(book);
     }
 
     /** Returns the current user of the model class. */
