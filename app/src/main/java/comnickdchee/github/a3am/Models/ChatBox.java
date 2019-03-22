@@ -27,8 +27,9 @@ public class ChatBox {
      * @param user1 can be sender or receiver
      * @param user2 can be sender or receiver
      */
-    public void sendMessage(String messageText, Date date, User user1, User user2) {
-
+    public void sendMessage(String messageText, User user1, User user2, Date date) {
+        Message message = new Message(messageText,user1,user2,date);
+        messages.add(message);
     }
 
     /**
@@ -38,6 +39,24 @@ public class ChatBox {
      */
     public ArrayList<Message> getMessages(){
         return messages;
+    }
+
+    public ArrayList<User> getUser() {
+        ArrayList<User> users = new ArrayList<>();
+        users.add(user1);
+        users.add(user2);
+        return users;
+    }
+
+    public String getLastMessage() {
+        if (messages.size() > 0){
+            return messages.get(messages.size()-1).getMessageText();
+        }
+        else
+        {
+            return "No Message history";
+        }
+
     }
 
 }
