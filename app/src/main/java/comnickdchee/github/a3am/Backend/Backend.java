@@ -110,6 +110,8 @@ public class Backend {
 
         final ArrayList<Book> requestedBooks = new ArrayList<>();
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
+        DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
+
 
         // Iterate through current requested book ids to get
         // actual book objects stored in the table
@@ -121,17 +123,39 @@ public class Backend {
             currentBookRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    // Get the book from the "books" table
                     Book book = dataSnapshot.getValue(Book.class);
 
-                    // Get the requester information here
-                    for (String requesterID : book.getRequests()) {
+                    if (book != null) {
+                        // The user requester list that we store inside each book at the end
+                        final ArrayList<User> requesterList = new ArrayList<>();
 
+
+
+                        // Get the requester information here and add it to the current book class
+                        // which we store into our singleton until it needs to be used
+                        for (String requesterID : book.getRequests()) {
+                            DatabaseReference requesterRef = usersRef.child(requesterID);
+
+                            requesterRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    User requester = dataSnapshot.getValue(User.class);
+                                    book.getRequestUsers().add(requester);
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                }
+                            });
+                        }
+
+                        // Once this is all done, we add the requested book
+                        requestedBooks.add(book);
                     }
 
-                    requestedBooks.add(book);
-                    setCurrentRequested(requestedBooks);
+                    // Set the current requested books list to this
+                    setCurrentRequestedBooks(requestedBooks);
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
@@ -139,39 +163,14 @@ public class Backend {
         }
     }
 
-    /** Sets the current requested books to the arrayList */
-    public void setCurrentRequested(ArrayList<Book> requestedBooks) {
+    /** Helper that sets the current requested books to the array list. */
+    public void setCurrentRequestedBooks(ArrayList<Book> requestedBooks) {
         mCurrentRequestedBooks = requestedBooks;
     }
 
-    /** Loads requester information into the member data. */
-    public void loadRequesters() {
-        DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
-
-        for (Book requestedBook : mCurrentRequestedBooks) {
-
-            // Get all request users for each book and add them to the actual book
-            ArrayList<String> requestIDs = requestedBook.getRequests();
-
-            // For every requestID, we want to fetch their information and add it to the book
-            // class for the adapter to use
-            for (String requestID : requestIDs) {
-                DatabaseReference userRef = usersRef.child(requestID);
-                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        User requester = dataSnapshot.getValue(User.class);
-                        requestedBook.getRequestUsers().add(requester);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-            }
-        }
-
-        // At the end, set the requesters list here
-        setCurrentRequested(mCurrentRequestedBooks);
+    /** Getter that returns the requested books with user information. */
+    public ArrayList<Book> getCurrentRequestedBooks() {
+        return mCurrentRequestedBooks;
     }
+
 }
