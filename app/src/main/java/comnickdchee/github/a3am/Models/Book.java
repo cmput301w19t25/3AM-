@@ -59,6 +59,7 @@ public class Book implements Parcelable {
         author = in.readString();
         bookID = in.readString();
         status = Status.valueOf(in.readString());
+        in.readList(requests, null);
     }
 
     public static final Creator<Book> CREATOR = new Creator<Book>() {
@@ -214,6 +215,7 @@ public class Book implements Parcelable {
         parcel.writeString(author);
         parcel.writeString(bookID);
         parcel.writeString(status.name());
+        parcel.writeList(requests);
     }
 
     //public int getBookID() { return bookID; }
