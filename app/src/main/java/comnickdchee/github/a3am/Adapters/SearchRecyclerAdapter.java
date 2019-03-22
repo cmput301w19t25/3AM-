@@ -61,9 +61,10 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "Searched " + mBooks.get(i).getTitle(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext, RequestBookActivity.class);
-                intent.putExtra("SearchBook", mBooks.get(i));
-                mContext.startActivity(intent);
+                Intent intent = new Intent(holder.itemView.getContext(), RequestBookActivity.class);
+                int currentPos = holder.getAdapterPosition();
+                intent.putExtra("SearchBook", mBooks.get(currentPos));
+                holder.itemView.getContext().startActivity(intent);
             }
         });
     }
