@@ -22,18 +22,20 @@ import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Activities.ViewOwnedBook;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.ChatBox;
+import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 
 public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecyclerAdapter.ViewHolder> {
 
-    private static final String TAG = "In_RecyclerViewAdapter";
+    private static final String TAG = "In_MessageRecyclerViewAdapter";
     FirebaseStorage storage;
     String DownloadLink;
-    private ArrayList<Book> mBooks;
+    private ArrayList<ChatBox> mChatboxes;
     private Context mContext;
 
-    public MessageRecyclerAdapter( Context mContext, ArrayList<Book> BookList) {
-        this.mBooks = BookList;
+    public MessageRecyclerAdapter( Context mContext, ArrayList<ChatBox> Chatboxes) {
+        this.mChatboxes = Chatboxes;
         this.mContext = mContext;
     }
 
@@ -51,18 +53,26 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
 
     @Override
     public void onBindViewHolder(MessageRecyclerAdapter.ViewHolder holder, final int i) {
+        // This function sets up the data in the cards
+
         Log.d(TAG, "onBindViewHolder: called.");
+        ArrayList<User> users = mChatboxes.get(i).getUser();
+        int userIndex = 0;
 
-        // one file that contains a bunch of conditions for making a recycler view.
+        // TODO: Change the case to contain current user's actual Username
+        // Changes user index if user1 is the current user.
+        if (users.get(0).getUserName().equals("Current User's Username")) {
+            userIndex = 1;
+        }
 
-        holder.tvBookTitle.setText(mBooks.get(i).getTitle());
-        holder.tvAuthorName.setText(mBooks.get(i).getAuthor());
-        holder.tvISBN.setText(mBooks.get(i).getISBN());
-        holder.tvStatus.setText(mBooks.get(i).getStatus().name());
+        holder.tvUsername.setText(users.get(userIndex).getUserName());
+        holder.tvLastMessage.setText(mChatboxes.get(i).getLastMessage().getMessageText());
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(mBooks.get(i).getImage());
+        // TODO: Correctly implement images for the other user's profile pic Below is the code used for Book Fragment's pictures by Zaheen
+        /*
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(mChatboxes.get(i).getImage());
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -70,22 +80,21 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
                 DownloadLink = uri.toString();
                 Picasso.with(mContext).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.ivBook);
             }
-        });
+        });*/
+
+
         // On click event when a card is clicked
-        holder.actionsItemView.setOnClickListener(new View.OnClickListener() {
+        holder.cvChatbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked on: " + mBooks.get(i));
-                //Intent i = new Intent()
-                Intent intent = new Intent(mContext, ViewOwnedBook.class);
-                mContext.startActivity(intent);
+                Log.d(TAG, "onClick: clicked on: " + mChatboxes.get(i));
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mBooks.size();
+        return mChatboxes.size();
     }
 
 
@@ -93,33 +102,19 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        //        CircleImageView imageIcon;
-//        TextView username;
-//        RelativeLayout parentLayout;
-        public ImageView ivBook;
-        public TextView tvBookTitle;
-        public TextView tvAuthorName;
-        public TextView tvISBN;
-        public TextView tvStatus;
-        public TextView tvBorrowedBy;
-        public CardView actionsItemView;
+        public ImageView ivUserPhoto;
+        public TextView tvUsername;
+        public TextView tvLastMessage;
+        public CardView cvChatbox;
+
 
         // The Data inside the View Holder are set here
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivBook = itemView.findViewById(R.id.ivRequesterPhoto);
-            tvBookTitle = itemView.findViewById(R.id.tvCardBookTitle);
-            tvAuthorName = itemView.findViewById(R.id.tvAuthor);
-            tvISBN = itemView.findViewById(R.id.tvISBN);
-            tvStatus = itemView.findViewById(R.id.tvStatus);
-            tvBorrowedBy = itemView.findViewById(R.id.tvBorrowedBy);
-            actionsItemView = itemView.findViewById(R.id.cvActions);
-
-//            imageIcon = itemView.findViewById(R.id.imageIcon);
-//            username = itemView.findViewById(R.id.username);
-//            parentLayout = itemView.findViewById(R.id.parent_layout);
-
-
+            ivUserPhoto = itemView.findViewById(R.id.ivUserPhoto);
+            tvUsername = itemView.findViewById(R.id.tvUsername);
+            tvLastMessage = itemView.findViewById(R.id.tvLastMessage);
+            cvChatbox = itemView.findViewById(R.id.cvChatbox);
         }
     }
 

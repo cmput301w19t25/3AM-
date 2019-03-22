@@ -40,4 +40,15 @@ public class ChatBox {
         return messages;
     }
 
+    public ArrayList<User> getUser() {
+        ArrayList<User> users = new ArrayList<>();
+        users.add(user1);
+        users.add(user2);
+        return users;
+    }
+
+    public Message getLastMessage() {
+        return messages.get(messages.size());
+    }
+
 }
