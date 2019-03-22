@@ -36,6 +36,8 @@ public class Backend {
     // Have a direct reference to the user operating the app
     private static User mCurrentUser = new User();
 
+    private static ArrayList<Book> mCurrentOwnedBooks = new ArrayList<>();
+
     // TODO: User should store an instance of his/her firebase user reference.
     private static final FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
 
@@ -51,7 +53,11 @@ public class Backend {
         return instance;
     }
 
-    /** Add book to the current user model as well as the table. */
+    /**
+     * Add book to the current user model as well as the table.
+     * We get the id of the currently added book, and pass it to
+     * the actual
+     */
     public void addBook(Book book) {
         // Push book to "books" table in database
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
@@ -64,6 +70,7 @@ public class Backend {
 
         // Add book to user data, which we can push to the table again
         mCurrentUser.addOwnedBook(book);
+        mCurrentOwnedBooks.add(book);
         updateCurrentUserData();
     }
 
