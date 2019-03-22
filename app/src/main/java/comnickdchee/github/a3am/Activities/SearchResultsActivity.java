@@ -129,6 +129,8 @@ public class SearchResultsActivity extends AppCompatActivity {
                         for (String keyword : queryList) {
                             Book bookToCompare = data.getValue(Book.class);
                             if (bookToCompare != null) {
+                                // Save the bookID to fetch intent information
+                                bookToCompare.setBookID(data.getKey());
                                 if (bookToCompare.getTitle().toLowerCase().contains(keyword)) {
                                     searchResults.add(bookToCompare);
                                 } else if (bookToCompare.getAuthor().toLowerCase().contains(keyword)) {
