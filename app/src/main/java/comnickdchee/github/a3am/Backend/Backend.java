@@ -11,9 +11,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
 
 /**
@@ -77,6 +79,7 @@ public class Backend {
         mCurrentUser = user;
     }
 
+    /** Getter for the instance of the user's FirebaseUser instance. */
     public FirebaseUser getFirebaseUser() {
         return mFirebaseUser;
     }
@@ -137,55 +140,55 @@ public class Backend {
      * in the book table.
      */
     public void loadRequestedBooks() {
-        // This contains the requested book ids
-        ArrayList<String> currentRequestedBooks = mCurrentUser.getRequestedBooksList();
+        // First, get the current user data
+        loadCurrentUserData();
 
+        // Then, get the bookIds from the current user model object
+        final ArrayList<String> ownedBookIDs = mCurrentUser.getOwnedBookList();
+
+        // We set the requested books at the end to this
         final ArrayList<Book> requestedBooks = new ArrayList<>();
+
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
         DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
 
-
-        // Iterate through current requested book ids to get
-        // actual book objects stored in the table
-        for (String bookID : currentRequestedBooks) {
-            DatabaseReference currentBookRef = booksRef.child(bookID);
-
-            // Here, we attach a single value event listener to get the value of
-            // the requested book
-            currentBookRef.addValueEventListener(new ValueEventListener() {
+        // Iterate through the owned bookIDs and add ValueEventListeners to grab books
+        // that are being requested by the user
+        for (String ownedBookID : ownedBookIDs) {
+            booksRef.child(ownedBookID).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    // Get the book from the "books" table
-                    Book book = dataSnapshot.getValue(Book.class);
+                    Book ownedBook = dataSnapshot.getValue(Book.class);
 
-                    if (book != null) {
-                        // The user requester list that we store inside each book at the end
-                        final ArrayList<User> requesterList = new ArrayList<>();
+                    // Check if the status is requested; if so, add it to the requested books
+                    if (ownedBook != null) {
+                        if (ownedBook.getStatus() == Status.Requested) {
 
+                            ArrayList<String> requesterIDs = ownedBook.getRequests();
+                            final ArrayList<User> actualRequesters = new ArrayList<>();
 
+                            // Iterate through requesters and get the actual user data
+                            for (String requesterID : requesterIDs) {
+                                usersRef.child(requesterID).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        // Get the requester information here and add it to the current book class
-                        // which we store into our singleton until it needs to be used
-                        for (String requesterID : book.getRequests()) {
-                            DatabaseReference requesterRef = usersRef.child(requesterID);
+                                        // Bind everything to the arrays
+                                        User requester = dataSnapshot.getValue(User.class);
+                                        actualRequesters.add(requester);
+                                        ownedBook.setRequestUsers(actualRequesters);
+                                    }
 
-                            requesterRef.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    User requester = dataSnapshot.getValue(User.class);
-                                    book.getRequestUsers().add(requester);
-                                }
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                }
-                            });
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    }
+                                });
+                            }
                         }
-
-                        // Once this is all done, we add the requested book
-                        requestedBooks.add(book);
                     }
 
-                    // Set the current requested books list to this
+                    // Add the requested books here
+                    requestedBooks.add(ownedBook);
                     setCurrentRequestedBooks(requestedBooks);
                 }
                 @Override
