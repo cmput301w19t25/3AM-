@@ -22,6 +22,7 @@ public class Book implements Parcelable {
     private User owner;
     private Status status;
     private ArrayList<String> requests = new ArrayList<>();
+    private ArrayList<User> requestUsers = new ArrayList<>();
     private User currentBorrower;
     private String bookID;                  // Used for passing through intents.
 
@@ -192,6 +193,16 @@ public class Book implements Parcelable {
      * @see User
      */
     public User getCurrentBorrower() { return currentBorrower; }
+
+    /** Get each requester in the form of user data. */
+    public ArrayList<User> getRequestUsers() {
+        return requestUsers;
+    }
+
+    /** Setting the users requester list. */
+    public void setRequestUsers(ArrayList<User> users) {
+        requestUsers = users;
+    }
 
     /**
      * Takes User object; and sets the current borrower of the book

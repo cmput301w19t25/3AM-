@@ -16,8 +16,8 @@ public class User implements IOwner, IBorrower {
     private String email;
     private String name;
     private String address;
-    private ArrayList<Book> ownedBooks;     // list of books owned by user
-    private ArrayList<Book> requestedBooks; // list of books that user is requesting
+    private ArrayList<String> ownedBooks;     // list of bookIDs owned by user
+    private ArrayList<String> requestedBooks; // list of bookIDs that user is requesting
     private ArrayList<Exchange> exchanges;  // list of exchanges involving the user
     private Rating rating;                  // wow feature: user rating
 
@@ -29,8 +29,8 @@ public class User implements IOwner, IBorrower {
         this.email = email;
         this.address = address;
 
-        ownedBooks = new ArrayList<Book>();
-        requestedBooks = new ArrayList<Book>();
+        ownedBooks = new ArrayList<String>();
+        requestedBooks = new ArrayList<String>();
     }
 
     /** For acquiring back user class locally from Firebase. */
@@ -72,7 +72,7 @@ public class User implements IOwner, IBorrower {
      */
     @Override
     public void addOwnedBook(Book book) {
-        ownedBooks.add(book);
+        ownedBooks.add(book.getBookID());
     }
 
     /**
@@ -86,7 +86,7 @@ public class User implements IOwner, IBorrower {
     @Override
     public void removeOwnedBook(Book book) {
         for (int i = 0; i < ownedBooks.size(); ++i) {
-            if (ownedBooks.get(i) == book) {
+            if (ownedBooks.get(i).equals(book.getBookID())) {
                 ownedBooks.remove(i);
                 break;
             }
@@ -103,7 +103,7 @@ public class User implements IOwner, IBorrower {
      */
     @Override
     public void addRequestedBook(Book book) {
-        requestedBooks.add(book);
+        requestedBooks.add(book.getBookID());
     }
 
     /**
@@ -159,10 +159,10 @@ public class User implements IOwner, IBorrower {
     public ArrayList<Exchange> getExchangeList() {
         return exchanges;
     }
-    public ArrayList<Book> getOwnedBookList() {
+    public ArrayList<String> getOwnedBookList() {
         return ownedBooks;
     }
-    public ArrayList<Book> getRequestedBooksList() {
+    public ArrayList<String> getRequestedBooksList() {
         return requestedBooks;
     }
 
