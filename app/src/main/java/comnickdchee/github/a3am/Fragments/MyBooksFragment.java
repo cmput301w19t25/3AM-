@@ -155,15 +155,12 @@ public class MyBooksFragment extends Fragment {
         Log.d("TestDataBook",s);
 
     }
-    /**
-     * Fired after Add Book Activity has finished.
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            Book book = (Book) data.getSerializableExtra("NewBook");
-            BookList.add(book);
-        }
+        Log.d("MyBooks","Recyclerview notified");
+        adapter.notifyDataSetChanged();
     }
-    */
+
 }

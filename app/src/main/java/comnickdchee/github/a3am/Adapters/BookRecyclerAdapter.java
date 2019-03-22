@@ -76,7 +76,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
             public void onSuccess(Uri uri) {
                 Log.e("Tuts+", "uri: " + uri.toString());
                 DownloadLink = uri.toString();
-                Picasso.with(mContext).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.ivBook);
+                Picasso.with(mContext).load(DownloadLink).placeholder(R.drawable.ccc).error(R.drawable.ccc).into(holder.ivBook);
             }
         });
         // On click event when a card is clicked
@@ -86,6 +86,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
                 Log.d(TAG, "onClick: clicked on: " + mBooks.get(i));
                 //Intent i = new Intent()
                 Intent intent = new Intent(mContext, ViewOwnedBook.class);
+                intent.putExtra("key", mBooks.get(i).getImage());
                 mContext.startActivity(intent);
             }
         });
