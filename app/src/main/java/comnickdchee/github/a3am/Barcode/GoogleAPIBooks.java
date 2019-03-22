@@ -20,13 +20,7 @@ import java.net.URL;
 
 import comnickdchee.github.a3am.R;
 
-public class GoogleAPIBooks extends AsyncTask<String, Object, JSONObject> {
+public class GoogleAPIBooks{
 
-    @Override
-    protected JSONObject doInBackground(String... strings) {
-        return null;
-    }
-
-    private
 
 }
