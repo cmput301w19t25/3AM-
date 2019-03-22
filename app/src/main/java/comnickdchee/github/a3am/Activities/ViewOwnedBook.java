@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -109,7 +111,20 @@ public class ViewOwnedBook extends AppCompatActivity {
                 databaseReference.child("author").setValue(newAuthor);
                 databaseReference.child("isbn").setValue(newISBN);
 
-                Toast.makeText(ViewOwnedBook.this, "Changes applied to book." +newTitle, Toast.LENGTH_LONG).show();
+                if(bookImage != null){
+                    FirebaseUser u = mAuth.getCurrentUser();
+
+                    StorageReference bookImageRef =
+                            FirebaseStorage.getInstance().getReference("BookImages").child(key);
+                    bookImageRef.putFile(bookImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(ViewOwnedBook.this, "Image uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                Toast.makeText(ViewOwnedBook.this, "Changes applied to " + newTitle, Toast.LENGTH_LONG).show();
 
                 finish();
 
