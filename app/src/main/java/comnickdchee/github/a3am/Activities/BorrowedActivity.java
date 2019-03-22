@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.R;
 
 /**
@@ -27,6 +28,7 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
 
     FirebaseAuth mAuth;
     EditText emailReg, passwordReg;
+    Backend backend = Backend.getBackendInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

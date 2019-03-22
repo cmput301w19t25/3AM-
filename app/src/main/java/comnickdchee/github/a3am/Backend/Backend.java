@@ -49,6 +49,15 @@ public class Backend {
         return instance;
     }
 
+    /** Add book to the current user model as well as the table. */
+    public void addBook(Book book) {
+        mCurrentUser.addOwnedBook(book);
+        updateCurrentUserData();
+
+        // Add to the "books" table
+        updateBookData(book);
+    }
+
     /** Returns the current user of the model class. */
     public User getCurrentUser() {
         if (mCurrentUser == null) {
@@ -104,8 +113,16 @@ public class Backend {
      */
     public void updateCurrentUserData() {
         String uid = mFirebaseUser.getUid();
-        DatabaseReference usersRef = mFirebaseDatabase.getReference("users").child(uid);
-        usersRef.setValue(mCurrentUser);
+        DatabaseReference userRef = mFirebaseDatabase.getReference("users").child(uid);
+        userRef.setValue(mCurrentUser);
+    }
+
+    /** Updates the book data in the books table. Used in the addBook helper method. */
+    public void updateBookData(Book book) {
+        String bookID = book.getBookID();
+        DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
+        DatabaseReference bookRef = booksRef.child(bookID);
+        bookRef.setValue(book);
     }
 
     /**
@@ -130,7 +147,7 @@ public class Backend {
 
             // Here, we attach a single value event listener to get the value of
             // the requested book
-            currentBookRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            currentBookRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     // Get the book from the "books" table

@@ -52,8 +52,15 @@ public class ActionsFragment extends Fragment {
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
+        // Use the backend singleton to load the requested books,
+        // and then we add the requested books to the list to show on
+        // the fragment's recycler view
+        backend.loadCurrentUserData();
+        backend.loadRequestedBooks();
+        requestedBooksList = backend.getCurrentRequestedBooks();
+
         //Create and return the recyclerView
-        ActionsTabAdapter adapter = new ActionsTabAdapter(getActivity(),data);
+        ActionsTabAdapter adapter = new ActionsTabAdapter(getActivity(), requestedBooksList);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
