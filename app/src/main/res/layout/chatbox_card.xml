@@ -41,13 +41,18 @@
 
         <TextView
             android:id="@+id/tvLastMessage"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="32dp"
             android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="Sample text message"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+
             app:layout_constraintStart_toEndOf="@+id/ivUserPhoto"
             app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
 

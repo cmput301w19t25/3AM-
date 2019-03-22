@@ -46,7 +46,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
 
         // Creates a view based on the mybooks_card.xml
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mybooks_card,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chatbox_card,parent,false);
         MessageRecyclerAdapter.ViewHolder holder  = new MessageRecyclerAdapter.ViewHolder(view);
         return holder;
     }
@@ -66,7 +66,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
         }
 
         holder.tvUsername.setText(users.get(userIndex).getUserName());
-        holder.tvLastMessage.setText(mChatboxes.get(i).getLastMessage().getMessageText());
+        holder.tvLastMessage.setText(mChatboxes.get(i).getLastMessage());
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
 
