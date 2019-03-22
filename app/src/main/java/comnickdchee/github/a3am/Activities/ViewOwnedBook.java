@@ -33,6 +33,7 @@ public class ViewOwnedBook extends AppCompatActivity {
     private FirebaseAuth mAuth;
     ImageView bookImageEditActivity;
     Uri bookImage;
+    String key;
     String DownloadLink;
     private static final int CHOSEN_IMAGE = 69;
     @Override
@@ -56,7 +57,7 @@ public class ViewOwnedBook extends AppCompatActivity {
             }
         });
         Bundle bundle = getIntent().getExtras();
-        String key = bundle.getString("key");
+        key = bundle.getString("key");
         //Downloads the data to get it to our initial view.
         DatabaseReference ref = database.getReference().child("books").child(key);
         ref.addValueEventListener(new ValueEventListener() {
@@ -97,8 +98,21 @@ public class ViewOwnedBook extends AppCompatActivity {
         applyChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ViewOwnedBook.this, "Changes applied to book.", Toast.LENGTH_LONG).show();
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference databaseReference = firebaseDatabase.getReference("books").child(key);
+
+                String newTitle = titleBookEditActivity.getText().toString();
+                String newAuthor = authorBookEditActivity.getText().toString();
+                String newISBN = bookISBNEditActivity.getText().toString();
+
+                databaseReference.child("title").setValue(newTitle);
+                databaseReference.child("author").setValue(newAuthor);
+                databaseReference.child("isbn").setValue(newISBN);
+
+                Toast.makeText(ViewOwnedBook.this, "Changes applied to book." +newTitle, Toast.LENGTH_LONG).show();
+
                 finish();
+
             }
         });
         discardChanges.setOnClickListener(new View.OnClickListener() {
