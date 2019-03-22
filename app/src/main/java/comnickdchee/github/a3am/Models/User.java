@@ -33,6 +33,9 @@ public class User implements IOwner, IBorrower {
         requestedBooks = new ArrayList<Book>();
     }
 
+    /** For acquiring back user class locally from Firebase. */
+    public User() {}
+
     /**
      * Takes a book and user objects
      * Owner accepts request placed by borrower
