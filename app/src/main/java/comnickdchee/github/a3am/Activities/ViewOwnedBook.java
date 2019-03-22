@@ -37,6 +37,7 @@ public class ViewOwnedBook extends AppCompatActivity {
     Uri bookImage;
     String key;
     String DownloadLink;
+    //String hotfixBookNamesInDrawable;
     private static final int CHOSEN_IMAGE = 69;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
