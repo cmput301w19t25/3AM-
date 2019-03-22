@@ -77,6 +77,10 @@ public class Backend {
         mCurrentUser = user;
     }
 
+    public FirebaseUser getFirebaseUser() {
+        return mFirebaseUser;
+    }
+
     /**
      * Class that loads all the current user into the user class referenced
      * by the singleton. Note that this is an asynchronous load, so we change the information

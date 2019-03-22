@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class User implements IOwner, IBorrower {
 
-    private String username;            // unique username
+    private String userName;            // unique username
     private String phoneNumber;
     private String email;
     private String name;
@@ -22,9 +22,9 @@ public class User implements IOwner, IBorrower {
     private Rating rating;                  // wow feature: user rating
 
     /** Ctor */
-    public User(String username, String email, String address,
+    public User(String userName, String email, String address,
          String phoneNumber) {
-        this.username = username;
+        this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.address = address;
@@ -202,7 +202,7 @@ public class User implements IOwner, IBorrower {
      * @param username name user
      */
     public void setUserName(String username) {
-        this.username = username;
+        this.userName = username;
     }
 
     /**
@@ -234,7 +234,7 @@ public class User implements IOwner, IBorrower {
      * @return username of the user
      */
     public String getUserName() {
-        return this.username;
+        return this.userName;
     }
 
     /**
