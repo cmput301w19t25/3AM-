@@ -19,6 +19,7 @@ public class Book implements Parcelable {
     private String author;
     private String image;                   // Stored as URL from firebase storage.
     private String ownerID;
+    private User owner;
     private Status status;
     private ArrayList<String> requests = new ArrayList<>();
     private User currentBorrower;
@@ -52,6 +53,17 @@ public class Book implements Parcelable {
         this.status = Status.Available;
         this.currentBorrower = null;
     }
+
+    public Book(String ISBN, String title, String author, User owner) {
+        this.ISBN = ISBN;
+        this.title = title;
+        this.author = author;
+        this.owner = owner;
+        this.status = Status.Available;
+        this.currentBorrower = null;
+    }
+
+
 
     protected Book(Parcel in) {
         ISBN = in.readString();

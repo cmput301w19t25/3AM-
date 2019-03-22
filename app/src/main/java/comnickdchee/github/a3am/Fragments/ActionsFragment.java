@@ -2,6 +2,7 @@ package comnickdchee.github.a3am.Fragments;
 
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -26,6 +32,10 @@ public class ActionsFragment extends Fragment {
 
     private static final String TAG = "ActionsFragment";
     private ArrayList<Book> data = new ArrayList<>();
+    private FirebaseDatabase mFireBaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference mDatabaseReference = mFireBaseDatabase.getReference();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseUser mCurrentUser = mAuth.getCurrentUser();
 
     public ActionsFragment() {
         // Required empty public constructor
