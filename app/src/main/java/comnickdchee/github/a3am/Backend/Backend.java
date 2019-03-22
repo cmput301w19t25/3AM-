@@ -59,6 +59,16 @@ public class Backend {
     }
 
     /**
+     * Setter for when we need to change the current user class.
+     * Essentially, we want to be able to change the actual user model
+     * outside of the backend class if needed, and call update to
+     * update the table (see updateCurrentUserData).
+     */
+    public void setCurrentUser(User user) {
+        mCurrentUser = user;
+    }
+
+    /**
      * Class that loads all the current user into the user class referenced
      * by the singleton. Note that this is an asynchronous load, so we change the information
      * everytime the information in Firebase changes.
@@ -92,10 +102,10 @@ public class Backend {
      * This allows for pushing requested books and owned books into the users table
      * if they ever get updated.
      */
-    public void updateUserData(User editedUser) {
+    public void updateCurrentUserData() {
         String uid = mFirebaseUser.getUid();
         DatabaseReference usersRef = mFirebaseDatabase.getReference("users").child(uid);
-        usersRef.setValue(editedUser);
+        usersRef.setValue(mCurrentUser);
     }
 
     /**

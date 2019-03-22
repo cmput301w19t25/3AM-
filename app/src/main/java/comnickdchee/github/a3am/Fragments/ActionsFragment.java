@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.ActionsTabAdapter;
+import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
@@ -36,6 +37,8 @@ public class ActionsFragment extends Fragment {
     private DatabaseReference mDatabaseReference = mFireBaseDatabase.getReference();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser mCurrentUser = mAuth.getCurrentUser();
+    private ArrayList<Book> requestedBooksList;
+    Backend backend = Backend.getBackendInstance();
 
     public ActionsFragment() {
         // Required empty public constructor
@@ -46,10 +49,6 @@ public class ActionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_borrowed, container, false);
-
-        //Get the data for recycler view items
-        Bundle args = getArguments();
-        data = (ArrayList<Book>) args.getSerializable("data");
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
