@@ -105,10 +105,10 @@ public class MyBooksFragment extends Fragment {
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        BookRecyclerAdapter updatedAdapter = new BookRecyclerAdapter(getActivity(), orderedList);
-
                         // Clear the sorted list before adding
                         orderedList.clear();
+
+                        BookRecyclerAdapter updatedAdapter = new BookRecyclerAdapter(getActivity(), orderedList);
 
                         switch (menuItem.getItemId()){
                             case R.id.item2:
@@ -159,7 +159,6 @@ public class MyBooksFragment extends Fragment {
                                         orderedList.add(orderedBook);
                                     }
                                 }
-
                                 // Bind to adapter and show results
                                 recyclerView.setAdapter(updatedAdapter);
                                 updatedAdapter.notifyDataSetChanged();
