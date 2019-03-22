@@ -262,6 +262,7 @@ public class MyBooksFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("MyBooks","Recyclerview notified");
         adapter.notifyDataSetChanged();
     }
     */

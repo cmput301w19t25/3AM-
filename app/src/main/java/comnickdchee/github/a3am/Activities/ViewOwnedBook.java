@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -33,7 +35,9 @@ public class ViewOwnedBook extends AppCompatActivity {
     private FirebaseAuth mAuth;
     ImageView bookImageEditActivity;
     Uri bookImage;
+    String key;
     String DownloadLink;
+    //String hotfixBookNamesInDrawable;
     private static final int CHOSEN_IMAGE = 69;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +60,7 @@ public class ViewOwnedBook extends AppCompatActivity {
             }
         });
         Bundle bundle = getIntent().getExtras();
-        String key = bundle.getString("key");
+        key = bundle.getString("key");
         //Downloads the data to get it to our initial view.
         DatabaseReference ref = database.getReference().child("books").child(key);
         ref.addValueEventListener(new ValueEventListener() {
@@ -97,8 +101,34 @@ public class ViewOwnedBook extends AppCompatActivity {
         applyChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ViewOwnedBook.this, "Changes applied to book.", Toast.LENGTH_LONG).show();
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference databaseReference = firebaseDatabase.getReference("books").child(key);
+
+                String newTitle = titleBookEditActivity.getText().toString();
+                String newAuthor = authorBookEditActivity.getText().toString();
+                String newISBN = bookISBNEditActivity.getText().toString();
+
+                databaseReference.child("title").setValue(newTitle);
+                databaseReference.child("author").setValue(newAuthor);
+                databaseReference.child("isbn").setValue(newISBN);
+
+                if(bookImage != null){
+                    FirebaseUser u = mAuth.getCurrentUser();
+
+                    StorageReference bookImageRef =
+                            FirebaseStorage.getInstance().getReference("BookImages").child(key);
+                    bookImageRef.putFile(bookImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(ViewOwnedBook.this, "Image uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                Toast.makeText(ViewOwnedBook.this, "Changes applied to " + newTitle, Toast.LENGTH_LONG).show();
+
                 finish();
+
             }
         });
         discardChanges.setOnClickListener(new View.OnClickListener() {
