@@ -8,8 +8,7 @@
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
     android:fitsSystemWindows="true"
-    tools:context=".Activities.HomepageActivity"
->
+    tools:context=".Activities.HomepageActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

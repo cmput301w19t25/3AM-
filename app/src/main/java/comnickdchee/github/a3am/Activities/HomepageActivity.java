@@ -50,7 +50,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * @author Asma, Ismaeel, Nicholas, Tatenda & Zaheen
- * HomePageActivity extends AppCompatActivity
+ * HomePageActivity exteTnds AppCompatActivity
  * HomePageActivity implements NavigationView.onNavigationItemSelectedListener
  * @see AppCompatActivity
  */

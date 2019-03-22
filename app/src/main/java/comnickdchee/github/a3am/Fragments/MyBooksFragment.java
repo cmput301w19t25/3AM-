@@ -8,11 +8,17 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,10 +33,14 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import comnickdchee.github.a3am.Activities.NewBookActivity;
 import comnickdchee.github.a3am.Adapters.BookRecyclerAdapter;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -46,6 +56,12 @@ public class MyBooksFragment extends Fragment {
     private BookRecyclerAdapter adapter;
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseAuth mAuth;
+
+    ///new filter button added
+    private Button filter;
+    //list for filtering
+    private ArrayList<Book> orderedList;
+
 
     @Nullable
     @Override
@@ -73,6 +89,90 @@ public class MyBooksFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+        //Pop up menu for book filtering
+        //code for filtering application
+        orderedList = new ArrayList<>();
+        filter = view.findViewById(R.id.filterbtn);
+        filter.setSoundEffectsEnabled(false);
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(view.getContext(), filter);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        // Clear the sorted list before adding
+                        orderedList.clear();
+
+                        BookRecyclerAdapter updatedAdapter = new BookRecyclerAdapter(getActivity(), orderedList);
+
+                        switch (menuItem.getItemId()){
+                            case R.id.item2:
+                                for (Book orderedBook : BookList) {
+                                    if (orderedBook.getStatus() == Status.Available) {
+                                        orderedList.add(orderedBook);
+                                    }
+                                }
+
+                                // Bind to adapter and show results
+                                recyclerView.setAdapter(updatedAdapter);
+                                updatedAdapter.notifyDataSetChanged();
+
+                                return true;
+
+                            case R.id.item3:
+                                for (Book orderedBook : BookList) {
+                                    if (orderedBook.getStatus() == Status.Borrowed) {
+                                        orderedList.add(orderedBook);
+                                    }
+                                }
+
+                                // Bind to adapter and show results
+                                recyclerView.setAdapter(updatedAdapter);
+                                updatedAdapter.notifyDataSetChanged();
+
+                                return true;
+
+                            case R.id.item4:
+
+                                for (Book orderedBook : BookList) {
+                                    if (orderedBook.getStatus() == Status.Requested) {
+                                        orderedList.add(orderedBook);
+                                    }
+                                }
+
+                                // Bind to adapter and show results
+                                recyclerView.setAdapter(updatedAdapter);
+                                updatedAdapter.notifyDataSetChanged();
+
+                                return true;
+
+
+                            case R.id.item5:
+
+                                for (Book orderedBook : BookList) {
+                                    if (orderedBook.getStatus() == Status.Accepted) {
+                                        orderedList.add(orderedBook);
+                                    }
+                                }
+                                // Bind to adapter and show results
+                                recyclerView.setAdapter(updatedAdapter);
+                                updatedAdapter.notifyDataSetChanged();
+
+                                return true;
+
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popupMenu.show();
+            }
+        });
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -157,10 +257,15 @@ public class MyBooksFragment extends Fragment {
     }
 
 
+    /**
+     * Fired after Add Book Activity has finished.
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("MyBooks","Recyclerview notified");
         adapter.notifyDataSetChanged();
     }
+    */
+
 
 }

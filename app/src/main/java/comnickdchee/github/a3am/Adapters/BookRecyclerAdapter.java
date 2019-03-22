@@ -58,7 +58,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(BookRecyclerAdapter.ViewHolder holder, final int i) {
+    public void onBindViewHolder(BookRecyclerAdapter.ViewHolder holder, int i) {
         Log.d(TAG, "onBindViewHolder: called.");
 
         // one file that contains a bunch of conditions for making a recycler view.
@@ -83,10 +83,11 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
         holder.actionsItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked on: " + mBooks.get(i));
+                // Log.d(TAG, "onClick: clicked on: " + mBooks.get(i));
                 //Intent i = new Intent()
+                int currentPos = holder.getAdapterPosition();
                 Intent intent = new Intent(mContext, ViewOwnedBook.class);
-                intent.putExtra("key", mBooks.get(i).getImage());
+                intent.putExtra("key", mBooks.get(currentPos).getImage());
                 mContext.startActivity(intent);
             }
         });
