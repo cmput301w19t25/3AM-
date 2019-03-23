@@ -50,6 +50,7 @@ public class Backend {
 
     /** Get the actual instance of the backend class. */
     public static Backend getBackendInstance() {
+        loadCurrentUserData();
         return instance;
     }
 
@@ -59,7 +60,6 @@ public class Backend {
      * the actual
      */
     public void addBook(Book book) {
-        loadCurrentUserData();
         // Push book to "books" table in database
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
         DatabaseReference bookRef = booksRef.push();
@@ -104,7 +104,7 @@ public class Backend {
      * by the singleton. Note that this is an asynchronous load, so we change the information
      * everytime the information in Firebase changes.
      */
-    public void loadCurrentUserData() {
+    public static void loadCurrentUserData() {
         if (mFirebaseUser != null) {
             // Get the actual contents of the user class
             String uid = mFirebaseUser.getUid();
@@ -159,10 +159,10 @@ public class Backend {
         loadCurrentUserData();
 
         // Then, get the bookIds from the current user model object
-        final ArrayList<String> ownedBookIDs = mCurrentUser.getOwnedBookList();
+        final ArrayList<String> ownedBookIDs = mCurrentUser.getOwnedBooks();
 
         // We set the requested books at the end to this
-        final ArrayList<Book> requestedBooks = new ArrayList<>();
+        final ArrayList<Book> requestedBooks = mCurrentRequestedBooks;
 
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
         DatabaseReference usersRef = mFirebaseDatabase.getReference("users");

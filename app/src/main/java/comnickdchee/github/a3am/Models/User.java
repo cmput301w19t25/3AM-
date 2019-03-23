@@ -28,9 +28,25 @@ public class User implements IOwner, IBorrower {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.address = address;
+    }
 
-        ownedBooks = new ArrayList<String>();
-        requestedBooks = new ArrayList<String>();
+    public User(String userName, String email, String address,
+                String phoneNumber, ArrayList<String> ownedBooks) {
+        this.userName = userName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
+        this.ownedBooks = ownedBooks;
+    }
+
+    public User(String userName, String email, String address,
+                String phoneNumber, ArrayList<String> ownedBooks, ArrayList<String> requestedBooks) {
+        this.userName = userName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
+        this.ownedBooks = ownedBooks;
+        this.requestedBooks = requestedBooks;
     }
 
     /** For acquiring back user class locally from Firebase. */
@@ -156,13 +172,13 @@ public class User implements IOwner, IBorrower {
     public void setImage(Book bookID, Image image) {
     }
 
-    public ArrayList<Exchange> getExchangeList() {
+    public ArrayList<Exchange> getExchanges() {
         return exchanges;
     }
-    public ArrayList<String> getOwnedBookList() {
+    public ArrayList<String> getOwnedBooks() {
         return ownedBooks;
     }
-    public ArrayList<String> getRequestedBooksList() {
+    public ArrayList<String> getRequestedBooks() {
         return requestedBooks;
     }
 
