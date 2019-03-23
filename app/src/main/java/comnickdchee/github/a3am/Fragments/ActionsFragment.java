@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.ActionsTabAdapter;
 import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Backend.BookListCallback;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
@@ -37,7 +38,7 @@ public class ActionsFragment extends Fragment {
     private DatabaseReference mDatabaseReference = mFireBaseDatabase.getReference();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser mCurrentUser = mAuth.getCurrentUser();
-    private ArrayList<Book> requestedBooksList;
+    private ArrayList<Book> requestedBooksList = new ArrayList<>();
     Backend backend = Backend.getBackendInstance();
 
     public ActionsFragment() {
@@ -63,17 +64,24 @@ public class ActionsFragment extends Fragment {
          */
 
         // Add the book using the user data and update the tables
-        Book testBook = new Book("12345", "Harry Potter", "JK Rowling", backend.getFirebaseUser().getUid());
-        backend.addBook(testBook);
-
-        backend.loadRequestedBooks();
-        requestedBooksList = backend.getCurrentRequestedBooks();
+//        Book testBook = new Book("12345", "Harry Potter", "JK Rowling", backend.getFirebaseUser().getUid());
+//        backend.addBook(testBook);
 
         //Create and return the recyclerView
         ActionsTabAdapter adapter = new ActionsTabAdapter(getActivity(), requestedBooksList);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        backend.loadRequestedBooks(new BookListCallback() {
+            @Override
+            public void onCallback(ArrayList<Book> books) {
+                requestedBooksList.clear();
+                requestedBooksList.addAll(books);
+                adapter.notifyDataSetChanged();
+                Log.d("dapteraawas asdfasf", "onCallback: adapateradfasdfasd");
+            }
+        });
 
         Log.d(TAG, "onCreateView: Finished View");
         return view;

@@ -154,7 +154,7 @@ public class Backend {
      * current user's array list, and find the actual references
      * in the book table.
      */
-    public void loadRequestedBooks() {
+    public void loadRequestedBooks(final BookListCallback requestedCallback) {
         // First, get the current user data
         loadCurrentUserData();
 
@@ -162,7 +162,7 @@ public class Backend {
         final ArrayList<String> ownedBookIDs = mCurrentUser.getOwnedBooks();
 
         // We set the requested books at the end to this
-        final ArrayList<Book> requestedBooks = mCurrentRequestedBooks;
+        final ArrayList<Book> requestedBooks = new ArrayList<>();
 
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
         DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
@@ -178,7 +178,6 @@ public class Backend {
                     // Check if the status is requested; if so, add it to the requested books
                     if (ownedBook != null) {
                         if (ownedBook.getStatus() == Status.Requested) {
-
                             ArrayList<String> requesterIDs = ownedBook.getRequests();
                             final ArrayList<User> actualRequesters = new ArrayList<>();
 
@@ -198,12 +197,13 @@ public class Backend {
                                     }
                                 });
                             }
+                            // Add the requested books here
+                            requestedBooks.add(ownedBook);
+                            setCurrentRequestedBooks(requestedBooks);
                         }
                     }
+                    requestedCallback.onCallback(requestedBooks);
 
-                    // Add the requested books here
-                    requestedBooks.add(ownedBook);
-                    setCurrentRequestedBooks(requestedBooks);
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
