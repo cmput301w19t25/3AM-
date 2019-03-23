@@ -28,6 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,6 +42,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Barcode.GoogleAPIBooks;
@@ -56,8 +59,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 public class NewBookActivity extends AppCompatActivity {
     ProgressDialog pd;
@@ -201,7 +206,7 @@ public class NewBookActivity extends AppCompatActivity {
 
     }
 
-    private class JsonTask extends AsyncTask<String, String, String> {
+    private class JsonTask extends AsyncTask<String, String, ArrayList<String>> {
 
         protected void onPreExecute() {
             super.onPreExecute();
@@ -212,9 +217,10 @@ public class NewBookActivity extends AppCompatActivity {
             pd.show();
         }
 
-        protected String doInBackground(String... params) {
+        protected ArrayList<String> doInBackground(String... params) {
 
-
+            JSONObject json = new JSONObject();
+            final int n;
             HttpURLConnection connection = null;
             BufferedReader reader = null;
 
@@ -233,40 +239,75 @@ public class NewBookActivity extends AppCompatActivity {
 
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line+"\n");
-                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
+                    //Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
 
                 }
 
-                return buffer.toString();
-
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
                 try {
-                    if (reader != null) {
-                        reader.close();
-                    }
-                } catch (IOException e) {
+                    json = new JSONObject(buffer.toString());
+                    JSONArray items = json.getJSONArray("items");
+                    //Log.d("ItemLength: ", "> " + buffer.toString());
+                    JSONObject book = items.getJSONObject(0);
+                    JSONObject volumeInfo = book.getJSONObject("volumeInfo");
+                    String title = volumeInfo.getString("title");
+                    String authors = volumeInfo.getString("authors");
+                    Log.d("TITLE IS", "doInBackground: " + title);
+                    Log.d("AUTHOR IS", "doInBackground: " + authors);
+                    ArrayList<String> results = new ArrayList<>();
+
+                    results.add(title);
+                    results.add(authors);
+                    return results;
+
+
+                } catch (JSONException e) {
+                    Log.e("Failed: ", "> LMAO ");
                     e.printStackTrace();
                 }
-            }
-            return null;
+
+
+                } catch (MalformedURLException e) {
+                Log.e("MalformedURLException: ", "> ");
+                    e.printStackTrace();
+                } catch (IOException e) {
+                Log.e("IOException: ", "> ");
+                    e.printStackTrace();
+                } finally {
+                Log.d("finally: ", "> ");
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+                    try {
+                        if (reader != null) {
+                            reader.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Log.e("End: ", "> ");
+                return null;
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(ArrayList<String> result) {
+
             super.onPostExecute(result);
+
             if (pd.isShowing()){
                 pd.dismiss();
             }
-            //txtJson.setText(result);
-            Log.d("Response: ", "> " + result);   //here u ll get whole response...... :-)
+            Log.d("OnPostExecute: ", "Title = " + result.get(0));
+            Log.d("OnPostExecute: ", "Authors = " + result.get(1));
+            bookTitleText.setText(result.get(0));
+            String authorList = result.get(1).replace("\"","")
+                    .replaceAll("\\[","").replaceAll("\\]","")
+                    .replaceAll(","," , ");
+            bookAuthorText.setText(authorList);
+            //String title = json.getString("title");
+
+
+               //here u ll get whole response...... :-)
         }
     }
 }
