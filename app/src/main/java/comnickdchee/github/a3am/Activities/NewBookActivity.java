@@ -60,6 +60,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -124,18 +125,11 @@ public class NewBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //ISBN : 9780773547971 --> Should give book title : "Promise and Challenge of Party Primary Elections"
-                String isbn = "9780773547971";
-                String urlISBN = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
+
                 Intent intent = new Intent(NewBookActivity.this, BarcodeScanner.class);
                 startActivityForResult(intent,ISBN_READ);
 
-                try {
-                    URL url = new URL(urlISBN);
-                    new JsonTask().execute(urlISBN);
 
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
 
             }
         });
@@ -167,6 +161,15 @@ public class NewBookActivity extends AppCompatActivity {
         if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
             String isbn = data.getStringExtra("isbn");
             Log.d("ISBN Retrieved", isbn);
+            String urlISBN = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
+            try {
+                URL url = new URL(urlISBN);
+                new JsonTask().execute(urlISBN);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            bookISBNText.setText(isbn);
         }
     }
 
@@ -255,8 +258,12 @@ public class NewBookActivity extends AppCompatActivity {
                 }
 
                 try {
+                    ArrayList<String> results = new ArrayList<>();
                     json = new JSONObject(buffer.toString());
                     JSONArray items = json.getJSONArray("items");
+                    if (json.isNull("items")) {
+                        return results;
+                    }
                     //Log.d("ItemLength: ", "> " + buffer.toString());
                     JSONObject book = items.getJSONObject(0);
                     JSONObject volumeInfo = book.getJSONObject("volumeInfo");
@@ -264,7 +271,7 @@ public class NewBookActivity extends AppCompatActivity {
                     String authors = volumeInfo.getString("authors");
                     Log.d("TITLE IS", "doInBackground: " + title);
                     Log.d("AUTHOR IS", "doInBackground: " + authors);
-                    ArrayList<String> results = new ArrayList<>();
+
 
                     results.add(title);
                     results.add(authors);
@@ -308,13 +315,18 @@ public class NewBookActivity extends AppCompatActivity {
             if (pd.isShowing()){
                 pd.dismiss();
             }
-            Log.d("OnPostExecute: ", "Title = " + result.get(0));
-            Log.d("OnPostExecute: ", "Authors = " + result.get(1));
-            bookTitleText.setText(result.get(0));
-            String authorList = result.get(1).replace("\"","")
-                    .replaceAll("\\[","").replaceAll("\\]","")
-                    .replaceAll(","," , ");
-            bookAuthorText.setText(authorList);
+            if (result != null){
+                bookTitleText.setText(result.get(0));
+                String authorList = result.get(1).replace("\"","")
+                        .replaceAll("\\[","").replaceAll("\\]","")
+                        .replaceAll(","," , ");
+                bookAuthorText.setText(authorList);
+            }
+            else
+            {
+                Toast.makeText(NewBookActivity.this, "No books found with this ISBN", Toast.LENGTH_SHORT).show();
+            }
+
             //String title = json.getString("title");
 
 
