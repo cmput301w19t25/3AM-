@@ -43,7 +43,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Scanner;
 
+import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Barcode.GoogleAPIBooks;
 import comnickdchee.github.a3am.R;
@@ -67,6 +69,7 @@ import org.json.JSONStringer;
 public class NewBookActivity extends AppCompatActivity {
     ProgressDialog pd;
     private static final int CHOSEN_IMAGE = 69;
+    private static final int ISBN_READ = 42;
     Uri bookImage;
     ImageView img;
     // text fields that user entered
@@ -123,6 +126,9 @@ public class NewBookActivity extends AppCompatActivity {
                 //ISBN : 9780773547971 --> Should give book title : "Promise and Challenge of Party Primary Elections"
                 String isbn = "9780773547971";
                 String urlISBN = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
+                Intent intent = new Intent(NewBookActivity.this, BarcodeScanner.class);
+                startActivityForResult(intent,ISBN_READ);
+
                 try {
                     URL url = new URL(urlISBN);
                     new JsonTask().execute(urlISBN);
@@ -147,7 +153,7 @@ public class NewBookActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-
+        Log.d("ACTIVITY RESULT", "onActivityResult: CALLED");
         if(requestCode == CHOSEN_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null){
             bookImage = data.getData();
             try {
@@ -156,6 +162,11 @@ public class NewBookActivity extends AppCompatActivity {
             } catch (IOException e){
                 e.printStackTrace();
             }
+        }
+
+        if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
+            String isbn = data.getStringExtra("isbn");
+            Log.d("ISBN Retrieved", isbn);
         }
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="comnickdchee.github.a3am">
-
+    <uses-permission android:name="android.permission.CAMERA" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,8 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+
         <activity android:name=".Activities.ViewOwnedBook"></activity>
         <activity android:name=".Activities.RequestBookActivity"></activity>
+        <activity android:name=".Barcode.BarcodeScanner"></activity>
         <provider
             android:name=".MySuggestionProvider"
             android:authorities="comnickdchee.github.a3am.MySuggestionProvider"
