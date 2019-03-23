@@ -16,6 +16,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.Exchange;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
 
@@ -51,7 +52,6 @@ public class Backend {
 
     /** Get the actual instance of the backend class. */
     public static Backend getBackendInstance() {
-        loadCurrentUserData();
         return instance;
     }
 
@@ -149,8 +149,31 @@ public class Backend {
         bookRef.setValue(book);
     }
 
+    /**
+     * Updates the current exchange in the Firebase database table when a transaction
+     * has been completed (one of borrowing and returning.
+     */
+    public void updateExchange(Exchange exchange) {
+    }
+
+    /** Overwrite the data of the original book
+     with the new book in Firebase. */
+    private void updateRequests(Book book) {
+        DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
+
+        // Change this if its status is available
+        if (book.getStatus().equals(Status.Available)) {
+            book.setStatus(Status.Requested);
+        }
+
+        // Add the user key to requests.
+        book.addRequest(mFirebaseUser.getUid());
+
+        updateBookData(book);
+    }
+
     /** Gets the current requesters for a given book by retrieving data from firebase
-     * using a callback/listener. */
+     * using a callback/listener. This is used for the requester activity. */
     public void getRequesters(Book book, final UserListCallback requestersCallback) {
         final ArrayList<User> requesters = new ArrayList<>();
 
@@ -211,6 +234,7 @@ public class Backend {
                             if (book != null) {
                                 // Get the requester user data from the book requested list
                                 if (book.getStatus() == Status.Requested) {
+                                    // Add to the book
                                     requestedBooks.add(book);
                                 }
                             }
