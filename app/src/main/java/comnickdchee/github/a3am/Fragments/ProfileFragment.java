@@ -52,7 +52,7 @@ public class ProfileFragment extends Fragment {
         String userEmail = mAuth.getCurrentUser().getEmail();
         final View view = inflater.inflate(R.layout.fragment_profile, container, false);
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child(userEmail+"/"+"dp"+ ".jpg");
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(mAuth.getUid()+".jpg");
         Log.d("Ref","Image gotten");
         //Gets the textView fields
         TextView ProfileName = (TextView)view.findViewById(R.id.userNameFragmentProfile);
