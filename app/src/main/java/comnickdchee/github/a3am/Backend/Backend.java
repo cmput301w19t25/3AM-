@@ -52,6 +52,7 @@ public class Backend {
 
     /** Get the actual instance of the backend class. */
     public static Backend getBackendInstance() {
+        loadCurrentUserData();
         return instance;
     }
 
@@ -156,9 +157,13 @@ public class Backend {
     public void updateExchange(Exchange exchange) {
     }
 
-    /** Overwrite the data of the original book
-     with the new book in Firebase. */
-    private void updateRequests(Book book) {
+    /**
+     * Overwrite the data of the original book with the new data
+     * when a user requests a book, and updates this in Firebase.
+     */
+    public void updateRequests(Book book) {
+        String uid = mFirebaseUser.getUid();
+
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
 
         // Change this if its status is available
@@ -166,9 +171,16 @@ public class Backend {
             book.setStatus(Status.Requested);
         }
 
-        // Add the user key to requests.
-        book.addRequest(mFirebaseUser.getUid());
+        // If the book doesn't contain the uid, we add it
+        if (!book.getRequests().contains(uid)) {
+            book.addRequest(uid);
+        }
 
+        // Add the bookID to the current user's request list
+        mCurrentUser.addRequestedBook(book);
+
+        // Update actual data in Firebase
+        updateCurrentUserData();
         updateBookData(book);
     }
 
@@ -230,7 +242,6 @@ public class Backend {
                         if (data.getKey().equals(bookID)) {
                             // Fetch book object from Firebase
                             Book book = data.getValue(Book.class);
-
                             if (book != null) {
                                 // Get the requester user data from the book requested list
                                 if (book.getStatus() == Status.Requested) {
