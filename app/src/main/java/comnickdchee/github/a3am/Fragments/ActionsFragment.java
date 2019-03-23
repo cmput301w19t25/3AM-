@@ -73,7 +73,7 @@ public class ActionsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        backend.loadRequestedBooks(new BookListCallback() {
+        backend.getRequestedBooks(new BookListCallback() {
             @Override
             public void onCallback(ArrayList<Book> books) {
                 requestedBooksList.clear();

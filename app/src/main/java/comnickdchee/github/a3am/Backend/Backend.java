@@ -1,5 +1,6 @@
 package comnickdchee.github.a3am.Backend;
 
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -154,9 +155,7 @@ public class Backend {
      * current user's array list, and find the actual references
      * in the book table.
      */
-    public void loadRequestedBooks(final BookListCallback requestedCallback) {
-        // First, get the current user data
-        loadCurrentUserData();
+    public void getRequestedBooks(final BookListCallback requestedBooksCallback) {
 
         // Then, get the bookIds from the current user model object
         final ArrayList<String> ownedBookIDs = mCurrentUser.getOwnedBooks();
@@ -167,49 +166,29 @@ public class Backend {
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
         DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
 
-        // Iterate through the owned bookIDs and add ValueEventListeners to grab books
-        // that are being requested by the user
-        for (String ownedBookID : ownedBookIDs) {
-            booksRef.child(ownedBookID).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Book ownedBook = dataSnapshot.getValue(Book.class);
-
-                    // Check if the status is requested; if so, add it to the requested books
-                    if (ownedBook != null) {
-                        if (ownedBook.getStatus() == Status.Requested) {
-                            ArrayList<String> requesterIDs = ownedBook.getRequests();
-                            final ArrayList<User> actualRequesters = new ArrayList<>();
-
-                            // Iterate through requesters and get the actual user data
-                            for (String requesterID : requesterIDs) {
-                                usersRef.child(requesterID).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        // Bind everything to the arrays
-                                        User requester = dataSnapshot.getValue(User.class);
-                                        actualRequesters.add(requester);
-                                        ownedBook.setRequestUsers(actualRequesters);
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    }
-                                });
+        booksRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                requestedBooks.clear();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    for (String bookID : ownedBookIDs) {
+                        if (data.getKey().equals(bookID)) {
+                            Book book = data.getValue(Book.class);
+                            if (book.getStatus() == Status.Requested) {
+                                requestedBooks.add(book);
                             }
-                            // Add the requested books here
-                            requestedBooks.add(ownedBook);
-                            setCurrentRequestedBooks(requestedBooks);
                         }
                     }
-                    requestedCallback.onCallback(requestedBooks);
+                }
+                requestedBooksCallback.onCallback(requestedBooks);
+            }
 
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     /** Helper that sets the current requested books to the array list. */
