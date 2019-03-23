@@ -109,9 +109,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans"
-                android:paddingLeft="4dp"
+                android:paddingLeft="8dp"
                 android:paddingTop="4dp"
-                android:paddingRight="0dp"
+                android:paddingRight="8dp"
                 android:text="Description"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
@@ -127,8 +127,8 @@
                 android:id="@+id/tvViewBookDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean gravida pharetra convallis. Cras eu bibendum massa, ut feugiat augue. Curabitur eu nulla in purus egestas sodales. Mauris porttitor rutrum arcu, quis elementum mauris iaculis ac. Phasellus ut laoreet dolor. Vestibulum dignissim tristique quam vitae facilisis. Duis quam ligula, pharetra eget luctus a, porttitor sit amet tellus. Pellentesque ut lorem sed purus imperdiet tempor vel non justo. Quisque in ligula ultricies, hendrerit arcu sed, laoreet nunc. Duis facilisis, elit non efficitur mollis, elit ex pellentesque erat, ut cursus velit nibh non nisl. Etiam tristique aliquet diam non accumsan. Nullam volutpat ex nisi, vel laoreet lacus finibus nec. "
                 android:textColor="@color/dark_grey_default" />
 
@@ -137,8 +137,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
                 android:text="Requests"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 

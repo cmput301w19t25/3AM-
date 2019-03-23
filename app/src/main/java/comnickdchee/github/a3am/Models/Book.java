@@ -71,7 +71,6 @@ public class Book implements Parcelable {
         title = in.readString();
         author = in.readString();
         bookID = in.readString();
-        ownerID = in.readString();
         status = Status.valueOf(in.readString());
         in.readList(requests, null);
         ownerID = in.readString();
@@ -243,7 +242,6 @@ public class Book implements Parcelable {
         parcel.writeString(title);
         parcel.writeString(author);
         parcel.writeString(bookID);
-        parcel.writeString(ownerID);
         parcel.writeString(status.name());
         parcel.writeList(requests);
         parcel.writeString(ownerID);

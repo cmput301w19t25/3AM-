@@ -19,10 +19,10 @@ import comnickdchee.github.a3am.R;
 public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.ViewHolder>{
 
     // private ArrayList<User> requesters;
-    private ArrayList<String> requesters;   // TODO: Change this so that it take in users instead.
+    private ArrayList<User> requesters;   // TODO: Change this so that it take in users instead.
     private Context mContext;
 
-    public RequestersAdapter(Context _context, ArrayList<String> _requesters) {
+    public RequestersAdapter(Context _context, ArrayList<User> _requesters) {
         this.mContext = _context;
         this.requesters = _requesters;
     }
@@ -39,7 +39,7 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull RequestersAdapter.ViewHolder viewHolder, final int i) {
-        viewHolder.requesterName.setText(requesters.get(i));
+        viewHolder.requesterName.setText(requesters.get(i).getUserName());
 
         // attach on click listener to each view of requesters' action buttons
         viewHolder.acceptRequestView.setOnClickListener(new View.OnClickListener() {
