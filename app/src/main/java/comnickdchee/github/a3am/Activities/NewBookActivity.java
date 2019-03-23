@@ -1,9 +1,12 @@
 package comnickdchee.github.a3am.Activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
+import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -12,15 +15,20 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.load.data.HttpUrlFetcher;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -29,23 +37,65 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+
 import com.google.firebase.storage.UploadTask;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Scanner;
 
+import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Barcode.GoogleAPIBooks;
 import comnickdchee.github.a3am.R;
 
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.util.SparseArray;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+
 public class NewBookActivity extends AppCompatActivity {
+    ProgressDialog pd;
     private static final int CHOSEN_IMAGE = 69;
+    private static final int ISBN_READ = 42;
     Uri bookImage;
     ImageView img;
     // text fields that user entered
     private TextInputEditText bookTitleText;
     private TextInputEditText bookAuthorText;
     private TextInputEditText bookISBNText;
+
+    // close or finish activity buttons
+    private ImageView closeButton;
+    private ImageView addButton;
+    private FloatingActionButton cameraButton;
+
     private ProgressBar mProgressbar;
+
     // Firebase references to use for saving to database
     private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -63,8 +113,9 @@ public class NewBookActivity extends AppCompatActivity {
         img = (ImageView) findViewById(R.id.ivAddBookPhoto);
         mProgressbar = findViewById(R.id.progressBar2);
 
-        ImageView closeButton = findViewById(R.id.ivCloseButton);
-        ImageView addButton = findViewById(R.id.ivFinishAddButton);
+        closeButton = findViewById(R.id.ivCloseButton);
+        addButton = findViewById(R.id.ivFinishAddButton);
+        cameraButton = findViewById(R.id.fabISBN);
 
         closeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -83,6 +134,19 @@ public class NewBookActivity extends AppCompatActivity {
             }
         });
 
+        cameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //ISBN : 9780773547971 --> Should give book title : "Promise and Challenge of Party Primary Elections"
+
+                Intent intent = new Intent(NewBookActivity.this, BarcodeScanner.class);
+                startActivityForResult(intent,ISBN_READ);
+
+
+
+            }
+        });
+
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,7 +160,7 @@ public class NewBookActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-
+        Log.d("ACTIVITY RESULT", "onActivityResult: CALLED");
         if(requestCode == CHOSEN_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null){
             bookImage = data.getData();
             try {
@@ -105,6 +169,20 @@ public class NewBookActivity extends AppCompatActivity {
             } catch (IOException e){
                 e.printStackTrace();
             }
+        }
+
+        if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
+            String isbn = data.getStringExtra("isbn");
+            Log.d("ISBN Retrieved", isbn);
+            String urlISBN = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
+            try {
+                URL url = new URL(urlISBN);
+                new JsonTask().execute(urlISBN);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            bookISBNText.setText(isbn);
         }
     }
 
@@ -179,4 +257,120 @@ public class NewBookActivity extends AppCompatActivity {
 
     }
 
+    private class JsonTask extends AsyncTask<String, String, ArrayList<String>> {
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            pd = new ProgressDialog(NewBookActivity.this);
+            pd.setMessage("Please wait");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        protected ArrayList<String> doInBackground(String... params) {
+
+            JSONObject json = new JSONObject();
+            final int n;
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+
+            try {
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+
+                InputStream stream = connection.getInputStream();
+
+                reader = new BufferedReader(new InputStreamReader(stream));
+
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
+
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line+"\n");
+                    //Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
+
+                }
+
+                try {
+                    ArrayList<String> results = new ArrayList<>();
+                    json = new JSONObject(buffer.toString());
+                    JSONArray items = json.getJSONArray("items");
+                    if (json.isNull("items")) {
+                        return results;
+                    }
+                    //Log.d("ItemLength: ", "> " + buffer.toString());
+                    JSONObject book = items.getJSONObject(0);
+                    JSONObject volumeInfo = book.getJSONObject("volumeInfo");
+                    String title = volumeInfo.getString("title");
+                    String authors = volumeInfo.getString("authors");
+                    Log.d("TITLE IS", "doInBackground: " + title);
+                    Log.d("AUTHOR IS", "doInBackground: " + authors);
+
+
+                    results.add(title);
+                    results.add(authors);
+                    return results;
+
+
+                } catch (JSONException e) {
+                    Log.e("Failed: ", "> LMAO ");
+                    e.printStackTrace();
+                }
+
+
+                } catch (MalformedURLException e) {
+                Log.e("MalformedURLException: ", "> ");
+                    e.printStackTrace();
+                } catch (IOException e) {
+                Log.e("IOException: ", "> ");
+                    e.printStackTrace();
+                } finally {
+                Log.d("finally: ", "> ");
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+                    try {
+                        if (reader != null) {
+                            reader.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Log.e("End: ", "> ");
+                return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> result) {
+
+            super.onPostExecute(result);
+
+            if (pd.isShowing()){
+                pd.dismiss();
+            }
+            if (result != null){
+                bookTitleText.setText(result.get(0));
+                String authorList = result.get(1).replace("\"","")
+                        .replaceAll("\\[","").replaceAll("\\]","")
+                        .replaceAll(","," , ");
+                bookAuthorText.setText(authorList);
+            }
+            else
+            {
+                Toast.makeText(NewBookActivity.this, "No books found with this ISBN", Toast.LENGTH_SHORT).show();
+            }
+
+            //String title = json.getString("title");
+
+
+               //here u ll get whole response...... :-)
+        }
+    }
 }
+
+
+
