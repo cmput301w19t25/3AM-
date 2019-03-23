@@ -14,7 +14,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
+import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 
 /**
@@ -72,11 +76,19 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
+        //Get token
+        String current_token = FirebaseInstanceId.getInstance().getToken();
+        Log.d("Token", current_token);
+        //Set Token
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference();
+
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-
+                    String uid = mAuth.getCurrentUser().getUid();
+                    databaseReference.child("users").child(uid).child("token").setValue(current_token);
                     Intent intent = new Intent(BorrowedActivity.this, HomepageActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);

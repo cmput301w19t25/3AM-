@@ -142,6 +142,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             Log.d("Donkey","Work pls..");
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(getApplicationContext(), "Successful Registration.", Toast.LENGTH_LONG).show();
+
                             uploadImageToFirebase();
                             mAuth.signOut();
                             finish();
@@ -209,6 +210,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         // inside the user class
         if (mAuth.getCurrentUser() != null) {
             //CHECKING FOR UNIQUE USERNAME.
+
             User user = new User(username, email, addR, phoneN);
             String uid = mAuth.getCurrentUser().getUid();
             databaseReference.child("users").child(uid).setValue(user);
