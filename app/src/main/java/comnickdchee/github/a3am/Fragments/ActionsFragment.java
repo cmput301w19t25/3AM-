@@ -66,8 +66,8 @@ public class ActionsFragment extends Fragment {
         backend.loadCurrentUserData();
 
         // Add the book using the user data and update the tables
-        // Book testBook = new Book("12345", "Harry Potter", "JK Rowling", backend.getFirebaseUser().getUid());
-        // backend.addBook(testBook);
+        Book testBook = new Book("12345", "Harry Potter", "JK Rowling", backend.getFirebaseUser().getUid());
+        backend.addBook(testBook);
 
         backend.loadRequestedBooks();
         requestedBooksList = backend.getCurrentRequestedBooks();

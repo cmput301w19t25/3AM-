@@ -59,6 +59,7 @@ public class Backend {
      * the actual
      */
     public void addBook(Book book) {
+        loadCurrentUserData();
         // Push book to "books" table in database
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
         DatabaseReference bookRef = booksRef.push();
@@ -186,7 +187,6 @@ public class Backend {
                                 usersRef.child(requesterID).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                                         // Bind everything to the arrays
                                         User requester = dataSnapshot.getValue(User.class);
                                         actualRequesters.add(requester);
