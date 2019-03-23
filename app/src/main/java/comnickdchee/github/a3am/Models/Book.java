@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.security.acl.Owner;
 import java.util.ArrayList;
 
 
@@ -29,12 +30,13 @@ public class Book implements Parcelable {
     /** Used for searching Firebase. */
     public Book() {}
 
-    public Book(String bookID, String ISBN, String title, String author, String Image) {
+    public Book(String bookID, String ISBN, String title, String author, String Image, String ownerID) {
         this.ISBN = ISBN;
         this.title = title;
         this.author = author;
         this.status = Status.Available;
         this.image = Image;
+        this.ownerID = ownerID;
         this.currentBorrower = null;
     }
 
@@ -64,13 +66,12 @@ public class Book implements Parcelable {
         this.currentBorrower = null;
     }
 
-
-
     protected Book(Parcel in) {
         ISBN = in.readString();
         title = in.readString();
         author = in.readString();
         bookID = in.readString();
+        ownerID = in.readString();
         status = Status.valueOf(in.readString());
         in.readList(requests, null);
         ownerID = in.readString();
@@ -192,6 +193,8 @@ public class Book implements Parcelable {
      * @return currentBorrower the current borrower of the book
      * @see User
      */
+    public void setOwnerID(String ownerID) { this.ownerID = ownerID; }
+    public String getOwnerID(){return ownerID;}
     public User getCurrentBorrower() { return currentBorrower; }
 
     /** Get each requester in the form of user data. */
@@ -238,6 +241,7 @@ public class Book implements Parcelable {
         parcel.writeString(title);
         parcel.writeString(author);
         parcel.writeString(bookID);
+        parcel.writeString(ownerID);
         parcel.writeString(status.name());
         parcel.writeList(requests);
         parcel.writeString(ownerID);

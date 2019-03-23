@@ -50,7 +50,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * @author Asma, Ismaeel, Nicholas, Tatenda & Zaheen
- * HomePageActivity extends AppCompatActivity
+ * HomePageActivity exteTnds AppCompatActivity
  * HomePageActivity implements NavigationView.onNavigationItemSelectedListener
  * @see AppCompatActivity
  */
@@ -81,6 +81,9 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         navToolbar = findViewById(R.id.navToolbar);
         setSupportActionBar(navToolbar);
 
+
+
+
             // Setting the side Navigation Drawer
         // source: https://www.youtube.com/watch?v=fGcMLu1GJEc
         drawer = findViewById(R.id.drawer_layout);
@@ -101,7 +104,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child(userEmail+"/"+"dp"+ ".jpg");
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(mAuth.getUid()+".jpg");
 
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override

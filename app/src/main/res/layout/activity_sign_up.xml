@@ -73,7 +73,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userImage" />
+        app:layout_constraintTop_toBottomOf="@+id/userImageSeeOwnerProfile" />
 
     <EditText
         android:id="@+id/address"
@@ -111,7 +111,7 @@
         app:layout_constraintTop_toBottomOf="@+id/address" />
 
     <ImageView
-        android:id="@+id/userImage"
+        android:id="@+id/userImageSeeOwnerProfile"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="8dp"
