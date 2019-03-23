@@ -81,6 +81,19 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         messageOwner = findViewById(R.id.buttonMessageOwner);
         messageOwner.setOnClickListener(this);
 
+        DatabaseReference ref = mFirebaseDatabase.getReference().child("users").child(book.getOwnerID());
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String userName = dataSnapshot.child("userName").getValue().toString().trim();
+                ownerName.setText(userName);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
