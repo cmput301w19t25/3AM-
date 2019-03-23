@@ -2,6 +2,7 @@ package comnickdchee.github.a3am.Activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +12,11 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -62,6 +66,7 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
 
         // Set image of book.
         loadImage(bookImage, book.getBookID());
+        findUserByBookID(book.getBookID());
     }
 
     @Override
@@ -113,5 +118,39 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
+    }
+
+    public void findUserByBookID(String BookID){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference().child("users");
+        Log.d("refRequest", ref.toString());
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()){
+
+                    if(data.child("owned_books") != null){
+                        //Log.d("refRequestBook", data.getValue().toString());
+                        if(data.child("owned_books").getValue() != null){
+                            Log.d("refRequestBook", data.child("owned_books").getValue().toString());
+                            Log.d("refReq", BookID);
+                            for(DataSnapshot d: data.child("owned_books").getChildren()){
+                                Log.d("refReq", d.getValue().toString().trim());
+                                if(BookID.trim() == d.getValue().toString().trim()){
+                                    Log.d("refReq", "TRUE");
+                                }
+                            }
+                        }
+                    }
+                    //Log.d("refRequestBook", data.getValue().toString());
+                    //Log.d("refRequestBook", data.child("owned_books").getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
