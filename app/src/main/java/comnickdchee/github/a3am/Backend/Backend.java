@@ -149,6 +149,38 @@ public class Backend {
         bookRef.setValue(book);
     }
 
+    /** Gets the current requesters for a given book by retrieving data from firebase
+     * using a callback/listener. */
+    public void getRequesters(Book book, final UserListCallback requestersCallback) {
+        final ArrayList<User> requesters = new ArrayList<>();
+
+        DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
+
+        if (book.getRequests() != null) {
+            usersRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    requesters.clear();
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        for (String requestersID : book.getRequests()) {
+
+                            // Same user, so we add to list
+                            if (data.getKey().equals(requestersID)) {
+                                User requester = data.getValue(User.class);
+                                requesters.add(requester);
+                            }
+                        }
+                    }
+                    // Notify synchronization complete
+                    requestersCallback.onCallback(requesters);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        }
+    }
+
     /**
      * Gets the current requested books of the user from the Firebase database.
      * Here, we use a callback object so that once all the data is loaded from the
@@ -186,6 +218,11 @@ public class Backend {
                         }
                     }
                 }
+
+                // Creates a callback on the front-end UI context, where
+                // it can retrieve the data and start populating the recycler
+                // view.
+                setCurrentRequestedBooks(requestedBooks);
                 requestedBooksCallback.onCallback(requestedBooks);
             }
 
@@ -198,11 +235,6 @@ public class Backend {
     /** Helper that sets the current requested books to the array list. */
     public void setCurrentRequestedBooks(ArrayList<Book> requestedBooks) {
         mCurrentRequestedBooks = requestedBooks;
-    }
-
-    /** Getter that returns the requested books with user information. */
-    public ArrayList<Book> getCurrentRequestedBooks() {
-        return mCurrentRequestedBooks;
     }
 
 }
