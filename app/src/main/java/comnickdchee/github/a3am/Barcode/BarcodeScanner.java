@@ -32,13 +32,15 @@ public class BarcodeScanner extends Activity implements ZXingScannerView.ResultH
         super.onCreate(state);
         mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view
         setContentView(mScannerView);                // Set the scanner view as the content view
+
+        /** Here we check whether we already have the camera permission or not*/
         if (ContextCompat.checkSelfPermission(BarcodeScanner.this,
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-
+            // Here we can write if we need the camera to do anything extra if we already have permission
         }
         else
         {
-            requestCameraPermission();
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
         }
 
 
@@ -77,48 +79,15 @@ public class BarcodeScanner extends Activity implements ZXingScannerView.ResultH
         setResult(RESULT_OK, output);
         Log.d(TAG, "handleResult: Sent ISBN");
         finish();
-        // If you would like to resume scanning, call this method below:
-        //mScannerView.resumeCameraPreview(this);
     }
 
 
-
-    private void requestCameraPermission (){
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA))
-        {
-            // This is needed if we need to give an extra explanation
-            new AlertDialog.Builder(this)
-                    .setTitle("Permission needed")
-                    .setMessage("Need camera permission for Barcode Scanner")
-                    .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            ActivityCompat.requestPermissions(BarcodeScanner.this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
-                            dialogInterface.dismiss();
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                            finish();
-                        }
-                    })
-                    .create().show();
-
-        }
-        else
-        {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
-        }
-    }
-
+    /** This function shows message based on ther user's response to the dialog box for permission */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-
+                // Here we can write if we need the camera to do anything extra if we get the permission
             } else {
                 Toast.makeText(this,"Permission Denied for Camera",Toast.LENGTH_SHORT).show();
                 finish();
