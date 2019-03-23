@@ -7,9 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,7 +34,12 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
     TextView tvISBN;
     TextView tvStatus;
     TextView bRequestButton;
+    TextView ownerName;
+    Button messageOwner;
+
     ImageView bookImage;
+    ImageView ownerImage;
+
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
     private final DatabaseReference mDatabaseReference = mFirebaseDatabase.getReference();
@@ -49,6 +56,8 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         tvStatus = findViewById(R.id.statusTv);
         bRequestButton = findViewById(R.id.buttonRequestBook);
         bookImage = findViewById(R.id.bookImageRequestBook);
+        ownerImage = findViewById(R.id.userImageSeeOwnerProfile);
+        ownerName = findViewById(R.id.ownerNameRequestBook);
 
         // TODO: Make this error free.
         Intent intent = getIntent();
@@ -58,6 +67,7 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         tvBookTitle.setText(book.getTitle());
         tvISBN.setText(book.getISBN());
 
+
         Log.d(book.getBookID(), "onCreate: BookID");
 
         // Set request button to have an OnClick listener that fires every
@@ -65,8 +75,13 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         bRequestButton.setOnClickListener(this);
 
         // Set image of book.
-        loadImage(bookImage, book.getBookID());
-        findUserByBookID(book.getBookID());
+        loadImageFromBookID(bookImage, book.getBookID());
+        loadImageFromOwnerID(ownerImage, book.getOwnerID());
+
+        messageOwner = findViewById(R.id.buttonMessageOwner);
+        messageOwner.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -84,6 +99,11 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
                     }
 
                     // TODO: UI fix; change the request button to be non-clickable.
+                }
+            case R.id.buttonMessageOwner:
+                if(mAuth.getCurrentUser() != null){
+                    Intent i = new Intent(this, messageActivity.class);
+                    finish();
                 }
         }
     }
@@ -106,7 +126,8 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
 
-    public void loadImage(ImageView load, String bookID){        FirebaseStorage storage = FirebaseStorage.getInstance();
+    public void loadImageFromBookID(ImageView load, String bookID){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(bookID);
         Log.e("Tuts+", storageRef.toString());
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -120,6 +141,24 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+
+    public void loadImageFromOwnerID(ImageView load, String bookID){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(book.getOwnerID()+".jpg");
+
+        Log.e("Tuts+", storageRef.toString());
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e("Tuts+", "uri: " + uri.toString());
+                String DownloadLink = uri.toString();
+                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+            }
+        });
+
+    }
+
+    /*
     public void findUserByBookID(String BookID){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference().child("users");
@@ -153,4 +192,5 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
             }
         });
     }
+    */
 }

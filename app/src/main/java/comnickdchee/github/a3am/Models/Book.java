@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.security.acl.Owner;
 import java.util.ArrayList;
 
 
@@ -70,6 +71,7 @@ public class Book implements Parcelable {
         title = in.readString();
         author = in.readString();
         bookID = in.readString();
+        ownerID = in.readString();
         status = Status.valueOf(in.readString());
     }
 
@@ -189,6 +191,8 @@ public class Book implements Parcelable {
      * @return currentBorrower the current borrower of the book
      * @see User
      */
+    public void setOwnerID(String ownerID) { this.ownerID = ownerID; }
+    public String getOwnerID(){return ownerID;}
     public User getCurrentBorrower() { return currentBorrower; }
 
     /**
@@ -225,6 +229,7 @@ public class Book implements Parcelable {
         parcel.writeString(title);
         parcel.writeString(author);
         parcel.writeString(bookID);
+        parcel.writeString(ownerID);
         parcel.writeString(status.name());
     }
 

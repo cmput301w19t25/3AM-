@@ -218,7 +218,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private void uploadImageToFirebase(){
         if (profileImage != null){
             StorageReference profileImageRef =
-                    FirebaseStorage.getInstance().getReference(email+"/"+"dp"+ ".jpg");
+                    FirebaseStorage.getInstance().getReference("users").child(mAuth.getUid()+".jpg");
             profileImageRef.putFile(profileImage);
             profileImageUrl = profileImageRef.getDownloadUrl().toString();
             }
