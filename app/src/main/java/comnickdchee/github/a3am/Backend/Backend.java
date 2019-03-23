@@ -150,33 +150,39 @@ public class Backend {
     }
 
     /**
-     * Load the current user's requested books data by
-     * checking the requested book ids stored in the
-     * current user's array list, and find the actual references
-     * in the book table.
+     * Gets the current requested books of the user from the Firebase database.
+     * Here, we use a callback object so that once all the data is loaded from the
+     * database, we can start populating the recycler view in the front-end. Note
+     * that this allows the app to both be asynchronous in terms of getting data
+     * when a new change has been fired, as well as not be thread locked.
      */
     public void getRequestedBooks(final BookListCallback requestedBooksCallback) {
-
-        // Then, get the bookIds from the current user model object
+        // Get the current owned books of the user
         final ArrayList<String> ownedBookIDs = mCurrentUser.getOwnedBooks();
-
-        // We set the requested books at the end to this
         final ArrayList<Book> requestedBooks = new ArrayList<>();
 
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
-        DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
 
+        // Attach a listener on the books table, run through each entry in the
+        // list and check if the keys are the same
         booksRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 requestedBooks.clear();
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
+
                     for (String bookID : ownedBookIDs) {
                         if (data.getKey().equals(bookID)) {
+                            // Fetch book object from Firebase
                             Book book = data.getValue(Book.class);
-                            if (book.getStatus() == Status.Requested) {
-                                requestedBooks.add(book);
+
+                            if (book != null) {
+                                // Get the requester user data from the book requested list
+                                if (book.getStatus() == Status.Requested) {
+                                    requestedBooks.add(book);
+                                }
                             }
+
                         }
                     }
                 }
@@ -185,10 +191,8 @@ public class Backend {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
-
     }
 
     /** Helper that sets the current requested books to the array list. */
