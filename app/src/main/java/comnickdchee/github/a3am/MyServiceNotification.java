@@ -8,7 +8,7 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
+//Service to deal with notifications.
 public class MyServiceNotification extends FirebaseMessagingService {
     public MyServiceNotification() {
     }
