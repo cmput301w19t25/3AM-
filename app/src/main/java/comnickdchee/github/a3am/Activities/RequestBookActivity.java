@@ -1,15 +1,21 @@
 package comnickdchee.github.a3am.Activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Status;
@@ -22,6 +28,7 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
     TextView tvISBN;
     TextView tvStatus;
     TextView bRequestButton;
+    ImageView bookImage;
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
     private final DatabaseReference mDatabaseReference = mFirebaseDatabase.getReference();
@@ -36,7 +43,8 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         tvBookTitle = findViewById(R.id.bookTitleTv);
         tvISBN = findViewById(R.id.ISBNTv);
         tvStatus = findViewById(R.id.statusTv);
-        bRequestButton = findViewById(R.id.button);
+        bRequestButton = findViewById(R.id.buttonRequestBook);
+        bookImage = findViewById(R.id.bookImageRequestBook);
 
         // TODO: Make this error free.
         Intent intent = getIntent();
@@ -52,12 +60,14 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         // time the activity gets pressed
         bRequestButton.setOnClickListener(this);
 
+        // Set image of book.
+        loadImage(bookImage, book.getBookID());
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button:
+            case R.id.buttonRequestBook:
                 if (mAuth.getCurrentUser() != null) {
                     // Once the user requests the current book,
                     // we add them to the array list on the condition
@@ -89,5 +99,19 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
+    }
+
+    public void loadImage(ImageView load, String bookID){        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(bookID);
+        Log.e("Tuts+", storageRef.toString());
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e("Tuts+", "uri: " + uri.toString());
+                String DownloadLink = uri.toString();
+                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+            }
+        });
+
     }
 }

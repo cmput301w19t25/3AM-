@@ -1,5 +1,6 @@
 package comnickdchee.github.a3am.Fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -110,7 +111,7 @@ public class MyBooksFragment extends Fragment {
 
                         BookRecyclerAdapter updatedAdapter = new BookRecyclerAdapter(getActivity(), orderedList);
 
-                        switch (menuItem.getItemId()){
+                        switch (menuItem.getItemId()) {
                             case R.id.item2:
                                 for (Book orderedBook : BookList) {
                                     if (orderedBook.getStatus() == Status.Available) {
@@ -178,8 +179,8 @@ public class MyBooksFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 dataSnapshot.getKey();
-                for(DataSnapshot child: dataSnapshot.getChildren()){
-                    Log.d("TestData",child.getValue().toString());
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.d("TestData", child.getValue().toString());
                     String key = child.getValue().toString();
                     findBook(key);
                 }
@@ -197,7 +198,7 @@ public class MyBooksFragment extends Fragment {
 
 
     //This is the function to get data for the books. We will use it to swap out data from the dummy data.
-    public void findBook(final String key){
+    public void findBook(final String key) {
         mAuth = FirebaseAuth.getInstance();
         BookList.clear();
 
@@ -211,14 +212,14 @@ public class MyBooksFragment extends Fragment {
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(key);
                 StorageReference profileImageRef =
-                        FirebaseStorage.getInstance().getReference("shelf@gmail.com"+"/"+"dp"+ ".jpg");
+                        FirebaseStorage.getInstance().getReference("shelf@gmail.com" + "/" + "dp" + ".jpg");
                 Log.d("TestImageBook", profileImageRef.toString());
 
-                Log.d("TestDataBook",dataSnapshot.child(key).getValue().toString());
-                    String author = dataSnapshot.child(key).child("author").getValue().toString();
-                    String isbn = dataSnapshot.child(key).child("isbn").getValue().toString();
-                    String title = dataSnapshot.child(key).child("title").getValue().toString();
-                    Book b1 = new Book(isbn,title,author);
+                Log.d("TestDataBook", dataSnapshot.child(key).getValue().toString());
+                String author = dataSnapshot.child(key).child("author").getValue().toString();
+                String isbn = dataSnapshot.child(key).child("isbn").getValue().toString();
+                String title = dataSnapshot.child(key).child("title").getValue().toString();
+                Book b1 = new Book(isbn, title, author);
 
                     /*
                     storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -237,11 +238,11 @@ public class MyBooksFragment extends Fragment {
                     });
                     */
 
-                    if (storageRef != null) {
-                        b1.setImage(key);
-                    }
-                    BookList.add(b1);
-                    adapter.notifyDataSetChanged();
+                if (storageRef != null) {
+                    b1.setImage(key);
+                }
+                BookList.add(b1);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -252,20 +253,19 @@ public class MyBooksFragment extends Fragment {
         //BookList.clear();
         int i = BookList.size();
         String s = Integer.toString(i);
-        Log.d("TestDataBook",s);
+        Log.d("TestDataBook", s);
 
     }
 
-
-    /**
-     * Fired after Add Book Activity has finished.
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("MyBooks","Recyclerview notified");
-        adapter.notifyDataSetChanged();
+        if (resultCode == Activity.RESULT_OK) {
+            Log.d("MyBooks", "Recyclerview notified");
+            adapter.notifyDataSetChanged();
+        }
+
+
     }
-    */
-
-
 }
+
