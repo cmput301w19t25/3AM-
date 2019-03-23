@@ -42,11 +42,10 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
         viewHolder.requesterName.setText(requesters.get(i).getUserName());
 
         // attach on click listener to each view of requesters' action buttons
-        viewHolder.acceptRequestView.setOnClickListener(new View.OnClickListener() {
-
+        viewHolder.rejectRequestView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                removeRequesterAtPos(i);
+//                removeRequesterAtPos(i);
             }
         });
     }
@@ -81,8 +80,8 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
             requesterImage = itemView.findViewById(R.id.ivRequesterPhoto);
             requesterName = itemView.findViewById(R.id.tvName);
             rating = itemView.findViewById(R.id.ratingBar);
-            acceptRequestView = itemView.findViewById(R.id.ivRejectRequestButton);
-            rejectRequestView = itemView.findViewById(R.id.ivAcceptRequestButton);
+            acceptRequestView = itemView.findViewById(R.id.ivAcceptRequestButton);
+            rejectRequestView = itemView.findViewById(R.id.ivRejectRequestButton);
         }
     }
 }
