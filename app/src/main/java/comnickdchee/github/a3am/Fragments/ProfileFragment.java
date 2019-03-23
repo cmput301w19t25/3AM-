@@ -52,7 +52,7 @@ public class ProfileFragment extends Fragment {
         String userEmail = mAuth.getCurrentUser().getEmail();
         final View view = inflater.inflate(R.layout.fragment_profile, container, false);
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child(userEmail+"/"+"dp"+ ".jpg");
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(mAuth.getUid()+".jpg");
         Log.d("Ref","Image gotten");
         //Gets the textView fields
         TextView ProfileName = (TextView)view.findViewById(R.id.userNameFragmentProfile);
@@ -90,7 +90,7 @@ public class ProfileFragment extends Fragment {
                 Log.e("Tuts+", "uri: " + uri.toString());
                 DownloadLink = uri.toString();
                 CircleImageView iv = (CircleImageView) view.findViewById(R.id.profilePictureEditFragment);
-                Picasso.with(getContext()).load(uri.toString()).fit().into(iv);
+                Picasso.with(getContext()).load(uri.toString()).placeholder(R.drawable.ccc).error(R.drawable.ccc).fit().into(iv);
                 //Handle whatever you're going to do with the URL here
             }
         });

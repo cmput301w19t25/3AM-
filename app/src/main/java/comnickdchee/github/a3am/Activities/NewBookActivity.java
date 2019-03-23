@@ -8,7 +8,9 @@ import android.media.Image;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,17 +21,26 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.bumptech.glide.load.data.HttpUrlFetcher;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
+
+import com.google.firebase.storage.UploadTask;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -83,6 +94,7 @@ public class NewBookActivity extends AppCompatActivity {
     private ImageView addButton;
     private FloatingActionButton cameraButton;
 
+    private ProgressBar mProgressbar;
 
     // Firebase references to use for saving to database
     private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -99,6 +111,7 @@ public class NewBookActivity extends AppCompatActivity {
         bookAuthorText = findViewById(R.id.tietAuthor);
         bookISBNText = findViewById(R.id.tietISBN);
         img = (ImageView) findViewById(R.id.ivAddBookPhoto);
+        mProgressbar = findViewById(R.id.progressBar2);
 
         closeButton = findViewById(R.id.ivCloseButton);
         addButton = findViewById(R.id.ivFinishAddButton);
@@ -182,7 +195,7 @@ public class NewBookActivity extends AppCompatActivity {
 
     /** Adds book to both the database and user class. */
     private void addBook(String title, String author, String ISBN) {
-        Book newBook = new Book(ISBN, title, author);
+        Book newBook = new Book(ISBN, title, author, mAuth.getUid().toString());
         //Intent newBookIntent = new Intent();
         //newBookIntent.putExtra("NewBook", newBook);
         //setResult(Activity.RESULT_OK, newBookIntent);
@@ -212,7 +225,31 @@ public class NewBookActivity extends AppCompatActivity {
 
                 StorageReference bookImageRef =
                         FirebaseStorage.getInstance().getReference("BookImages").child(bookID);
-                bookImageRef.putFile(bookImage);
+                bookImageRef.putFile(bookImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mProgressbar.setProgress(0);
+                            }
+                        }, 5000);
+                        Toast.makeText(NewBookActivity.this, "Image uploaded", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(NewBookActivity.this, "Upload failed.", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        mProgressbar.setVisibility(View.VISIBLE);
+                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                        mProgressbar.setProgress((int)(progress));
+                    }
+                });
             }
         } else {
             // TODO: Throw exception here.
