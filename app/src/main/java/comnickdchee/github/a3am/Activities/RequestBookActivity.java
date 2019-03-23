@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -79,7 +80,14 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         loadImageFromOwnerID(ownerImage, book.getOwnerID());
 
         messageOwner = findViewById(R.id.buttonMessageOwner);
-        messageOwner.setOnClickListener(this);
+        messageOwner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(RequestBookActivity.this, "Messaging", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent (getApplicationContext(), messageActivity.class);
+                startActivity(i);
+            }
+        });
 
         DatabaseReference ref = mFirebaseDatabase.getReference().child("users").child(book.getOwnerID());
         ref.addValueEventListener(new ValueEventListener() {
@@ -108,16 +116,13 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
                     // we change the view of the button
                     if (!book.getRequests().contains(mAuth.getCurrentUser().getUid())) {
                         book.addRequest(mAuth.getCurrentUser().getUid());
+                        Toast.makeText(this, "Requested!", Toast.LENGTH_SHORT).show();
                         updateRequests(book);
                     }
 
                     // TODO: UI fix; change the request button to be non-clickable.
                 }
-            case R.id.buttonMessageOwner:
-                if(mAuth.getCurrentUser() != null){
-                    Intent i = new Intent(this, messageActivity.class);
-                    finish();
-                }
+
         }
     }
 
