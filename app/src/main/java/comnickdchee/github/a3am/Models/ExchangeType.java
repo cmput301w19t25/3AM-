@@ -9,6 +9,8 @@ package comnickdchee.github.a3am.Models;
  * @see Exchange
  */
 public enum ExchangeType {
-    Returning,
-    Borrowing
+    OwnerHandover,
+    BorrowerReceive,
+    BorrowerHandover,
+    OwnerReceive
 }

@@ -12,8 +12,6 @@ public class Exchange {
     private String pickup;
     private Date date;
     private ExchangeType type;
-    private Boolean completed = false;
-    private Book book;                 // uniquely identify the book involved (there is only one)
 
 
     /**
@@ -32,9 +30,7 @@ public class Exchange {
         this.borrower = borrower;
         this.pickup = pickup;
         this.date = date;
-        this.type = ExchangeType.Borrowing;
-        this.completed = completed;
-        //this.bookID = book.getBookID();
+        this.type = ExchangeType.OwnerHandover;
 
     }
 
@@ -53,9 +49,7 @@ public class Exchange {
         this.borrower = borrower;
         this.pickup = pickup;
         this.date = new Date();
-        this.type = ExchangeType.Borrowing;
-        this.completed = completed;
-        //this.bookID = book.getBookID();
+        this.type = ExchangeType.OwnerHandover;
 
     }
 
@@ -83,15 +77,6 @@ public class Exchange {
         return date;
     }
 
-    public ExchangeType getType() {
-        return type;
-    }
+    public ExchangeType getType() { return type; }
 
-    public Boolean getCompleted() {
-        return completed;
-    }
-
-    public Book getBook() {
-        return book;
-    }
 }

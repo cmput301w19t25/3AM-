@@ -177,6 +177,8 @@ public class Backend {
         book.setCurrentBorrowerID(user.getUserID());
         book.setStatus(Status.Accepted);
 
+        Exchange exchange = new Exchange()
+
         updateBookData(book);
         updateUserData(user);
     }
