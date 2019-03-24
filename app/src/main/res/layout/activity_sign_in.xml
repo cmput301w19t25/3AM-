@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#B84343"
-    tools:context=".Activities.BorrowedActivity">
+    tools:context=".Activities.SignInActivity">
 
     <Button
         android:id="@+id/LoginBtn"
@@ -47,7 +47,7 @@
         android:background="@drawable/round"
         android:ems="10"
         android:hint="🔒   Password"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:padding="16dp"
         android:radius="64dp"
         app:layout_constraintEnd_toEndOf="parent"

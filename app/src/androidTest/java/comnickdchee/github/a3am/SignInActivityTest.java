@@ -8,18 +8,18 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import comnickdchee.github.a3am.Activities.BorrowedActivity;
+import comnickdchee.github.a3am.Activities.SignInActivity;
 
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.*;
 
-public class BorrowedActivityTest {
+public class SignInActivityTest {
     @Rule
-    public ActivityTestRule<BorrowedActivity>bActivityTestRule = new ActivityTestRule<BorrowedActivity>(BorrowedActivity.class);
+    public ActivityTestRule<SignInActivity>bActivityTestRule = new ActivityTestRule<SignInActivity>(SignInActivity.class);
 
 
-    private BorrowedActivity borrowed_Activity = null;
+    private SignInActivity borrowed_Activity = null;
 
     @Before //before you execute the test
     public void setUp() throws Exception {

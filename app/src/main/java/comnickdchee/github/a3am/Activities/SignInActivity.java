@@ -15,16 +15,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.R;
 
 /**
  * @author
- * BorrowedActivity extends AppCompatActivity
- * BorrowedActivity implements View.onClickListener
+ * SignInActivity extends AppCompatActivity
+ * SignInActivity implements View.onClickListener
  * It overrides onCreate and OnClick
  */
-public class BorrowedActivity extends AppCompatActivity implements View.OnClickListener{
+public class SignInActivity extends AppCompatActivity implements View.OnClickListener{
 
     FirebaseAuth mAuth;
     EditText emailReg, passwordReg;
@@ -36,9 +35,10 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
 
         mAuth = FirebaseAuth.getInstance();
 
-        setContentView(R.layout.activity_borrowed);
+        setContentView(R.layout.activity_sign_in);
         emailReg = (EditText) findViewById(R.id.EmailReg);
         passwordReg = (EditText) findViewById(R.id.PasswordReg);
+        emailReg.requestFocus();
         findViewById(R.id.RegisterBtn).setOnClickListener(this);
         findViewById(R.id.LoginBtn).setOnClickListener(this);
 
@@ -47,6 +47,7 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
             Intent homePage = new Intent(this, HomepageActivity.class);
             homePage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(homePage);
+            finish();
         }
 
     }
@@ -80,7 +81,7 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
 
-                    Intent intent = new Intent(BorrowedActivity.this, HomepageActivity.class);
+                    Intent intent = new Intent(SignInActivity.this, HomepageActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
