@@ -16,6 +16,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.RequestersAdapter;
+import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Backend.UserListCallback;
+import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 
 /**
@@ -26,10 +30,12 @@ import comnickdchee.github.a3am.R;
 public class ViewBookActivity extends AppCompatActivity {
 
     private RecyclerView rvRequests;
-    private static ArrayList<String> requesters;
+    private ArrayList<User> requesters = new ArrayList<>();
     private RequestersAdapter requestersAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private Button button2;
+
+    private Backend backend = Backend.getBackendInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +59,23 @@ public class ViewBookActivity extends AppCompatActivity {
 
         rvRequests = findViewById(R.id.rvViewBookRequests);
         layoutManager = new LinearLayoutManager(this);
-        requesters = new ArrayList<String>();
-        requesters.add("Zaheen Rahman");
-        requesters.add("Ismaeel Bin Mohiuddin");
         requestersAdapter = new RequestersAdapter(this, requesters);
         rvRequests.setLayoutManager(layoutManager);
         rvRequests.setAdapter(requestersAdapter);
+
+
+        // Get the contents of the intent
+        Intent intent = getIntent();
+        Book actionBook = intent.getExtras().getParcelable("ActionBook");
+
+        backend.getRequesters(actionBook, new UserListCallback() {
+            @Override
+            public void onCallback(ArrayList<User> users) {
+                requesters.clear();
+                requesters.addAll(users);
+                requestersAdapter.notifyDataSetChanged();
+            }
+        });
 
     }
 }

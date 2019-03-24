@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import comnickdchee.github.a3am.Adapters.BookRecyclerAdapter;
+import comnickdchee.github.a3am.Adapters.SearchRecyclerAdapter;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.MySuggestionProvider;
 import comnickdchee.github.a3am.R;
@@ -50,7 +51,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private ArrayList<Book> titleResults = new ArrayList<>();
     private ArrayList<Book> authorResults = new ArrayList<>();
     private Set<String> bookSet = new HashSet<>();
-    private BookRecyclerAdapter searchResultsAdapter;
+    private SearchRecyclerAdapter searchResultsAdapter;
 
 
     @Override
@@ -63,7 +64,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         searchResults = new ArrayList<>();
 
         rvSearchResults = findViewById(R.id.rvSearchResults);
-        searchResultsAdapter = new BookRecyclerAdapter(this, searchResults);
+        searchResultsAdapter = new SearchRecyclerAdapter(this, searchResults);
         rvSearchResults.setAdapter(searchResultsAdapter);
         rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
 
@@ -115,19 +116,21 @@ public class SearchResultsActivity extends AppCompatActivity {
 
             // Brute Force Search: Use the books table as our starting reference,
             // iterate through all child entries to get their information, then
-            // make a comparison with the query entered.
-
+            // make a comparison with the query entered
             booksRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     // Iterate through child entries
+                    searchResults.clear();
+                    bookSet.clear();
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         // Get all the keywords in the query entered by the user
                         // and make a direct check
                         for (String keyword : queryList) {
                             Book bookToCompare = data.getValue(Book.class);
-
                             if (bookToCompare != null) {
+                                // Save the bookID to fetch intent information
+                                bookToCompare.setBookID(data.getKey());
                                 if (bookToCompare.getTitle().toLowerCase().contains(keyword)) {
                                     searchResults.add(bookToCompare);
                                 } else if (bookToCompare.getAuthor().toLowerCase().contains(keyword)) {

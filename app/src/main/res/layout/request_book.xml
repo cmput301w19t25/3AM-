@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.RequestBookActivity"
+    android:theme="@style/AppTheme">
+
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/bookDetailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/colorPrimary"
+        >
+
+        <ImageView
+            android:id="@+id/bookImageRequestBook"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_profile"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/bookTitleTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Sample Book Title"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            app:layout_constraintStart_toEndOf="@+id/bookImageRequestBook"
+            app:layout_constraintTop_toTopOf="@+id/bookImageRequestBook" />
+
+        <TextView
+            android:id="@+id/authorLabelTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Author: "
+            android:textColor="@color/white"
+
+            app:layout_constraintStart_toEndOf="@+id/bookImageRequestBook"
+            app:layout_constraintTop_toBottomOf="@+id/bookTitleTv" />
+
+        <TextView
+            android:id="@+id/authorTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Sample Author"
+            android:textColor="@color/white"
+
+            app:layout_constraintStart_toEndOf="@+id/authorLabelTv"
+            app:layout_constraintTop_toBottomOf="@+id/bookTitleTv" />
+
+        <TextView
+            android:id="@+id/ISBNLabelTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="ISBN: "
+            android:textColor="@color/white"
+
+            app:layout_constraintStart_toEndOf="@+id/bookImageRequestBook"
+            app:layout_constraintTop_toBottomOf="@+id/authorLabelTv" />
+
+        <TextView
+            android:id="@+id/ISBNTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="X-XXXXX-XXXXX"
+            android:textColor="@color/white"
+
+            app:layout_constraintStart_toEndOf="@+id/ISBNLabelTv"
+            app:layout_constraintTop_toBottomOf="@+id/authorLabelTv"
+            />
+
+        <TextView
+            android:id="@+id/statusLabelTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Status: "
+            android:textColor="@color/white"
+
+            app:layout_constraintStart_toEndOf="@+id/bookImageRequestBook"
+            app:layout_constraintTop_toBottomOf="@+id/ISBNLabelTv" />
+
+        <TextView
+            android:id="@+id/statusTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Available"
+            android:textColor="@color/white"
+
+            app:layout_constraintStart_toEndOf="@+id/statusLabelTv"
+            app:layout_constraintTop_toBottomOf="@+id/ISBNLabelTv"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/bookDetailsLayout"
+        >
+
+        <Button
+            android:id="@+id/buttonRequestBook"
+            android:layout_width="156dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/signup_custom"
+            android:text="Request"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonMessageOwner"
+            app:layout_constraintVertical_bias="0.222" />
+
+        <TextView
+            android:id="@+id/ownedByLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="176dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="Owner"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="10dp"
+            android:layout_marginTop="32dp"
+            android:background="@color/dark_grey_default"
+            app:layout_constraintTop_toBottomOf="@+id/ownedByLabel"
+            tools:layout_editor_absoluteX="9dp" />
+
+        <ImageView
+            android:id="@+id/userImageSeeOwnerProfile"
+            android:layout_width="176dp"
+            android:layout_height="156dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/separator" />
+
+        <TextView
+            android:id="@+id/ownerNameRequestBook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:text="Sample Name"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userImageSeeOwnerProfile" />
+
+        <Button
+            android:id="@+id/buttonMessageOwner"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/signup_custom"
+            android:text="Send Message"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ownerNameRequestBook" />
+
+    </android.support.constraint.ConstraintLayout>
+</RelativeLayout>

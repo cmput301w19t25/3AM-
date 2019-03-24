@@ -11,27 +11,46 @@ import java.util.ArrayList;
 
 public class User implements IOwner, IBorrower {
 
-    private String username;            // unique username
+    private String userName;            // unique username
     private String phoneNumber;
     private String email;
     private String name;
     private String address;
-    private ArrayList<Book> ownedBooks;     // list of books owned by user
-    private ArrayList<Book> requestedBooks; // list of books that user is requesting
+    private ArrayList<String> ownedBooks = new ArrayList<>();     // list of bookIDs owned by user
+    private ArrayList<String> requestedBooks = new ArrayList<>(); // list of bookIDs that user is requesting
     private ArrayList<Exchange> exchanges;  // list of exchanges involving the user
     private Rating rating;                  // wow feature: user rating
 
     /** Ctor */
-    public User(String username, String email, String address,
+    public User(String userName, String email, String address,
          String phoneNumber) {
-        this.username = username;
+        this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.address = address;
-
-        ownedBooks = new ArrayList<Book>();
-        requestedBooks = new ArrayList<Book>();
     }
+
+    public User(String userName, String email, String address,
+                String phoneNumber, ArrayList<String> ownedBooks) {
+        this.userName = userName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
+        this.ownedBooks = ownedBooks;
+    }
+
+    public User(String userName, String email, String address,
+                String phoneNumber, ArrayList<String> ownedBooks, ArrayList<String> requestedBooks) {
+        this.userName = userName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
+        this.ownedBooks = ownedBooks;
+        this.requestedBooks = requestedBooks;
+    }
+
+    /** For acquiring back user class locally from Firebase. */
+    public User() {}
 
     /**
      * Takes a book and user objects
@@ -69,7 +88,7 @@ public class User implements IOwner, IBorrower {
      */
     @Override
     public void addOwnedBook(Book book) {
-        ownedBooks.add(book);
+        ownedBooks.add(book.getBookID());
     }
 
     /**
@@ -83,7 +102,7 @@ public class User implements IOwner, IBorrower {
     @Override
     public void removeOwnedBook(Book book) {
         for (int i = 0; i < ownedBooks.size(); ++i) {
-            if (ownedBooks.get(i) == book) {
+            if (ownedBooks.get(i).equals(book.getBookID())) {
                 ownedBooks.remove(i);
                 break;
             }
@@ -100,7 +119,7 @@ public class User implements IOwner, IBorrower {
      */
     @Override
     public void addRequestedBook(Book book) {
-        requestedBooks.add(book);
+        requestedBooks.add(book.getBookID());
     }
 
     /**
@@ -153,13 +172,13 @@ public class User implements IOwner, IBorrower {
     public void setImage(Book bookID, Image image) {
     }
 
-    public ArrayList<Exchange> getExchangeList() {
+    public ArrayList<Exchange> getExchanges() {
         return exchanges;
     }
-    public ArrayList<Book> getOwnedBookList() {
+    public ArrayList<String> getOwnedBooks() {
         return ownedBooks;
     }
-    public ArrayList<Book> getRequestedBooksList() {
+    public ArrayList<String> getRequestedBooks() {
         return requestedBooks;
     }
 
@@ -199,7 +218,7 @@ public class User implements IOwner, IBorrower {
      * @param username name user
      */
     public void setUserName(String username) {
-        this.username = username;
+        this.userName = username;
     }
 
     /**
@@ -231,7 +250,7 @@ public class User implements IOwner, IBorrower {
      * @return username of the user
      */
     public String getUserName() {
-        return this.username;
+        return this.userName;
     }
 
     /**
