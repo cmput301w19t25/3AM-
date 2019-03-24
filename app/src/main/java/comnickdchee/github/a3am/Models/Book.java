@@ -24,7 +24,7 @@ public class Book implements Parcelable {
     private Status status;
     private ArrayList<String> requests = new ArrayList<>();
     private ArrayList<User> requestUsers = new ArrayList<>();
-    private User currentBorrower;
+    private String currentBorrowerID;
     private String bookID;                  // Used for passing through intents.
 
     /** Used for searching Firebase. */
@@ -37,7 +37,6 @@ public class Book implements Parcelable {
         this.status = Status.Available;
         this.image = Image;
         this.ownerID = ownerID;
-        this.currentBorrower = null;
     }
 
     public Book(String ISBN, String title, String author) {
@@ -45,7 +44,6 @@ public class Book implements Parcelable {
         this.title = title;
         this.author = author;
         this.status = Status.Available;
-        this.currentBorrower = null;
     }
 
     public Book(String ISBN, String title, String author, String ownerID) {
@@ -54,7 +52,6 @@ public class Book implements Parcelable {
         this.author = author;
         this.ownerID = ownerID;
         this.status = Status.Available;
-        this.currentBorrower = null;
     }
 
     public Book(String ISBN, String title, String author, User owner) {
@@ -63,7 +60,6 @@ public class Book implements Parcelable {
         this.author = author;
         this.owner = owner;
         this.status = Status.Available;
-        this.currentBorrower = null;
     }
 
     protected Book(Parcel in) {
@@ -74,6 +70,7 @@ public class Book implements Parcelable {
         status = Status.valueOf(in.readString());
         in.readList(requests, null);
         ownerID = in.readString();
+        currentBorrowerID = in.readString();
     }
 
     public static final Creator<Book> CREATOR = new Creator<Book>() {
@@ -196,7 +193,7 @@ public class Book implements Parcelable {
 
     public String getOwnerID() { return ownerID; }
 
-    public User getCurrentBorrower() { return currentBorrower; }
+    public String getCurrentBorrower() { return currentBorrowerID; }
 
     /** Get each requester in the form of user data. */
     public ArrayList<User> getRequestUsers() {
@@ -210,10 +207,10 @@ public class Book implements Parcelable {
 
     /**
      * Takes User object; and sets the current borrower of the book
-     * @param currentBorrower the current borrower of the book
+     * @param currentBorrowerID the current id of the borrower of the book
      * @see User
      */
-    public void setCurrentBorrower(User currentBorrower) {this.currentBorrower = currentBorrower; }
+    public void setCurrentBorrowerID(String currentBorrowerID) {this.currentBorrowerID = currentBorrowerID; }
 
     /**
      * Takes a User object and adds it to the list of requests
@@ -245,6 +242,7 @@ public class Book implements Parcelable {
         parcel.writeString(status.name());
         parcel.writeList(requests);
         parcel.writeString(ownerID);
+        parcel.writeString(currentBorrowerID);
     }
 
     //public int getBookID() { return bookID; }

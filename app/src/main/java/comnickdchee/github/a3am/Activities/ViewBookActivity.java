@@ -38,16 +38,15 @@ public class ViewBookActivity extends AppCompatActivity {
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
-        rvRequests = findViewById(R.id.rvViewBookRequests);
-        layoutManager = new LinearLayoutManager(this);
-        requestersAdapter = new RequestersAdapter(this, requesters);
-        rvRequests.setLayoutManager(layoutManager);
-        rvRequests.setAdapter(requestersAdapter);
-
-
         // Get the contents of the intent
         Intent intent = getIntent();
         Book actionBook = intent.getExtras().getParcelable("ActionBook");
+
+        rvRequests = findViewById(R.id.rvViewBookRequests);
+        layoutManager = new LinearLayoutManager(this);
+        requestersAdapter = new RequestersAdapter(this, requesters, actionBook);
+        rvRequests.setLayoutManager(layoutManager);
+        rvRequests.setAdapter(requestersAdapter);
 
         backend.getRequesters(actionBook, new UserListCallback() {
             @Override

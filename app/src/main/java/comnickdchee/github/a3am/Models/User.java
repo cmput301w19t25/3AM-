@@ -20,6 +20,7 @@ public class User implements IOwner, IBorrower {
     private ArrayList<String> requestedBooks = new ArrayList<>(); // list of bookIDs that user is requesting
     private ArrayList<Exchange> exchanges;  // list of exchanges involving the user
     private Rating rating;                  // wow feature: user rating
+    private String userID;
 
     /** Ctor */
     public User(String userName, String email, String address,
@@ -276,4 +277,8 @@ public class User implements IOwner, IBorrower {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public String getUserID() { return userID; }
+
+    public void setUserID(String userID) { this.userID = userID; }
 }
