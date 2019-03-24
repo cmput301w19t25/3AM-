@@ -209,21 +209,35 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
         //Initializing for Borrowed tabs
 
-        User user2 = new User("An autistic Owner","sample@sc.ca","12345","98708");
         BorrowedList = new ArrayList<>();
 
-        Book borrowing = new Book("???????","BorrowedTabSample","Book",user2);
-        BorrowedList.add(borrowing);
+        backend.getBorrowedBooks(new BookListCallback() {
+            @Override
+            public void onCallback(ArrayList<Book> books) {
+                BorrowedList.clear();
+                BorrowedList.addAll(books);
+            }
+        });
+
 
         // Borrowed TAB INIT ENDED _____________________________________________
 
         //Initializing for Lending tabs
 
-        User user3 = new User("A Bosti Owner","sample@sc.ca","12345","98708");
         LendingList = new ArrayList<>();
 
-        Book lending = new Book("!!!!!!!!!!","LendingTabSample","Someone",user2);
-        LendingList.add(lending);
+        Log.d("START HERE", "init: STARTS HERE");
+
+        backend.getLendingBooks(new BookListCallback() {
+            @Override
+            public void onCallback(ArrayList<Book> books) {
+                Log.d("GOTCALLS", "onCallback: GOT CALLBACK");
+                LendingList.clear();
+                LendingList.addAll(books);
+            }
+        });
+
+        Log.d("ENDED BORROWED STUFF", "init: END HERE");
 
         // Lending TAB INIT ENDED _____________________________________________
 
