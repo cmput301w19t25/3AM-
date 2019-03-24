@@ -1,10 +1,8 @@
 package comnickdchee.github.a3am.Activities;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.net.Uri;
@@ -15,30 +13,23 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import com.bumptech.glide.load.data.HttpUrlFetcher;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
 
 import com.google.firebase.storage.UploadTask;
 
@@ -46,37 +37,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.IOException;
-import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Scanner;
 
+import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
-import comnickdchee.github.a3am.Barcode.GoogleAPIBooks;
 import comnickdchee.github.a3am.R;
-
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Bundle;
-import android.util.SparseArray;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 public class NewBookActivity extends AppCompatActivity {
     ProgressDialog pd;
@@ -88,6 +61,8 @@ public class NewBookActivity extends AppCompatActivity {
     private TextInputEditText bookTitleText;
     private TextInputEditText bookAuthorText;
     private TextInputEditText bookISBNText;
+
+    private Backend backend = Backend.getBackendInstance();
 
     // close or finish activity buttons
     private ImageView closeButton;
@@ -195,11 +170,11 @@ public class NewBookActivity extends AppCompatActivity {
 
     /** Adds book to both the database and user class. */
     private void addBook(String title, String author, String ISBN) {
-        Book newBook = new Book(ISBN, title, author, mAuth.getUid().toString());
-        //Intent newBookIntent = new Intent();
-        //newBookIntent.putExtra("NewBook", newBook);
-        //setResult(Activity.RESULT_OK, newBookIntent);
-        addBookToDatabase(newBook);
+        if (mAuth.getCurrentUser() != null) {
+            String userKey = mAuth.getCurrentUser().getUid();
+            Book newBook = new Book(ISBN, title, author, userKey);
+            backend.addBook(newBook);
+        }
     }
 
     /**
@@ -207,55 +182,55 @@ public class NewBookActivity extends AppCompatActivity {
      * owned_books nested table inside the current user's table entry, as well as
      * the actual books table.
      */
-    private void addBookToDatabase(Book book) {
-        if (mAuth.getCurrentUser() != null) {
-            String uid = mAuth.getCurrentUser().getUid();
-
-            // Generate a bookID for the newly created book
-            // and add to the user's table
-            DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
-            String bookID = usersRef.child(uid).child("owned_books").push().getKey();
-            usersRef.child(uid).child("owned_books").push().setValue(bookID);
-
-            // Then, we add the book to the book table with all of its proper parameters
-            mFirebaseDatabase.getReference("books").child(bookID).setValue(book);
-
-            if (bookImage != null) {
-                FirebaseUser u = mAuth.getCurrentUser();
-
-                StorageReference bookImageRef =
-                        FirebaseStorage.getInstance().getReference("BookImages").child(bookID);
-                bookImageRef.putFile(bookImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mProgressbar.setProgress(0);
-                            }
-                        }, 5000);
-                        Toast.makeText(NewBookActivity.this, "Image uploaded", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(NewBookActivity.this, "Upload failed.", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        mProgressbar.setVisibility(View.VISIBLE);
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                        mProgressbar.setProgress((int)(progress));
-                    }
-                });
-            }
-        } else {
-            // TODO: Throw exception here.
-        }
-
-    }
+//    private void addBookToDatabase(Book book) {
+//        if (mAuth.getCurrentUser() != null) {
+//            String uid = mAuth.getCurrentUser().getUid();
+//
+//            // Generate a bookID for the newly created book
+//            // and add to the user's table
+//            DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
+//            String bookID = usersRef.child(uid).child("ownedBooks").push().getKey();
+//            usersRef.child(uid).child("ownedBooks").push().setValue(bookID);
+//
+//            // Then, we add the book to the book table with all of its proper parameters
+//            mFirebaseDatabase.getReference("books").child(bookID).setValue(book);
+//
+//            if (bookImage != null) {
+//                FirebaseUser u = mAuth.getCurrentUser();
+//
+//                StorageReference bookImageRef =
+//                        FirebaseStorage.getInstance().getReference("BookImages").child(bookID);
+//                bookImageRef.putFile(bookImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                        Handler handler = new Handler();
+//                        handler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                mProgressbar.setProgress(0);
+//                            }
+//                        }, 5000);
+//                        Toast.makeText(NewBookActivity.this, "Image uploaded", Toast.LENGTH_SHORT).show();
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(NewBookActivity.this, "Upload failed.", Toast.LENGTH_SHORT).show();
+//                    }
+//                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+//                        mProgressbar.setVisibility(View.VISIBLE);
+//                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+//                        mProgressbar.setProgress((int)(progress));
+//                    }
+//                });
+//            }
+//        } else {
+//            // TODO: Throw exception here.
+//        }
+//
+//    }
 
     private class JsonTask extends AsyncTask<String, String, ArrayList<String>> {
 

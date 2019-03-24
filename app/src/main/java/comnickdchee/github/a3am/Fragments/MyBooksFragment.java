@@ -83,7 +83,7 @@ public class MyBooksFragment extends Fragment {
         BookList = new ArrayList<>();
         mAuth = FirebaseAuth.getInstance();
 
-        DatabaseReference ref = database.getReference().child("users").child(mAuth.getUid()).child("owned_books");
+        DatabaseReference ref = database.getReference().child("users").child(mAuth.getUid()).child("ownedBooks");
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         adapter = new BookRecyclerAdapter(getActivity(), BookList);
