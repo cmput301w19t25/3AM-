@@ -273,6 +273,56 @@ public class Backend {
         }
     }
 
+    /** Retrieves books that the current user is borrowing at the moment.
+     * This is retrieved from the user's requested list. We decided that all
+     * the books that the current user is interacting with can be derived from
+     * the requested books list (a little bit confusing), but it requires the
+     * least amount of work.
+     */
+    public void getBorrowedBooks(final BookListCallback borrowedBooksCallback) {
+        // Get the current owned books of the user
+        final ArrayList<String> ownedBookIDs = mCurrentUser.getRequestedBooks();
+        final ArrayList<Book> borrowedBooks = new ArrayList<>();
+
+        DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
+
+        // Attach a listener on the books table, run through each entry in the
+        // list and check if the keys are the same
+        booksRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                borrowedBooks.clear();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                    for (String bookID : ownedBookIDs) {
+                        if (data.getKey().equals(bookID)) {
+                            // Fetch book object from Firebase
+                            Book book = data.getValue(Book.class);
+                            if (book != null) {
+                                // Get the requester user data from the book requested list
+                                if (book.getStatus() == Status.Borrowed) {
+                                    // Add to the book
+                                    borrowedBooks.add(book);
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                // Creates a callback on the front-end UI context, where
+                // it can retrieve the data and start populating the recycler
+                // view.
+                setCurrentActionBooks(borrowedBooks);
+                borrowedBooksCallback.onCallback(borrowedBooks);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
     /** Retrieves the books that the user is currently lending out to someone else.
      * The books are collected from the current user's ownedBooks list, and the
      * statuses of these books should only be "Borrowed"
