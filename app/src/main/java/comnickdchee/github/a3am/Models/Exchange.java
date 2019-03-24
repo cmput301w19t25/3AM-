@@ -14,6 +14,10 @@ public class Exchange {
     private ExchangeType type;
 
 
+    public Exchange(ExchangeType type) {
+        this.type = type;
+    }
+
     /**
      *
      * @param owner owner of the book

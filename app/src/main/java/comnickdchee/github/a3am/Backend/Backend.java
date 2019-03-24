@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Exchange;
+import comnickdchee.github.a3am.Models.ExchangeType;
 import comnickdchee.github.a3am.Models.IOwner;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
@@ -161,7 +162,12 @@ public class Backend {
      * Updates the current exchange in the Firebase database table when a transaction
      * has been completed (one of borrowing and returning.
      */
-    public void updateExchange(Exchange exchange) {
+    public void updateExchange(Book book, ExchangeType exchangeType) {
+        String bookID = book.getBookID();
+        Exchange exchange = new Exchange(exchangeType);
+        DatabaseReference exchangesRef = mFirebaseDatabase.getReference("exchanges");
+        DatabaseReference exchangeRef = exchangesRef.child(bookID);
+        exchangeRef.setValue(exchange);
     }
 
     /**
@@ -177,8 +183,7 @@ public class Backend {
         book.setCurrentBorrowerID(user.getUserID());
         book.setStatus(Status.Accepted);
 
-        Exchange exchange = new Exchange()
-
+        updateExchange(book, ExchangeType.OwnerHandover);
         updateBookData(book);
         updateUserData(user);
     }

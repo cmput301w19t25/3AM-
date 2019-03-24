@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -14,6 +16,7 @@ import comnickdchee.github.a3am.Adapters.RequestersAdapter;
 import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Backend.UserListCallback;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.ExchangeType;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 
@@ -28,6 +31,7 @@ public class ViewBookActivity extends AppCompatActivity {
     private ArrayList<User> requesters = new ArrayList<>();
     private RequestersAdapter requestersAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private Button ownerHandoverButton;
 
     private Backend backend = Backend.getBackendInstance();
 
@@ -43,6 +47,7 @@ public class ViewBookActivity extends AppCompatActivity {
         Book actionBook = intent.getExtras().getParcelable("ActionBook");
 
         rvRequests = findViewById(R.id.rvViewBookRequests);
+        ownerHandoverButton = findViewById(R.id.bOwnerHandover);
         layoutManager = new LinearLayoutManager(this);
         requestersAdapter = new RequestersAdapter(this, requesters, actionBook);
         rvRequests.setLayoutManager(layoutManager);
@@ -54,6 +59,14 @@ public class ViewBookActivity extends AppCompatActivity {
                 requesters.clear();
                 requesters.addAll(users);
                 requestersAdapter.notifyDataSetChanged();
+            }
+        });
+
+        ownerHandoverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Set exchange type
+                backend.updateExchange(actionBook, ExchangeType.BorrowerReceive);
             }
         });
 
