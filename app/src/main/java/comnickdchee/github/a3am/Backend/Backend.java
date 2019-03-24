@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Exchange;
+import comnickdchee.github.a3am.Models.IOwner;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
 
@@ -141,6 +142,13 @@ public class Backend {
         userRef.setValue(mCurrentUser);
     }
 
+    /** Updates the data of the user in the "users" table in Firebase. */
+    public void updateUserData(User user) {
+        String uid = user.getUserID();
+        DatabaseReference userRef = mFirebaseDatabase.getReference("users").child(uid);
+        userRef.setValue(user);
+    }
+
     /** Updates the book data in the books table. Used in the addBook helper method. */
     public void updateBookData(Book book) {
         String bookID = book.getBookID();
@@ -154,6 +162,32 @@ public class Backend {
      * has been completed (one of borrowing and returning.
      */
     public void updateExchange(Exchange exchange) {
+    }
+
+    /**
+     * Accepts a request from the requester on the activity. This method is
+     * implemented in the IOwner interface, and has the following logic:
+     * The book gets its requesters list cleared, and the current borrower
+     * of the book is set to the user id. Then, the status is updated to be
+     * Accepted, and both the book and the requester user data is updated in
+     * Firebase.
+     */
+    public void acceptRequest(User user, Book book) {
+        book.getRequests().clear();
+        book.setCurrentBorrowerID(user.getUserID());
+        book.setStatus(Status.Accepted);
+
+        updateBookData(book);
+        updateUserData(user);
+    }
+
+    /** Reject request that follows similar logic to accept request. */
+    public void rejectRequest(User user, Book book) {
+        book.getRequests().remove(user.getUserID());
+        user.getRequestedBooks().remove(book.getBookID());
+
+        updateBookData(book);
+        updateUserData(user);
     }
 
     /**

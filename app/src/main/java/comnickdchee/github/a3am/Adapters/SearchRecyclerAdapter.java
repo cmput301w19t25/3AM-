@@ -58,9 +58,9 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         holder.tvAuthorName.setText(mBooks.get(i).getAuthor());
         holder.tvISBN.setText(mBooks.get(i).getISBN());
         holder.tvStatus.setText(mBooks.get(i).getStatus().name());
-        if (mBooks.get(i).getCurrentBorrower() != null){
-            holder.tvBorrowedBy.setText("Borrowed By: " + mBooks.get(i).getCurrentBorrower().getUserName());
-        }
+//        if (mBooks.get(i).getCurrentBorrower() != null){
+//            holder.tvBorrowedBy.setText("Borrowed By: " + mBooks.get(i).getCurrentBorrower());
+//        }
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         if(mBooks.get(i).getBookID() != null) {
