@@ -284,7 +284,7 @@ public class Backend {
                             Book book = data.getValue(Book.class);
                             if (book != null) {
                                 // Get the requester user data from the book requested list
-                                if (book.getStatus() == Status.Requested) {
+                                if (book.getStatus() == Status.Requested || book.getStatus() == Status.Accepted) {
                                     // Add to the book
                                     requestedBooks.add(book);
                                 }
@@ -306,6 +306,8 @@ public class Backend {
             }
         });
     }
+
+
 
     /** Helper that sets the current requested books to the array list. */
     public void setCurrentRequestedBooks(ArrayList<Book> requestedBooks) {
