@@ -45,13 +45,9 @@ public class LendingFragment extends Fragment {
         backend.getLendingBooks(new BookListCallback() {
             @Override
             public void onCallback(ArrayList<Book> books) {
-
-                //Book book = new Book("ISBN","INSIDE ADD","Unknown");
-
                 lendingBooksList.clear();
                 lendingBooksList.addAll(0,books);
                 Log.d(TAG, "onCallback: " + Integer.toString(books.size()));
-                //lendingBooksList.add(book);
                 adapter.notifyDataSetChanged();
             }
         });

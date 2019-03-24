@@ -133,6 +133,31 @@ public class Backend {
         }
     }
 
+    public void getCurrentUserData(final UserCallback userCallback) {
+        if (mFirebaseUser != null) {
+            // Get the actual contents of the user class
+            String uid = mFirebaseUser.getUid();
+            DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
+            DatabaseReference userRef = usersRef.child(uid);
+
+            // Whenever the user reference is loaded, load the data of the user
+            userRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    userCallback.onCallback(user);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+
+            // If we got to the main screen without logging in
+        } else {
+            Log.e("Sign-in error!", "Could not get current user from database!");
+        }
+    }
+
     /**
      * Update current user data by pushing the current user class to the table.
      * This allows for pushing requested books and owned books into the users table
