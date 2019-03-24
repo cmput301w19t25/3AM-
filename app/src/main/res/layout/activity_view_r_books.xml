@@ -27,18 +27,18 @@
                 android:id="@+id/ivViewBookPhoto"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:layout_marginStart="48dp"
+                android:layout_marginLeft="48dp"
                 android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_library_books_black_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_library_books_black_24dp" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:id="@+id/llViewBookBackgroundText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ivViewBookPhoto"
@@ -101,60 +101,116 @@
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/llViewBookInfoHolder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="4dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tvViewBookDescriptionTitle"
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/userDetailsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans"
-                android:paddingLeft="4dp"
-                android:paddingTop="4dp"
-                android:paddingRight="0dp"
-                android:text="Description"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused" />
+                android:layout_marginTop="0dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/ownerIV"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:src="@drawable/ic_profile"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:text="Username"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/ownerIV"
+                    app:layout_constraintTop_toTopOf="@+id/ownerIV" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/ic_star_gold_24dp"
+                    app:layout_constraintStart_toEndOf="@+id/ownerIV"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+                <TextView
+                    android:id="@+id/ratingTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5.0"
+                    android:textColor="#FFD700"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+
+            </android.support.constraint.ConstraintLayout>
+
 
             <View
-                android:id="@+id/vViewBookLineDivider1"
+                android:id="@+id/divider1"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@color/common_google_signin_btn_text_dark_disabled"
+                android:layout_margin="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/userDetailsLayout"/>
+
 
             <TextView
-                android:id="@+id/tvViewBookDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean gravida pharetra convallis. Cras eu bibendum massa, ut feugiat augue. Curabitur eu nulla in purus egestas sodales. Mauris porttitor rutrum arcu, quis elementum mauris iaculis ac. Phasellus ut laoreet dolor. Vestibulum dignissim tristique quam vitae facilisis. Duis quam ligula, pharetra eget luctus a, porttitor sit amet tellus. Pellentesque ut lorem sed purus imperdiet tempor vel non justo. Quisque in ligula ultricies, hendrerit arcu sed, laoreet nunc. Duis facilisis, elit non efficitur mollis, elit ex pellentesque erat, ut cursus velit nibh non nisl. Etiam tristique aliquet diam non accumsan. Nullam volutpat ex nisi, vel laoreet lacus finibus nec. "
-                android:textColor="@color/dark_grey_default" />
-
-
-            <View
-                android:id="@+id/vViewBookLineDivider2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:background="@android:color/darker_gray" />
-
-            <Button
-                android:id="@+id/button2"
+                android:id="@+id/pickupLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="View Location"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="95dp" />
+                android:text="Pickup Location"
+                android:layout_margin="10dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/divider1"/>
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:layout_constraintTop_toBottomOf="@+id/pickupLabel"/>
+
+            <Button
+                android:id="@+id/receiveBookButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="24dp"
+                android:text="Receive Book"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="#07aff2"
+                android:textColor="#ffffff"
+                android:padding="15dp"/>
 
 
-        </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 
 
