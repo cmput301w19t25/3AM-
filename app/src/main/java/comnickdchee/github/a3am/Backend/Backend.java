@@ -225,6 +225,24 @@ public class Backend {
         updateBookData(book);
     }
 
+    /** Fetches a user's information from Firebase, given their uid. */
+    public void getUser(String uid, final UserCallback userCallback) {
+        DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
+        usersRef.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                userCallback.onCallback(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+    }
+
+
     /** Gets the current requesters for a given book by retrieving data from firebase
      * using a callback/listener. This is used for the requester activity. */
     public void getRequesters(Book book, final UserListCallback requestersCallback) {

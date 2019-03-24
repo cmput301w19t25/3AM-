@@ -19,6 +19,7 @@ import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
 import java.util.List;
 
+import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Models.RequestStatusGroup;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
@@ -33,10 +34,13 @@ public class RequestsTabAdapter extends ExpandableRecyclerViewAdapter<RequestsTa
 
     private static final String TAG = "In_MyRequestsAdapter";
     private Context mContext;
+    private Backend backend = Backend.getBackendInstance();
+
     // It takes an ArrayList of RequestGroupViewHolder as the argument
     public RequestsTabAdapter(Context context, List<? extends ExpandableGroup> groups) {
         super(groups);
         this.mContext = context;
+
     }
 
 

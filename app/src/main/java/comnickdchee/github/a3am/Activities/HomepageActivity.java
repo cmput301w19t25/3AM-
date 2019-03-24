@@ -240,24 +240,24 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
             }
         });
 
-        ArrayList<Book> AcceptedRequests = new ArrayList<>();
-        ArrayList<Book> pendingRequests = new ArrayList<>();
-
-        for (int i = 0; i < requestedList.size(); ++i) {
-            if (requestedList.get(i).getStatus() == Status.Accepted) {
-                AcceptedRequests.add(requestedList.get(i));
-            } else {
-                pendingRequests.add(requestedList.get(i));
-            }
-        }
-
-        // Adding those request to the AcceptedGroup (The First argument determines the name of the Group)
-        RequestStatusGroup AcceptedGroup = new RequestStatusGroup("Accepted", AcceptedRequests);
-        RequestsList.add(AcceptedGroup);
-
-        // Adding those request to the PendingGroup (The First argument determines the name of the Group)
-        RequestStatusGroup PendingGroup = new RequestStatusGroup("Pending", pendingRequests);
-        RequestsList.add(PendingGroup);
+//        ArrayList<Book> AcceptedRequests = new ArrayList<>();
+//        ArrayList<Book> pendingRequests = new ArrayList<>();
+//
+//        for (int i = 0; i < requestedList.size(); ++i) {
+//            if (requestedList.get(i).getStatus() == Status.Accepted) {
+//                AcceptedRequests.add(requestedList.get(i));
+//            } else {
+//                pendingRequests.add(requestedList.get(i));
+//            }
+//        }
+//
+//        // Adding those request to the AcceptedGroup (The First argument determines the name of the Group)
+//        RequestStatusGroup AcceptedGroup = new RequestStatusGroup("Accepted", AcceptedRequests);
+//        RequestsList.add(AcceptedGroup);
+//
+//        // Adding those request to the PendingGroup (The First argument determines the name of the Group)
+//        RequestStatusGroup PendingGroup = new RequestStatusGroup("Pending", pendingRequests);
+//        RequestsList.add(PendingGroup);
 
         // Request TAB INIT ENDED _____________________________________________
 
