@@ -28,6 +28,7 @@ import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RequestBookActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -40,7 +41,7 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
     Button messageOwner;
 
     ImageView bookImage;
-    ImageView ownerImage;
+    CircleImageView ownerImage;
 
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();

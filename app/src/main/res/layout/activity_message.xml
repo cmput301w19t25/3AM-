@@ -59,6 +59,8 @@
         android:id="@+id/reyclerview_message_list"
         android:layout_width="0dp"
         android:layout_height="600dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/layout_chatbox"
         app:layout_constraintBottom_toTopOf="@+id/layout_chatbox"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"

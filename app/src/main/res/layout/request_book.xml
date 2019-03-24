@@ -159,7 +159,7 @@
             app:layout_constraintTop_toBottomOf="@+id/ownedByLabel"
             tools:layout_editor_absoluteX="9dp" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/userImageSeeOwnerProfile"
             android:layout_width="176dp"
             android:layout_height="156dp"
