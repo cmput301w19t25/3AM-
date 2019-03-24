@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.provider.SearchRecentSuggestions;
 import android.support.annotation.NonNull;
@@ -23,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -111,7 +109,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
             public void onSuccess(Uri uri) {
                 Log.e("Tuts+", "uri: " + uri.toString());
                 DownloadLink = uri.toString();
-                CircleImageView iv = (CircleImageView) hView.findViewById(R.id.UserImageNavbar);
+                CircleImageView iv = (CircleImageView) hView.findViewById(R.id.messagingToImage);
                 Picasso.with(getApplicationContext()).load(uri.toString()).fit().into(iv);
                 //Handle whatever you're going to do with the URL here
             }

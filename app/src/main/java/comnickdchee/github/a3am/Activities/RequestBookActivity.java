@@ -85,6 +85,9 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
             public void onClick(View view) {
                 Toast.makeText(RequestBookActivity.this, "Messaging", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent (getApplicationContext(), messageActivity.class);
+                String key = book.getOwnerID();
+                i.putExtra("key", key);
+                Log.d("keyIn",key);
                 startActivity(i);
             }
         });
