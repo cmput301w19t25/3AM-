@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Exchange;
+import comnickdchee.github.a3am.Models.IOwner;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
 
@@ -154,6 +155,19 @@ public class Backend {
      * has been completed (one of borrowing and returning.
      */
     public void updateExchange(Exchange exchange) {
+    }
+
+    /**
+     * Accepts a request from the requester on the activity. This method is
+     * implemented in the IOwner interface, and has the following logic:
+     * The book gets its requesters list cleared, and the current borrower
+     * of the book is set to the user id. Then, the status is updated to be
+     * Accepted, and both the book and the requester user data is updated in
+     * Firebase.
+     */
+    public void acceptRequest(User acceptedUser, Book book) {
+        book.getRequests().clear();
+        book.setCurrentBorrowerID();
     }
 
     /**
