@@ -1,6 +1,7 @@
 package comnickdchee.github.a3am.Adapters;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,6 +69,7 @@ public class RequestsTabAdapter extends ExpandableRecyclerViewAdapter<RequestsTa
         });
 
     }
+
 
     @Override
     public void onBindGroupViewHolder(RequestGroupViewHolder holder, int flatPosition, ExpandableGroup group) {
@@ -148,7 +150,7 @@ public class RequestsTabAdapter extends ExpandableRecyclerViewAdapter<RequestsTa
             tvAuthor.setText(book.getAuthor());
             tvISBN.setText(book.getISBN());
             tvUserRole.setText("Owner: ");
-            tvOwner.setText(book.getOwner().getUserName());
+//            tvOwner.setText(book.getOwner().getUserName());
 
         }
     }

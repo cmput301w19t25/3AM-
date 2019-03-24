@@ -43,6 +43,7 @@ import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Fragments.MyBooksFragment;
 import comnickdchee.github.a3am.Fragments.ProfileFragment;
 import comnickdchee.github.a3am.Models.RequestStatusGroup;
+import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.MySuggestionProvider;
 import comnickdchee.github.a3am.R;
@@ -71,6 +72,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     public static ArrayList<Book> LendingList = new ArrayList<>();
     public static ArrayList<Book> ActionsList = new ArrayList<>();
     public static ArrayList<RequestStatusGroup> RequestsList = new ArrayList<>();
+    public static ArrayList<Book> requestedList = new ArrayList<>();
     private Backend backend = Backend.getBackendInstance();
 
     @Override
@@ -228,17 +230,30 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
         // Initializing for Requests tab
         RequestsList = new ArrayList<>();
+        requestedList = new ArrayList<>();
+
+        backend.getRequestedBooks(new BookListCallback() {
+            @Override
+            public void onCallback(ArrayList<Book> books) {
+                requestedList.clear();
+                requestedList.addAll(books);
+            }
+        });
 
         ArrayList<Book> AcceptedRequests = new ArrayList<>();
+        ArrayList<Book> pendingRequests = new ArrayList<>();
 
-
+        for (int i = 0; i < requestedList.size(); ++i) {
+            if (requestedList.get(i).getStatus() == Status.Accepted) {
+                AcceptedRequests.add(requestedList.get(i));
+            } else {
+                pendingRequests.add(requestedList.get(i));
+            }
+        }
 
         // Adding those request to the AcceptedGroup (The First argument determines the name of the Group)
         RequestStatusGroup AcceptedGroup = new RequestStatusGroup("Accepted", AcceptedRequests);
         RequestsList.add(AcceptedGroup);
-
-        // Adding things to pending request group
-        ArrayList<Book> pendingRequests = new ArrayList<>();
 
         // Adding those request to the PendingGroup (The First argument determines the name of the Group)
         RequestStatusGroup PendingGroup = new RequestStatusGroup("Pending", pendingRequests);
