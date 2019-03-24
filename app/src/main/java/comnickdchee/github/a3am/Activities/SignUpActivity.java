@@ -211,6 +211,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             //CHECKING FOR UNIQUE USERNAME.
             User user = new User(username, email, addR, phoneN);
             String uid = mAuth.getCurrentUser().getUid();
+            user.setUserID(uid);
             databaseReference.child("users").child(uid).setValue(user);
         }
     }

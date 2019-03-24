@@ -142,6 +142,12 @@ public class Backend {
         userRef.setValue(mCurrentUser);
     }
 
+    /** Updates the data of the user in the "users" table in Firebase. */
+    public void updateUserData(User user) {
+        DatabaseReference userRef = mFirebaseDatabase.getReference("users").child(user.getUserID());
+        userRef.setValue(user);
+    }
+
     /** Updates the book data in the books table. Used in the addBook helper method. */
     public void updateBookData(Book book) {
         String bookID = book.getBookID();
@@ -165,9 +171,21 @@ public class Backend {
      * Accepted, and both the book and the requester user data is updated in
      * Firebase.
      */
-    public void acceptRequest(User acceptedUser, Book book) {
+    public void acceptRequest(User user, Book book) {
         book.getRequests().clear();
-        book.setCurrentBorrowerID();
+        book.setCurrentBorrowerID(user.getUserID());
+
+        updateBookData(book);
+        updateUserData(user);
+    }
+
+    /** Reject request that follows similar logic to accept request. */
+    public void rejectRequest(User user, Book book) {
+        book.getRequests().remove(user.getUserID());
+        user.getRequestedBooks().remove(book.getBookID());
+
+        updateBookData(book);
+        updateUserData(user);
     }
 
     /**
