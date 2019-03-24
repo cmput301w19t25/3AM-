@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.R;
 
 /**
@@ -27,6 +28,7 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
 
     FirebaseAuth mAuth;
     EditText emailReg, passwordReg;
+    //Backend backend = Backend.getBackendInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,8 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
         findViewById(R.id.RegisterBtn).setOnClickListener(this);
         findViewById(R.id.LoginBtn).setOnClickListener(this);
 
-        if(mAuth.getCurrentUser() != null){
+        if(mAuth != null && mAuth.getCurrentUser() != null) {
+            Log.d("akjdhfaljksdfhjklasdf", "onCreate: INSIDE");
             Intent homePage = new Intent(this, HomepageActivity.class);
             homePage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(homePage);
@@ -100,5 +103,10 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
                 UserLogin();
                 break;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }

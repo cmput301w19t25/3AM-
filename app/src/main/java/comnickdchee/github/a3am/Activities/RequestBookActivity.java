@@ -24,6 +24,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.R;
@@ -45,6 +46,7 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
     private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
     private final DatabaseReference mDatabaseReference = mFirebaseDatabase.getReference();
     private Book book;
+    Backend backend = Backend.getBackendInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,11 +116,11 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
                     // we add them to the array list on the condition
                     // that the current user is not a duplicate, and
                     // we change the view of the button
-                    if (!book.getRequests().contains(mAuth.getCurrentUser().getUid())) {
-                        book.addRequest(mAuth.getCurrentUser().getUid());
-                        Toast.makeText(this, "Requested!", Toast.LENGTH_SHORT).show();
-                        updateRequests(book);
-                    }
+//                    if (!book.getRequests().contains(mAuth.getCurrentUser().getUid())) {
+//                        book.addRequest(mAuth.getCurrentUser().getUid());
+//                        updateRequests(book);
+                    backend.updateRequests(book);
+//                    }
 
                     // TODO: UI fix; change the request button to be non-clickable.
                 }
