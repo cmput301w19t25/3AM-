@@ -47,6 +47,7 @@ public class BorrowedActivity extends AppCompatActivity implements View.OnClickL
             Intent homePage = new Intent(this, HomepageActivity.class);
             homePage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(homePage);
+            finish();
         }
 
     }

@@ -180,7 +180,9 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
             case R.id.nav_logout:
                 mAuth.signOut();
-                finish();
+                Intent login = new Intent(this, BorrowedActivity.class);
+                login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(login);
                 break;
 
         }
