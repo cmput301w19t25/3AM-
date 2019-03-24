@@ -148,7 +148,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/usernameTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -159,14 +159,14 @@
                     app:layout_constraintTop_toTopOf="@+id/ownerIV" />
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/ratingIV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
                     android:src="@drawable/ic_star_gold_24dp"
                     app:layout_constraintStart_toEndOf="@+id/ownerIV"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                    app:layout_constraintTop_toBottomOf="@+id/usernameTV" />
 
                 <TextView
                     android:id="@+id/ratingTV"
@@ -176,8 +176,8 @@
                     android:textColor="#FFD700"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                    app:layout_constraintStart_toEndOf="@+id/ratingIV"
+                    app:layout_constraintTop_toBottomOf="@+id/usernameTV" />
 
 
             </android.support.constraint.ConstraintLayout>

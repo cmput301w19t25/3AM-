@@ -33,29 +33,57 @@
                 android:id="@+id/UserImageNavbar"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:src="@mipmap/ic_launcher_round"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView2"
-                android:layout_width="54dp"
-                android:layout_height="19dp"
+                android:id="@+id/usernameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Borrower"
-                app:layout_constraintTop_toTopOf="@+id/UserImageNavbar"
-                tools:layout_editor_absoluteX="26dp" />
+                android:textSize="20sp"
+                app:layout_constraintStart_toEndOf="@+id/UserImageNavbar"
+                app:layout_constraintTop_toTopOf="@+id/UserImageNavbar" />
+            <ImageView
+                android:id="@+id/ratingIV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_star_gold_24dp"
+                app:layout_constraintStart_toEndOf="@+id/UserImageNavbar"
+                app:layout_constraintTop_toBottomOf="@+id/usernameTV" />
+
+            <TextView
+                android:id="@+id/ratingTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5.0"
+                android:textColor="#FFD700"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/ratingIV"
+                app:layout_constraintTop_toBottomOf="@+id/usernameTV" />
 
             <Button
                 android:id="@+id/message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:text="Message"
-                app:layout_constraintStart_toStartOf="@+id/textView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/UserImageNavbar" />
 
 
@@ -72,7 +100,7 @@
         android:orientation="vertical">
 
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -80,149 +108,142 @@
             android:layout_marginLeft="7dp"
             android:id="@+id/linear"
             android:gravity="bottom"
-            android:foregroundGravity="fill_horizontal">
+            android:foregroundGravity="fill_horizontal"
+            android:padding="10dp">
 
             <ImageView
-                android:id="@+id/navphone"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:id="@+id/phoneIV"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 android:src="@drawable/ic_phone"
-                android:title="Phone" />
+                android:title="Phone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-            <EditText
-                android:id="@+id/phoneNumber"
+            <TextView
+                android:id="@+id/phoneTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="76dp"
-                android:layout_marginTop="-50dp"
-                android:ems="10"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="8dp"
+
+                android:text="780-XXX-XXXX"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:hint="780-XXX-XXXX"
-                android:inputType="textPersonName"
-                app:layout_constraintStart_toEndOf="@+id/nav_phone"
-                tools:layout_editor_absoluteY="226dp" />
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/phoneIV"
+                app:layout_constraintStart_toEndOf="@+id/phoneIV"
+                app:layout_constraintTop_toTopOf="@+id/phoneIV" />
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:id="@+id/textIV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
                 android:src="@drawable/ic_format_quote_black_24dp"
-                android:layout_marginLeft="300dp"
-                android:layout_marginTop="-50dp"
-                />
+                app:layout_constraintBottom_toBottomOf="@+id/phoneIV"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/phoneIV" />
 
             <ImageView
-                android:id="@+id/messagemail"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="10dp"
+                android:id="@+id/mailIV"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
                 android:src="@drawable/ic_message"
-                android:title="Phone" />
+                android:title="Phone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phoneIV" />
 
-            <EditText
-                android:id="@+id/editText4"
+            <TextView
+                android:id="@+id/emailTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="76dp"
-                android:layout_marginTop="-50dp"
-                android:ems="10"
-                android:hint="email@mail.ca"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="email@domain.com"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:inputType="textPersonName"
-                tools:layout_editor_absoluteY="272dp" />
-
-            <View
-                android:id="@+id/divider1"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:background="@android:color/darker_gray" />
-
-        </LinearLayout>
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/mailIV"
+                app:layout_constraintStart_toEndOf="@+id/mailIV"
+                app:layout_constraintTop_toTopOf="@+id/mailIV" />
 
 
 
-        <LinearLayout
+
+
+
+
+
+
+        </android.support.constraint.ConstraintLayout>
+
+
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linear"
             android:layout_marginLeft="7dp"
             android:layout_marginRight="7dp"
             android:orientation="vertical"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="30dp"
+            android:padding="10dp">
 
             <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_library_books_black_24dp"/>
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_library_books_black_24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
+                android:id="@+id/bookTitleTV"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans"
-                android:text="Book Title"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:textSize="18sp" />
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text="BOOK TITLE"
+                android:textSize="20sp"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/imageView" />
 
             <TextView
-                android:id="@+id/author"
-                android:layout_width="match_parent"
+                android:id="@+id/authorNameTV"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:text="Author Name"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:textSize="12sp" />
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/bookTitleTV" />
 
             <TextView
-                android:id="@+id/genre"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans"
-                android:text="Genre"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:textSize="12sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvViewBookISBNTag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans"
-                    android:text="ISBN: "
-                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/isbn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans"
-                    android:text="X-XXXXXX-XXXXXX"
-                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                    android:textSize="12sp" />
-
-        </LinearLayout>
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text="X-XXXXX-XXXXX-X"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/authorNameTV" />
 
 
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:background="@android:color/darker_gray" />
 
-        </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
 
 
     </RelativeLayout>
@@ -239,28 +260,6 @@
         android:paddingLeft="15dp"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:background="@color/Blue"/>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
-        android:orientation="vertical">
-
-        <View
-            android:id="@+id/vViewBookLineDivider1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:background="@android:color/darker_gray" />
-
-    </LinearLayout>
 
 
     </RelativeLayout>
