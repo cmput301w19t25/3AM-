@@ -144,7 +144,8 @@ public class Backend {
 
     /** Updates the data of the user in the "users" table in Firebase. */
     public void updateUserData(User user) {
-        DatabaseReference userRef = mFirebaseDatabase.getReference("users").child(user.getUserID());
+        String uid = user.getUserID();
+        DatabaseReference userRef = mFirebaseDatabase.getReference("users").child(uid);
         userRef.setValue(user);
     }
 
@@ -174,6 +175,7 @@ public class Backend {
     public void acceptRequest(User user, Book book) {
         book.getRequests().clear();
         book.setCurrentBorrowerID(user.getUserID());
+        book.setStatus(Status.Accepted);
 
         updateBookData(book);
         updateUserData(user);

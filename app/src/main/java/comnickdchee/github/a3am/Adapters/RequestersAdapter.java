@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 
@@ -21,10 +23,13 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
     // private ArrayList<User> requesters;
     private ArrayList<User> requesters;   // TODO: Change this so that it take in users instead.
     private Context mContext;
+    private Book currentBook;
+    private Backend backend = Backend.getBackendInstance();
 
-    public RequestersAdapter(Context _context, ArrayList<User> _requesters) {
+    public RequestersAdapter(Context _context, ArrayList<User> _requesters, Book _currentBook) {
         this.mContext = _context;
         this.requesters = _requesters;
+        this.currentBook = _currentBook;
     }
 
     @NonNull
@@ -41,11 +46,19 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
     public void onBindViewHolder(@NonNull RequestersAdapter.ViewHolder viewHolder, final int i) {
         viewHolder.requesterName.setText(requesters.get(i).getUserName());
 
-        // attach on click listener to each view of requesters' action buttons
+        // Accept request.
+        viewHolder.acceptRequestView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backend.acceptRequest(requesters.get(viewHolder.getAdapterPosition()), currentBook);
+            }
+        });
+
+        // Reject request.
         viewHolder.rejectRequestView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                removeRequesterAtPos(i);
+                backend.rejectRequest(requesters.get(viewHolder.getAdapterPosition()), currentBook);
             }
         });
     }
@@ -53,12 +66,6 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
     @Override
     public int getItemCount() {
         return requesters.size();
-    }
-
-    /** Removes requester from the list and updates it. */
-    private void removeRequesterAtPos(int pos) {
-        requesters.remove(pos);
-        notifyDataSetChanged();
     }
 
     // A view Holder to hold the views of each Individual Cards
@@ -72,7 +79,6 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
         public ImageView acceptRequestView;
         public ImageView rejectRequestView;
 
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -83,5 +89,6 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
             acceptRequestView = itemView.findViewById(R.id.ivAcceptRequestButton);
             rejectRequestView = itemView.findViewById(R.id.ivRejectRequestButton);
         }
+
     }
 }
