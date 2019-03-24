@@ -29,12 +29,22 @@ public class ViewRBookActivity extends AppCompatActivity {
     private static ArrayList<String> requesters;
     private RequestersAdapter requestersAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private Button button2;
+    private Button receiveButton;
+    private ImageView backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_r_books);
+
+        backButton = findViewById(R.id.backIV);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
      /*   //button click for owner to specify pick up location
         button2 = (Button) findViewById(R.id.button2);
