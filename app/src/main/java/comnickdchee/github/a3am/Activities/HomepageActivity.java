@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.provider.SearchRecentSuggestions;
 import android.support.annotation.NonNull;
@@ -23,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -180,7 +178,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
             case R.id.nav_logout:
                 mAuth.signOut();
-                Intent login = new Intent(this, BorrowedActivity.class);
+                Intent login = new Intent(this, SignInActivity.class);
                 login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(login);
                 break;
