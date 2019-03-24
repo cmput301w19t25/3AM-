@@ -127,7 +127,6 @@ public class Backend {
         // If we got to the main screen without logging in
         } else {
             Log.e("Sign-in error!", "Could not get current user from database!");
-            System.exit(1);
         }
     }
 

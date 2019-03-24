@@ -69,7 +69,6 @@ public class ActionsFragment extends Fragment {
 
         //Create and return the recyclerView
         ActionsTabAdapter adapter = new ActionsTabAdapter(getActivity(), requestedBooksList);
-
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -79,7 +78,6 @@ public class ActionsFragment extends Fragment {
                 requestedBooksList.clear();
                 requestedBooksList.addAll(books);
                 adapter.notifyDataSetChanged();
-                Log.d("dapteraawas asdfasf", "onCallback: adapateradfasdfasd");
             }
         });
 

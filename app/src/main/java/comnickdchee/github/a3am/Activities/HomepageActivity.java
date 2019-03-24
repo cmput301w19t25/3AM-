@@ -37,6 +37,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
+import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Backend.BookListCallback;
 import comnickdchee.github.a3am.Fragments.HomeFragment;
 import comnickdchee.github.a3am.Fragments.MessageFragment;
 import comnickdchee.github.a3am.Models.Book;
@@ -71,6 +73,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     public static ArrayList<Book> LendingList = new ArrayList<>();
     public static ArrayList<Book> ActionsList = new ArrayList<>();
     public static ArrayList<RequestStatusGroup> RequestsList = new ArrayList<>();
+    private Backend backend = Backend.getBackendInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,12 +195,13 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         // Initializing for Actions tab
         ActionsList = new ArrayList<>();
 
-        Book b1 = new Book("1111111111","Title1","AuthorName1");
-        Book b2 = new Book("1111111112","Title2","AuthorName2");
-        Book b3 = new Book("1111111113","Title3","AuthorName3");
-        ActionsList.add(b1);
-        ActionsList.add(b2);
-        ActionsList.add(b3);
+        backend.getRequestedBooks(new BookListCallback() {
+            @Override
+            public void onCallback(ArrayList<Book> books) {
+                ActionsList.clear();
+                ActionsList.addAll(books);
+            }
+        });
 
         // ACTION TAB INIT ENDED _____________________________________________
 
