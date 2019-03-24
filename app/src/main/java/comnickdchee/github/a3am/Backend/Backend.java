@@ -48,6 +48,7 @@ public class Backend {
     // Current books and requesters of the book. Note that this
     // doesn't get pushed into Firebase
     private static ArrayList<Book> mCurrentRequestedBooks = new ArrayList<>();
+    private static ArrayList<Book> mCurrentActionBooks = new ArrayList<>();
 
     /** Empty constructor for singleton. Prevents direct instantiate outside of class. */
     private Backend() {}
@@ -126,7 +127,7 @@ public class Backend {
                 }
             });
 
-        // If we got to the main screen without logging in
+            // If we got to the main screen without logging in
         } else {
             Log.e("Sign-in error!", "Could not get current user from database!");
         }
@@ -263,9 +264,54 @@ public class Backend {
      * that this allows the app to both be asynchronous in terms of getting data
      * when a new change has been fired, as well as not be thread locked.
      */
-    public void getRequestedBooks(final BookListCallback requestedBooksCallback) {
+    public void getActionsBooks(final BookListCallback actionBooksCallback) {
         // Get the current owned books of the user
         final ArrayList<String> ownedBookIDs = mCurrentUser.getOwnedBooks();
+        final ArrayList<Book> actionBooks = new ArrayList<>();
+
+        DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
+
+        // Attach a listener on the books table, run through each entry in the
+        // list and check if the keys are the same
+        booksRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                actionBooks.clear();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                    for (String bookID : ownedBookIDs) {
+                        if (data.getKey().equals(bookID)) {
+                            // Fetch book object from Firebase
+                            Book book = data.getValue(Book.class);
+                            if (book != null) {
+                                // Get the requester user data from the book requested list
+                                if (book.getStatus() == Status.Requested || book.getStatus() == Status.Accepted) {
+                                    // Add to the book
+                                    actionBooks.add(book);
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                // Creates a callback on the front-end UI context, where
+                // it can retrieve the data and start populating the recycler
+                // view.
+                setCurrentActionBooks(actionBooks);
+                actionBooksCallback.onCallback(actionBooks);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    /** Gets the books that a user is currently requesting. */
+    public void getRequestedBooks(final BookListCallback requestedBooksCallback) {
+        // Get the current owned books of the user
+        final ArrayList<String> requestedBooksID = mCurrentUser.getRequestedBooks();
         final ArrayList<Book> requestedBooks = new ArrayList<>();
 
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
@@ -278,7 +324,7 @@ public class Backend {
                 requestedBooks.clear();
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
 
-                    for (String bookID : ownedBookIDs) {
+                    for (String bookID : requestedBooksID) {
                         if (data.getKey().equals(bookID)) {
                             // Fetch book object from Firebase
                             Book book = data.getValue(Book.class);
@@ -307,9 +353,12 @@ public class Backend {
         });
     }
 
+    /** Helper that sets the current action books to the array list. */
+    public void setCurrentActionBooks(ArrayList<Book> actionBooks) {
+        mCurrentActionBooks = actionBooks;
+    }
 
-
-    /** Helper that sets the current requested books to the array list. */
+    /** Helper that sets the current requested books of the user. */
     public void setCurrentRequestedBooks(ArrayList<Book> requestedBooks) {
         mCurrentRequestedBooks = requestedBooks;
     }
