@@ -47,7 +47,7 @@ public class RequestsFragment extends Fragment {
             public void onCallback(ArrayList<Book> books) {
                 Requests.clear();
                 requestList.clear();
-                requestList.addAll(books);
+                requestList.addAll(0,books);
 
                 ArrayList<Book> AcceptedRequests = new ArrayList<>();
                 ArrayList<Book> pendingRequests = new ArrayList<>();

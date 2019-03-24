@@ -76,7 +76,7 @@ public class ActionsFragment extends Fragment {
             @Override
             public void onCallback(ArrayList<Book> books) {
                 actionsBooksList.clear();
-                actionsBooksList.addAll(books);
+                actionsBooksList.addAll(0,books);
                 adapter.notifyDataSetChanged();
             }
         });

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -39,12 +40,18 @@ public class LendingFragment extends Fragment {
         LendingTabAdapter adapter = new LendingTabAdapter(getActivity(), lendingBooksList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        Book book = new Book("ISBN","Outside ADD","Unknown");
 
         backend.getLendingBooks(new BookListCallback() {
             @Override
             public void onCallback(ArrayList<Book> books) {
+
+                //Book book = new Book("ISBN","INSIDE ADD","Unknown");
+
                 lendingBooksList.clear();
-                lendingBooksList.addAll(books);
+                lendingBooksList.addAll(0,books);
+                Log.d(TAG, "onCallback: " + Integer.toString(books.size()));
+                //lendingBooksList.add(book);
                 adapter.notifyDataSetChanged();
             }
         });

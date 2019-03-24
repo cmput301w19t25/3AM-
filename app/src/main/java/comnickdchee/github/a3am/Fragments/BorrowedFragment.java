@@ -44,7 +44,7 @@ public class BorrowedFragment extends Fragment {
             @Override
             public void onCallback(ArrayList<Book> books) {
                 borrowedBooksList.clear();
-                borrowedBooksList.addAll(books);
+                borrowedBooksList.addAll(0,books);
                 adapter.notifyDataSetChanged();
             }
         });
