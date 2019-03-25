@@ -114,7 +114,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
             public void onSuccess(Uri uri) {
                 Log.e("Tuts+", "uri: " + uri.toString());
                 DownloadLink = uri.toString();
-                CircleImageView iv = (CircleImageView) hView.findViewById(R.id.UserImageNavbar);
+                CircleImageView iv = (CircleImageView) hView.findViewById(R.id.messagingToImage);
                 Picasso.with(getApplicationContext()).load(uri.toString()).fit().into(iv);
                 //Handle whatever you're going to do with the URL here
             }

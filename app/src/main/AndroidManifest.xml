@@ -21,6 +21,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="3AM!"
+        android:windowSoftInputMode="adjustPan"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
@@ -30,7 +31,8 @@
             android:enabled="true"
             android:exported="true"></service>
 
-        <activity android:name=".Activities.messageActivity" />
+        <activity android:name=".Activities.messageActivity" android:windowSoftInputMode="adjustResize"  />
+
         <activity android:name=".Activities.ViewOwnedBook" />
         <activity android:name=".Activities.RequestBookActivity" />
         <activity android:name=".Barcode.BarcodeScanner"></activity>

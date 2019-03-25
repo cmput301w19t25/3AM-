@@ -28,6 +28,7 @@ import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RequestBookActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,9 +39,9 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
     TextView bRequestButton;
     TextView ownerName;
     Button messageOwner;
-
+    String DownloadLink;
     ImageView bookImage;
-    ImageView ownerImage;
+    CircleImageView ownerImage;
 
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -87,6 +88,12 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
             public void onClick(View view) {
                 Toast.makeText(RequestBookActivity.this, "Messaging", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent (getApplicationContext(), messageActivity.class);
+                String key = book.getOwnerID();
+                i.putExtra("key", key);
+                i.putExtra("imgUrl", DownloadLink);
+
+
+                Log.d("keyIn",key);
                 startActivity(i);
             }
         });
@@ -171,7 +178,7 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onSuccess(Uri uri) {
                 Log.e("Tuts+", "uri: " + uri.toString());
-                String DownloadLink = uri.toString();
+                DownloadLink = uri.toString();
                 Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
             }
         });

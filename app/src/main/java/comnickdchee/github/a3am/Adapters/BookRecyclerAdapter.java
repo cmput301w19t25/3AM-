@@ -87,7 +87,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
                 //Intent i = new Intent()
                 int currentPos = holder.getAdapterPosition();
                 Intent intent = new Intent(mContext, ViewOwnedBook.class);
-                intent.putExtra("key", mBooks.get(currentPos).getImage());
+                intent.putExtra("key", mBooks.get(currentPos).getImage().toString());
                 mContext.startActivity(intent);
             }
         });
