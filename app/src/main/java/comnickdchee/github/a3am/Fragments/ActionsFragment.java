@@ -38,7 +38,7 @@ public class ActionsFragment extends Fragment {
     private DatabaseReference mDatabaseReference = mFireBaseDatabase.getReference();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser mCurrentUser = mAuth.getCurrentUser();
-    private ArrayList<Book> requestedBooksList = new ArrayList<>();
+    private ArrayList<Book> actionsBooksList = new ArrayList<>();
     Backend backend = Backend.getBackendInstance();
 
     public ActionsFragment() {
@@ -68,15 +68,15 @@ public class ActionsFragment extends Fragment {
 //        backend.addBook(testBook);
 
         //Create and return the recyclerView
-        ActionsTabAdapter adapter = new ActionsTabAdapter(getActivity(), requestedBooksList);
+        ActionsTabAdapter adapter = new ActionsTabAdapter(getActivity(), actionsBooksList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        backend.getRequestedBooks(new BookListCallback() {
+        backend.getActionsBooks(new BookListCallback() {
             @Override
             public void onCallback(ArrayList<Book> books) {
-                requestedBooksList.clear();
-                requestedBooksList.addAll(books);
+                actionsBooksList.clear();
+                actionsBooksList.addAll(0,books);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -85,7 +85,5 @@ public class ActionsFragment extends Fragment {
         return view;
 
     }
-
-
 
 }

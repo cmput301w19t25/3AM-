@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Exchange;
+import comnickdchee.github.a3am.Models.ExchangeType;
 import comnickdchee.github.a3am.Models.IOwner;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
@@ -47,6 +48,7 @@ public class Backend {
     // Current books and requesters of the book. Note that this
     // doesn't get pushed into Firebase
     private static ArrayList<Book> mCurrentRequestedBooks = new ArrayList<>();
+    private static ArrayList<Book> mCurrentActionBooks = new ArrayList<>();
 
     /** Empty constructor for singleton. Prevents direct instantiate outside of class. */
     private Backend() {}
@@ -125,7 +127,32 @@ public class Backend {
                 }
             });
 
-        // If we got to the main screen without logging in
+            // If we got to the main screen without logging in
+        } else {
+            Log.e("Sign-in error!", "Could not get current user from database!");
+        }
+    }
+
+    public void getCurrentUserData(final UserCallback userCallback) {
+        if (mFirebaseUser != null) {
+            // Get the actual contents of the user class
+            String uid = mFirebaseUser.getUid();
+            DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
+            DatabaseReference userRef = usersRef.child(uid);
+
+            // Whenever the user reference is loaded, load the data of the user
+            userRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    userCallback.onCallback(user);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+
+            // If we got to the main screen without logging in
         } else {
             Log.e("Sign-in error!", "Could not get current user from database!");
         }
@@ -161,7 +188,12 @@ public class Backend {
      * Updates the current exchange in the Firebase database table when a transaction
      * has been completed (one of borrowing and returning.
      */
-    public void updateExchange(Exchange exchange) {
+    public void updateExchange(Book book, ExchangeType exchangeType) {
+        String bookID = book.getBookID();
+        Exchange exchange = new Exchange(exchangeType);
+        DatabaseReference exchangesRef = mFirebaseDatabase.getReference("exchanges");
+        DatabaseReference exchangeRef = exchangesRef.child(bookID);
+        exchangeRef.setValue(exchange);
     }
 
     /**
@@ -177,6 +209,7 @@ public class Backend {
         book.setCurrentBorrowerID(user.getUserID());
         book.setStatus(Status.Accepted);
 
+        updateExchange(book, ExchangeType.OwnerHandover);
         updateBookData(book);
         updateUserData(user);
     }
@@ -217,6 +250,22 @@ public class Backend {
         updateBookData(book);
     }
 
+    /** Fetches a user's information from Firebase, given their uid. */
+    public void getUser(String uid, final UserCallback userCallback) {
+        DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
+        usersRef.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                userCallback.onCallback(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
     /** Gets the current requesters for a given book by retrieving data from firebase
      * using a callback/listener. This is used for the requester activity. */
     public void getRequesters(Book book, final UserListCallback requestersCallback) {
@@ -249,6 +298,105 @@ public class Backend {
         }
     }
 
+    /** Retrieves books that the current user is borrowing at the moment.
+     * This is retrieved from the user's requested list. We decided that all
+     * the books that the current user is interacting with can be derived from
+     * the requested books list (a little bit confusing), but it requires the
+     * least amount of work.
+     */
+    public void getBorrowedBooks(final BookListCallback borrowedBooksCallback) {
+        // Get the current owned books of the user
+        final ArrayList<String> ownedBookIDs = mCurrentUser.getRequestedBooks();
+        final ArrayList<Book> borrowedBooks = new ArrayList<>();
+
+        DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
+
+        // Attach a listener on the books table, run through each entry in the
+        // list and check if the keys are the same
+        booksRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                borrowedBooks.clear();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                    for (String bookID : ownedBookIDs) {
+                        if (data.getKey().equals(bookID)) {
+                            // Fetch book object from Firebase
+                            Book book = data.getValue(Book.class);
+                            if (book != null) {
+                                // Get the requester user data from the book requested list
+                                if (book.getStatus() == Status.Borrowed) {
+                                    // Add to the book
+                                    borrowedBooks.add(book);
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                // Creates a callback on the front-end UI context, where
+                // it can retrieve the data and start populating the recycler
+                // view.
+                setCurrentActionBooks(borrowedBooks);
+                borrowedBooksCallback.onCallback(borrowedBooks);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    /** Retrieves the books that the user is currently lending out to someone else.
+     * The books are collected from the current user's ownedBooks list, and the
+     * statuses of these books should only be "Borrowed"
+     */
+    public void getLendingBooks(final BookListCallback lendingBooksCallback) {
+        // Get the current owned books of the user
+        final ArrayList<String> ownedBookIDs = mCurrentUser.getOwnedBooks();
+        final ArrayList<Book> lendingBooks = new ArrayList<>();
+
+        DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
+
+        // Attach a listener on the books table, run through each entry in the
+        // list and check if the keys are the same
+        booksRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                lendingBooks.clear();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                    for (String bookID : ownedBookIDs) {
+                        if (data.getKey().equals(bookID)) {
+                            // Fetch book object from Firebase
+                            Book book = data.getValue(Book.class);
+                            if (book != null) {
+                                // Get the requester user data from the book requested list
+                                if (book.getStatus() == Status.Borrowed) {
+                                    // Add to the book
+                                    lendingBooks.add(book);
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                // Creates a callback on the front-end UI context, where
+                // it can retrieve the data and start populating the recycler
+                // view.
+                setCurrentActionBooks(lendingBooks);
+                lendingBooksCallback.onCallback(lendingBooks);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+
     /**
      * Gets the current requested books of the user from the Firebase database.
      * Here, we use a callback object so that once all the data is loaded from the
@@ -256,9 +404,54 @@ public class Backend {
      * that this allows the app to both be asynchronous in terms of getting data
      * when a new change has been fired, as well as not be thread locked.
      */
-    public void getRequestedBooks(final BookListCallback requestedBooksCallback) {
+    public void getActionsBooks(final BookListCallback actionBooksCallback) {
         // Get the current owned books of the user
         final ArrayList<String> ownedBookIDs = mCurrentUser.getOwnedBooks();
+        final ArrayList<Book> actionBooks = new ArrayList<>();
+
+        DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
+
+        // Attach a listener on the books table, run through each entry in the
+        // list and check if the keys are the same
+        booksRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                actionBooks.clear();
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                    for (String bookID : ownedBookIDs) {
+                        if (data.getKey().equals(bookID)) {
+                            // Fetch book object from Firebase
+                            Book book = data.getValue(Book.class);
+                            if (book != null) {
+                                // Get the requester user data from the book requested list
+                                if (book.getStatus() == Status.Requested || book.getStatus() == Status.Accepted) {
+                                    // Add to the book
+                                    actionBooks.add(book);
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                // Creates a callback on the front-end UI context, where
+                // it can retrieve the data and start populating the recycler
+                // view.
+                setCurrentActionBooks(actionBooks);
+                actionBooksCallback.onCallback(actionBooks);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    /** Gets the books that a user is currently requesting. */
+    public void getRequestedBooks(final BookListCallback requestedBooksCallback) {
+        // Get the current owned books of the user
+        final ArrayList<String> requestedBooksID = mCurrentUser.getRequestedBooks();
         final ArrayList<Book> requestedBooks = new ArrayList<>();
 
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
@@ -271,13 +464,13 @@ public class Backend {
                 requestedBooks.clear();
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
 
-                    for (String bookID : ownedBookIDs) {
+                    for (String bookID : requestedBooksID) {
                         if (data.getKey().equals(bookID)) {
                             // Fetch book object from Firebase
                             Book book = data.getValue(Book.class);
                             if (book != null) {
                                 // Get the requester user data from the book requested list
-                                if (book.getStatus() == Status.Requested) {
+                                if (book.getStatus() == Status.Requested || book.getStatus() == Status.Accepted) {
                                     // Add to the book
                                     requestedBooks.add(book);
                                 }
@@ -300,7 +493,12 @@ public class Backend {
         });
     }
 
-    /** Helper that sets the current requested books to the array list. */
+    /** Helper that sets the current action books to the array list. */
+    public void setCurrentActionBooks(ArrayList<Book> actionBooks) {
+        mCurrentActionBooks = actionBooks;
+    }
+
+    /** Helper that sets the current requested books of the user. */
     public void setCurrentRequestedBooks(ArrayList<Book> requestedBooks) {
         mCurrentRequestedBooks = requestedBooks;
     }

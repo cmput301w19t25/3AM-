@@ -15,6 +15,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Backend.UserCallback;
+import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 
 /**
@@ -27,7 +30,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     FirebaseAuth mAuth;
     EditText emailReg, passwordReg;
-    //Backend backend = Backend.getBackendInstance();
+    Backend backend = Backend.getBackendInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +49,13 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             Log.d("akjdhfaljksdfhjklasdf", "onCreate: INSIDE");
             Intent homePage = new Intent(this, HomepageActivity.class);
             homePage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(homePage);
-            finish();
+            backend.getCurrentUserData(new UserCallback() {
+                @Override
+                public void onCallback(User user) {
+                    startActivity(homePage);
+                    finish();
+                }
+            });
         }
 
     }
