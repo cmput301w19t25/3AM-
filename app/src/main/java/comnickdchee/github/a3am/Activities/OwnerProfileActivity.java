@@ -5,12 +5,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Fragments.HomeFragment;
 import comnickdchee.github.a3am.Fragments.MessageFragment;
 import comnickdchee.github.a3am.R;
@@ -18,6 +20,7 @@ import comnickdchee.github.a3am.R;
 public class OwnerProfileActivity extends AppCompatActivity {
 
     ImageView backButton;
+    private static final int ISBN_READ = 42;
     Button transactionButton;
     Toolbar toolbar;
 
@@ -41,6 +44,14 @@ public class OwnerProfileActivity extends AppCompatActivity {
         });
 
 
+        transactionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OwnerProfileActivity.this, BarcodeScanner.class);
+                startActivityForResult(intent,ISBN_READ);
+            }
+        });
+
 
 
         //getSupportActionBar().setTitle("Owner's Profile");
@@ -57,5 +68,16 @@ public class OwnerProfileActivity extends AppCompatActivity {
                         new MessageFragment()).commit();
             }
         });*/
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        Log.d("ACTIVITY RESULT", "onActivityResult: CALLED");
+
+        if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
+            String isbn = data.getStringExtra("isbn");
+            Log.d("ISBN Retrieved", isbn);
+
+        }
     }
 }

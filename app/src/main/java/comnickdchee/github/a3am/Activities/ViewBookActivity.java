@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import comnickdchee.github.a3am.Adapters.RequestersAdapter;
 import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Backend.UserListCallback;
+import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.ExchangeType;
 import comnickdchee.github.a3am.Models.User;
@@ -30,6 +32,7 @@ import comnickdchee.github.a3am.R;
  */
 public class ViewBookActivity extends AppCompatActivity {
 
+    private static final int ISBN_READ = 42;
     private RecyclerView rvRequests;
     private ArrayList<User> requesters = new ArrayList<>();
     private RequestersAdapter requestersAdapter;
@@ -82,9 +85,22 @@ public class ViewBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Set exchange type
-                backend.updateExchange(actionBook, ExchangeType.BorrowerReceive);
+                Intent intent = new Intent(ViewBookActivity.this, BarcodeScanner.class);
+                startActivityForResult(intent,ISBN_READ);
+                //backend.updateExchange(actionBook, ExchangeType.BorrowerReceive);
             }
         });
 
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        Log.d("ACTIVITY RESULT", "onActivityResult: CALLED");
+
+        if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
+            String isbn = data.getStringExtra("isbn");
+            Log.d("ISBN Retrieved", isbn);
+
+        }
     }
 }

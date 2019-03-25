@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.RequestersAdapter;
+import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.R;
 
 /**
@@ -25,6 +27,7 @@ import comnickdchee.github.a3am.R;
  */
 public class ViewRBookActivity extends AppCompatActivity {
 
+    private static final int ISBN_READ = 42;
     private RecyclerView rvRequests;
     private static ArrayList<String> requesters;
     private RequestersAdapter requestersAdapter;
@@ -37,7 +40,19 @@ public class ViewRBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_r_books);
 
+        Window window = this.getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+
         backButton = findViewById(R.id.backIV);
+        receiveButton = findViewById(R.id.receiveBookButton);
+
+        receiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ViewRBookActivity.this, BarcodeScanner.class);
+                startActivityForResult(intent,ISBN_READ);
+            }
+        });
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,8 +73,7 @@ public class ViewRBookActivity extends AppCompatActivity {
         });*/
 
 
-        Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+
 
         /*rvRequests = findViewById(R.id.rvViewBookRequests);
         layoutManager = new LinearLayoutManager(this);
@@ -70,5 +84,16 @@ public class ViewRBookActivity extends AppCompatActivity {
         rvRequests.setLayoutManager(layoutManager);
         rvRequests.setAdapter(requestersAdapter);*/
 
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        Log.d("ACTIVITY RESULT", "onActivityResult: CALLED");
+
+        if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
+            String isbn = data.getStringExtra("isbn");
+            Log.d("ISBN Retrieved", isbn);
+
+        }
     }
 }
