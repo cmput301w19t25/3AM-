@@ -103,9 +103,11 @@ public class ViewBookActivity extends AppCompatActivity {
         if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
             String isbn = data.getStringExtra("isbn");
             Log.d("ISBN Retrieved", isbn);
+            String bookISBN = actionBook.getISBN();
 
-            backend.updateExchange(actionBook, ExchangeType.BorrowerReceive);
-
+            if (isbn.equals(bookISBN)) {
+                backend.updateExchange(actionBook, ExchangeType.BorrowerReceive);
+            }
         }
     }
 }

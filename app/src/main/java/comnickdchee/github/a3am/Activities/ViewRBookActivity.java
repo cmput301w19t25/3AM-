@@ -102,9 +102,14 @@ public class ViewRBookActivity extends AppCompatActivity {
         if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
             String isbn = data.getStringExtra("isbn");
             Log.d("ISBN Retrieved", isbn);
-            actionBook.setStatus(Status.Borrowed);
-            backend.updateExchange(actionBook, ExchangeType.BorrowerHandover);
-            backend.updateBookData(actionBook);
+            String bookISBN = actionBook.getISBN();
+
+            if (isbn.equals(bookISBN)){
+                actionBook.setStatus(Status.Borrowed);
+                backend.updateExchange(actionBook, ExchangeType.BorrowerHandover);
+                backend.updateBookData(actionBook);
+            }
+
 
         }
     }

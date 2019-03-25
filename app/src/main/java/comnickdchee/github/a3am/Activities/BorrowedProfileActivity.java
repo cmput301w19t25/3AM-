@@ -79,10 +79,12 @@ public class BorrowedProfileActivity extends AppCompatActivity {
             Log.d("ISBN Retrieved", isbn);
 
             //TODO: DELETE EXCHANGE
+            String bookISBN = actionBook.getISBN();
 
-            actionBook.setStatus(Status.Available);
-            backend.updateBookData(actionBook);
-
+            if (isbn.equals(bookISBN)) {
+                actionBook.setStatus(Status.Available);
+                backend.updateBookData(actionBook);
+            }
         }
     }
 }
