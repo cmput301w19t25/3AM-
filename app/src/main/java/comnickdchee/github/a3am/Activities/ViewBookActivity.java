@@ -65,6 +65,8 @@ public class ViewBookActivity extends AppCompatActivity {
 
         // Get the contents of the intent
 
+        Intent intent = getIntent();
+        actionBook = intent.getExtras().getParcelable("ActionBook");
 
         rvRequests = findViewById(R.id.rvViewBookRequests);
         ownerHandoverButton = findViewById(R.id.bOwnerHandover);
@@ -73,8 +75,7 @@ public class ViewBookActivity extends AppCompatActivity {
         rvRequests.setLayoutManager(layoutManager);
         rvRequests.setAdapter(requestersAdapter);
 
-        Intent intent = getIntent();
-        actionBook = intent.getExtras().getParcelable("ActionBook");
+
         backend.getRequesters(actionBook, new UserListCallback() {
             @Override
             public void onCallback(ArrayList<User> users) {
