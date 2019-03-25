@@ -67,6 +67,8 @@ public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.
                 Toast.makeText(mContext, mBookList.get(i).getTitle(), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(mContext, OwnerProfileActivity.class);
+                Book book = mBookList.get(i);
+                intent.putExtra("passedBook",book);
                 mContext.startActivity(intent);
             }
         });
