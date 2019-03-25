@@ -20,6 +20,7 @@ import comnickdchee.github.a3am.Adapters.RequestersAdapter;
 import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.ExchangeType;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.R;
 
@@ -102,6 +103,7 @@ public class ViewRBookActivity extends AppCompatActivity {
             String isbn = data.getStringExtra("isbn");
             Log.d("ISBN Retrieved", isbn);
             actionBook.setStatus(Status.Borrowed);
+            backend.updateExchange(actionBook, ExchangeType.BorrowerHandover);
             backend.updateBookData(actionBook);
 
         }
