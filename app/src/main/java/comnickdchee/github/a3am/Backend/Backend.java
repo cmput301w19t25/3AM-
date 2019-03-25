@@ -34,16 +34,10 @@ public class Backend {
     // Get the instance of our database
     private static final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
 
-    // References to static objects that we need over the lifetime of our singleton
-    private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
     // Have a direct reference to the user operating the app
     private static User mCurrentUser = new User();
 
     private static ArrayList<Book> mCurrentOwnedBooks = new ArrayList<>();
-
-    // TODO: User should store an instance of his/her firebase user reference.
-    private static final FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
 
     // Current books and requesters of the book. Note that this
     // doesn't get pushed into Firebase
@@ -99,20 +93,17 @@ public class Backend {
         mCurrentUser = user;
     }
 
-    /** Getter for the instance of the user's FirebaseUser instance. */
-    public FirebaseUser getFirebaseUser() {
-        return mFirebaseUser;
-    }
-
     /**
      * Class that loads all the current user into the user class referenced
      * by the singleton. Note that this is an asynchronous load, so we change the information
      * everytime the information in Firebase changes.
      */
     public static void loadCurrentUserData() {
-        if (mFirebaseUser != null) {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
             // Get the actual contents of the user class
-            String uid = mFirebaseUser.getUid();
+            String uid = firebaseUser.getUid();
             DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
             DatabaseReference userRef = usersRef.child(uid);
 
@@ -134,9 +125,11 @@ public class Backend {
     }
 
     public void getCurrentUserData(final UserCallback userCallback) {
-        if (mFirebaseUser != null) {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) {
             // Get the actual contents of the user class
-            String uid = mFirebaseUser.getUid();
+            String uid = firebaseUser.getUid();
             DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
             DatabaseReference userRef = usersRef.child(uid);
 
@@ -164,7 +157,9 @@ public class Backend {
      * if they ever get updated.
      */
     public void updateCurrentUserData() {
-        String uid = mFirebaseUser.getUid();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        String uid = firebaseUser.getUid();
         DatabaseReference userRef = mFirebaseDatabase.getReference("users").child(uid);
         userRef.setValue(mCurrentUser);
     }
@@ -228,7 +223,9 @@ public class Backend {
      * when a user requests a book, and updates this in Firebase.
      */
     public void updateRequests(Book book) {
-        String uid = mFirebaseUser.getUid();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        String uid = firebaseUser.getUid();
 
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
 
