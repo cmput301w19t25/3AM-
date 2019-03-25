@@ -97,7 +97,7 @@ public class LendingTabAdapter extends RecyclerView.Adapter<LendingTabAdapter.Vi
             tvAuthor.setText(book.getAuthor());
             tvISBN.setText(book.getISBN());
             tvUserRole.setText("Borrower: ");
-            tvOwner.setText(book.getOwner().getUserName());
+//            tvOwner.setText(book.getOwner().getUserName());
 
         }
     }

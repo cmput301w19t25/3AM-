@@ -19,6 +19,7 @@ import comnickdchee.github.a3am.Adapters.RequestersAdapter;
 import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Backend.UserListCallback;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.ExchangeType;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 
@@ -33,8 +34,8 @@ public class ViewBookActivity extends AppCompatActivity {
     private ArrayList<User> requesters = new ArrayList<>();
     private RequestersAdapter requestersAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private Button button2;
-
+    private Button ownerHandoverButton;
+    private Button mapsButton;
     private Backend backend = Backend.getBackendInstance();
 
     @Override
@@ -43,15 +44,15 @@ public class ViewBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_book);
 
         //button click for owner to specify pick up location
-        button2 = (Button) findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(ViewBookActivity.this, MapsActivity.class);
-                ViewBookActivity.this.startActivity(myIntent);
-                }
-        });
+//        mapsButton = (Button) findViewById(R.id.mapsButton);
+//        mapsButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                Intent myIntent = new Intent(ViewBookActivity.this, MapsActivity.class);
+//                ViewBookActivity.this.startActivity(myIntent);
+//                }
+//        });
 
 
         Window window = this.getWindow();
@@ -62,6 +63,7 @@ public class ViewBookActivity extends AppCompatActivity {
         Book actionBook = intent.getExtras().getParcelable("ActionBook");
 
         rvRequests = findViewById(R.id.rvViewBookRequests);
+        ownerHandoverButton = findViewById(R.id.bOwnerHandover);
         layoutManager = new LinearLayoutManager(this);
         requestersAdapter = new RequestersAdapter(this, requesters, actionBook);
         rvRequests.setLayoutManager(layoutManager);
@@ -73,6 +75,14 @@ public class ViewBookActivity extends AppCompatActivity {
                 requesters.clear();
                 requesters.addAll(users);
                 requestersAdapter.notifyDataSetChanged();
+            }
+        });
+
+        ownerHandoverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Set exchange type
+                backend.updateExchange(actionBook, ExchangeType.BorrowerReceive);
             }
         });
 
