@@ -15,8 +15,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,27 +25,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
-import java.sql.Time;
-import java.sql.Timestamp;
 
-import java.util.ArrayList;
-import java.util.Date;
-
-import comnickdchee.github.a3am.Backend.Backend;
-import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
-
-import static java.lang.Boolean.TRUE;
 
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int CHOSEN_IMAGE = 69;
     ImageView img;
     Uri profileImage;
+    Boolean usernameError = false;
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseDatabase Fd;
     private FirebaseStorage firebaseStorage;
@@ -67,8 +56,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         findViewById(R.id.RegisterConfirm).setOnClickListener(this);
         findViewById(R.id.AddProfilePicture).setOnClickListener(this);
-        findViewById(R.id.userImage).setOnClickListener(this);
-        img = (ImageView) findViewById(R.id.userImage);
+        findViewById(R.id.userImageSeeOwnerProfile).setOnClickListener(this);
+        img = (ImageView) findViewById(R.id.userImageSeeOwnerProfile);
     }
 
     private void Register(){
@@ -130,6 +119,19 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference();
+        DatabaseReference ref = firebaseDatabase.getReference().child("users");
+
+
+
+        if(usernameError == true){
+            Log.d("Ref", "Username Error is True");
+            userName.setError("Username not unique.");
+            userName.requestFocus();
+            return;
+        }
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
 
@@ -140,6 +142,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             Log.d("Donkey","Work pls..");
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(getApplicationContext(), "Successful Registration.", Toast.LENGTH_LONG).show();
+
                             uploadImageToFirebase();
                             mAuth.signOut();
                             finish();
@@ -163,7 +166,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.AddProfilePicture:
                 Log.d("Image","Image clicked");
                 findImage();
-            case R.id.userImage:
+            case R.id.userImageSeeOwnerProfile:
                 Log.d("Image","Image clicked");
                 findImage();
             case R.id.RegisterConfirm:
@@ -200,16 +203,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     /** Once user data has been created and verified, we add this to the users table. */
     private void sendUserData(){
         // Here, we create a new user since we have verified their credentials.
-        User user = new User(username, email, addR, phoneN);
-
         // Append to the "users" table of the database reference
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference();
-
         // Sets the value indexed by the User ID below the "users" table to be the user data
         // inside the user class
         if (mAuth.getCurrentUser() != null) {
+            //CHECKING FOR UNIQUE USERNAME.
+
+            User user = new User(username, email, addR, phoneN);
             String uid = mAuth.getCurrentUser().getUid();
+            user.setUserID(uid);
             databaseReference.child("users").child(uid).setValue(user);
         }
     }
@@ -217,7 +221,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private void uploadImageToFirebase(){
         if (profileImage != null){
             StorageReference profileImageRef =
-                    FirebaseStorage.getInstance().getReference(email+"/"+"dp"+ ".jpg");
+                    FirebaseStorage.getInstance().getReference("users").child(mAuth.getUid()+".jpg");
             profileImageRef.putFile(profileImage);
             profileImageUrl = profileImageRef.getDownloadUrl().toString();
             }

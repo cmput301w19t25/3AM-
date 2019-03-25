@@ -22,6 +22,7 @@
             android:layout_height="150dp"
             android:background="@color/dark_grey_default">
 
+
             <ImageView
                 android:id="@+id/ivViewBookPhoto"
                 android:layout_width="65dp"
@@ -31,7 +32,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_library_books_black_24dp" />
+                android:src="@drawable/ic_library_books_black_24dp"
+                android:layout_marginLeft="48dp" />
 
             <LinearLayout
                 android:id="@+id/llViewBookBackgroundText"
@@ -41,7 +43,8 @@
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ivViewBookPhoto"
-                app:layout_constraintTop_toTopOf="@+id/ivViewBookPhoto">
+                app:layout_constraintTop_toTopOf="@+id/ivViewBookPhoto"
+                android:layout_marginLeft="16dp">
 
                 <TextView
                     android:id="@+id/tvViewBookTitle"
@@ -92,7 +95,10 @@
                         android:text="X-XXXXXX-XXXXXX"
                         android:textColor="@color/common_google_signin_btn_text_dark_default"
                         android:textSize="12sp" />
+
                 </LinearLayout>
+
+
 
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
@@ -109,9 +115,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans"
-                android:paddingLeft="4dp"
+                android:paddingLeft="8dp"
                 android:paddingTop="4dp"
-                android:paddingRight="0dp"
+                android:paddingRight="8dp"
                 android:text="Description"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
@@ -127,8 +133,8 @@
                 android:id="@+id/tvViewBookDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean gravida pharetra convallis. Cras eu bibendum massa, ut feugiat augue. Curabitur eu nulla in purus egestas sodales. Mauris porttitor rutrum arcu, quis elementum mauris iaculis ac. Phasellus ut laoreet dolor. Vestibulum dignissim tristique quam vitae facilisis. Duis quam ligula, pharetra eget luctus a, porttitor sit amet tellus. Pellentesque ut lorem sed purus imperdiet tempor vel non justo. Quisque in ligula ultricies, hendrerit arcu sed, laoreet nunc. Duis facilisis, elit non efficitur mollis, elit ex pellentesque erat, ut cursus velit nibh non nisl. Etiam tristique aliquet diam non accumsan. Nullam volutpat ex nisi, vel laoreet lacus finibus nec. "
                 android:textColor="@color/dark_grey_default" />
 
@@ -137,8 +143,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
                 android:text="Requests"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
@@ -160,4 +166,24 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/bOwnerHandover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/default_button_color_blue"
+        android:fontFamily="@font/open_sans"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="CONFIRM HANDOVER"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:typeface="normal"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

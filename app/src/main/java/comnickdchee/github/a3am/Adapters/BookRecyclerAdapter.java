@@ -65,7 +65,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(BookRecyclerAdapter.ViewHolder holder, final int i) {
+    public void onBindViewHolder(BookRecyclerAdapter.ViewHolder holder, int i) {
         Log.d(TAG, "onBindViewHolder: called.");
 
         // one file that contains a bunch of conditions for making a recycler view.
@@ -83,20 +83,18 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
             public void onSuccess(Uri uri) {
                 Log.e("Tuts+", "uri: " + uri.toString());
                 DownloadLink = uri.toString();
-                Picasso.with(mContext).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.ivBook);
+                Picasso.with(mContext).load(DownloadLink).placeholder(R.drawable.ccc).error(R.drawable.ccc).into(holder.ivBook);
             }
         });
         // On click event when a card is clicked
         holder.actionsItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked on: " + mBooks.get(i));
+                // Log.d(TAG, "onClick: clicked on: " + mBooks.get(i));
                 //Intent i = new Intent()
                 Intent i = new Intent(mContext, ViewOwnedBook.class);
                 mContext.startActivity(i);
-
             }
-
         });
 
         /**
@@ -131,6 +129,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
 
                 // show the popup afterwards
                 popup.show();
+
             }
 
             /**

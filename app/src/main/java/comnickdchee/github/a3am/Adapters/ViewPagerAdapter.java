@@ -52,7 +52,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                 Log.d(TAG, "getItem: " + Integer.toString(i) + ": " + lists.get(i));
                 args1.putSerializable("data",this.lists.get(i));
                 LF.setArguments(args1);
-                Log.d(TAG, "getItem: Created a Borrowed Fragment");
+                Log.d(TAG, "getItem: Created a Lending Fragment");
                 return LF;
             case 2:
                 ActionsFragment AF =  new ActionsFragment();
@@ -60,7 +60,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                 Log.d(TAG, "getItem: " + Integer.toString(i) + ": " + lists.get(i));
                 args2.putSerializable("data",this.lists.get(i));
                 AF.setArguments(args2);
-                Log.d(TAG, "getItem: Created a Borrowed Fragment");
+                Log.d(TAG, "getItem: Created a Actions Fragment");
                 return AF;
             default:
                 RequestsFragment RF =  new RequestsFragment();
@@ -68,7 +68,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                 Log.d(TAG, "getItem: " + Integer.toString(i) + ": " + lists.get(i));
                 args3.putSerializable("data",this.lists.get(i));
                 RF.setArguments(args3);
-                Log.d(TAG, "getItem: Created a Borrowed Fragment");
+                Log.d(TAG, "getItem: Created a Requests Fragment");
                 return RF;
 
         }

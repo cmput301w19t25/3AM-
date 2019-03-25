@@ -20,19 +20,19 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.*;
 
-import comnickdchee.github.a3am.Activities.BorrowedActivity;
+import comnickdchee.github.a3am.Activities.SignInActivity;
 import comnickdchee.github.a3am.Activities.SignUpActivity;
 
 public class SignUpActivityTest {
     @Rule
     public ActivityTestRule<SignUpActivity> nActivityTestRule = new ActivityTestRule<SignUpActivity>(SignUpActivity.class);
-    //public ActivityTestRule<BorrowedActivity> bActivityTestRule = new ActivityTestRule<BorrowedActivity>(SignUpActivity.class);
+    //public ActivityTestRule<SignInActivity> bActivityTestRule = new ActivityTestRule<SignInActivity>(SignUpActivity.class);
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private SignUpActivity nActivity = null;
     //private SignUpActivity mActivity = null;
 
-    Instrumentation.ActivityMonitor monitor = getInstrumentation().addMonitor(BorrowedActivity.class.getName(),null,false);//monitor to show when second activity opens
+    Instrumentation.ActivityMonitor monitor = getInstrumentation().addMonitor(SignInActivity.class.getName(),null,false);//monitor to show when second activity opens
 
     @Before //before you execute the test
     public void setUp() throws Exception {

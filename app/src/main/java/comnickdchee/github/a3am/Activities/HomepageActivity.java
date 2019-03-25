@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.provider.SearchRecentSuggestions;
 import android.support.annotation.NonNull;
@@ -23,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,12 +35,15 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
+import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Backend.BookListCallback;
 import comnickdchee.github.a3am.Fragments.HomeFragment;
 import comnickdchee.github.a3am.Fragments.MessageFragment;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Fragments.MyBooksFragment;
 import comnickdchee.github.a3am.Fragments.ProfileFragment;
 import comnickdchee.github.a3am.Models.RequestStatusGroup;
+import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.MySuggestionProvider;
 import comnickdchee.github.a3am.R;
@@ -50,7 +51,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * @author Asma, Ismaeel, Nicholas, Tatenda & Zaheen
- * HomePageActivity extends AppCompatActivity
+ * HomePageActivity exteTnds AppCompatActivity
  * HomePageActivity implements NavigationView.onNavigationItemSelectedListener
  * @see AppCompatActivity
  */
@@ -71,6 +72,8 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     public static ArrayList<Book> LendingList = new ArrayList<>();
     public static ArrayList<Book> ActionsList = new ArrayList<>();
     public static ArrayList<RequestStatusGroup> RequestsList = new ArrayList<>();
+    public static ArrayList<Book> requestedList = new ArrayList<>();
+    private Backend backend = Backend.getBackendInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,9 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
         navToolbar = findViewById(R.id.navToolbar);
         setSupportActionBar(navToolbar);
+
+
+
 
             // Setting the side Navigation Drawer
         // source: https://www.youtube.com/watch?v=fGcMLu1GJEc
@@ -101,14 +107,14 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child(userEmail+"/"+"dp"+ ".jpg");
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(mAuth.getUid()+".jpg");
 
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Log.e("Tuts+", "uri: " + uri.toString());
                 DownloadLink = uri.toString();
-                CircleImageView iv = (CircleImageView) hView.findViewById(R.id.UserImageNavbar);
+                CircleImageView iv = (CircleImageView) hView.findViewById(R.id.messagingToImage);
                 Picasso.with(getApplicationContext()).load(uri.toString()).fit().into(iv);
                 //Handle whatever you're going to do with the URL here
             }
@@ -174,7 +180,9 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
             case R.id.nav_logout:
                 mAuth.signOut();
-                finish();
+                Intent login = new Intent(this, SignInActivity.class);
+                login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(login);
                 break;
 
         }
@@ -189,61 +197,81 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         // Initializing for Actions tab
         ActionsList = new ArrayList<>();
 
-        Book b1 = new Book("1111111111","Title1","AuthorName1");
-        Book b2 = new Book("1111111112","Title2","AuthorName2");
-        Book b3 = new Book("1111111113","Title3","AuthorName3");
-        ActionsList.add(b1);
-        ActionsList.add(b2);
-        ActionsList.add(b3);
+        backend.getActionsBooks(new BookListCallback() {
+            @Override
+            public void onCallback(ArrayList<Book> books) {
+                ActionsList.clear();
+                ActionsList.addAll(books);
+            }
+        });
 
         // ACTION TAB INIT ENDED _____________________________________________
 
         //Initializing for Borrowed tabs
 
-        User user2 = new User("An autistic Owner","sample@sc.ca","12345","98708");
         BorrowedList = new ArrayList<>();
 
-        Book borrowing = new Book("???????","BorrowedTabSample","Book",user2);
-        BorrowedList.add(borrowing);
+        backend.getBorrowedBooks(new BookListCallback() {
+            @Override
+            public void onCallback(ArrayList<Book> books) {
+                BorrowedList.clear();
+                BorrowedList.addAll(books);
+            }
+        });
+
 
         // Borrowed TAB INIT ENDED _____________________________________________
 
         //Initializing for Lending tabs
 
-        User user3 = new User("A Bosti Owner","sample@sc.ca","12345","98708");
         LendingList = new ArrayList<>();
 
-        Book lending = new Book("!!!!!!!!!!","LendingTabSample","Someone",user2);
-        LendingList.add(lending);
+        Log.d("START HERE", "init: STARTS HERE");
+
+        backend.getLendingBooks(new BookListCallback() {
+            @Override
+            public void onCallback(ArrayList<Book> books) {
+                Log.d("GOTCALLS", "onCallback: GOT CALLBACK");
+                LendingList.clear();
+                LendingList.addAll(books);
+            }
+        });
+
+        Log.d("ENDED BORROWED STUFF", "init: END HERE");
 
         // Lending TAB INIT ENDED _____________________________________________
 
 
         // Initializing for Requests tab
         RequestsList = new ArrayList<>();
+        requestedList = new ArrayList<>();
 
-        ArrayList<Book> AcceptedRequests = new ArrayList<>();
+        backend.getRequestedBooks(new BookListCallback() {
+            @Override
+            public void onCallback(ArrayList<Book> books) {
+                requestedList.clear();
+                requestedList.addAll(books);
+            }
+        });
 
-        // A random use initialized for making books
-        User user1 = new User("User Name","sample@sc.ca","12345","98708");
-
-        // Adding things to accepted request group
-        AcceptedRequests.add(new Book("Google AdSense","Hairy Potter and the Order of his Pubic","XXXXX",user1));
-        AcceptedRequests.add(new Book("Google Nonsense","Hairy Potter and the Sorcerer's Comb","XXXXX",user1));
-        AcceptedRequests.add(new Book("Google BalSense","Hairy Potter and the Chamber of Scissors","XXXXX",user1));
-
-        // Adding those request to the AcceptedGroup (The First argument determines the name of the Group)
-        RequestStatusGroup AcceptedGroup = new RequestStatusGroup("Accepted", AcceptedRequests);
-        RequestsList.add(AcceptedGroup);
-
-        // Adding things to pending request group
-        ArrayList<Book> pendingRequests = new ArrayList<>();
-        pendingRequests.add(new Book("Google ShitSense","Hairy Potter and the Half-Breed Prince","XXXXX",user1));
-        pendingRequests.add(new Book("Google DickSense","Hairy Potter and the Goblin for Hire","XXXXX",user1));
-
-        // Adding those request to the PendingGroup (The First argument determines the name of the Group)
-        RequestStatusGroup PendingGroup = new RequestStatusGroup("Pending", pendingRequests);
-        RequestsList.add(PendingGroup);
+//        ArrayList<Book> AcceptedRequests = new ArrayList<>();
+//        ArrayList<Book> pendingRequests = new ArrayList<>();
+//
+//        for (int i = 0; i < requestedList.size(); ++i) {
+//            if (requestedList.get(i).getStatus() == Status.Accepted) {
+//                AcceptedRequests.add(requestedList.get(i));
+//            } else {
+//                pendingRequests.add(requestedList.get(i));
+//            }
+//        }
+//
+//        // Adding those request to the AcceptedGroup (The First argument determines the name of the Group)
+//        RequestStatusGroup AcceptedGroup = new RequestStatusGroup("Accepted", AcceptedRequests);
+//        RequestsList.add(AcceptedGroup);
+//
+//        // Adding those request to the PendingGroup (The First argument determines the name of the Group)
+//        RequestStatusGroup PendingGroup = new RequestStatusGroup("Pending", pendingRequests);
+//        RequestsList.add(PendingGroup);
 
         // Request TAB INIT ENDED _____________________________________________
 

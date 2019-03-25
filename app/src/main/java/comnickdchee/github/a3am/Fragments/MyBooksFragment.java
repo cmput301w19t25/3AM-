@@ -1,5 +1,6 @@
 package comnickdchee.github.a3am.Fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,11 +9,17 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,10 +34,14 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import comnickdchee.github.a3am.Activities.NewBookActivity;
 import comnickdchee.github.a3am.Adapters.BookRecyclerAdapter;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -46,6 +57,12 @@ public class MyBooksFragment extends Fragment {
     private BookRecyclerAdapter adapter;
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseAuth mAuth;
+
+    ///new filter button added
+    private Button filter;
+    //list for filtering
+    private ArrayList<Book> orderedList;
+
 
     @Nullable
     @Override
@@ -66,7 +83,7 @@ public class MyBooksFragment extends Fragment {
         BookList = new ArrayList<>();
         mAuth = FirebaseAuth.getInstance();
 
-        DatabaseReference ref = database.getReference().child("users").child(mAuth.getUid()).child("owned_books");
+        DatabaseReference ref = database.getReference().child("users").child(mAuth.getUid()).child("ownedBooks");
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         adapter = new BookRecyclerAdapter(getActivity(), BookList);
@@ -74,14 +91,96 @@ public class MyBooksFragment extends Fragment {
         adapter.notifyDataSetChanged();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+
+        //Pop up menu for book filtering
+        //code for filtering application
+        orderedList = new ArrayList<>();
+        filter = view.findViewById(R.id.filterbtn);
+        filter.setSoundEffectsEnabled(false);
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(view.getContext(), filter);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        // Clear the sorted list before adding
+                        orderedList.clear();
+
+                        BookRecyclerAdapter updatedAdapter = new BookRecyclerAdapter(getActivity(), orderedList);
+
+                        switch (menuItem.getItemId()) {
+                            case R.id.item2:
+                                for (Book orderedBook : BookList) {
+                                    if (orderedBook.getStatus() == Status.Available) {
+                                        orderedList.add(orderedBook);
+                                    }
+                                }
+
+                                // Bind to adapter and show results
+                                recyclerView.setAdapter(updatedAdapter);
+                                updatedAdapter.notifyDataSetChanged();
+
+                                return true;
+
+                            case R.id.item3:
+                                for (Book orderedBook : BookList) {
+                                    if (orderedBook.getStatus() == Status.Borrowed) {
+                                        orderedList.add(orderedBook);
+                                    }
+                                }
+
+                                // Bind to adapter and show results
+                                recyclerView.setAdapter(updatedAdapter);
+                                updatedAdapter.notifyDataSetChanged();
+
+                                return true;
+
+                            case R.id.item4:
+
+                                for (Book orderedBook : BookList) {
+                                    if (orderedBook.getStatus() == Status.Requested) {
+                                        orderedList.add(orderedBook);
+                                    }
+                                }
+
+                                // Bind to adapter and show results
+                                recyclerView.setAdapter(updatedAdapter);
+                                updatedAdapter.notifyDataSetChanged();
+
+                                return true;
+
+
+                            case R.id.item5:
+
+                                for (Book orderedBook : BookList) {
+                                    if (orderedBook.getStatus() == Status.Accepted) {
+                                        orderedList.add(orderedBook);
+                                    }
+                                }
+                                // Bind to adapter and show results
+                                recyclerView.setAdapter(updatedAdapter);
+                                updatedAdapter.notifyDataSetChanged();
+
+                                return true;
+
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popupMenu.show();
+            }
+        });
+
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 dataSnapshot.getKey();
-
-                for(DataSnapshot child: dataSnapshot.getChildren()){
-                    Log.d("TestData",child.getValue().toString());
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.d("TestData", child.getValue().toString());
                     String key = child.getValue().toString();
                     findBook(key);
                 }
@@ -99,7 +198,7 @@ public class MyBooksFragment extends Fragment {
 
 
     //This is the function to get data for the books. We will use it to swap out data from the dummy data.
-    public void findBook(final String key){
+    public void findBook(final String key) {
         mAuth = FirebaseAuth.getInstance();
         BookList.clear();
 
@@ -113,14 +212,14 @@ public class MyBooksFragment extends Fragment {
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(key);
                 StorageReference profileImageRef =
-                        FirebaseStorage.getInstance().getReference("shelf@gmail.com"+"/"+"dp"+ ".jpg");
+                        FirebaseStorage.getInstance().getReference("shelf@gmail.com" + "/" + "dp" + ".jpg");
                 Log.d("TestImageBook", profileImageRef.toString());
 
-                Log.d("TestDataBook",dataSnapshot.child(key).getValue().toString());
-                    String author = dataSnapshot.child(key).child("author").getValue().toString();
-                    String isbn = dataSnapshot.child(key).child("isbn").getValue().toString();
-                    String title = dataSnapshot.child(key).child("title").getValue().toString();
-                    Book b1 = new Book(isbn,title,author);
+                Log.d("TestDataBook", dataSnapshot.child(key).getValue().toString());
+                String author = dataSnapshot.child(key).child("author").getValue().toString();
+                String isbn = dataSnapshot.child(key).child("isbn").getValue().toString();
+                String title = dataSnapshot.child(key).child("title").getValue().toString();
+                Book b1 = new Book(isbn, title, author);
 
                     /*
                     storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -139,11 +238,11 @@ public class MyBooksFragment extends Fragment {
                     });
                     */
 
-                    if (storageRef != null) {
-                        b1.setImage(key);
-                    }
-                    BookList.add(b1);
-                    adapter.notifyDataSetChanged();
+                if (storageRef != null) {
+                    b1.setImage(key);
+                }
+                BookList.add(b1);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -154,18 +253,19 @@ public class MyBooksFragment extends Fragment {
         //BookList.clear();
         int i = BookList.size();
         String s = Integer.toString(i);
-        Log.d("TestDataBook",s);
+        Log.d("TestDataBook", s);
 
     }
-    /**
-     * Fired after Add Book Activity has finished.
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            Book book = (Book) data.getSerializableExtra("NewBook");
-            BookList.add(book);
+            Log.d("MyBooks", "Recyclerview notified");
+            adapter.notifyDataSetChanged();
         }
+
+
     }
-    */
 }
+
