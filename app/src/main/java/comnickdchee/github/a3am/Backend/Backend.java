@@ -79,6 +79,11 @@ public class Backend {
      * requested books list.
      */
     public void deleteBook(Book book) {
+        // Don't let the user delete a book currently being interacted with
+        if (book.getStatus() != Status.Available || book.getStatus() != Status.Requested) {
+            return;
+        }
+
         DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
 
         // Iterate through all the requested books list
