@@ -40,7 +40,7 @@
             tools:layout_editor_absoluteY="16dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/UserImageNavbar"
+                android:id="@+id/UserImage"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="8dp"
@@ -59,8 +59,8 @@
                 android:layout_marginTop="8dp"
                 android:text="Borrower"
                 android:textSize="20sp"
-                app:layout_constraintStart_toEndOf="@+id/UserImageNavbar"
-                app:layout_constraintTop_toTopOf="@+id/UserImageNavbar" />
+                app:layout_constraintStart_toEndOf="@+id/UserImage"
+                app:layout_constraintTop_toTopOf="@+id/UserImage" />
             <ImageView
                 android:id="@+id/ratingIV"
                 android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:src="@drawable/ic_star_gold_24dp"
-                app:layout_constraintStart_toEndOf="@+id/UserImageNavbar"
+                app:layout_constraintStart_toEndOf="@+id/UserImage"
                 app:layout_constraintTop_toBottomOf="@+id/usernameTV" />
 
             <TextView
@@ -94,7 +94,7 @@
                 android:text="Message"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/UserImageNavbar" />
+                app:layout_constraintTop_toBottomOf="@+id/UserImage" />
 
 
         </android.support.constraint.ConstraintLayout>
@@ -209,7 +209,7 @@
             android:padding="10dp">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/bookImage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="8dp"
@@ -229,8 +229,8 @@
                 android:layout_marginLeft="8dp"
                 android:text="BOOK TITLE"
                 android:textSize="20sp"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="@+id/imageView" />
+                app:layout_constraintStart_toEndOf="@+id/bookImage"
+                app:layout_constraintTop_toTopOf="@+id/bookImage" />
 
             <TextView
                 android:id="@+id/authorNameTV"
@@ -239,16 +239,17 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:text="Author Name"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toEndOf="@+id/bookImage"
                 app:layout_constraintTop_toBottomOf="@+id/bookTitleTV" />
 
             <TextView
+                android:id="@+id/ISBNTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:text="X-XXXXX-XXXXX-X"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toEndOf="@+id/bookImage"
                 app:layout_constraintTop_toBottomOf="@+id/authorNameTV" />
 
 

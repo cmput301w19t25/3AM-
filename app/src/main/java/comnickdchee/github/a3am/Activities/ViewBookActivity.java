@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -67,6 +68,9 @@ public class ViewBookActivity extends AppCompatActivity {
         Intent intent = getIntent();
         actionBook = intent.getExtras().getParcelable("ActionBook");
 
+        getPageData();
+
+
         rvRequests = findViewById(R.id.rvViewBookRequests);
         ownerHandoverButton = findViewById(R.id.bOwnerHandover);
         layoutManager = new LinearLayoutManager(this);
@@ -111,5 +115,17 @@ public class ViewBookActivity extends AppCompatActivity {
                 Toast.makeText(this, "ISBN Not Matched with book", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public void getPageData() {
+        ImageView bookImage = findViewById(R.id.ivViewBookPhoto);
+        TextView bookTitle = findViewById(R.id.tvViewBookTitle);
+        TextView bookAuthor = findViewById(R.id.tvViewBookAuthor);
+        TextView bookISBN = findViewById(R.id.tvViewBookISBN);
+
+        bookTitle.setText(actionBook.getTitle());
+        bookAuthor.setText(actionBook.getAuthor());
+        bookISBN.setText(actionBook.getISBN());
+
     }
 }
