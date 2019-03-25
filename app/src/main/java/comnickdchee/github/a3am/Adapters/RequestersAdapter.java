@@ -51,7 +51,7 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
         viewHolder.acceptRequestView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backend.acceptRequest(requesters.get(viewHolder.getAdapterPosition()), currentBook);
+                backend.acceptRequest(requesters.get(i), currentBook);
             }
         });
 

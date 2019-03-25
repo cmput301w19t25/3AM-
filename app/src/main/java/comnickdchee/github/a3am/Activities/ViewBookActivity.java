@@ -64,7 +64,8 @@ public class ViewBookActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
         // Get the contents of the intent
-
+        Intent intent = getIntent();
+        actionBook = intent.getExtras().getParcelable("ActionBook");
 
         rvRequests = findViewById(R.id.rvViewBookRequests);
         ownerHandoverButton = findViewById(R.id.bOwnerHandover);
@@ -73,8 +74,7 @@ public class ViewBookActivity extends AppCompatActivity {
         rvRequests.setLayoutManager(layoutManager);
         rvRequests.setAdapter(requestersAdapter);
 
-        Intent intent = getIntent();
-        actionBook = intent.getExtras().getParcelable("ActionBook");
+
         backend.getRequesters(actionBook, new UserListCallback() {
             @Override
             public void onCallback(ArrayList<User> users) {
@@ -103,9 +103,13 @@ public class ViewBookActivity extends AppCompatActivity {
         if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
             String isbn = data.getStringExtra("isbn");
             Log.d("ISBN Retrieved", isbn);
+            String bookISBN = actionBook.getISBN();
 
-            backend.updateExchange(actionBook, ExchangeType.BorrowerReceive);
-
+            if (isbn.equals(bookISBN)) {
+                backend.updateExchange(actionBook, ExchangeType.BorrowerReceive);
+            } else {
+                Toast.makeText(this, "ISBN Not Matched with book", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

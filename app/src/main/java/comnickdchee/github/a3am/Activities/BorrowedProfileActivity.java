@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -79,10 +80,14 @@ public class BorrowedProfileActivity extends AppCompatActivity {
             Log.d("ISBN Retrieved", isbn);
 
             //TODO: DELETE EXCHANGE
+            String bookISBN = actionBook.getISBN();
 
-            actionBook.setStatus(Status.Available);
-            backend.updateBookData(actionBook);
-
+            if (isbn.equals(bookISBN)) {
+                actionBook.setStatus(Status.Available);
+                backend.updateBookData(actionBook);
+            } else {
+                Toast.makeText(this, "ISBN Not Matched with book", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
