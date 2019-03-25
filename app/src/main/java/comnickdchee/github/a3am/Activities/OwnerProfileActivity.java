@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import comnickdchee.github.a3am.Fragments.HomeFragment;
@@ -16,26 +17,30 @@ import comnickdchee.github.a3am.R;
 
 public class OwnerProfileActivity extends AppCompatActivity {
 
-    Button button1;
-    Button button2;
+    ImageView backButton;
+    Button transactionButton;
     Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_owner_profile);
+        setContentView(R.layout.activity_user_profile);
+
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
+        backButton = findViewById(R.id.backIV);
+        transactionButton = findViewById(R.id.transactionButton);
+        transactionButton.setText("Return Book");
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
-        if (toolbar != null)
-        {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            //getSupportActionBar().setElevation(0); // or other
-        }
+
 
 
         //getSupportActionBar().setTitle("Owner's Profile");

@@ -12,11 +12,21 @@
         android:id="@+id/rellay"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_below="@+id/toolbar"
         android:background="@color/colorGray"
         android:gravity="bottom"
         android:orientation="vertical"
         android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/backIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ic_arrow_back_white_24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.constraint.ConstraintLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -249,17 +259,17 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/returned"
+        android:id="@+id/transactionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rellay2"
-        android:layout_marginTop="50dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Book Returned "
-        android:paddingRight="15dp"
+        android:layout_marginBottom="40dp"
+        android:background="@color/Blue"
         android:paddingLeft="15dp"
-        android:textColor="@color/common_google_signin_btn_text_dark_default"
-        android:background="@color/Blue"/>
+        android:paddingRight="15dp"
+        android:text="Book Returned "
+        android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
 
     </RelativeLayout>
