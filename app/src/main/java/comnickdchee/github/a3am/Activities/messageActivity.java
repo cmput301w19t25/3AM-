@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +27,10 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
+import java.util.List;
 
+import comnickdchee.github.a3am.Adapters.MessageAdapter;
+import comnickdchee.github.a3am.Models.Chat;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,6 +49,9 @@ public class messageActivity extends AppCompatActivity {
     EditText userMessage;
 
 
+    MessageAdapter messageAdapter;
+    List<Chat> mChat;
+    RecyclerView recyclerView;
     Intent intent;
 
     @Override
