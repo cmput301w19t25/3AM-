@@ -19,7 +19,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
+import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.R;
 
 public class BorrowedProfileActivity extends AppCompatActivity {
@@ -27,8 +30,9 @@ public class BorrowedProfileActivity extends AppCompatActivity {
     ImageView backButton;
     Button transactionButton;
     private static final int ISBN_READ = 42;
+    private Book actionBook;
     private Context mContext;
-    Toolbar toolbar;
+    private Backend backend = Backend.getBackendInstance();
 
 
     @Override
@@ -44,8 +48,10 @@ public class BorrowedProfileActivity extends AppCompatActivity {
 
         backButton = findViewById(R.id.backIV);
         transactionButton = findViewById(R.id.transactionButton);
-        transactionButton.setText("Confirm Handover");
+        transactionButton.setText("Confirm Return");
 
+        Intent intent = getIntent();
+        actionBook = intent.getExtras().getParcelable("passedBook");
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +77,11 @@ public class BorrowedProfileActivity extends AppCompatActivity {
         if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
             String isbn = data.getStringExtra("isbn");
             Log.d("ISBN Retrieved", isbn);
+
+            //TODO: DELETE EXCHANGE
+
+            actionBook.setStatus(Status.Available);
+            backend.updateBookData(actionBook);
 
         }
     }

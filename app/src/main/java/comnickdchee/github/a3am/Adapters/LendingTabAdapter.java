@@ -62,6 +62,8 @@ public class LendingTabAdapter extends RecyclerView.Adapter<LendingTabAdapter.Vi
                 Toast.makeText(mContext, mBookList.get(i).getTitle(), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(mContext, BorrowedProfileActivity.class);
+                Book book = mBookList.get(i);
+                intent.putExtra("passedBook",book);
                 mContext.startActivity(intent);
             }
         });

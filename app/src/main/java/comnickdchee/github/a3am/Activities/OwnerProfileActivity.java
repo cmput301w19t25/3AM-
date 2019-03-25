@@ -12,17 +12,22 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Fragments.HomeFragment;
 import comnickdchee.github.a3am.Fragments.MessageFragment;
+import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.ExchangeType;
+import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.R;
 
 public class OwnerProfileActivity extends AppCompatActivity {
 
     ImageView backButton;
     private static final int ISBN_READ = 42;
+    private Book actionBook;
     Button transactionButton;
-    Toolbar toolbar;
+    private Backend backend = Backend.getBackendInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +40,9 @@ public class OwnerProfileActivity extends AppCompatActivity {
         backButton = findViewById(R.id.backIV);
         transactionButton = findViewById(R.id.transactionButton);
         transactionButton.setText("Return Book");
+
+        Intent intent = getIntent();
+        actionBook = intent.getExtras().getParcelable("passedBook");
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +85,8 @@ public class OwnerProfileActivity extends AppCompatActivity {
         if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
             String isbn = data.getStringExtra("isbn");
             Log.d("ISBN Retrieved", isbn);
+            backend.updateExchange(actionBook, ExchangeType.OwnerReceive);
+
 
         }
     }
