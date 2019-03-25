@@ -32,6 +32,7 @@ import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Activities.HomepageActivity;
 import comnickdchee.github.a3am.Activities.ViewOwnedBook;
+import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -46,6 +47,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
     private Context mContext;
     //private ImageButton option;                         // options button for Edit/Delete
     private int currentPos;
+    private Backend backend = Backend.getBackendInstance();
 
     public BookRecyclerAdapter( Context mContext, ArrayList<Book> BookList) {
         this.mBooks = BookList;
@@ -119,7 +121,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
                                 clickEdit();
                                 return true;
                             case R.id.itemDelete:
-                                //clickDelete();
+                                clickDelete();
                                 return true;
                             default:
                                 return false;
@@ -147,11 +149,10 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
             /**
              * Called when the user clicks on the Delete option in the PopupMenu object.
              */
-
-          /*  void clickDelete() {
-                // delete entry based on position
-                // TODO: Make this delete book
-            }*/
+            void clickDelete() {
+               backend.deleteBook(mBooks.get(holder.getAdapterPosition()));
+               notifyDataSetChanged();
+            }
 
         });
     }
