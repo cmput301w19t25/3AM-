@@ -15,7 +15,8 @@
             android:enabled="true"
             android:exported="true"></service>
 
-        <activity android:name=".Activities.messageActivity" />
+        <activity android:name=".Activities.messageActivity" android:windowSoftInputMode="adjustResize"  />
+
         <activity android:name=".Activities.ViewOwnedBook" />
         <activity android:name=".Activities.RequestBookActivity" />
         <activity android:name=".Barcode.BarcodeScanner"></activity>
