@@ -49,7 +49,7 @@ public class ViewRBookActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
         Intent intent = getIntent();
-        actionBook = intent.getExtras().getParcelable("ActionBook");
+        actionBook = intent.getExtras().getParcelable("acceptedBook");
 
         backButton = findViewById(R.id.backIV);
         receiveButton = findViewById(R.id.receiveBookButton);
