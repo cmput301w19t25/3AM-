@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -40,7 +42,7 @@ public class messageActivity extends AppCompatActivity {
 
     String userName;
     String receiverKey;
-
+    public static String imgUrl;
 
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
@@ -59,13 +61,16 @@ public class messageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
+
         //Retrieve and display messaging data.
         receiverImage = findViewById(R.id.messagingToImage);
         recieverUserName = findViewById(R.id.messagingTo);
         Bundle bundle = getIntent().getExtras();
+        receiverKey = bundle.getString("key");
+        //Function that loads Image using key in ImageView..
+        loadImageFromOwnerID(receiverImage,receiverKey);
 
         //Retrieve Messenger's name.
-        receiverKey = bundle.getString("key");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(receiverKey);
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -73,15 +78,25 @@ public class messageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String userName = dataSnapshot.child("userName").getValue().toString().trim();
                 recieverUserName.setText(userName);
+                //Log.d("Image","Donkey"+imgUrl);
+                readMessages(firebaseUser.getUid().toString(),receiverKey,imgUrl);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
 
-        //Function that loads Image using key in ImageView..
-        loadImageFromOwnerID(receiverImage,receiverKey);
+
+        //Load previous messages in Custom Messenger;
+        recyclerView = findViewById(R.id.reyclerview_message_list);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+
 
         //Rig send and message.
         sendMessage = findViewById(R.id.button_chatbox_send);
@@ -114,6 +129,34 @@ public class messageActivity extends AppCompatActivity {
         reference.child("chats").push().setValue(hashMap);
     }
 
+    private void readMessages(final String myid, String userID, String imgUrl){
+        mChat = new ArrayList<>();
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("chats");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mChat.clear();
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    Chat chat = snapshot.getValue(Chat.class);
+                    if(chat.getReceiver().equals(myid) && chat.getSender().equals(userID) || chat.getReceiver().equals(userID) && chat.getSender().equals(myid)){
+                        mChat.add(chat);
+                    }
+//                    Log.d("Image", imgUrl);
+                    messageAdapter = new MessageAdapter(messageActivity.this, mChat, imgUrl);
+                    recyclerView.setAdapter(messageAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
     public void loadImageFromOwnerID(ImageView load, String uID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");
@@ -123,8 +166,9 @@ public class messageActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 Log.e("Tuts+", "uri: " + uri.toString());
-                String DownloadLink = uri.toString();
-                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+                imgUrl = uri.toString();
+
+                Picasso.with(getApplicationContext()).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
             }
         });
 

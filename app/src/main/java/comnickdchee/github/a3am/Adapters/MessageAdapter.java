@@ -34,7 +34,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     private static final String TAG = "In_MessageAdapter";
     FirebaseStorage storage;
-    String DownloadLink;
+
     private List<Chat>  mChat;
     private Context mContext;
     private String imgUrl;
@@ -70,29 +70,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public void onBindViewHolder(MessageAdapter.ViewHolder holder, final int position) {
         // This function sets up the data in the cards
 
-        Log.d(TAG, "onBindViewHolder: called.");
+        Log.d(TAG, "onBindViewHolderMessage: called.");
         // TODO: Correctly implement images for the other user's profile pic Below is the code used for Book Fragment's pictures by Zaheen
-        /*
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(mChatboxes.get(i).getImage());
-        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Log.e("Tuts+", "uri: " + uri.toString());
-                DownloadLink = uri.toString();
-                Picasso.with(mContext).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.ivBook);
-            }
-        });*/
+        Log.d("Image", imgUrl);
         Chat chat = mChat.get(position);
-
         holder.showMessage.setText(chat.getMessage());
 
         if(imgUrl != null){
-            Picasso.with(mContext).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.profilePhoto);
+            Picasso.with(mContext).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.profilePhoto);
         }else{
-            Picasso.with(mContext).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.profilePhoto);
+            Picasso.with(mContext).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.profilePhoto);
         }
 
         // On click event when a card is clicked
+
     }
 
     @Override
