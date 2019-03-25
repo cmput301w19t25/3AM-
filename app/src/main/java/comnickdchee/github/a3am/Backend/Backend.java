@@ -80,11 +80,12 @@ public class Backend {
      */
     public void deleteBook(Book book) {
         // Don't let the user delete a book currently being interacted with
-        if (book.getStatus() != Status.Available || book.getStatus() != Status.Requested) {
-            return;
-        }
+//        if (book.getStatus() != Status.Available || book.getStatus() != Status.Requested) {
+//            Log.d("RETURNED", "deleteBook: ");
+//            return;
+//        }
 
-        DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
+        Log.d("START HERE", "deleteBook: ");
 
         // Iterate through all the requested books list
         // and delete the bookIDs from each user's requested list
@@ -102,9 +103,24 @@ public class Backend {
             });
         }
 
+        // Delete from the current user my books list
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        String uid = firebaseAuth.getCurrentUser().getUid();
+        getCurrentUserData(new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                mCurrentUser = user;
+                mCurrentUser.getOwnedBooks().remove(book.getBookID());
+                updateCurrentUserData();
+            }
+        });
+
+
+        Log.d("DELETING FROM BOOKS", "deleteBook: ");
+        Log.d(book.getBookID(), "deleteBook: ");
         // Delete the actual book afterwards
-        DatabaseReference booksRef = mFirebaseDatabase.getReference("books").child(book.getBookID());
-        booksRef.removeValue();
+        DatabaseReference bookRef = mFirebaseDatabase.getReference("books").child(book.getBookID());
+        bookRef.removeValue();
     }
 
     /** Returns the current user of the model class. */

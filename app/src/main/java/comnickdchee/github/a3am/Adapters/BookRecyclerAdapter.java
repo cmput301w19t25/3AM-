@@ -43,7 +43,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
     private static final String TAG = "In_RecyclerViewAdapter";
     FirebaseStorage storage;
     String DownloadLink;
-    private ArrayList<Book> mBooks;
+    private ArrayList<Book> mBooks = new ArrayList<>();
     private Context mContext;
     //private ImageButton option;                         // options button for Edit/Delete
     private int currentPos;
@@ -150,7 +150,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
              * Called when the user clicks on the Delete option in the PopupMenu object.
              */
             void clickDelete() {
-               backend.deleteBook(mBooks.get(holder.getAdapterPosition()));
+               backend.deleteBook(mBooks.get(i));
                notifyDataSetChanged();
             }
 
