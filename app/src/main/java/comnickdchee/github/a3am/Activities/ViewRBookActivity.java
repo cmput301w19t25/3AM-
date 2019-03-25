@@ -18,12 +18,10 @@ import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.RequestersAdapter;
 import comnickdchee.github.a3am.Backend.Backend;
-import comnickdchee.github.a3am.Backend.UserListCallback;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.ExchangeType;
 import comnickdchee.github.a3am.Models.Status;
-import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 
 /**
@@ -31,68 +29,69 @@ import comnickdchee.github.a3am.R;
  * requests on a given book that they own. The user can accept
  * and decline requests.
  */
-public class ViewBookActivity extends AppCompatActivity {
+public class ViewRBookActivity extends AppCompatActivity {
 
     private static final int ISBN_READ = 42;
     private RecyclerView rvRequests;
-    private ArrayList<User> requesters = new ArrayList<>();
+    private static ArrayList<String> requesters;
     private RequestersAdapter requestersAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private Button ownerHandoverButton;
-    private Button mapsButton;
-    private Backend backend = Backend.getBackendInstance();
+    private Button receiveButton;
+    private ImageView backButton;
     private Book actionBook;
+    private Backend backend = Backend.getBackendInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_book);
-
-        //button click for owner to specify pick up location
-//        mapsButton = (Button) findViewById(R.id.mapsButton);
-//        mapsButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Intent myIntent = new Intent(ViewBookActivity.this, MapsActivity.class);
-//                ViewBookActivity.this.startActivity(myIntent);
-//                }
-//        });
-
+        setContentView(R.layout.activity_view_r_books);
 
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
-        // Get the contents of the intent
-
-
-        rvRequests = findViewById(R.id.rvViewBookRequests);
-        ownerHandoverButton = findViewById(R.id.bOwnerHandover);
-        layoutManager = new LinearLayoutManager(this);
-        requestersAdapter = new RequestersAdapter(this, requesters, actionBook);
-        rvRequests.setLayoutManager(layoutManager);
-        rvRequests.setAdapter(requestersAdapter);
-
         Intent intent = getIntent();
-        actionBook = intent.getExtras().getParcelable("ActionBook");
-        backend.getRequesters(actionBook, new UserListCallback() {
+        actionBook = intent.getExtras().getParcelable("acceptedBook");
+
+        backButton = findViewById(R.id.backIV);
+        receiveButton = findViewById(R.id.receiveBookButton);
+
+        receiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCallback(ArrayList<User> users) {
-                requesters.clear();
-                requesters.addAll(users);
-                requestersAdapter.notifyDataSetChanged();
+            public void onClick(View view) {
+                Intent intent = new Intent(ViewRBookActivity.this, BarcodeScanner.class);
+                startActivityForResult(intent,ISBN_READ);
             }
         });
 
-        ownerHandoverButton.setOnClickListener(new View.OnClickListener() {
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+     /*   //button click for owner to specify pick up location
+        button2 = (Button) findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                // Set exchange type
-                Intent intent = new Intent(ViewBookActivity.this, BarcodeScanner.class);
-                startActivityForResult(intent,ISBN_READ);
-                //
+                Intent myIntent = new Intent(ViewRBookActivity.this, MapsActivity.class);
+                ViewRBookActivity.this.startActivity(myIntent);
             }
-        });
+        });*/
+
+
+
+
+        /*rvRequests = findViewById(R.id.rvViewBookRequests);
+        layoutManager = new LinearLayoutManager(this);
+        requesters = new ArrayList<String>();
+        requesters.add("Zaheen Rahman");
+        requesters.add("Ismaeel Bin Mohiuddin");
+        requestersAdapter = new RequestersAdapter(this, requesters);
+        rvRequests.setLayoutManager(layoutManager);
+        rvRequests.setAdapter(requestersAdapter);*/
 
     }
 
@@ -103,8 +102,9 @@ public class ViewBookActivity extends AppCompatActivity {
         if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
             String isbn = data.getStringExtra("isbn");
             Log.d("ISBN Retrieved", isbn);
-
-            backend.updateExchange(actionBook, ExchangeType.BorrowerReceive);
+            actionBook.setStatus(Status.Borrowed);
+            backend.updateExchange(actionBook, ExchangeType.BorrowerHandover);
+            backend.updateBookData(actionBook);
 
         }
     }

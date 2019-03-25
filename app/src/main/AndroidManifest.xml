@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="comnickdchee.github.a3am">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <permission
+        android:name="comnickdchee.github.a3am.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature"/>
+
+    <uses-permission android:name="comnickdchee.github.a3am.permission.MAPS_RECEIVE"/>
+    <uses-permission android:name="com.goggle.android.providers.gsf.permissions.READ_GSERVICES"/>
+
+    <uses-feature android:glEsVersion="0x00020000"
+        android:required="true"/>
+
     <uses-permission android:name="android.permission.CAMERA" />
     <application
         android:allowBackup="true"
@@ -10,6 +25,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+
         <service
             android:name=".MyServiceNotification"
             android:enabled="true"
@@ -37,8 +53,14 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".Activities.ProfileActivity" />
+        <activity android:name=".Activities.BorrowedProfileActivity"
+            android:parentActivityName=".Activities.HomepageActivity">
+        </activity>
+        <activity android:name=".Activities.OwnerProfileActivity"
+            android:parentActivityName=".Activities.HomepageActivity">
+        </activity>
         <activity android:name=".Activities.SignUpActivity" />
+        <activity android:name=".Activities.MapsActivity" />
         <activity android:name=".Activities.ViewBookActivity" />
         <activity android:name=".Activities.NewBookActivity" />
         <activity android:name=".Activities.SignInActivity">
@@ -47,11 +69,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
+        <activity android:name=".Activities.ViewRBookActivity"></activity>
+        <meta-data android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCE5ruIdklElQAH2hqkRvppEtoJxTNG9nA"/>
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
         <activity
             android:name=".Activities.SearchResultsActivity"
             android:launchMode="singleTop">
