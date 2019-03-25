@@ -72,7 +72,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         Log.d(TAG, "onBindViewHolderMessage: called.");
         // TODO: Correctly implement images for the other user's profile pic Below is the code used for Book Fragment's pictures by Zaheen
-        Log.d("Image", imgUrl);
+//        Log.d("Image", imgUrl);
         Chat chat = mChat.get(position);
         holder.showMessage.setText(chat.getMessage());
 

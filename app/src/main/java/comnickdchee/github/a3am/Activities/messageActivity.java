@@ -79,6 +79,7 @@ public class messageActivity extends AppCompatActivity {
                 String userName = dataSnapshot.child("userName").getValue().toString().trim();
                 recieverUserName.setText(userName);
                 //Log.d("Image","Donkey"+imgUrl);
+                imgUrl = bundle.getString("imgUrl");
                 readMessages(firebaseUser.getUid().toString(),receiverKey,imgUrl);
             }
 
