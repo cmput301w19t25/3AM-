@@ -22,6 +22,7 @@ import comnickdchee.github.a3am.Backend.UserListCallback;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.ExchangeType;
+import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 
@@ -40,6 +41,7 @@ public class ViewBookActivity extends AppCompatActivity {
     private Button ownerHandoverButton;
     private Button mapsButton;
     private Backend backend = Backend.getBackendInstance();
+    private Book actionBook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +64,7 @@ public class ViewBookActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
         // Get the contents of the intent
-        Intent intent = getIntent();
-        Book actionBook = intent.getExtras().getParcelable("ActionBook");
+
 
         rvRequests = findViewById(R.id.rvViewBookRequests);
         ownerHandoverButton = findViewById(R.id.bOwnerHandover);
@@ -72,6 +73,8 @@ public class ViewBookActivity extends AppCompatActivity {
         rvRequests.setLayoutManager(layoutManager);
         rvRequests.setAdapter(requestersAdapter);
 
+        Intent intent = getIntent();
+        actionBook = intent.getExtras().getParcelable("ActionBook");
         backend.getRequesters(actionBook, new UserListCallback() {
             @Override
             public void onCallback(ArrayList<User> users) {
@@ -87,7 +90,7 @@ public class ViewBookActivity extends AppCompatActivity {
                 // Set exchange type
                 Intent intent = new Intent(ViewBookActivity.this, BarcodeScanner.class);
                 startActivityForResult(intent,ISBN_READ);
-                //backend.updateExchange(actionBook, ExchangeType.BorrowerReceive);
+                //
             }
         });
 
@@ -100,6 +103,9 @@ public class ViewBookActivity extends AppCompatActivity {
         if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
             String isbn = data.getStringExtra("isbn");
             Log.d("ISBN Retrieved", isbn);
+
+            backend.updateExchange(actionBook, ExchangeType.BorrowerReceive);
+
 
         }
     }

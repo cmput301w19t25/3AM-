@@ -17,7 +17,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.RequestersAdapter;
+import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
+import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.R;
 
 /**
@@ -34,6 +37,8 @@ public class ViewRBookActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private Button receiveButton;
     private ImageView backButton;
+    private Book actionBook;
+    private Backend backend = Backend.getBackendInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,9 @@ public class ViewRBookActivity extends AppCompatActivity {
 
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+
+        Intent intent = getIntent();
+        actionBook = intent.getExtras().getParcelable("ActionBook");
 
         backButton = findViewById(R.id.backIV);
         receiveButton = findViewById(R.id.receiveBookButton);
@@ -93,6 +101,8 @@ public class ViewRBookActivity extends AppCompatActivity {
         if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
             String isbn = data.getStringExtra("isbn");
             Log.d("ISBN Retrieved", isbn);
+            actionBook.setStatus(Status.Borrowed);
+            backend.updateBookData(actionBook);
 
         }
     }

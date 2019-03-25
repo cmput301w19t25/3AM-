@@ -75,7 +75,10 @@ public class RequestsTabAdapter extends ExpandableRecyclerViewAdapter<RequestsTa
                 Toast.makeText(mContext, ((Book) group.getItems().get(childIndex)).getTitle(), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(mContext, ViewRBookActivity.class);
+                Book book = ((Book) group.getItems().get(childIndex));
+                intent.putExtra("acceptedBook",book);
                 mContext.startActivity(intent);
+
             }
         });
 
