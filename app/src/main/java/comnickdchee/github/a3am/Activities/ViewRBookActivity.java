@@ -108,6 +108,8 @@ public class ViewRBookActivity extends AppCompatActivity {
                 actionBook.setStatus(Status.Borrowed);
                 backend.updateExchange(actionBook, ExchangeType.BorrowerHandover);
                 backend.updateBookData(actionBook);
+            } else {
+                Toast.makeText(this, "ISBN Not Matched with book", Toast.LENGTH_SHORT).show();
             }
 
 
