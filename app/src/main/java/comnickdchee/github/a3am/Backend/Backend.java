@@ -74,6 +74,34 @@ public class Backend {
         updateCurrentUserData();
     }
 
+    /**
+     * Delete the book from both the books table and every requesting user's
+     * requested books list.
+     */
+    public void deleteBook(Book book) {
+        DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
+
+        // Iterate through all the requested books list
+        // and delete the bookIDs from each user's requested list
+        for (String requesterID : book.getRequests()) {
+
+            // Get the current user, update his requested books, and then
+            // push it back to the table
+            getUser(requesterID, new UserCallback() {
+                @Override
+                public void onCallback(User user) {
+                    User requester = user;
+                    requester.getRequestedBooks().remove(book.getBookID());
+                    updateUserData(requester);
+                }
+            });
+        }
+
+        // Delete the actual book afterwards
+        DatabaseReference booksRef = mFirebaseDatabase.getReference("books").child(book.getBookID());
+        booksRef.removeValue();
+    }
+
     /** Returns the current user of the model class. */
     public User getCurrentUser() {
         if (mCurrentUser == null) {
