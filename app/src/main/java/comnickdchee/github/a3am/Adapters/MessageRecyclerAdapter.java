@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 import comnickdchee.github.a3am.Activities.ViewOwnedBook;
+import comnickdchee.github.a3am.Activities.messageActivity;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.ChatBox;
 import comnickdchee.github.a3am.Models.User;
@@ -43,6 +44,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
     private ArrayList<ChatBox> mChatboxes;
     private Context mContext;
     private ArrayList<String> uIDS;
+    String imgUrl;
     private static final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
 
 
@@ -68,41 +70,21 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
         // This function sets up the data in the cards
 
         Log.d("MessageRecycler", "onBindViewHolder: called.");
-        //ArrayList<User> users = mChatboxes.get(i).getUser();
-        //int userIndex = 0;
         Log.d("MessageRecycler", uIDS.get(i).toString());
-        // TODO: Change the case to contain current user's actual Username
-        // Changes user index if user1 is the current user.
-        //if (users.get(0).getUserName().equals("Current User's Username")) {
-        //    userIndex = 1;
-        //}
 
         setUserNameFromUid(uIDS.get(i),holder.tvUsername);
-
-
-        //holder.tvUsername.setText(users.get(userIndex).getUserName());
-        //holder.tvLastMessage.setText(mChatboxes.get(i).getLastMessage());
-
-        //FirebaseStorage storage = FirebaseStorage.getInstance();
-
-        // TODO: Correctly implement images for the other user's profile pic Below is the code used for Book Fragment's pictures by Zaheen
-        /*
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(mChatboxes.get(i).getImage());
-        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Log.e("Tuts+", "uri: " + uri.toString());
-                DownloadLink = uri.toString();
-                Picasso.with(mContext).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.ivBook);
-            }
-        });*/
-
+        loadImageFromOwnerID(uIDS.get(i), holder.ivUserPhoto);
 
         // On click event when a card is clicked
         holder.cvChatbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked on: " + uIDS.get(i));
+                Intent intent = new Intent (mContext, messageActivity.class);
+                intent.putExtra("key", uIDS.get(i));
+                intent.putExtra("imgUrl", imgUrl);
+                //Log.d("keyIn",key);
+                mContext.startActivity(intent);
             }
         });
     }
@@ -153,5 +135,20 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
         });
     }
 
+    public void loadImageFromOwnerID( String uID, ImageView load){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");
+
+        Log.e("Tuts+", storageRef.toString());
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e("Tuts+", "uri: " + uri.toString());
+                imgUrl = uri.toString();
+                Picasso.with(mContext).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+            }
+        });
+
+    }
 
 }
