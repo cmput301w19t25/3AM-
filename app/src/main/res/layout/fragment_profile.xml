@@ -8,26 +8,26 @@
     android:background="@android:color/white">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/pictureContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:padding="20dp"
-        android:id="@+id/pictureContainer">
-
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <de.hdodenhof.circleimageview.CircleImageView
-            tools:ignore="ContentDescription"
             android:id="@+id/profilePictureEditFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:src="@mipmap/ic_launcher_round"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@mipmap/ic_launcher_round"/>
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/userNameFragmentProfile"
@@ -46,8 +46,6 @@
             app:layout_constraintTop_toBottomOf="@+id/profilePictureEditFragment" />
 
 
-
-
     </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
@@ -61,7 +59,9 @@
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pictureContainer">
+        app:layout_constraintTop_toBottomOf="@+id/pictureContainer"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp">
 
         <TextView
             android:id="@+id/contactHeader"
@@ -81,19 +81,25 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_message"
+                android:layout_gravity="bottom"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="✉ : "
+                android:text=" : "
                 android:textColor="@android:color/black"
-                android:textSize="26dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/emailEditProfileFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -103,19 +109,25 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_phone"
+                android:layout_gravity="bottom"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="📞 : "
+                android:text=" : "
                 android:textColor="@android:color/black"
-                android:textSize="18dp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/phoneNumberEditProfileFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <TextView
