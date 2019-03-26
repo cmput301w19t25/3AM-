@@ -14,11 +14,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import comnickdchee.github.a3am.Activities.ViewOwnedBook;
 import comnickdchee.github.a3am.Models.Book;
@@ -33,9 +42,12 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
     String DownloadLink;
     private ArrayList<ChatBox> mChatboxes;
     private Context mContext;
+    private ArrayList<String> uIDS;
+    private static final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
 
-    public MessageRecyclerAdapter( Context mContext, ArrayList<ChatBox> Chatboxes) {
-        this.mChatboxes = Chatboxes;
+
+    public MessageRecyclerAdapter( Context mContext, ArrayList<String> uIDS) {
+        this.uIDS = uIDS;
         this.mContext = mContext;
     }
 
@@ -55,20 +67,23 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
     public void onBindViewHolder(MessageRecyclerAdapter.ViewHolder holder, final int i) {
         // This function sets up the data in the cards
 
-        Log.d(TAG, "onBindViewHolder: called.");
-        ArrayList<User> users = mChatboxes.get(i).getUser();
-        int userIndex = 0;
-
+        Log.d("MessageRecycler", "onBindViewHolder: called.");
+        //ArrayList<User> users = mChatboxes.get(i).getUser();
+        //int userIndex = 0;
+        Log.d("MessageRecycler", uIDS.get(i).toString());
         // TODO: Change the case to contain current user's actual Username
         // Changes user index if user1 is the current user.
-        if (users.get(0).getUserName().equals("Current User's Username")) {
-            userIndex = 1;
-        }
+        //if (users.get(0).getUserName().equals("Current User's Username")) {
+        //    userIndex = 1;
+        //}
 
-        holder.tvUsername.setText(users.get(userIndex).getUserName());
-        holder.tvLastMessage.setText(mChatboxes.get(i).getLastMessage());
+        setUserNameFromUid(uIDS.get(i),holder.tvUsername);
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        //holder.tvUsername.setText(users.get(userIndex).getUserName());
+        //holder.tvLastMessage.setText(mChatboxes.get(i).getLastMessage());
+
+        //FirebaseStorage storage = FirebaseStorage.getInstance();
 
         // TODO: Correctly implement images for the other user's profile pic Below is the code used for Book Fragment's pictures by Zaheen
         /*
@@ -87,14 +102,14 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
         holder.cvChatbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked on: " + mChatboxes.get(i));
+                Log.d(TAG, "onClick: clicked on: " + uIDS.get(i));
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mChatboxes.size();
+        return uIDS.size();
     }
 
 
@@ -117,5 +132,26 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
             cvChatbox = itemView.findViewById(R.id.cvChatbox);
         }
     }
+
+
+    public void setUserNameFromUid(String UID, TextView t){
+        DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
+        usersRef = usersRef.child(UID).child("userName");
+        Log.d("Messaging Tab", "getUserNameFromUid: "+usersRef.toString());
+        usersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("Messaging Tab", dataSnapshot.getValue().toString());
+                t.setText(dataSnapshot.getValue().toString());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
 }
