@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -123,6 +129,8 @@ public class BorrowedProfileActivity extends AppCompatActivity {
 
         Log.d(borrower.getUserName(), "onCallback: Borrower");
 
+        loadImageFromOwnerID(userPhoto,borrower.getUserID());
+        loadImageFromBookID(bookImage, actionBook.getBookID());
         username.setText(borrower.getUserName());
         phone.setText(borrower.getPhoneNumber());
         email.setText(borrower.getEmail());
@@ -131,6 +139,38 @@ public class BorrowedProfileActivity extends AppCompatActivity {
         bookTitle.setText(actionBook.getTitle());
         bookAuthor.setText(actionBook.getAuthor());
         bookISBN.setText(actionBook.getISBN());
+
+    }
+
+    public void loadImageFromOwnerID(ImageView load, String uID){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");
+
+        Log.e("Tuts+", storageRef.toString());
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e("Tuts+", "uri: " + uri.toString());
+                String imgUrl = uri.toString();
+
+                Picasso.with(getApplicationContext()).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+            }
+        });
+
+    }
+
+    public void loadImageFromBookID(ImageView load, String bookID){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(bookID);
+        Log.e("Tuts+", storageRef.toString());
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e("Tuts+", "uri: " + uri.toString());
+                String DownloadLink = uri.toString();
+                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+            }
+        });
 
     }
 
