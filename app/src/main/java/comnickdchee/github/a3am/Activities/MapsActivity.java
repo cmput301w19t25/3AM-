@@ -18,22 +18,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.util.List;
@@ -47,6 +51,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     GoogleMap mGoogleMap;
     AutoCompleteTextView et;
     private static final String TAG = "MapsActivity";
+    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+
+
+    // To check if the permission is granted
+    private Boolean mLocationPermissionGranted = false;
+
     private static final int MY_PERMISSIONS_ACCESS_COARSE_LOCATION = 1;
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private GoogleApiClient mGoogleApiClient;
@@ -54,7 +66,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 
     @Override
@@ -65,73 +76,121 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d(TAG, "super called");
         if (googleServicesAvailable()) {
             setContentView(R.layout.activity_maps);
-            initMap();
+            getLocationPermission();
         }
     }
 
-        private void initMap(){
-            MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.mapFragment);
-            mapFragment.getMapAsync(this);
+    /** Gets the current location of the user's device. */
+    private void getDeviceLocation() {
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        try {
+            if (mLocationPermissionGranted) {
+                // Gets the last location of the device
+                Task location = mFusedLocationProviderClient.getLastLocation();
+                location.addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            Location currentLocation = (Location) task.getResult();
+                            goToLocationZoom(currentLocation.getLatitude(), currentLocation.getLongitude(), 15f);
+
+                        } else {
+                            Toast.makeText(MapsActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        } catch (SecurityException e) {
         }
+
+    }
+
+    /** Called when the map is initialized */
+    private void initMap() {
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+        mapFragment.getMapAsync(MapsActivity.this);
+    }
 
     public boolean googleServicesAvailable() {
         GoogleApiAvailability api = GoogleApiAvailability.getInstance();
         int isAvailable = api.isGooglePlayServicesAvailable(this);
 
-        if(isAvailable == ConnectionResult.SUCCESS) {
+        if (isAvailable == ConnectionResult.SUCCESS) {
             return true;
 
         } else if (api.isUserResolvableError(isAvailable)) {
             Dialog dialog = api.getErrorDialog(this, isAvailable, 0);
             dialog.show();
 
-        // Throws a dialog if the Google Play Service is unavailable.
-        } else{
-            Toast.makeText(this, "can't connect to play services", Toast.LENGTH_LONG).show();
+            // Throws a dialog if the Google Play Service is unavailable.
+        } else {
+            Toast.makeText(this, "Can't connect to play services", Toast.LENGTH_LONG).show();
         }
 
         return false;
+    }
+
+    private void getLocationPermission() {
+        String[] permissions = {FINE_LOCATION, COARSE_LOCATION};
+
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                mLocationPermissionGranted = true;
+            } else {
+                ActivityCompat.requestPermissions(this, permissions, MY_PERMISSIONS_ACCESS_COARSE_LOCATION);
+            }
+        } else {
+            ActivityCompat.requestPermissions(this, permissions, MY_PERMISSIONS_ACCESS_COARSE_LOCATION);
+        }
+
+
+    }
+
+    /**  */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        mLocationPermissionGranted = false;
+
+        switch (requestCode) {
+            case MY_PERMISSIONS_ACCESS_COARSE_LOCATION: {
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < grantResults.length; ++i) {
+                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                            mLocationPermissionGranted = false;
+                            return;
+                        }
+                    }
+
+                    mLocationPermissionGranted = true;
+
+                    initMap();
+                }
+            }
+        }
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
 
-        // If check permission is not enabled, prompt user.
-        // TODO: Fix app crashing.
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
-                    MY_PERMISSIONS_ACCESS_COARSE_LOCATION);
+        // Gets the device location if permission was granted
+        if (mLocationPermissionGranted) {
+            getDeviceLocation();
         }
 
-        if ( Build.VERSION.SDK_INT >= 23 &&
-                ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return  ;
-            }
+        // Needed to see the current device's location
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
 
+        googleMap.setMyLocationEnabled(true);
 
-            googleMap.setMyLocationEnabled(true);
-
-
-            // We retrieve the last known location, get the current latitude and longitude, and set the
-            // pin here
-            // Source: https://stackoverflow.com/questions/23104089/googlemap-getmylocation-cannot-get-current-location
-            LocationManager locationManager = (LocationManager)
-                    getSystemService(Context.LOCATION_SERVICE);
-            Criteria criteria = new Criteria();
-
-            Location location = locationManager.getLastKnownLocation(locationManager
-                    .getBestProvider(criteria, false));
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
-
-            // Get the latitude and longitude of the current user location.
-            LatLng currentLocation = new LatLng(latitude, longitude);
-            googleMap.addMarker(new MarkerOptions().position(currentLocation));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-
-            goToLocationZoom(latitude, longitude, 15);
+        // Disable this since we have a search view blocking
+        // the button anyway
+        googleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
     }
 
@@ -158,11 +217,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .enableAutoManage(this, this)
                 .build();
 
+        AutoCompleteTextView et = (AutoCompleteTextView) findViewById(R.id.editText);
         mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, LAT_LNG_BOUNDS, null);
-
         et.setAdapter(mPlaceAutocompleteAdapter);
 
-        AutoCompleteTextView et = (AutoCompleteTextView) findViewById(R.id.editText);
         String location = et.getText().toString();
 
         Geocoder gc = new Geocoder(this);

@@ -63,6 +63,7 @@ public class ProfileFragment extends Fragment {
         ProfileName.setText(mAuth.getCurrentUser().getDisplayName());
         DatabaseReference ref = database.getReference().child(mAuth.getUid());
 
+        /*
         //Sets the other details from the reference
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -93,6 +94,8 @@ public class ProfileFragment extends Fragment {
                 //Handle whatever you're going to do with the URL here
             }
         });
+
+        */
 
         return view;
     }
