@@ -216,10 +216,12 @@ public class MyBooksFragment extends Fragment {
                 Log.d("TestImageBook", profileImageRef.toString());
 
                 Log.d("TestDataBook", dataSnapshot.child(key).getValue().toString());
+                String bookID = dataSnapshot.child(key).child("bookID").getValue().toString();
                 String author = dataSnapshot.child(key).child("author").getValue().toString();
                 String isbn = dataSnapshot.child(key).child("isbn").getValue().toString();
                 String title = dataSnapshot.child(key).child("title").getValue().toString();
                 Book b1 = new Book(isbn, title, author);
+                b1.setBookID(bookID);
 
                     /*
                     storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

@@ -67,7 +67,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(BookRecyclerAdapter.ViewHolder holder, int i) {
+    public void onBindViewHolder(BookRecyclerAdapter.ViewHolder holder, final int i) {
         Log.d(TAG, "onBindViewHolder: called.");
 
         // one file that contains a bunch of conditions for making a recycler view.
@@ -93,9 +93,11 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
             @Override
             public void onClick(View view) {
                 // Log.d(TAG, "onClick: clicked on: " + mBooks.get(i));
-                //Intent i = new Intent()
-                Intent i = new Intent(mContext, ViewOwnedBook.class);
-                mContext.startActivity(i);
+                Intent intent = new Intent(mContext, ViewOwnedBook.class);
+                String bookID = mBooks.get(i).getBookID();
+                Log.d(bookID, "keyFromRecycler: ");
+                intent.putExtra("key", bookID);
+                mContext.startActivity(intent);
             }
         });
 
@@ -150,6 +152,7 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
              * Called when the user clicks on the Delete option in the PopupMenu object.
              */
             void clickDelete() {
+                Log.d(mBooks.get(i).getBookID(), "FROM ADAPTER: ");
                backend.deleteBook(mBooks.get(i));
                notifyDataSetChanged();
             }

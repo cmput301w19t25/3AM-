@@ -61,8 +61,11 @@ public class ViewOwnedBook extends AppCompatActivity {
         });
         Bundle bundle = getIntent().getExtras();
         key = bundle.getString("key");
+        Log.d(key, "keyReceivedViewBooks: ");
+
         //Downloads the data to get it to our initial view.
         DatabaseReference ref = database.getReference().child("books").child(key);
+
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

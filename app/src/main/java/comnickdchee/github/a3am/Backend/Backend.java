@@ -86,6 +86,7 @@ public class Backend {
 //        }
 
         Log.d("START HERE", "deleteBook: ");
+        Log.d(book.getBookID(), "deleteBook: ");
 
         // Iterate through all the requested books list
         // and delete the bookIDs from each user's requested list
