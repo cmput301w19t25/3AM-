@@ -91,8 +91,6 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
                 String key = book.getOwnerID();
                 i.putExtra("key", key);
                 i.putExtra("imgUrl", DownloadLink);
-
-
                 Log.d("keyIn",key);
                 startActivity(i);
             }
