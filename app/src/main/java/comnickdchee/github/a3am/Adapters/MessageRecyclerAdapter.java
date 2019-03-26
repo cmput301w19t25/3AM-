@@ -14,17 +14,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import comnickdchee.github.a3am.Activities.ViewOwnedBook;
+import comnickdchee.github.a3am.Activities.messageActivity;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.ChatBox;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecyclerAdapter.ViewHolder> {
 
@@ -33,9 +44,13 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
     String DownloadLink;
     private ArrayList<ChatBox> mChatboxes;
     private Context mContext;
+    private ArrayList<String> uIDS;
+    String imgUrl;
+    private static final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
 
-    public MessageRecyclerAdapter( Context mContext, ArrayList<ChatBox> Chatboxes) {
-        this.mChatboxes = Chatboxes;
+
+    public MessageRecyclerAdapter( Context mContext, ArrayList<String> uIDS) {
+        this.uIDS = uIDS;
         this.mContext = mContext;
     }
 
@@ -55,46 +70,29 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
     public void onBindViewHolder(MessageRecyclerAdapter.ViewHolder holder, final int i) {
         // This function sets up the data in the cards
 
-        Log.d(TAG, "onBindViewHolder: called.");
-        ArrayList<User> users = mChatboxes.get(i).getUser();
-        int userIndex = 0;
+        Log.d("MessageRecycler", "onBindViewHolder: called.");
+        Log.d("MessageRecycler", uIDS.get(i).toString());
 
-        // TODO: Change the case to contain current user's actual Username
-        // Changes user index if user1 is the current user.
-        if (users.get(0).getUserName().equals("Current User's Username")) {
-            userIndex = 1;
-        }
-
-        holder.tvUsername.setText(users.get(userIndex).getUserName());
-        holder.tvLastMessage.setText(mChatboxes.get(i).getLastMessage());
-
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-
-        // TODO: Correctly implement images for the other user's profile pic Below is the code used for Book Fragment's pictures by Zaheen
-        /*
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(mChatboxes.get(i).getImage());
-        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Log.e("Tuts+", "uri: " + uri.toString());
-                DownloadLink = uri.toString();
-                Picasso.with(mContext).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.ivBook);
-            }
-        });*/
-
+        setUserNameFromUid(uIDS.get(i),holder.tvUsername);
+        loadImageFromOwnerID(uIDS.get(i), holder.ivUserPhoto);
 
         // On click event when a card is clicked
         holder.cvChatbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked on: " + mChatboxes.get(i));
+                Log.d(TAG, "onClick: clicked on: " + uIDS.get(i));
+                Intent intent = new Intent (mContext, messageActivity.class);
+                intent.putExtra("key", uIDS.get(i));
+                intent.putExtra("imgUrl", imgUrl);
+                //Log.d("keyIn",key);
+                mContext.startActivity(intent);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mChatboxes.size();
+        return uIDS.size();
     }
 
 
@@ -102,7 +100,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        public ImageView ivUserPhoto;
+        public CircleImageView ivUserPhoto;
         public TextView tvUsername;
         public TextView tvLastMessage;
         public CardView cvChatbox;
@@ -113,9 +111,45 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
             super(itemView);
             ivUserPhoto = itemView.findViewById(R.id.ivUserPhoto);
             tvUsername = itemView.findViewById(R.id.tvUsername);
-            tvLastMessage = itemView.findViewById(R.id.tvLastMessage);
+            //tvLastMessage = itemView.findViewById(R.id.tvLastMessage);
             cvChatbox = itemView.findViewById(R.id.cvChatbox);
         }
+    }
+
+
+    public void setUserNameFromUid(String UID, TextView t){
+        DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
+        usersRef = usersRef.child(UID).child("userName");
+        Log.d("Messaging Tab", "getUserNameFromUid: "+usersRef.toString());
+        usersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("Messaging Tab", dataSnapshot.getValue().toString());
+                t.setText(dataSnapshot.getValue().toString());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void loadImageFromOwnerID( String uID, ImageView load){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");
+
+        Log.e("Tuts+", storageRef.toString());
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e("Tuts+", "uri: " + uri.toString());
+                imgUrl = uri.toString();
+                Picasso.with(mContext).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+            }
+        });
+
     }
 
 }
