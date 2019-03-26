@@ -35,6 +35,7 @@ import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.ChatBox;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecyclerAdapter.ViewHolder> {
 
@@ -99,7 +100,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        public ImageView ivUserPhoto;
+        public CircleImageView ivUserPhoto;
         public TextView tvUsername;
         public TextView tvLastMessage;
         public CardView cvChatbox;
@@ -110,7 +111,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
             super(itemView);
             ivUserPhoto = itemView.findViewById(R.id.ivUserPhoto);
             tvUsername = itemView.findViewById(R.id.tvUsername);
-            tvLastMessage = itemView.findViewById(R.id.tvLastMessage);
+            //tvLastMessage = itemView.findViewById(R.id.tvLastMessage);
             cvChatbox = itemView.findViewById(R.id.cvChatbox);
         }
     }
