@@ -9,6 +9,7 @@ import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -88,27 +89,34 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     MY_PERMISSIONS_ACCESS_COARSE_LOCATION);
         }
 
-        googleMap.setMyLocationEnabled(true);
+        if ( Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return  ;
+            }
 
 
-        // We retrieve the last known location, get the current latitude and longitude, and set the
-        // pin here
-        // Source: https://stackoverflow.com/questions/23104089/googlemap-getmylocation-cannot-get-current-location
-        LocationManager locationManager = (LocationManager)
-                getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
+            googleMap.setMyLocationEnabled(true);
 
-        Location location = locationManager.getLastKnownLocation(locationManager
-                .getBestProvider(criteria, false));
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
 
-        // Get the latitude and longitude of the current user location.
-        LatLng currentLocation = new LatLng(latitude, longitude);
-        googleMap.addMarker(new MarkerOptions().position(currentLocation));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+            // We retrieve the last known location, get the current latitude and longitude, and set the
+            // pin here
+            // Source: https://stackoverflow.com/questions/23104089/googlemap-getmylocation-cannot-get-current-location
+            LocationManager locationManager = (LocationManager)
+                    getSystemService(Context.LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
 
-        goToLocationZoom(latitude, longitude, 15);
+            Location location = locationManager.getLastKnownLocation(locationManager
+                    .getBestProvider(criteria, false));
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+
+            // Get the latitude and longitude of the current user location.
+            LatLng currentLocation = new LatLng(latitude, longitude);
+            googleMap.addMarker(new MarkerOptions().position(currentLocation));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+
+            goToLocationZoom(latitude, longitude, 15);
 
     }
 

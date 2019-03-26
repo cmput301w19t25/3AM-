@@ -6,6 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".Activities.MapsActivity"
     android:orientation="vertical">
+    
+    <RelativeLayout
+        android:id="@+id/mapSearch"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:elevation="10dp"
+        android:background="@color/colorPrimaryDark">
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:id="@+id/ic_search"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_search"/>
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/ic_search"
+            android:layout_centerVertical="true"
+            android:textSize="15sp"
+            android:textColor="#000"
+
+            android:hint="Enter Address, City or Zip Code"
+            android:inputType="textPersonName" />
+
+    </RelativeLayout>
 
     <Button
         android:id="@+id/button"
@@ -14,14 +46,7 @@
         android:layout_gravity="center_horizontal"
         android:onClick="geoLocate"
         android:text="Go" />
-
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:hint="Specify Location"
-        android:inputType="textPersonName" />
+    
 
     <fragment
         android:layout_width="match_parent"
