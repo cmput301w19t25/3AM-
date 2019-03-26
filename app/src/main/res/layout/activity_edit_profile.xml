@@ -5,19 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    tools:context=".Activities.EditProfile">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/editFAB"
+
+    <Button
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
+        android:layout_marginBottom="16dp"
+        android:text="Save"
+        android:textSize="18sp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:textColor="@color/white"
+        android:background="@drawable/signup_custom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/pictureContainer"
@@ -97,21 +106,23 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ic_message"
-                android:layout_gravity="bottom"/>
+                android:layout_gravity="center_vertical" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" : "
                 android:textColor="@android:color/black"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:layout_gravity="center_vertical"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/emailEditProfileFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:layout_gravity="center_vertical"/>
         </LinearLayout>
 
         <LinearLayout
@@ -125,21 +136,23 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ic_phone"
-                android:layout_gravity="bottom"/>
+                android:layout_gravity="center_vertical"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" : "
                 android:textColor="@android:color/black"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:layout_gravity="center_vertical"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/phoneNumberEditProfileFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:layout_gravity="center_vertical"/>
         </LinearLayout>
 
         <TextView
@@ -166,14 +179,16 @@
                 android:layout_height="wrap_content"
                 android:text="📌 : "
                 android:textColor="@android:color/black"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:layout_gravity="center_vertical"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/addressEditProfileFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:textSize="18dp" />
+                android:textSize="18sp"
+                android:layout_gravity="center_vertical"/>
         </LinearLayout>
 
         <LinearLayout

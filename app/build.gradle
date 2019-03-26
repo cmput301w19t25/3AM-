@@ -73,7 +73,6 @@ dependencies {
     //Pablo Use for img url -> bitmap
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
-
     //Geolocation
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     //implementation 'com.google.android.gms:play-services-maps:9.0.0'
