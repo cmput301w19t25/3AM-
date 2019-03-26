@@ -78,14 +78,7 @@
                     android:textColor="@color/common_google_signin_btn_text_dark_default"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/tvViewBookGenre"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans"
-                    android:text="Genre"
-                    android:textColor="@color/common_google_signin_btn_text_dark_default"
-                    android:textSize="12sp" />
+
 
                 <LinearLayout
                     android:layout_width="match_parent"

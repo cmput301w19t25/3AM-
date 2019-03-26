@@ -2,6 +2,7 @@ package comnickdchee.github.a3am.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,7 +13,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -67,6 +74,9 @@ public class ViewBookActivity extends AppCompatActivity {
         Intent intent = getIntent();
         actionBook = intent.getExtras().getParcelable("ActionBook");
 
+        getPageData();
+
+
         rvRequests = findViewById(R.id.rvViewBookRequests);
         ownerHandoverButton = findViewById(R.id.bOwnerHandover);
         layoutManager = new LinearLayoutManager(this);
@@ -111,5 +121,33 @@ public class ViewBookActivity extends AppCompatActivity {
                 Toast.makeText(this, "ISBN Not Matched with book", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public void getPageData() {
+        ImageView bookImage = findViewById(R.id.ivViewBookPhoto);
+        TextView bookTitle = findViewById(R.id.tvViewBookTitle);
+        TextView bookAuthor = findViewById(R.id.tvViewBookAuthor);
+        TextView bookISBN = findViewById(R.id.tvViewBookISBN);
+
+        loadImageFromBookID(bookImage, actionBook.getBookID());
+        bookTitle.setText(actionBook.getTitle());
+        bookAuthor.setText(actionBook.getAuthor());
+        bookISBN.setText(actionBook.getISBN());
+
+    }
+
+    public void loadImageFromBookID(ImageView load, String bookID){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(bookID);
+        Log.e("Tuts+", storageRef.toString());
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e("Tuts+", "uri: " + uri.toString());
+                String DownloadLink = uri.toString();
+                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+            }
+        });
+
     }
 }
