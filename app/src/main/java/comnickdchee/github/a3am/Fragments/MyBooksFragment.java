@@ -179,6 +179,15 @@ public class MyBooksFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 dataSnapshot.getKey();
+
+                if (dataSnapshot.hasChildren()){
+                    Log.d("DATABASE HAS CHILDREN", "onDataChange: ");
+                } else{
+                    Log.d("DATABASE NO CHILDREN", "onDataChange: ");
+                    BookList.clear();
+                    adapter.notifyDataSetChanged();
+                }
+
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Log.d("TestData", child.getValue().toString());
                     String key = child.getValue().toString();

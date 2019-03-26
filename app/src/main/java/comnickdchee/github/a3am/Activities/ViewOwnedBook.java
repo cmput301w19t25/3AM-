@@ -66,25 +66,6 @@ public class ViewOwnedBook extends AppCompatActivity {
         //Downloads the data to get it to our initial view.
         DatabaseReference ref = database.getReference().child("books").child(key);
 
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String TitleBook = dataSnapshot.child("title").getValue().toString();
-                String AuthorBook = dataSnapshot.child("author").getValue().toString();
-                String ISBN = dataSnapshot.child("isbn").getValue().toString();
-
-                titleBookEditActivity.setText(TitleBook);
-                authorBookEditActivity.setText(AuthorBook);
-                bookISBNEditActivity.setText(ISBN);
-            }
-
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
         //Downloads the Image and sets it to our image view.
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(key);
