@@ -119,7 +119,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (list.size() > 0) {
             Address address = list.get(0);
 
-            Log.d(TAG, "geoLocate: Found location" + address.toString());
+            goToLocationZoom(address.getLatitude(), address.getLongitude(), 15f);
+            setMarker(address.getLocality(), address.getLatitude(), address.getLongitude());
         }
 
     }
@@ -259,8 +260,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    // Sets a marker, and removes the existing one if it exists
     private void setMarker(String locality, double lat, double lng) {
-        if (marker!= null) {
+        if (marker != null) {
             marker.remove();
         }
 
