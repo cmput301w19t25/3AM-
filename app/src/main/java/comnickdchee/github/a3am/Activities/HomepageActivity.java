@@ -9,6 +9,8 @@ import android.provider.SearchRecentSuggestions;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -57,6 +59,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class HomepageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private TextView pageTitle;
     private Toolbar navToolbar;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
@@ -68,6 +72,8 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     private ActionBarDrawerToggle toggle;
     private String DownloadLink;
     private SearchView searchView;
+    private NavigationView navigationView;
+
     public static ArrayList<Book> BorrowedList = new ArrayList<>();
     public static ArrayList<Book> LendingList = new ArrayList<>();
     public static ArrayList<Book> ActionsList = new ArrayList<>();
@@ -89,8 +95,9 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
             // Setting the side Navigation Drawer
         // source: https://www.youtube.com/watch?v=fGcMLu1GJEc
+        pageTitle = findViewById(R.id.tvTitle);
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         /*
@@ -140,8 +147,9 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         // Sets the home pages as the active fragment if there is no saved instances
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new HomeFragment()).commit();
+                    new HomeFragment(),"homePage").commit();
             navigationView.setCheckedItem(R.id.nav_home);
+            pageTitle.setText("Homepage");
         }
 
     }
@@ -161,21 +169,25 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         switch (menuItem.getItemId()){
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new HomeFragment()).commit();
+                        new HomeFragment(), "homePage").commit();
+                pageTitle.setText("Homepage");
                 break;
 
             case R.id.nav_message:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MessageFragment()).commit();
+                pageTitle.setText("Messages");
                 break;
             case R.id.nav_books:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MyBooksFragment()).commit();
+                pageTitle.setText("My Books");
                 break;
 
             case R.id.nav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileFragment()).commit();
+                pageTitle.setText("Profile");
                 break;
 
             case R.id.nav_logout:
@@ -289,7 +301,16 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Fragment curFragment = getSupportFragmentManager().findFragmentByTag("homePage");
+            if (curFragment != null && curFragment.isVisible()) {
+                super.onBackPressed();
+            } else {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new HomeFragment(),"homePage").commit();
+                navigationView.setCheckedItem(R.id.nav_home);
+                pageTitle.setText("Homepage");
+            }
+
         }
     }
 
