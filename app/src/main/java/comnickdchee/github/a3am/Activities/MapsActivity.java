@@ -2,6 +2,7 @@ package comnickdchee.github.a3am.Activities;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -18,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,9 +56,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG = "MapsActivity";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static final int LOCATION_CODE = 7;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
     private AutoCompleteTextView searchEditText;
+    private Button setLocationButton;
 
     // To check if the permission is granted
     private Boolean mLocationPermissionGranted = false;
@@ -65,6 +69,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private PlaceAutocompleteAdapter placeAutocompleteAdapter;
     private GoogleApiClient mGoogleApiClient;
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(-40, -168), new LatLng(71, 136));
+    private LatLng pinnedLocation;
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -87,6 +92,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .build();
 
         searchEditText = (AutoCompleteTextView) findViewById(R.id.etSearchText);
+        setLocationButton = (Button) findViewById(R.id.bSetLocation);
+
+        setLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (marker != null) {
+                    Intent locationData = new Intent();
+                    locationData.putExtra("Location", pinnedLocation);
+                    setResult(RESULT_OK, locationData);
+                    finish();
+
+                } else {
+                    Toast.makeText(MapsActivity.this, "No location specified", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         // Adapter for autocomplete
         placeAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, LAT_LNG_BOUNDS, null);
@@ -276,9 +297,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             marker.remove();
         }
 
+        pinnedLocation = new LatLng(lat, lng);
+
         MarkerOptions options = new MarkerOptions()
                 .title(locality)
-                .position(new LatLng(lat, lng));
+                .position(pinnedLocation);
 
         marker = mGoogleMap.addMarker(options);
     }

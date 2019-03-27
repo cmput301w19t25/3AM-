@@ -162,7 +162,7 @@
                     android:fontFamily="@font/open_sans"
                     android:text="Specify a pickup location..."
                     android:textColor="@color/place_autocomplete_prediction_secondary_text"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:typeface="sans"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -170,8 +170,8 @@
 
                 <Button
                     android:id="@+id/bChangeLocation"
-                    android:layout_width="60dp"
-                    android:layout_height="35dp"
+                    android:layout_width="70dp"
+                    android:layout_height="40dp"
                     android:layout_marginRight="16dp"
                     android:fontFamily="@font/open_sans"
                     android:text="Change"

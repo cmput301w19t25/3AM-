@@ -43,5 +43,19 @@
 
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/bSetLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:background="@color/default_button_color_blue"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="SET LOCATION"
+        android:elevation="10dp"
+        android:textColor="@android:color/white" />
+
 
 </RelativeLayout>

@@ -248,6 +248,13 @@ public class Backend {
         exchangeRef.setValue(exchange);
     }
 
+    public void updateExchange(Book book, Exchange exchange) {
+        String bookID = book.getBookID();
+        DatabaseReference exchangesRef = mFirebaseDatabase.getReference("exchanges");
+        DatabaseReference exchangeRef = exchangesRef.child(bookID);
+        exchangeRef.setValue(exchange);
+    }
+
     /**
      * Accepts a request from the requester on the activity. This method is
      * implemented in the IOwner interface, and has the following logic:

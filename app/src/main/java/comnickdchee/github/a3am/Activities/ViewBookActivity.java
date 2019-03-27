@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -28,6 +29,7 @@ import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Backend.UserListCallback;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.Exchange;
 import comnickdchee.github.a3am.Models.ExchangeType;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
@@ -41,6 +43,7 @@ import comnickdchee.github.a3am.R;
 public class ViewBookActivity extends AppCompatActivity {
 
     private static final int ISBN_READ = 42;
+    private static final int LOCATION_CODE = 7;
     private RecyclerView rvRequests;
     private ArrayList<User> requesters = new ArrayList<>();
     private RequestersAdapter requestersAdapter;
@@ -60,8 +63,8 @@ public class ViewBookActivity extends AppCompatActivity {
         editLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(ViewBookActivity.this, MapsActivity.class);
-                ViewBookActivity.this.startActivity(myIntent);
+                Intent intent = new Intent(ViewBookActivity.this, MapsActivity.class);
+                startActivityForResult(intent, LOCATION_CODE);
             }
         });
 
@@ -119,6 +122,11 @@ public class ViewBookActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "ISBN Not Matched with book", Toast.LENGTH_SHORT).show();
             }
+
+        } else if (requestCode == LOCATION_CODE && resultCode == RESULT_OK && data != null) {
+            LatLng pickupLocationCoords = (LatLng) data.getExtras().getParcelable("Location");
+            Exchange exchange = new Exchange(pickupLocationCoords, ExchangeType.BorrowerReceive);
+            backend.updateExchange(actionBook, exchange);
         }
     }
 

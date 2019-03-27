@@ -1,5 +1,7 @@
 package comnickdchee.github.a3am.Models;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.Date;
 
 /** Exchange class which keeps track of exchanges between a specific book between 2 users.
@@ -12,9 +14,16 @@ public class Exchange {
     private String pickup;
     private Date date;
     private ExchangeType type;
+    private LatLng pickupCoords;
 
+    public Exchange() {}
 
     public Exchange(ExchangeType type) {
+        this.type = type;
+    }
+
+    public Exchange(LatLng pickupCoords, ExchangeType type) {
+        this.pickupCoords = pickupCoords;
         this.type = type;
     }
 
@@ -82,5 +91,9 @@ public class Exchange {
     }
 
     public ExchangeType getType() { return type; }
+
+    public void setType(ExchangeType type) {
+        this.type = type;
+    }
 
 }
