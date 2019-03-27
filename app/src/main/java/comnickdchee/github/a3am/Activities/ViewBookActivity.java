@@ -46,7 +46,7 @@ public class ViewBookActivity extends AppCompatActivity {
     private RequestersAdapter requestersAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private Button ownerHandoverButton;
-    private Button mapsButton;
+    private Button editLocationButton;
     private Backend backend = Backend.getBackendInstance();
     private Book actionBook;
 
@@ -56,15 +56,14 @@ public class ViewBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_book);
 
         //button click for owner to specify pick up location
-//        mapsButton = (Button) findViewById(R.id.mapsButton);
-//        mapsButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Intent myIntent = new Intent(ViewBookActivity.this, MapsActivity.class);
-//                ViewBookActivity.this.startActivity(myIntent);
-//                }
-//        });
+        editLocationButton = (Button) findViewById(R.id.bChangeLocation);
+        editLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(ViewBookActivity.this, MapsActivity.class);
+                ViewBookActivity.this.startActivity(myIntent);
+            }
+        });
 
 
         Window window = this.getWindow();
