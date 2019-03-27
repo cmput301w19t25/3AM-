@@ -96,4 +96,12 @@ public class Exchange {
         this.type = type;
     }
 
+    public LatLng getPickupCoords() {
+        return pickupCoords;
+    }
+
+    public void setPickupCoords(LatLng pickupCoords) {
+        this.pickupCoords = pickupCoords;
+    }
+
 }

@@ -2,12 +2,16 @@ package comnickdchee.github.a3am.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -22,7 +26,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import comnickdchee.github.a3am.Adapters.RequestersAdapter;
 import comnickdchee.github.a3am.Backend.Backend;
@@ -45,6 +52,7 @@ public class ViewBookActivity extends AppCompatActivity {
     private static final int ISBN_READ = 42;
     private static final int LOCATION_CODE = 7;
     private RecyclerView rvRequests;
+    private TextView locationText;
     private ArrayList<User> requesters = new ArrayList<>();
     private RequestersAdapter requestersAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -57,6 +65,8 @@ public class ViewBookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_book);
+
+        locationText = (TextView) findViewById(R.id.tvLocation);
 
         //button click for owner to specify pick up location
         editLocationButton = (Button) findViewById(R.id.bChangeLocation);
@@ -127,6 +137,30 @@ public class ViewBookActivity extends AppCompatActivity {
             LatLng pickupLocationCoords = (LatLng) data.getExtras().getParcelable("Location");
             Exchange exchange = new Exchange(pickupLocationCoords, ExchangeType.BorrowerReceive);
             backend.updateExchange(actionBook, exchange);
+
+            try {
+                Geocoder geocoder;
+                List<Address> addresses;
+                geocoder = new Geocoder(this, Locale.getDefault());
+
+                addresses = geocoder.getFromLocation(pickupLocationCoords.latitude, pickupLocationCoords.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                // Fetch the address lines using getAddressLine,
+                // join them, and send them to the thread.
+
+                Address address = addresses.get(0);
+                ArrayList<String> addressFragments = new ArrayList<String>();
+                for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+                    addressFragments.add(address.getAddressLine(i));
+                }
+
+                String locationString = TextUtils.join(", ", addressFragments);
+                locationText.setText(locationString);
+
+
+            } catch (IOException e) {
+
+            }
+
         }
     }
 
