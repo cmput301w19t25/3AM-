@@ -40,7 +40,6 @@ public class LendingFragment extends Fragment {
         LendingTabAdapter adapter = new LendingTabAdapter(getActivity(), lendingBooksList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        Book book = new Book("ISBN","Outside ADD","Unknown");
 
         backend.getLendingBooks(new BookListCallback() {
             @Override
