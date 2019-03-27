@@ -121,25 +121,26 @@ public class SearchResultsActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     // Iterate through child entries
+                    Set result = new HashSet<Book>();
                     searchResults.clear();
                     bookSet.clear();
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         // Get all the keywords in the query entered by the user
                         // and make a direct check
+                        Book bookToCompare = data.getValue(Book.class);
+                        searchResults.add(bookToCompare);
                         for (String keyword : queryList) {
-                            Book bookToCompare = data.getValue(Book.class);
+
                             if (bookToCompare != null) {
                                 // Save the bookID to fetch intent information
                                 bookToCompare.setBookID(data.getKey());
-                                if (bookToCompare.getTitle().toLowerCase().contains(keyword)) {
-                                    searchResults.add(bookToCompare);
-                                } else if (bookToCompare.getAuthor().toLowerCase().contains(keyword)) {
-                                    searchResults.add(bookToCompare);
-                                } else if (bookToCompare.getISBN().toLowerCase().contains(keyword)) {
-                                    searchResults.add(bookToCompare);
+                                if (!bookToCompare.getTitle().toLowerCase().contains(keyword) &&
+                                        !bookToCompare.getAuthor().toLowerCase().contains(keyword) &&
+                                                !bookToCompare.getISBN().toLowerCase().contains(keyword)) {
+
+                                    searchResults.remove(bookToCompare);
                                 }
 
-                                break;
                             }
                         }
                     }
