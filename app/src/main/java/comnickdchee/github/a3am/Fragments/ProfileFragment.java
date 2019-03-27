@@ -68,6 +68,11 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent editActivity = new Intent(getActivity(), EditProfile.class);
+                editActivity.putExtra("userID", mAuth.getCurrentUser().getUid());
+                editActivity.putExtra("username", ProfileName.getText());
+                editActivity.putExtra("email", Email.getText());
+                editActivity.putExtra("address", Address.getText());
+                editActivity.putExtra("phone", PhoneNumber.getText());
                 getActivity().startActivity(editActivity);
             }
         });
