@@ -1,4 +1,4 @@
-//const functions = require('firebase-functions');
+const functions = require('firebase-functions');
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -6,22 +6,23 @@
 // exports.helloWorld = functions.https.onRequest((request, response) => {
 //  response.send("Hello from Firebase!");
 // });
-'use strict'
 // The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
-const functions = require('firebase-functions');
-
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 const admin = require('firebase-admin');
 admin.initializeApp();
-exports.sendNotification = functions.database.ref('/notifications/{user_id}/{notification_id}').onCreate((change,context) => {
-   const user_id = event.data.val();
 
-   console.log('We have a notification from : ', user_id);
+// Take the text parameter passed to this HTTP endpoint and insert it into the
+// Realtime Database under the path /messages/:pushId/original
+exports.addMessage = functions.https.onRequest((req, res) => {
+  // Grab the text parameter.
+  const original = req.query.text;
+  // Push the new message into the Realtime Database using the Firebase Admin SDK.
+  return admin.database().ref('/messages').push({original: original}).then((snapshot) => {
+    // Redirect with 303 SEE OTHER to the URL of the pushed object in the Firebase console.
+    return res.redirect(303, snapshot.ref.toString());
+  });
 });
 
-exports.sendNewMessageNotification = functions.database.ref('notifications/{uid}').onWrite(event=>{
-    const uuid = change.params.uid;
-
-    console.log('User to send notification', uuid);
-
+exports.NewNotification = functions.database.ref('notifications/{userID}').onWrite((change,context) =>{
+	console.log("Test","test123");
 });
