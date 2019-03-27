@@ -16,8 +16,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -40,6 +45,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import comnickdchee.github.a3am.R;
@@ -48,13 +54,13 @@ import comnickdchee.github.a3am.R;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.OnConnectionFailedListener {
 
-    GoogleMap mGoogleMap;
-    AutoCompleteTextView et;
+    private GoogleMap mGoogleMap;
     private static final String TAG = "MapsActivity";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
+    private EditText searchEditText;
 
     // To check if the permission is granted
     private Boolean mLocationPermissionGranted = false;
@@ -70,14 +76,52 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        Log.d(TAG, "onCreate: Starting Oncreate");
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "super called");
+        setContentView(R.layout.activity_maps);
+
+        // Set the status bar of the current activity to red
+        Window window = this.getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+
+        searchEditText = (EditText) findViewById(R.id.etSearchText);
+
+        searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH
+                        || actionId == EditorInfo.IME_ACTION_DONE
+                        || event.getAction() == KeyEvent.ACTION_DOWN
+                        || event.getAction() == KeyEvent.KEYCODE_ENTER) {
+
+                    // Execute our method for searching
+                    String searchQuery = searchEditText.getText().toString();
+                    geoLocate(searchQuery);
+                }
+                return false;
+            }
+        });
+
         if (googleServicesAvailable()) {
-            setContentView(R.layout.activity_maps);
             getLocationPermission();
         }
+    }
+
+    private void geoLocate(String searchQuery) {
+        Geocoder geocoder = new Geocoder(MapsActivity.this);
+        List<Address> list = new ArrayList<>();
+
+        try {
+            list = geocoder.getFromLocationName(searchQuery, 1);
+        } catch (IOException e) {
+            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
+        }
+
+        if (list.size() > 0) {
+            Address address = list.get(0);
+
+            Log.d(TAG, "geoLocate: Found location" + address.toString());
+        }
+
     }
 
     /** Gets the current location of the user's device. */
@@ -87,7 +131,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         try {
             if (mLocationPermissionGranted) {
                 // Gets the last location of the device
-                Task location = mFusedLocationProviderClient.getLastLocation();
+                final Task location = mFusedLocationProviderClient.getLastLocation();
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
@@ -109,7 +153,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     /** Called when the map is initialized */
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
-        mapFragment.getMapAsync(MapsActivity.this);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(MapsActivity.this);
+        }
     }
 
     public boolean googleServicesAvailable() {
@@ -123,7 +169,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Dialog dialog = api.getErrorDialog(this, isAvailable, 0);
             dialog.show();
 
-            // Throws a dialog if the Google Play Service is unavailable.
+        // Throws a dialog if the Google Play Service is unavailable.
         } else {
             Toast.makeText(this, "Can't connect to play services", Toast.LENGTH_LONG).show();
         }
@@ -137,17 +183,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mLocationPermissionGranted = true;
+                initMap();
+
             } else {
                 ActivityCompat.requestPermissions(this, permissions, MY_PERMISSIONS_ACCESS_COARSE_LOCATION);
             }
         } else {
             ActivityCompat.requestPermissions(this, permissions, MY_PERMISSIONS_ACCESS_COARSE_LOCATION);
         }
-
-
     }
 
-    /**  */
+    /** Fires after the permissions were prompted to the user. */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
@@ -163,7 +209,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
 
                     mLocationPermissionGranted = true;
-
                     initMap();
                 }
             }
@@ -177,27 +222,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Gets the device location if permission was granted
         if (mLocationPermissionGranted) {
             getDeviceLocation();
+
+            // Needed to see the current device's location
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+
+            googleMap.setMyLocationEnabled(true);
+
+            // Disable this since we have a search view blocking
+            // the button anyway
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+
         }
 
-        // Needed to see the current device's location
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
-        googleMap.setMyLocationEnabled(true);
-
-        // Disable this since we have a search view blocking
-        // the button anyway
-        googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-
-    }
-
-    public void goToLocation(double lat, double lng) {
-        LatLng ll = new LatLng(lat, lng);
-        CameraUpdate update = CameraUpdateFactory.newLatLng(ll);
-        mGoogleMap.moveCamera(update);
     }
 
     public void goToLocationZoom(double lat, double lng, float zoom) {
@@ -216,25 +256,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
-
-        AutoCompleteTextView et = (AutoCompleteTextView) findViewById(R.id.editText);
-        mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, LAT_LNG_BOUNDS, null);
-        et.setAdapter(mPlaceAutocompleteAdapter);
-
-        String location = et.getText().toString();
-
-        Geocoder gc = new Geocoder(this);
-        List<Address> list = gc.getFromLocationName(location, 1);
-        Address address = list.get(0);
-        String locality = address.getLocality();
-
-        Toast.makeText(this, locality, Toast.LENGTH_LONG).show();
-
-        double lat = address.getLatitude();
-        double lng = address.getLongitude();
-        goToLocationZoom(lat, lng, 15);
-
-        setMarker(locality, lat, lng);
 
     }
 
