@@ -44,15 +44,16 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        Log.d("Ref","Image gotten");
 
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         //Gets Current User
         mAuth = FirebaseAuth.getInstance();
         String userEmail = mAuth.getCurrentUser().getEmail();
         final View view = inflater.inflate(R.layout.fragment_profile, container, false);
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child(userEmail+"/"+"dp"+ ".jpg");
-
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(mAuth.getUid()+".jpg");
+        Log.d("Ref","Image gotten");
         //Gets the textView fields
         TextView ProfileName = (TextView)view.findViewById(R.id.userNameFragmentProfile);
         final TextView Address = (TextView)view.findViewById(R.id.addressEditProfileFragment);
@@ -61,9 +62,9 @@ public class ProfileFragment extends Fragment {
 
         //Sets the name
         ProfileName.setText(mAuth.getCurrentUser().getDisplayName());
-        DatabaseReference ref = database.getReference().child(mAuth.getUid());
 
-        /*
+        DatabaseReference ref = database.getReference().child("users").child(mAuth.getUid());
+        Log.d("Ref", "onCreateView: "+ ref.toString());
         //Sets the other details from the reference
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -90,12 +91,10 @@ public class ProfileFragment extends Fragment {
                 Log.e("Tuts+", "uri: " + uri.toString());
                 DownloadLink = uri.toString();
                 CircleImageView iv = (CircleImageView) view.findViewById(R.id.profilePictureEditFragment);
-                Picasso.with(getContext()).load(uri.toString()).fit().into(iv);
+                Picasso.with(getContext()).load(uri.toString()).placeholder(R.drawable.ccc).error(R.drawable.ccc).fit().into(iv);
                 //Handle whatever you're going to do with the URL here
             }
         });
-
-        */
 
         return view;
     }

@@ -2,6 +2,7 @@ package comnickdchee.github.a3am.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ import java.util.List;
 
 import comnickdchee.github.a3am.Activities.ViewBookActivity;
 import comnickdchee.github.a3am.Activities.ViewRBookActivity;
+
+import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Models.RequestStatusGroup;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
@@ -35,10 +38,13 @@ public class RequestsTabAdapter extends ExpandableRecyclerViewAdapter<RequestsTa
 
     private static final String TAG = "In_MyRequestsAdapter";
     private Context mContext;
+    private Backend backend = Backend.getBackendInstance();
+
     // It takes an ArrayList of RequestGroupViewHolder as the argument
     public RequestsTabAdapter(Context context, List<? extends ExpandableGroup> groups) {
         super(groups);
         this.mContext = context;
+
     }
 
 
@@ -69,11 +75,15 @@ public class RequestsTabAdapter extends ExpandableRecyclerViewAdapter<RequestsTa
                 Toast.makeText(mContext, ((Book) group.getItems().get(childIndex)).getTitle(), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(mContext, ViewRBookActivity.class);
+                Book book = ((Book) group.getItems().get(childIndex));
+                intent.putExtra("acceptedBook",book);
                 mContext.startActivity(intent);
+
             }
         });
 
     }
+
 
     @Override
     public void onBindGroupViewHolder(RequestGroupViewHolder holder, int flatPosition, ExpandableGroup group) {
@@ -154,7 +164,7 @@ public class RequestsTabAdapter extends ExpandableRecyclerViewAdapter<RequestsTa
             tvAuthor.setText(book.getAuthor());
             tvISBN.setText(book.getISBN());
             tvUserRole.setText("Owner: ");
-            tvOwner.setText(book.getOwner().getUserName());
+//            tvOwner.setText(book.getOwner().getUserName());
 
         }
     }

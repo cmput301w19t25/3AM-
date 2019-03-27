@@ -83,6 +83,7 @@ public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.Vi
                     Toast.makeText(mContext, mBookList.get(i).getTitle(), Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(mContext, ViewBookActivity.class);
+                    intent.putExtra("ActionBook", mBookList.get(i));
                     mContext.startActivity(intent);
                 }
             }

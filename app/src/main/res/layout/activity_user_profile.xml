@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/rellay"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/colorGray"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/backIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ic_arrow_back_white_24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            tools:context=".Activities.BorrowedProfileActivity"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="16dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/UserImage"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@mipmap/ic_launcher_round"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/usernameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Borrower"
+                android:textSize="20sp"
+                app:layout_constraintStart_toEndOf="@+id/UserImage"
+                app:layout_constraintTop_toTopOf="@+id/UserImage" />
+            <ImageView
+                android:id="@+id/ratingIV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_star_gold_24dp"
+                app:layout_constraintStart_toEndOf="@+id/UserImage"
+                app:layout_constraintTop_toBottomOf="@+id/usernameTV" />
+
+            <TextView
+                android:id="@+id/ratingTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5.0"
+                android:textColor="#FFD700"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/ratingIV"
+                app:layout_constraintTop_toBottomOf="@+id/usernameTV" />
+
+            <Button
+                android:id="@+id/message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="Message"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/UserImage" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rellay2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rellay"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="7dp"
+            android:layout_marginLeft="7dp"
+            android:id="@+id/linear"
+            android:gravity="bottom"
+            android:foregroundGravity="fill_horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/phoneIV"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/ic_phone"
+                android:title="Phone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/phoneTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="8dp"
+
+                android:text="780-XXX-XXXX"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/phoneIV"
+                app:layout_constraintStart_toEndOf="@+id/phoneIV"
+                app:layout_constraintTop_toTopOf="@+id/phoneIV" />
+
+            <ImageView
+                android:id="@+id/textIV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_format_quote_black_24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/phoneIV"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/phoneIV" />
+
+            <ImageView
+                android:id="@+id/mailIV"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_message"
+                android:title="Phone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phoneIV" />
+
+            <TextView
+                android:id="@+id/emailTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="email@domain.com"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/mailIV"
+                app:layout_constraintStart_toEndOf="@+id/mailIV"
+                app:layout_constraintTop_toTopOf="@+id/mailIV" />
+
+
+
+
+
+
+
+
+
+        </android.support.constraint.ConstraintLayout>
+
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linear"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:orientation="vertical"
+            android:layout_marginTop="30dp"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/bookImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_library_books_black_24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/bookTitleTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text="BOOK TITLE"
+                android:textSize="20sp"
+                app:layout_constraintStart_toEndOf="@+id/bookImage"
+                app:layout_constraintTop_toTopOf="@+id/bookImage" />
+
+            <TextView
+                android:id="@+id/authorNameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text="Author Name"
+                app:layout_constraintStart_toEndOf="@+id/bookImage"
+                app:layout_constraintTop_toBottomOf="@+id/bookTitleTV" />
+
+            <TextView
+                android:id="@+id/ISBNTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text="X-XXXXX-XXXXX-X"
+                app:layout_constraintStart_toEndOf="@+id/bookImage"
+                app:layout_constraintTop_toBottomOf="@+id/authorNameTV" />
+
+
+
+        </android.support.constraint.ConstraintLayout>
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/transactionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:background="@color/Blue"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="Book Returned "
+        android:textColor="@color/common_google_signin_btn_text_dark_default" />
+
+
+    </RelativeLayout>

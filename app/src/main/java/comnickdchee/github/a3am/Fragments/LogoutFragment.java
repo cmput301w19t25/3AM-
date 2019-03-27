@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import comnickdchee.github.a3am.Activities.BorrowedActivity;
+import comnickdchee.github.a3am.Activities.SignInActivity;
 import comnickdchee.github.a3am.R;
 
 /**
@@ -33,7 +33,7 @@ public class LogoutFragment extends Fragment {
         mAuth.signOut();
         
         Intent i = new Intent();
-        i.setClass(getActivity(), BorrowedActivity.class);
+        i.setClass(getActivity(), SignInActivity.class);
         startActivity(i);
         ((Activity) getActivity()).overridePendingTransition(0,0);
         return inflater.inflate(R.layout.fragment_logout, container, false);

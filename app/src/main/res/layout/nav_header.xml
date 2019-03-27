@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="176dp"
-    android:background="@color/colorAccent"
+    android:background="@color/colorPrimary"
     android:gravity="bottom"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
@@ -10,7 +10,7 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/UserImageNavbar"
+        android:id="@+id/messagingToImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher_round"/>

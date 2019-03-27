@@ -1,5 +1,6 @@
 package comnickdchee.github.a3am.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -17,7 +18,9 @@ import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
 
 import java.util.ArrayList;
 
+import comnickdchee.github.a3am.Activities.OwnerProfileActivity;
 import comnickdchee.github.a3am.Activities.ViewBookActivity;
+import comnickdchee.github.a3am.Activities.ViewRBookActivity;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
@@ -62,6 +65,11 @@ public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked on: " + mBookList.get(i));
                 Toast.makeText(mContext, mBookList.get(i).getTitle(), Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(mContext, OwnerProfileActivity.class);
+                Book book = mBookList.get(i);
+                intent.putExtra("passedBook",book);
+                mContext.startActivity(intent);
             }
         });
     }
@@ -97,7 +105,7 @@ public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.
             tvAuthor.setText(book.getAuthor());
             tvISBN.setText(book.getISBN());
             tvUserRole.setText("Owner: ");
-            tvOwner.setText(book.getOwner().getUserName());
+//            tvOwner.setText(book.getOwner().getUserName());
 
         }
     }

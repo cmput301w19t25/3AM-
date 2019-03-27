@@ -1,6 +1,11 @@
 package comnickdchee.github.a3am.Activities;
 
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.provider.SearchRecentSuggestions;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -10,8 +15,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -27,19 +35,23 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.ViewPagerAdapter;
+import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Backend.BookListCallback;
 import comnickdchee.github.a3am.Fragments.HomeFragment;
 import comnickdchee.github.a3am.Fragments.MessageFragment;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Fragments.MyBooksFragment;
 import comnickdchee.github.a3am.Fragments.ProfileFragment;
 import comnickdchee.github.a3am.Models.RequestStatusGroup;
+import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
+import comnickdchee.github.a3am.MySuggestionProvider;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * @author Asma, Ismaeel, Nicholas, Tatenda & Zaheen
- * HomePageActivity extends AppCompatActivity
+ * HomePageActivity exteTnds AppCompatActivity
  * HomePageActivity implements NavigationView.onNavigationItemSelectedListener
  * @see AppCompatActivity
  */
@@ -53,21 +65,29 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     private FirebaseAuth mAuth;
     private FirebaseDatabase Fd;
     private DatabaseReference mDataRef;
+    private ActionBarDrawerToggle toggle;
     private String DownloadLink;
+    private SearchView searchView;
     public static ArrayList<Book> BorrowedList = new ArrayList<>();
     public static ArrayList<Book> LendingList = new ArrayList<>();
     public static ArrayList<Book> ActionsList = new ArrayList<>();
     public static ArrayList<RequestStatusGroup> RequestsList = new ArrayList<>();
+    public static ArrayList<Book> requestedList = new ArrayList<>();
+    private Backend backend = Backend.getBackendInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
         init();
+
         navToolbar = findViewById(R.id.navToolbar);
         setSupportActionBar(navToolbar);
 
-        // Setting the side Navigation Drawer
+
+
+
+            // Setting the side Navigation Drawer
         // source: https://www.youtube.com/watch?v=fGcMLu1GJEc
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -87,14 +107,14 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child(userEmail+"/"+"dp"+ ".jpg");
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(mAuth.getUid()+".jpg");
 
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Log.e("Tuts+", "uri: " + uri.toString());
                 DownloadLink = uri.toString();
-                CircleImageView iv = (CircleImageView) hView.findViewById(R.id.UserImageNavbar);
+                CircleImageView iv = (CircleImageView) hView.findViewById(R.id.messagingToImage);
                 Picasso.with(getApplicationContext()).load(uri.toString()).fit().into(iv);
                 //Handle whatever you're going to do with the URL here
             }
@@ -110,16 +130,14 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
          * @param R.string.navigation_drawer_open
          *
          */
-        //Sets the states of the side navigation menu
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, navToolbar,
+        // sets the states of the side navigation menu
+        toggle = new ActionBarDrawerToggle(this, drawer, navToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
-        toggle.syncState();   //rotating the hambugur item
+        toggle.syncState();
 
-
-        // view pager
-        //AT the start of the program will open HomeFragment before clicking on anything else
-        // Sets the home pages as the active fragment if there is no savedInstances
+        // at the start of the program will open HomeFragment before clicking on anything else
+        // Sets the home pages as the active fragment if there is no saved instances
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
@@ -162,7 +180,9 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
 
             case R.id.nav_logout:
                 mAuth.signOut();
-                finish();
+                Intent login = new Intent(this, SignInActivity.class);
+                login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(login);
                 break;
 
         }
@@ -177,61 +197,81 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         // Initializing for Actions tab
         ActionsList = new ArrayList<>();
 
-        Book b1 = new Book("1111111111","Title1","AuthorName1");
-        Book b2 = new Book("1111111112","Title2","AuthorName2");
-        Book b3 = new Book("1111111113","Title3","AuthorName3");
-        ActionsList.add(b1);
-        ActionsList.add(b2);
-        ActionsList.add(b3);
+        backend.getActionsBooks(new BookListCallback() {
+            @Override
+            public void onCallback(ArrayList<Book> books) {
+                ActionsList.clear();
+                ActionsList.addAll(books);
+            }
+        });
 
         // ACTION TAB INIT ENDED _____________________________________________
 
         //Initializing for Borrowed tabs
 
-        User user2 = new User("An autistic Owner","sample@sc.ca","12345","98708");
         BorrowedList = new ArrayList<>();
 
-        Book borrowing = new Book("???????","BorrowedTabSample","Book",user2);
-        BorrowedList.add(borrowing);
+        backend.getBorrowedBooks(new BookListCallback() {
+            @Override
+            public void onCallback(ArrayList<Book> books) {
+                BorrowedList.clear();
+                BorrowedList.addAll(books);
+            }
+        });
+
 
         // Borrowed TAB INIT ENDED _____________________________________________
 
         //Initializing for Lending tabs
 
-        User user3 = new User("A Bosti Owner","sample@sc.ca","12345","98708");
         LendingList = new ArrayList<>();
 
-        Book lending = new Book("!!!!!!!!!!","LendingTabSample","Someone",user2);
-        LendingList.add(lending);
+        Log.d("START HERE", "init: STARTS HERE");
+
+        backend.getLendingBooks(new BookListCallback() {
+            @Override
+            public void onCallback(ArrayList<Book> books) {
+                Log.d("GOTCALLS", "onCallback: GOT CALLBACK");
+                LendingList.clear();
+                LendingList.addAll(books);
+            }
+        });
+
+        Log.d("ENDED BORROWED STUFF", "init: END HERE");
 
         // Lending TAB INIT ENDED _____________________________________________
 
 
         // Initializing for Requests tab
         RequestsList = new ArrayList<>();
+        requestedList = new ArrayList<>();
 
-        ArrayList<Book> AcceptedRequests = new ArrayList<>();
+        backend.getRequestedBooks(new BookListCallback() {
+            @Override
+            public void onCallback(ArrayList<Book> books) {
+                requestedList.clear();
+                requestedList.addAll(books);
+            }
+        });
 
-        // A random use initialized for making books
-        User user1 = new User("User Name","sample@sc.ca","12345","98708");
-
-        // Adding things to accepted request group
-        AcceptedRequests.add(new Book("Google AdSense","Hairy Potter and the Order of his Pubic","XXXXX",user1));
-        AcceptedRequests.add(new Book("Google Nonsense","Hairy Potter and the Sorcerer's Comb","XXXXX",user1));
-        AcceptedRequests.add(new Book("Google BalSense","Hairy Potter and the Chamber of Scissors","XXXXX",user1));
-
-        // Adding those request to the AcceptedGroup (The First argument determines the name of the Group)
-        RequestStatusGroup AcceptedGroup = new RequestStatusGroup("Accepted", AcceptedRequests);
-        RequestsList.add(AcceptedGroup);
-
-        // Adding things to pending request group
-        ArrayList<Book> pendingRequests = new ArrayList<>();
-        pendingRequests.add(new Book("Google ShitSense","Hairy Potter and the Half-Breed Prince","XXXXX",user1));
-        pendingRequests.add(new Book("Google DickSense","Hairy Potter and the Goblin for Hire","XXXXX",user1));
-
-        // Adding those request to the PendingGroup (The First argument determines the name of the Group)
-        RequestStatusGroup PendingGroup = new RequestStatusGroup("Pending", pendingRequests);
-        RequestsList.add(PendingGroup);
+//        ArrayList<Book> AcceptedRequests = new ArrayList<>();
+//        ArrayList<Book> pendingRequests = new ArrayList<>();
+//
+//        for (int i = 0; i < requestedList.size(); ++i) {
+//            if (requestedList.get(i).getStatus() == Status.Accepted) {
+//                AcceptedRequests.add(requestedList.get(i));
+//            } else {
+//                pendingRequests.add(requestedList.get(i));
+//            }
+//        }
+//
+//        // Adding those request to the AcceptedGroup (The First argument determines the name of the Group)
+//        RequestStatusGroup AcceptedGroup = new RequestStatusGroup("Accepted", AcceptedRequests);
+//        RequestsList.add(AcceptedGroup);
+//
+//        // Adding those request to the PendingGroup (The First argument determines the name of the Group)
+//        RequestStatusGroup PendingGroup = new RequestStatusGroup("Pending", pendingRequests);
+//        RequestsList.add(PendingGroup);
 
         // Request TAB INIT ENDED _____________________________________________
 
@@ -239,14 +279,13 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     }
 
     /**
-     * Overwrite onBackPressed
      * So that when back button is pressed while navigation drawer is open, we don't exit the activity
-     * immediately instead close the navigation menu drawer first
+     * immediately instead close the navigation menu drawer first.
      */
     @Override
     public void onBackPressed() {
 
-        //Make the back button close the navigation menu if it is open
+        // Make the back button close the navigation menu if it is open
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -254,5 +293,49 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         }
     }
 
+    /**
+     * Inflate the menu when the SearchView item is pressed with the
+     * search menu. The toolbar gets a search view button implemented
+     * on the right side.
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_menu, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+
+        ComponentName componentName = new ComponentName(this, SearchResultsActivity.class);
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(componentName));
+
+        return true;
+    }
+
+    /**
+     * Called when we get a new intent. This is used for when a search suggestion has been entered.
+     * TODO: Launch another activity with the results from the user query.
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleSearch(intent);
+    }
+
+    /** Handle search action by feeding intent to activity */
+    private void handleSearch(Intent intent) {
+
+        // Saves the query for use as a later suggestion
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+                    MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
+            suggestions.saveRecentQuery(query, null);
+        }
+    }
 }
 

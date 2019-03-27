@@ -15,8 +15,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,36 +25,28 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
-import java.sql.Time;
-import java.sql.Timestamp;
 
-import java.util.Date;
-
-import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
-
-import static java.lang.Boolean.TRUE;
 
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int CHOSEN_IMAGE = 69;
     ImageView img;
-    Uri ProfileImage;
-    private FirebaseAuth mAuth;
+    Uri profileImage;
+    Boolean usernameError = false;
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseDatabase Fd;
     private FirebaseStorage firebaseStorage;
     Boolean flag;
     EditText passwordReg, emailReg, userName, address, phoneNumber;
-    String userN, email, password, addR, phoneN, profileImageUrl;
+    String username, email, password, addR, phoneN, profileImageUrl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        mAuth = FirebaseAuth.getInstance();
 
         emailReg = (EditText) findViewById(R.id.EmailReg);
         passwordReg = (EditText) findViewById(R.id.PasswordReg);
@@ -66,18 +56,18 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         findViewById(R.id.RegisterConfirm).setOnClickListener(this);
         findViewById(R.id.AddProfilePicture).setOnClickListener(this);
-        findViewById(R.id.userImage).setOnClickListener(this);
-        img = (ImageView) findViewById(R.id.userImage);
+        findViewById(R.id.userImageSeeOwnerProfile).setOnClickListener(this);
+        img = (ImageView) findViewById(R.id.userImageSeeOwnerProfile);
     }
 
     private void Register(){
-        userN = userName.getText().toString().trim();
+        username = userName.getText().toString().trim();
         email = emailReg.getText().toString().trim();
         password = passwordReg.getText().toString().trim();
         addR = address.getText().toString().trim();
         phoneN = phoneNumber.getText().toString().trim();
 
-        if(userN.isEmpty()){
+        if(username.isEmpty()){
             userName.setError("User Name Required!");
             userName.requestFocus();
             return;
@@ -101,7 +91,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        if(userN.length() > 25){
+        if(username.length() > 25){
             userName.setError("Username too Long!");
             userName.requestFocus();
             return;
@@ -129,6 +119,18 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference();
+        DatabaseReference ref = firebaseDatabase.getReference().child("users");
+
+
+
+        if(usernameError == true){
+            Log.d("Ref", "Username Error is True");
+            userName.setError("Username not unique.");
+            userName.requestFocus();
+            return;
+        }
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -140,6 +142,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             Log.d("Donkey","Work pls..");
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(getApplicationContext(), "Successful Registration.", Toast.LENGTH_LONG).show();
+
                             uploadImageToFirebase();
                             mAuth.signOut();
                             finish();
@@ -163,11 +166,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.AddProfilePicture:
                 Log.d("Image","Image clicked");
                 findImage();
-            case R.id.userImage:
+            case R.id.userImageSeeOwnerProfile:
                 Log.d("Image","Image clicked");
                 findImage();
             case R.id.RegisterConfirm:
-                Log.d("Reg", "Ass no error ");
+                Log.d("Reg", "No error");
                 Register();
             break;
 
@@ -179,9 +182,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         super.onActivityResult(requestCode,resultCode,data);
 
         if(requestCode == CHOSEN_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null){
-            ProfileImage = data.getData();
+            profileImage = data.getData();
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), ProfileImage);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), profileImage);
                 img.setImageBitmap(bitmap);
             } catch (IOException e){
                 e.printStackTrace();
@@ -193,26 +196,33 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(i,"Select Profile Picture"), CHOSEN_IMAGE) ;
+        startActivityForResult(Intent.createChooser(i,"Select Profile Picture"), CHOSEN_IMAGE);
     }
 
+    // TODO: Tidy this up.
+    /** Once user data has been created and verified, we add this to the users table. */
     private void sendUserData(){
-        FirebaseDatabase fD = FirebaseDatabase.getInstance();
-        User newUser = new User(userN,email,addR,phoneN);
+        // Here, we create a new user since we have verified their credentials.
+        // Append to the "users" table of the database reference
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference();
+        // Sets the value indexed by the User ID below the "users" table to be the user data
+        // inside the user class
+        if (mAuth.getCurrentUser() != null) {
+            //CHECKING FOR UNIQUE USERNAME.
 
-        DatabaseReference mRef = fD.getReference(mAuth.getUid());
-
-        mRef.setValue(newUser);
-
-        //mRef.setValue(f);
-
+            User user = new User(username, email, addR, phoneN);
+            String uid = mAuth.getCurrentUser().getUid();
+            user.setUserID(uid);
+            databaseReference.child("users").child(uid).setValue(user);
+        }
     }
 
     private void uploadImageToFirebase(){
-        if(ProfileImage != null){
+        if (profileImage != null){
             StorageReference profileImageRef =
-                    FirebaseStorage.getInstance().getReference(email+"/"+"dp"+ ".jpg");
-            profileImageRef.putFile(ProfileImage);
+                    FirebaseStorage.getInstance().getReference("users").child(mAuth.getUid()+".jpg");
+            profileImageRef.putFile(profileImage);
             profileImageUrl = profileImageRef.getDownloadUrl().toString();
             }
 
@@ -221,13 +231,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         if(u != null && profileImageUrl != null){
             Log.d("Image","Got profile image data");
             UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(userN)
+                    .setDisplayName(username)
                     .setPhotoUri(Uri.parse(profileImageUrl)).build();
             Log.d("Image", profileImageUrl.toString());
             u.updateProfile(profile);
         }else{
             UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(userN).build();
+                    .setDisplayName(username).build();
             u.updateProfile(profile);
         }
     }

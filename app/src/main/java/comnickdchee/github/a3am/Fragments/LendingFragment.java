@@ -8,17 +8,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.LendingTabAdapter;
+import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Backend.BookListCallback;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
 public class LendingFragment extends Fragment {
 
     private static final String TAG = "LendingFragment";
-    private ArrayList<Book> data = new ArrayList<>();
+    private ArrayList<Book> lendingBooksList = new ArrayList<>();
+    private Backend backend = Backend.getBackendInstance();
 
     public LendingFragment() {
         // Required empty public constructor
@@ -30,19 +34,23 @@ public class LendingFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_borrowed, container, false);
 
-        //Get the data for recycler view items
-        Bundle args = getArguments();
-        data = (ArrayList<Book>) args.getSerializable("data");
-
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         //Create and return the recyclerView
-        LendingTabAdapter adapter = new LendingTabAdapter(getActivity(),data);
-
+        LendingTabAdapter adapter = new LendingTabAdapter(getActivity(), lendingBooksList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        Log.d(TAG, "onCreateView: Finished View");
+        backend.getLendingBooks(new BookListCallback() {
+            @Override
+            public void onCallback(ArrayList<Book> books) {
+                lendingBooksList.clear();
+                lendingBooksList.addAll(0,books);
+                Log.d(TAG, "onCallback: " + Integer.toString(books.size()));
+                adapter.notifyDataSetChanged();
+            }
+        });
+
         return view;
 
     }
