@@ -89,14 +89,28 @@ public class EditProfile extends AppCompatActivity {
 
                 if (!email.equals(emailTV.getText().toString()) || !phone.equals(phoneTV.getText().toString())
                         || !address.equals(addressTV.getText().toString()) ) {
-                    createInputPrompt();
-                    passAuthenticate.show();
+                    if (dataValid()) {
+                        createInputPrompt();
+                        passAuthenticate.show();
+                    }
+
                 } else {
                     finish();
                 }
 
             }
         });
+
+    }
+
+    public Boolean dataValid() {
+
+        if (addressTV.getText().toString().equals("") || phoneTV.getText().toString().equals("") || emailTV.getText().toString().equals("")) {
+            Toast.makeText(EditProfile.this,"Please fill up all the text fields",Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
 
     }
 

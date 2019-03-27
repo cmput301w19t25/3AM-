@@ -118,11 +118,15 @@
 
             <EditText
                 android:id="@+id/emailEditText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical"
+                android:maxLines="1"
+                android:inputType="textEmailAddress"/>
         </LinearLayout>
 
         <LinearLayout
@@ -148,11 +152,15 @@
 
             <EditText
                 android:id="@+id/phoneNumberEdit"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical"
+                android:maxLines="1"
+                android:inputType="phone"/>
         </LinearLayout>
 
         <TextView
@@ -184,11 +192,16 @@
 
             <EditText
                 android:id="@+id/addressEdit"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical"
+                android:maxLines="1"
+                android:inputType="text"
+                />
         </LinearLayout>
 
         <LinearLayout
