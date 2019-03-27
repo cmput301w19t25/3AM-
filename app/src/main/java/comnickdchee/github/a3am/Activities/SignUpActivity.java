@@ -21,8 +21,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -119,19 +122,38 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
+        usernameError = false;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference();
         DatabaseReference ref = firebaseDatabase.getReference().child("users");
 
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot data: dataSnapshot.getChildren()){
+                    Log.d(data.child("userName").getValue().toString(), "onDataChange: ");
+                    if (username.equals(data.child("userName").getValue().toString()) ){
+                        usernameError = true;
+                        Log.d("Ref", "Username Error is True");
+                        userName.setError("Username not unique.");
+                        userName.requestFocus();
+                        return;
+                    }
+                }
+                CreateAccount();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
-        if(usernameError == true){
-            Log.d("Ref", "Username Error is True");
-            userName.setError("Username not unique.");
-            userName.requestFocus();
-            return;
-        }
 
+    }
+
+    public void CreateAccount() {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
 
@@ -157,7 +179,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         // ...
                     }
                 });
-
     }
 
     @Override
