@@ -264,12 +264,15 @@ public class Backend {
      * Firebase.
      */
     public void acceptRequest(User user, Book book) {
+        Log.d(user.getUserID(), "IN BACKEND FIRST: ");
+
         book.getRequests().clear();
         book.setCurrentBorrowerID(user.getUserID());
         book.setStatus(Status.Accepted);
 
         updateExchange(book, ExchangeType.OwnerHandover);
         updateBookData(book);
+        Log.d(user.getUserID(), "IN BACKEND BEFORE BUG CALL: ");
         updateUserData(user);
     }
 
