@@ -1,4 +1,4 @@
-package comnickdchee.github.a3am.Activities;
+package comnickdchee.github.a3am.Adapters;
 
 /*
  * Copyright (C) 2015 Google Inc. All Rights Reserved.
