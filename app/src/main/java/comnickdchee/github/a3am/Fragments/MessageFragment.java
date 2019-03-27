@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -56,8 +57,8 @@ public class MessageFragment extends Fragment {
         // Opens a fragment which will show the messages
 
         View view = inflater.inflate(R.layout.fragment_message, container, false);
-
         init();
+        getActivity().setTitle("Messages");
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return view;

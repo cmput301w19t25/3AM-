@@ -1,5 +1,6 @@
 package comnickdchee.github.a3am.Fragments;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import comnickdchee.github.a3am.Activities.EditProfile;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -39,6 +41,7 @@ public class ProfileFragment extends Fragment {
     private FloatingActionButton edit;
     private String DownloadLink;
     private FirebaseAuth mAuth;
+    private FloatingActionButton editFAB;
 
 
     @Nullable
@@ -59,6 +62,20 @@ public class ProfileFragment extends Fragment {
         final TextView Address = (TextView)view.findViewById(R.id.addressEditProfileFragment);
         final TextView PhoneNumber = (TextView)view.findViewById(R.id.phoneNumberEditProfileFragment);
         final TextView Email = (TextView)view.findViewById(R.id.emailEditProfileFragment);
+        editFAB = view.findViewById(R.id.editFAB);
+
+        editFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent editActivity = new Intent(getActivity(), EditProfile.class);
+                editActivity.putExtra("userID", mAuth.getCurrentUser().getUid());
+                editActivity.putExtra("username", ProfileName.getText());
+                editActivity.putExtra("email", Email.getText());
+                editActivity.putExtra("address", Address.getText());
+                editActivity.putExtra("phone", PhoneNumber.getText());
+                getActivity().startActivity(editActivity);
+            }
+        });
 
         //Sets the name
         ProfileName.setText(mAuth.getCurrentUser().getDisplayName());
