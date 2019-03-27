@@ -112,7 +112,7 @@ public class NewBookActivity extends AppCompatActivity {
                     addBook(bookTitle, bookAuthor, bookISBN);
                     finish();
                 }
-                
+
             }
         });
 

@@ -152,8 +152,6 @@ public class SearchResultsActivity extends AppCompatActivity {
                 }
             });
 
-
-
         }
 
     }
