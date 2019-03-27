@@ -142,7 +142,6 @@ public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.
                     tvOwner.setText(user.getUserName());
                 }
             });
-            tvOwner.setText(book.getOwner().getUserName());
 
         }
     }

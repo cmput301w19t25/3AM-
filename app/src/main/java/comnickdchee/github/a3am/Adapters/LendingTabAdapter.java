@@ -64,7 +64,7 @@ public class LendingTabAdapter extends RecyclerView.Adapter<LendingTabAdapter.Vi
 
         // Puts all the data based on the bind function in the Viewholder
         holder.bind(mBookList.get(i));
-        loadImageFromOwnerID(holder.borrowerIV, mBookList.get(i).getCurrentBorrower());
+        loadImageFromOwnerID(holder.borrowerIV, mBookList.get(i).getCurrentBorrowerID());
         // On click event when a card is clicked
         holder.cvUserInfo.setOnClickListener(new View.OnClickListener() {
 
@@ -131,7 +131,7 @@ public class LendingTabAdapter extends RecyclerView.Adapter<LendingTabAdapter.Vi
             tvAuthor.setText(book.getAuthor());
             tvISBN.setText(book.getISBN());
             tvUserRole.setText("Borrower: ");
-            backend.getUser(book.getCurrentBorrower(), new UserCallback() {
+            backend.getUser(book.getCurrentBorrowerID(), new UserCallback() {
                 @Override
                 public void onCallback(User user) {
                     tvOwner.setText(user.getUserName());
