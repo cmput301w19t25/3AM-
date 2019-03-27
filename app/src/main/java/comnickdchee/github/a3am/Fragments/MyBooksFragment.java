@@ -152,7 +152,6 @@ public class MyBooksFragment extends Fragment {
 
                                 return true;
 
-
                             case R.id.item5:
 
                                 for (Book orderedBook : BookList) {

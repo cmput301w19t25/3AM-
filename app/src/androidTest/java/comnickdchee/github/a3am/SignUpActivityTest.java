@@ -23,6 +23,11 @@ import static org.junit.Assert.*;
 import comnickdchee.github.a3am.Activities.SignInActivity;
 import comnickdchee.github.a3am.Activities.SignUpActivity;
 
+/**
+ * @author Tatenda
+ * uses expresso for testing the signup
+ */
+
 public class SignUpActivityTest {
     @Rule
     public ActivityTestRule<SignUpActivity> nActivityTestRule = new ActivityTestRule<SignUpActivity>(SignUpActivity.class);

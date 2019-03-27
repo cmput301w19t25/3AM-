@@ -14,6 +14,11 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.*;
 
+/**
+ * @author Tatenda
+ * use of expresso to test sign in
+ */
+
 public class SignInActivityTest {
     @Rule
     public ActivityTestRule<SignInActivity>bActivityTestRule = new ActivityTestRule<SignInActivity>(SignInActivity.class);
