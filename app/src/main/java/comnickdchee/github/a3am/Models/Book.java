@@ -193,7 +193,7 @@ public class Book implements Parcelable {
 
     public String getOwnerID() { return ownerID; }
 
-    public String getCurrentBorrower() { return currentBorrowerID; }
+    public String getCurrentBorrowerID() { return currentBorrowerID; }
 
     /** Get each requester in the form of user data. */
     public ArrayList<User> getRequestUsers() {

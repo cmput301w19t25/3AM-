@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -125,6 +126,7 @@ public class ViewRBookActivity extends AppCompatActivity {
 
             if (isbn.equals(bookISBN)){
                 actionBook.setStatus(Status.Borrowed);
+                actionBook.setCurrentBorrowerID(FirebaseAuth.getInstance().getUid());
                 backend.updateExchange(actionBook, ExchangeType.BorrowerHandover);
                 backend.updateBookData(actionBook);
             } else {
