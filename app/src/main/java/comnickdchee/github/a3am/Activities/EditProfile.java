@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -41,6 +42,7 @@ public class EditProfile extends AppCompatActivity {
     private String email;
     private String address;
 
+    private Toolbar toolbar;
     private CircleImageView usernameIV;
     private TextView usernameTV;
     private EditText emailTV;
@@ -69,6 +71,7 @@ public class EditProfile extends AppCompatActivity {
         email = intent.getStringExtra("email");
         address = intent.getStringExtra("address");
 
+        toolbar = findViewById(R.id.toolbar);
         usernameIV = findViewById(R.id.profilePictureEdit);
         usernameTV = findViewById(R.id.userNameTV);
         emailTV = findViewById(R.id.emailEditText);
@@ -76,6 +79,12 @@ public class EditProfile extends AppCompatActivity {
         addressTV = findViewById(R.id.addressEdit);
         saveButton = findViewById(R.id.saveButton);
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         loadImageFromOwnerID(usernameIV,uid);
         usernameTV.setText(username);
