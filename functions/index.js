@@ -23,6 +23,17 @@ exports.addMessage = functions.https.onRequest((req, res) => {
   });
 });
 
-exports.NewNotification = functions.database.ref('notifications/{userID}').onWrite((change,context) =>{
-	console.log("Test","test123");
+exports.NewNotification = functions.database.ref('notifications/{userID}/{notificationID}').onWrite((change,context) =>{
+	  console.log("Test","test123");
+	      if (change.before.exists()) {
+        return null;
+      }
+      // Exit when the data is deleted.
+      if (!change.after.exists()) {
+        return null;
+      }
+	  
+	  const original = change.after.val();
+	  console.log('Uppercasing', context.params.userID, context.params.notificationID);
+	 
 });
