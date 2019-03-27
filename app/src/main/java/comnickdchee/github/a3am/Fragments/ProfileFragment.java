@@ -79,6 +79,7 @@ public class ProfileFragment extends Fragment {
 
         //Sets the name
         ProfileName.setText(mAuth.getCurrentUser().getDisplayName());
+
         DatabaseReference ref = database.getReference().child("users").child(mAuth.getUid());
         Log.d("Ref", "onCreateView: "+ ref.toString());
         //Sets the other details from the reference
