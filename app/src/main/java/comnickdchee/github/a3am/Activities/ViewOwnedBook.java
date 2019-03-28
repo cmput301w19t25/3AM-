@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
@@ -21,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.images.ImageRequest;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,7 +44,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
     private FirebaseAuth mAuth;
-    CircleImageView circleImageView;
+    ImageViewCompat circleImageView;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int CAMERA_PERMISSION_CODE = 10;
 
@@ -66,11 +68,11 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
         EditText authorBookEditActivity = findViewById(R.id.bookAuthorOwnedBook);
         EditText bookISBNEditActivity = findViewById(R.id.bookISBNOwnedBook);
         bookImageEditActivity = findViewById(R.id.bookPictureOwnedBook);
-        circleImageView = (CircleImageView) findViewById(R.id.bookPictureOwnedBook);
+        //circleImageView = (ImageViewCompat) findViewById(R.id.bookPictureOwnedBook);
 
         //Disable button if the user has no camera
         if (!hasCamera()) {
-            circleImageView.setEnabled(false);
+            bookImageEditActivity.setEnabled(false);
         }
 
         Bundle bundle = getIntent().getExtras();
@@ -221,7 +223,7 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
             //circleImageView = (CircleImageView) findViewById()
             Bundle extras = data.getExtras();
             Bitmap photo = (Bitmap) extras.get("data");
-            circleImageView.setImageBitmap(photo);
+            bookImageEditActivity.setImageBitmap(photo);
         }
 
         if(requestCode == CHOSEN_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null){

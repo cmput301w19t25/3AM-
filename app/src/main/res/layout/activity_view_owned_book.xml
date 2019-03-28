@@ -73,20 +73,20 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/bookPictureOwnedBook"
         android:layout_width="156dp"
         android:layout_height="156dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:src="@mipmap/ic_launcher_round"
+        android:onClick="showPopup"
+        android:src="@mipmap/ic_launcher"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pictureContainer"
-        tools:ignore="ContentDescription"
-        android:onClick="showPopup"/>
+        tools:ignore="ContentDescription" />
 
     <EditText
         android:id="@+id/bookTitleOwnedBook"
