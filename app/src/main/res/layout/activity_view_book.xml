@@ -130,6 +130,7 @@
                 android:id="@+id/tvLocationTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/open_sans"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
