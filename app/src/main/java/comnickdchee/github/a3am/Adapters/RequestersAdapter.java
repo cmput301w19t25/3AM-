@@ -79,7 +79,7 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
 
                 reference.child("notificationAccepts").child(receiverkey).child(mAuth.getCurrentUser().getDisplayName()).push().setValue(notificationData);
                 backend.acceptRequest(requesters.get(i), currentBook);
-                
+
             }
         });
 
