@@ -76,8 +76,8 @@ dependencies {
     //Geolocation
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     //implementation 'com.google.android.gms:play-services-maps:9.0.0'
-    implementation 'com.google.android.gms:play-services-location:9.8.0'
-
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
+    implementation 'com.google.android.gms:play-services-places:15.0.1'
     implementation 'com.google.android.gms:play-services-vision:15.0.1'
 
     //Barcode Scanner
