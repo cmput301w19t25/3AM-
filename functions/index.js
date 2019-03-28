@@ -41,37 +41,25 @@ exports.NewNotification = functions.database.ref('notifications/{userID}/{sender
 	  console.log('We have a new message for', receiverID);
 	  console.log('Uppercasing', context.params.userID, context.params.notificationID, context.params.senderID);
 	  
-	  // Get the list of device notification tokens.
-      const getDeviceTokensPromise = admin.database()
-          .ref(`/users/receiverID/device_token`);
-	  
-	  // Get the user profile.
-      const getSenderProfilePromise = admin.auth().getUser(senderID);
-	  console.log("The sender is ", senderID);
-	  
-	   return Promise.all([getDeviceTokensPromise, getSenderProfilePromise]).then(results => {
-        tokensSnapshot = results[0];
-        const follower = results[1];
+const deviceToken = admin.database().ref(`users/${receiverID}/device_token`).once('value');
 
-        // Check if there are any device tokens.
-        if (!tokensSnapshot.hasChildren()) {
-          return console.log('There are no notification tokens to send to.');
-        }
-        console.log('There are', tokensSnapshot.numChildren(), 'tokens to send notifications to.');
-
-        // Notification details.
-        const payload = {
-          notification: {
-            title: 'You have a new follower!',
-            body: `${follower.displayName} is now following you.`,
-            icon: follower.photoURL
-          }
-        };
-
-        // Listing all tokens as an array.
-        tokens = Object.keys(tokensSnapshot.val());
-        // Send notifications to all tokens.
-        return admin.messaging().sendToDevice(tokens, payload);
-      });
-	  
+return deviceToken.then(result => {
+	
+	const token_id = result.val();
+	console.log("The token is:", token_id);
+	const payload = {
+		notification: {
+			title: "New message!",
+			body: "You've received a new message",
+			icon: "default"
+		}
+	};
+	
+	return admin.messaging().sendToDevice(token_id, payload).then( response => {
+		return console.log("Messaged");
+		});
+	
+	});
+	 
+	 
 });
