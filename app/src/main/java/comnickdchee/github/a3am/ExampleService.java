@@ -20,7 +20,7 @@ public class ExampleService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startID){
         return super.onStartCommand(intent,flags,startID);
-        
+
     }
 
     @Nullable

@@ -11,32 +11,34 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 //Service to deal with notifications.
-public class MyServiceNotification extends FirebaseMessagingService {
-    public MyServiceNotification() {
-    }
+public class MyServiceNotification extends com.google.firebase.messaging.FirebaseMessagingService {
+
     String TAG = "Tag";
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // ...
         super.onMessageReceived(remoteMessage);
-
-        Notification mBuilder = new NotificationCompat.Builder( this)
+        createNotificationChannel();
+        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Toast.makeText(this, "You've got a notification!", Toast.LENGTH_SHORT).show();
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Notification")
+                .setContentText("Testing")
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("New notification")
-                .setContentText("You've received a new notification")
-                .build();
-        Log.d("Notification Received","notification");
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        Log.d(TAG, "From: " + remoteMessage.getFrom());
         int mNotificationID = (int) System.currentTimeMillis();
-        NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
-        manager.notify(mNotificationID,mBuilder);
+        NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mNotifyMgr.notify(mNotificationID, mBuilder.build());
     }
 
-    public static final String CHANNEL_ID = "exampleServiceChannel";
+    public static final String CHANNEL_ID = "default_notification_channel_id";
 
     @Override
     public void onCreate(){
