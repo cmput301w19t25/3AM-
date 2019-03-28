@@ -42,6 +42,7 @@ import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.RequestersAdapter;
 import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Backend.ExchangeCallback;
 import comnickdchee.github.a3am.Backend.UserCallback;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
@@ -80,7 +81,13 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
         setContentView(R.layout.activity_view_r_books);
 
         Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_grey_default));
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(ViewRBookActivity.this);
+        }
 
         Intent intent = getIntent();
         actionBook = intent.getExtras().getParcelable("acceptedBook");
@@ -93,13 +100,26 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
 
-        backButton = findViewById(R.id.backIV);
         receiveButton = findViewById(R.id.receiveBookButton);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
 
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(ViewRBookActivity.this);
-        }
+        backend.getExchange(actionBook, new ExchangeCallback() {
+            @Override
+            public void onCallback(Exchange exchange) {
+                if (exchange != null) {
+                    if (exchange.getType() == ExchangeType.BorrowerReceive) {
+                        if (exchange.getPickupCoords() != null) {
+                            receiveButton.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        receiveButton.setVisibility(View.GONE);
+                    }
+                } else {
+                    receiveButton.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        backButton = findViewById(R.id.backIV);
 
         receiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
