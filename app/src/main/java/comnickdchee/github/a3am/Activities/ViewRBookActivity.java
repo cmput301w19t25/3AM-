@@ -219,13 +219,14 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
 
                     if (exchange != null) {
                         PickupCoords pickupCoords = exchange.getPickupCoords();
-                        LatLng latLng = new LatLng(pickupCoords.getLatitude(), pickupCoords.getLongitude());
-                        MarkerOptions markerOptions = new MarkerOptions()
-                                .position(latLng);
-                        marker = mGoogleMap.addMarker(markerOptions);
-                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+                        if (pickupCoords != null) {
+                            LatLng latLng = new LatLng(pickupCoords.getLatitude(), pickupCoords.getLongitude());
+                            MarkerOptions markerOptions = new MarkerOptions()
+                                    .position(latLng);
+                            marker = mGoogleMap.addMarker(markerOptions);
+                            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+                        }
                     }
-
                 }
 
                 @Override
