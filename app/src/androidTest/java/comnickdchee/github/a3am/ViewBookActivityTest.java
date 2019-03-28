@@ -12,6 +12,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import comnickdchee.github.a3am.Activities.HomepageActivity;
+import comnickdchee.github.a3am.Fragments.ActionsFragment;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.TestCase.assertTrue;
@@ -19,6 +20,7 @@ import static org.junit.Assert.*;
 
 public class ViewBookActivityTest {
 
+    //private static final Object ActionsFragment = ;
     @Rule
     public ActivityTestRule<HomepageActivity> mActivityTestRule = new ActivityTestRule<HomepageActivity>(HomepageActivity.class);
     private HomepageActivity mActivity = null;
@@ -40,19 +42,28 @@ public class ViewBookActivityTest {
 
         solobooksview.assertCurrentActivity("Wrong Activity", HomepageActivity.class);
 
-        solobooksview.waitForFragmentById(R.id.pagerHomepage);
+        //solobooksview.waitForFragmentById(R.id.pagerHomepage);
 
         assertTrue(solobooksview.searchText("Actions"));
-        //solobooksview.waitForView(R.id.nav_view);
-        //ViewGroup tabs = solobooksview.getView(android.R.id.pagerHomepage);
-        //View actionstab = tabs.getChildAt(2);
-        //solobooksview.clickOnView(actionstab);
-        ///solobooksview.clickOnView(navto);
+
+        solobooksview.clickOnText("Lending");
+        solobooksview.sleep(200);
+
+        solobooksview.clickOnText("Actions");
+        solobooksview.sleep(200);
+
+        solobooksview.clickOnText("Borrowed");
+        solobooksview.sleep(200);
+
+        solobooksview.clickOnText("Requests");
+        solobooksview.sleep(800);
+
 
 
     }
 
         @After
         public void tearDown () throws Exception {
+        mActivity = null;
         }
     }
