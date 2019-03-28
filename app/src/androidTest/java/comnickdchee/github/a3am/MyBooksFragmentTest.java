@@ -79,6 +79,6 @@ public class MyBooksFragmentTest  {
 
     @After
     public void tearDown() throws Exception {
-       // mActivity = null;
+       mActivity = null;
     }
 }
