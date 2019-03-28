@@ -7,10 +7,12 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -53,6 +55,7 @@ public class ViewBookActivity extends AppCompatActivity {
     private static final int ISBN_READ = 42;
     private static final int LOCATION_CODE = 7;
     private RecyclerView rvRequests;
+    private TextView emptyView;
     private TextView locationText;
     private ArrayList<User> requesters = new ArrayList<>();
     private RequestersAdapter requestersAdapter;
@@ -68,6 +71,14 @@ public class ViewBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_book);
 
         locationText = (TextView) findViewById(R.id.tvLocation);
+        emptyView = (TextView) findViewById(R.id.tvEmptyRV);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         //button click for owner to specify pick up location
         editLocationButton = (Button) findViewById(R.id.bChangeLocation);
@@ -81,7 +92,7 @@ public class ViewBookActivity extends AppCompatActivity {
 
 
         Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_grey_default));
 
         // Get the contents of the intent
         Intent intent = getIntent();
@@ -133,6 +144,15 @@ public class ViewBookActivity extends AppCompatActivity {
                 requestersAdapter.notifyDataSetChanged();
             }
         });
+
+        if (requesters.isEmpty()) {
+            emptyView.setVisibility(View.VISIBLE);
+            rvRequests.setVisibility(View.GONE);
+        } else {
+            rvRequests.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+
+        }
 
         ownerHandoverButton.setOnClickListener(new View.OnClickListener() {
             @Override
