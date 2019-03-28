@@ -294,17 +294,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     Marker marker;
 
-    public void geoLocate(View view) throws IOException {
-
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this, this)
-                .build();
-
-    }
-
     // Sets a marker, and removes the existing one if it exists
     private void setMarker(String locality, double lat, double lng) {
         if (marker != null) {

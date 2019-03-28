@@ -1,8 +1,11 @@
 package comnickdchee.github.a3am.Activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
@@ -49,6 +54,8 @@ public class ViewRBookActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private Button receiveButton;
     private ImageView backButton;
+    private GoogleMap mGoogleMap;
+
     private Book actionBook = new Book();
     private User owner = new User();
     private Backend backend = Backend.getBackendInstance();
@@ -74,6 +81,7 @@ public class ViewRBookActivity extends AppCompatActivity {
 
         backButton = findViewById(R.id.backIV);
         receiveButton = findViewById(R.id.receiveBookButton);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
 
         receiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
