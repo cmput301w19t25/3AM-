@@ -36,6 +36,7 @@ import java.util.Set;
 import comnickdchee.github.a3am.Adapters.BookRecyclerAdapter;
 import comnickdchee.github.a3am.Adapters.SearchRecyclerAdapter;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.MySuggestionProvider;
 import comnickdchee.github.a3am.R;
 
@@ -128,6 +129,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                         // and make a direct check
                         Boolean addBook = true;
                         Book bookToCompare = data.getValue(Book.class);
+                        Status bookStatus = Status.Available;
 
 
                         for (String keyword : queryList) {
@@ -141,6 +143,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
                             if (bookToCompare != null) {
                                 bookToCompare.setBookID(data.getKey());
+                                bookStatus = bookToCompare.getStatus();
 
 
                                 // Save the bookID to fetch intent information
@@ -157,11 +160,14 @@ public class SearchResultsActivity extends AppCompatActivity {
                                 }
                             }
                             else {
+                                addBook = false;
                                 break;
                             }
                         }
                         if (addBook){
-                            searchResults.add(bookToCompare);
+                            if (bookStatus == Status.Requested || bookStatus == Status.Available) {
+                                searchResults.add(bookToCompare);
+                            }
                         }
 
                     }
