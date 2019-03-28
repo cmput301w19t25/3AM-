@@ -59,7 +59,7 @@ import static junit.framework.TestCase.assertTrue;
         assertTrue(solo.searchText("My Books"));
 
         //Test if there exists a "Edit Profile" button
-        assertTrue(solo.searchText("Edit Profile"));
+        assertTrue(solo.searchText("Profile"));
 
         //Test if there exists a "Message" button
         assertTrue(solo.searchText("Message"));
@@ -78,7 +78,7 @@ import static junit.framework.TestCase.assertTrue;
 
         //Test if Edit Profile button from the menu is clickable
         solo.clickOnImageButton(0);
-        solo.clickOnMenuItem("Edit Profile");
+        solo.clickOnMenuItem("Profile");
 
         //Test if Message button from the menu is clickable
         solo.clickOnImageButton(0);

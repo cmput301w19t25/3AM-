@@ -14,9 +14,6 @@ import org.junit.Test;
 import comnickdchee.github.a3am.Activities.HomepageActivity;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import android.support.v7.widget.SearchView;
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.*;
 
 public class SearchResultsActivityTest {
     @Rule
@@ -29,8 +26,6 @@ public class SearchResultsActivityTest {
     public void setUp() throws Exception {
         //mActivity = mActivityTestRule.getActivity();
         solo = new Solo(getInstrumentation(), mActivityTestRule.getActivity());
-
-
     }
 
     @Test

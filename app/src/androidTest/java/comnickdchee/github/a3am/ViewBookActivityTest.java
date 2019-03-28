@@ -20,7 +20,6 @@ import static org.junit.Assert.*;
 
 public class ViewBookActivityTest {
 
-    //private static final Object ActionsFragment = ;
     @Rule
     public ActivityTestRule<HomepageActivity> mActivityTestRule = new ActivityTestRule<HomepageActivity>(HomepageActivity.class);
     private HomepageActivity mActivity = null;
@@ -31,7 +30,6 @@ public class ViewBookActivityTest {
 
     @Before
     public void setUp() throws Exception {
-        //mActivity = mActivityTestRule.getActivity();
         solobooksview = new Solo(getInstrumentation(), mActivityTestRule.getActivity());
 
 
@@ -41,8 +39,6 @@ public class ViewBookActivityTest {
     public void testNavViewBooks() {
 
         solobooksview.assertCurrentActivity("Wrong Activity", HomepageActivity.class);
-
-        //solobooksview.waitForFragmentById(R.id.pagerHomepage);
 
         assertTrue(solobooksview.searchText("Actions"));
 
@@ -57,7 +53,6 @@ public class ViewBookActivityTest {
 
         solobooksview.clickOnText("Requests");
         solobooksview.sleep(800);
-
 
 
     }
