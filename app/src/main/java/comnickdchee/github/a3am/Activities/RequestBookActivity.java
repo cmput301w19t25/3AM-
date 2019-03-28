@@ -70,6 +70,7 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         tvAuthor.setText(book.getAuthor());
         tvBookTitle.setText(book.getTitle());
         tvISBN.setText(book.getISBN());
+        tvStatus.setText(book.getStatus().toString());
 
 
         Log.d(book.getBookID(), "onCreate: BookID");
