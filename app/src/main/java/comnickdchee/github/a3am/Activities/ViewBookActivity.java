@@ -101,22 +101,23 @@ public class ViewBookActivity extends AppCompatActivity {
             public void onCallback(Exchange exchange) {
                 try {
                     PickupCoords coords = exchange.getPickupCoords();
-                    Geocoder geocoder;
-                    List<Address> addresses;
-                    geocoder = new Geocoder(ViewBookActivity.this, Locale.getDefault());
+                    if (coords != null) {
+                        Geocoder geocoder;
+                        List<Address> addresses;
+                        geocoder = new Geocoder(ViewBookActivity.this, Locale.getDefault());
 
-                    addresses = geocoder.getFromLocation(coords.getLatitude(), coords.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-                    // Fetch the address lines using getAddressLine,
-                    // join them, and send them to the thread.
+                        addresses = geocoder.getFromLocation(coords.getLatitude(),
+                                coords.getLongitude(), 1);
 
-                    Address address = addresses.get(0);
-                    ArrayList<String> addressFragments = new ArrayList<String>();
-                    for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
-                        addressFragments.add(address.getAddressLine(i));
+                        Address address = addresses.get(0);
+                        ArrayList<String> addressFragments = new ArrayList<String>();
+                        for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+                            addressFragments.add(address.getAddressLine(i));
+                        }
+
+                        String locationString = TextUtils.join(", ", addressFragments);
+                        locationText.setText(locationString);
                     }
-
-                    String locationString = TextUtils.join(", ", addressFragments);
-                    locationText.setText(locationString);
                 } catch (IOException e) {
                 }
             }
@@ -139,7 +140,6 @@ public class ViewBookActivity extends AppCompatActivity {
                 // Set exchange type
                 Intent intent = new Intent(ViewBookActivity.this, BarcodeScanner.class);
                 startActivityForResult(intent,ISBN_READ);
-                //
             }
         });
 
