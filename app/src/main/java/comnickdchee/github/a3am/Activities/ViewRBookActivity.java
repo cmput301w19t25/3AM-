@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -20,9 +21,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -34,6 +44,7 @@ import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Backend.UserCallback;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.Exchange;
 import comnickdchee.github.a3am.Models.ExchangeType;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
@@ -45,7 +56,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * requests on a given book that they own. The user can accept
  * and decline requests.
  */
-public class ViewRBookActivity extends AppCompatActivity {
+public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final int ISBN_READ = 42;
     private RecyclerView rvRequests;
@@ -55,6 +66,7 @@ public class ViewRBookActivity extends AppCompatActivity {
     private Button receiveButton;
     private ImageView backButton;
     private GoogleMap mGoogleMap;
+    private Marker marker;
 
     private Book actionBook = new Book();
     private User owner = new User();
@@ -83,6 +95,11 @@ public class ViewRBookActivity extends AppCompatActivity {
         receiveButton = findViewById(R.id.receiveBookButton);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
 
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(ViewRBookActivity.this);
+            Log.d("KLSJFKLDSJFL:SDJKF", "onCreate: ");
+        }
+
         receiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,29 +114,6 @@ public class ViewRBookActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-     /*   //button click for owner to specify pick up location
-        button2 = (Button) findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(ViewRBookActivity.this, MapsActivity.class);
-                ViewRBookActivity.this.startActivity(myIntent);
-            }
-        });*/
-
-
-
-
-        /*rvRequests = findViewById(R.id.rvViewBookRequests);
-        layoutManager = new LinearLayoutManager(this);
-        requesters = new ArrayList<String>();
-        requesters.add("Zaheen Rahman");
-        requesters.add("Ismaeel Bin Mohiuddin");
-        requestersAdapter = new RequestersAdapter(this, requesters);
-        rvRequests.setLayoutManager(layoutManager);
-        rvRequests.setAdapter(requestersAdapter);*/
 
     }
 
@@ -199,6 +193,44 @@ public class ViewRBookActivity extends AppCompatActivity {
                 Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
             }
         });
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
+        getPickupCoords();
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+    }
+
+    public void getPickupCoords() {
+        if (actionBook != null) {
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            DatabaseReference exchangeRef = firebaseDatabase.getReference("exchanges").child(actionBook.getBookID());
+            exchangeRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Exchange exchange = dataSnapshot.getValue(Exchange.class);
+
+                    if (exchange != null) {
+                        LatLng pickupCoords = exchange.getPickupCoords();
+
+                        MarkerOptions markerOptions = new MarkerOptions()
+                                .position(pickupCoords);
+                        marker = mGoogleMap.addMarker(markerOptions);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
 
     }
 }
