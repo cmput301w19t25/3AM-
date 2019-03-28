@@ -179,8 +179,6 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
 
     //launching the camera
     public void launchCamera(View view) {
-
-
         if (ContextCompat.checkSelfPermission(ViewOwnedBook.this,
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             // Here we can write if we need the camera to do anything extra if we already have permission

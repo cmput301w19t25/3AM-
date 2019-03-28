@@ -1,5 +1,6 @@
 package comnickdchee.github.a3am.Activities;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,6 +9,8 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,6 +45,8 @@ import java.io.IOException;
 
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static comnickdchee.github.a3am.Activities.ViewOwnedBook.CAMERA_PERMISSION_CODE;
 
 public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
@@ -165,10 +170,37 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
 
     //launching the camera
     public void launchCamera(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //launchs camera
-        //Take picture and pass results along to onActivityResult
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+        if (ContextCompat.checkSelfPermission(EditProfile.this,
+                Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            // Here we can write if we need the camera to do anything extra if we already have permission
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //launchs camera
+            //Take picture and pass results along to onActivityResult
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+        }
+        else
+        {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+        }
+
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                // Here we can write if we need the camera to do anything extra if we get the permission
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //launchs camera
+                //Take picture and pass results along to onActivityResult
+                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+            } else {
+                Toast.makeText(this,"Permission Denied for Camera",Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+        }
+    }
+
+    //if you want to return image taken
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
