@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import comnickdchee.github.a3am.Adapters.MessageAdapter;
+import comnickdchee.github.a3am.ExampleService;
 import comnickdchee.github.a3am.Models.Chat;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -129,6 +132,12 @@ public class messageActivity extends AppCompatActivity {
         hashMap.put("message", message);
 
         reference.child("chats").push().setValue(hashMap);
+        HashMap<String, String> notificationData = new HashMap<>();
+        notificationData.put("from",mAuth.getCurrentUser().getUid());
+        notificationData.put("type","message");
+
+        reference.child("notifications").child(receiverKey).child(mAuth.getUid()).push().setValue(notificationData);
+
     }
 
     private void readMessages(final String myid, String userID, String imgUrl){
@@ -174,6 +183,18 @@ public class messageActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void startService(View view){
+        String i = userMessage.getText().toString();
+        Intent serviceIntent = new Intent(this, ExampleService.class);
+        serviceIntent.putExtra("message",i);
+        startService(serviceIntent);
+    }
+
+    public void stopService(View view){
+        Intent serviceIntent = new Intent(this, ExampleService.class);
+        stopService(serviceIntent);
     }
 
 }

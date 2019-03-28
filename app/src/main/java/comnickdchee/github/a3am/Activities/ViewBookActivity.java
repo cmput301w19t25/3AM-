@@ -7,12 +7,15 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -33,6 +36,7 @@ import java.util.Locale;
 
 import comnickdchee.github.a3am.Adapters.RequestersAdapter;
 import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Backend.ExchangeCallback;
 import comnickdchee.github.a3am.Backend.UserListCallback;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
@@ -52,6 +56,7 @@ public class ViewBookActivity extends AppCompatActivity {
     private static final int ISBN_READ = 42;
     private static final int LOCATION_CODE = 7;
     private RecyclerView rvRequests;
+    private TextView emptyView;
     private TextView locationText;
     private ArrayList<User> requesters = new ArrayList<>();
     private RequestersAdapter requestersAdapter;
@@ -67,9 +72,18 @@ public class ViewBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_book);
 
         locationText = (TextView) findViewById(R.id.tvLocation);
+        emptyView = (TextView) findViewById(R.id.tvEmptyRV);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         //button click for owner to specify pick up location
         editLocationButton = (Button) findViewById(R.id.bChangeLocation);
+        ownerHandoverButton = findViewById(R.id.bOwnerHandover);
         editLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +94,7 @@ public class ViewBookActivity extends AppCompatActivity {
 
 
         Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_grey_default));
 
         // Get the contents of the intent
         Intent intent = getIntent();
@@ -88,14 +102,52 @@ public class ViewBookActivity extends AppCompatActivity {
 
         getPageData();
 
-
         rvRequests = findViewById(R.id.rvViewBookRequests);
-        ownerHandoverButton = findViewById(R.id.bOwnerHandover);
+
         layoutManager = new LinearLayoutManager(this);
         requestersAdapter = new RequestersAdapter(this, requesters, actionBook);
         rvRequests.setLayoutManager(layoutManager);
         rvRequests.setAdapter(requestersAdapter);
 
+        backend.getExchange(actionBook, new ExchangeCallback() {
+            @Override
+            public void onCallback(Exchange exchange) {
+                try {
+                    if (exchange != null) {
+
+                        // Get the status, so we can choose to display the button
+                        if (exchange.getType() == ExchangeType.OwnerHandover) {
+                            ownerHandoverButton.setVisibility(View.VISIBLE);
+                        } else {
+                            ownerHandoverButton.setVisibility(View.GONE);
+                        }
+
+
+                        PickupCoords coords = exchange.getPickupCoords();
+                        if (coords != null) {
+                            Geocoder geocoder;
+                            List<Address> addresses;
+                            geocoder = new Geocoder(ViewBookActivity.this, Locale.getDefault());
+
+                            addresses = geocoder.getFromLocation(coords.getLatitude(),
+                                    coords.getLongitude(), 1);
+
+                            Address address = addresses.get(0);
+                            ArrayList<String> addressFragments = new ArrayList<String>();
+                            for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+                                addressFragments.add(address.getAddressLine(i));
+                            }
+
+                            String locationString = TextUtils.join(", ", addressFragments);
+                            locationText.setText(locationString);
+                        }
+                    } else {
+                        ownerHandoverButton.setVisibility(View.GONE);
+                    }
+                } catch (IOException e) {
+                }
+            }
+        });
 
         backend.getRequesters(actionBook, new UserListCallback() {
             @Override
@@ -103,6 +155,14 @@ public class ViewBookActivity extends AppCompatActivity {
                 requesters.clear();
                 requesters.addAll(users);
                 requestersAdapter.notifyDataSetChanged();
+
+                if (requesters.isEmpty()) {
+                    emptyView.setVisibility(View.VISIBLE);
+                    rvRequests.setVisibility(View.GONE);
+                } else {
+                    rvRequests.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -112,7 +172,6 @@ public class ViewBookActivity extends AppCompatActivity {
                 // Set exchange type
                 Intent intent = new Intent(ViewBookActivity.this, BarcodeScanner.class);
                 startActivityForResult(intent,ISBN_READ);
-                //
             }
         });
 
@@ -158,7 +217,6 @@ public class ViewBookActivity extends AppCompatActivity {
 
 
             } catch (IOException e) {
-
             }
 
         }
@@ -175,6 +233,22 @@ public class ViewBookActivity extends AppCompatActivity {
         bookAuthor.setText(actionBook.getAuthor());
         bookISBN.setText(actionBook.getISBN());
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void loadImageFromBookID(ImageView load, String bookID){
