@@ -208,6 +208,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return false;
     }
 
+    /**
+     * Gets the current location permission from the current user. This is used
+     * for when we want to start the location of the map view.
+     */
     private void getLocationPermission() {
         String[] permissions = {FINE_LOCATION, COARSE_LOCATION};
 
@@ -246,6 +250,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    /**
+     * Called when the map is ready. We check if location is permitted,
+     * otherwise we prompt for permission. Then we get the device's location
+     * and set the current location to be the user's current location.
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
@@ -271,6 +280,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    /**
+     * Zooms in on the location, used when the user
+     * has entered a location in the search bar and is expecting a result
+     * with a pin showing in the map.
+     */
     public void goToLocationZoom(double lat, double lng, float zoom) {
         LatLng ll = new LatLng(lat, lng);
         CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, zoom);
@@ -306,6 +320,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         marker = mGoogleMap.addMarker(options);
     }
 
+    /** Used to hide the keyboard when the address is entered. */
     private void hideSoftKeyboard() {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
