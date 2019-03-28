@@ -121,28 +121,49 @@ public class SearchResultsActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     // Iterate through child entries
-                    Set result = new HashSet<Book>();
                     searchResults.clear();
                     bookSet.clear();
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         // Get all the keywords in the query entered by the user
                         // and make a direct check
+                        Boolean addBook = true;
                         Book bookToCompare = data.getValue(Book.class);
-                        searchResults.add(bookToCompare);
+
+
                         for (String keyword : queryList) {
 
+                            keyword = keyword.replace(" ", "");
+
+
+                            if (keyword.equals("")) {
+                                continue;
+                            }
+
                             if (bookToCompare != null) {
-                                // Save the bookID to fetch intent information
                                 bookToCompare.setBookID(data.getKey());
-                                if (!bookToCompare.getTitle().toLowerCase().contains(keyword) &&
-                                        !bookToCompare.getAuthor().toLowerCase().contains(keyword) &&
-                                                !bookToCompare.getISBN().toLowerCase().contains(keyword)) {
 
-                                    searchResults.remove(bookToCompare);
+
+                                // Save the bookID to fetch intent information
+
+                                keyword = " " + keyword + " ";
+                                String title = " " + bookToCompare.getTitle().toLowerCase() + " ";
+                                String author = " " + bookToCompare.getAuthor().toLowerCase() + " ";
+                                String ISBN = " " + bookToCompare.getISBN().toLowerCase() + " ";
+                                if (!title.contains(keyword) &&
+                                        !author.contains(keyword) &&
+                                        !ISBN.contains(keyword)) {
+
+                                    addBook = false;
                                 }
-
+                            }
+                            else {
+                                break;
                             }
                         }
+                        if (addBook){
+                            searchResults.add(bookToCompare);
+                        }
+
                     }
 
                     searchResultsAdapter.notifyDataSetChanged();
