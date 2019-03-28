@@ -38,7 +38,7 @@ import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Exchange;
 import comnickdchee.github.a3am.Models.ExchangeType;
-import comnickdchee.github.a3am.Models.Status;
+import comnickdchee.github.a3am.Models.PickupCoords;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 
@@ -134,8 +134,8 @@ public class ViewBookActivity extends AppCompatActivity {
             }
 
         } else if (requestCode == LOCATION_CODE && resultCode == RESULT_OK && data != null) {
-            LatLng pickupLocationCoords = (LatLng) data.getExtras().getParcelable("Location");
-            Exchange exchange = new Exchange(pickupLocationCoords, ExchangeType.BorrowerReceive);
+            LatLng coords = (LatLng) data.getExtras().getParcelable("Location");
+            Exchange exchange = new Exchange(new PickupCoords(coords.latitude, coords.longitude), ExchangeType.BorrowerReceive);
             backend.updateExchange(actionBook, exchange);
 
             try {
@@ -143,7 +143,7 @@ public class ViewBookActivity extends AppCompatActivity {
                 List<Address> addresses;
                 geocoder = new Geocoder(this, Locale.getDefault());
 
-                addresses = geocoder.getFromLocation(pickupLocationCoords.latitude, pickupLocationCoords.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                addresses = geocoder.getFromLocation(coords.latitude, coords.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
                 // Fetch the address lines using getAddressLine,
                 // join them, and send them to the thread.
 

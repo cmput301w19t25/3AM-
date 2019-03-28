@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -46,6 +47,7 @@ import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Exchange;
 import comnickdchee.github.a3am.Models.ExchangeType;
+import comnickdchee.github.a3am.Models.PickupCoords;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
@@ -97,7 +99,6 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
 
         if (mapFragment != null) {
             mapFragment.getMapAsync(ViewRBookActivity.this);
-            Log.d("KLSJFKLDSJFL:SDJKF", "onCreate: ");
         }
 
         receiveButton.setOnClickListener(new View.OnClickListener() {
@@ -199,6 +200,7 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
+        Log.d("GET PICKUP COORDS", "onMapReady: ");
         getPickupCoords();
     }
 
@@ -216,11 +218,12 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
                     Exchange exchange = dataSnapshot.getValue(Exchange.class);
 
                     if (exchange != null) {
-                        LatLng pickupCoords = exchange.getPickupCoords();
-
+                        PickupCoords pickupCoords = exchange.getPickupCoords();
+                        LatLng latLng = new LatLng(pickupCoords.getLatitude(), pickupCoords.getLongitude());
                         MarkerOptions markerOptions = new MarkerOptions()
-                                .position(pickupCoords);
+                                .position(latLng);
                         marker = mGoogleMap.addMarker(markerOptions);
+                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
                     }
 
                 }
