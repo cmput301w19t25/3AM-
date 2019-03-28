@@ -155,17 +155,16 @@ public class ViewBookActivity extends AppCompatActivity {
                 requesters.clear();
                 requesters.addAll(users);
                 requestersAdapter.notifyDataSetChanged();
+
+                if (requesters.isEmpty()) {
+                    emptyView.setVisibility(View.VISIBLE);
+                    rvRequests.setVisibility(View.GONE);
+                } else {
+                    rvRequests.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                }
             }
         });
-
-        // TODO: Get this to show the actual borrower
-        if (requesters.isEmpty() && actionBook.getCurrentBorrowerID() == null) {
-            emptyView.setVisibility(View.VISIBLE);
-            rvRequests.setVisibility(View.GONE);
-        } else {
-            rvRequests.setVisibility(View.VISIBLE);
-            emptyView.setVisibility(View.GONE);
-        }
 
         ownerHandoverButton.setOnClickListener(new View.OnClickListener() {
             @Override
