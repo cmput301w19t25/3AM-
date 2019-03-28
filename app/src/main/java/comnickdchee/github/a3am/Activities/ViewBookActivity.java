@@ -83,6 +83,7 @@ public class ViewBookActivity extends AppCompatActivity {
 
         //button click for owner to specify pick up location
         editLocationButton = (Button) findViewById(R.id.bChangeLocation);
+        ownerHandoverButton = findViewById(R.id.bOwnerHandover);
         editLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +114,15 @@ public class ViewBookActivity extends AppCompatActivity {
             public void onCallback(Exchange exchange) {
                 try {
                     if (exchange != null) {
+
+                        // Get the status, so we can choose to display the button
+                        if (exchange.getType() == ExchangeType.OwnerHandover) {
+                            ownerHandoverButton.setVisibility(View.VISIBLE);
+                        } else {
+                            ownerHandoverButton.setVisibility(View.GONE);
+                        }
+
+
                         PickupCoords coords = exchange.getPickupCoords();
                         if (coords != null) {
                             Geocoder geocoder;
@@ -137,8 +147,6 @@ public class ViewBookActivity extends AppCompatActivity {
             }
         });
 
-        ownerHandoverButton = findViewById(R.id.bOwnerHandover);
-
         backend.getRequesters(actionBook, new UserListCallback() {
             @Override
             public void onCallback(ArrayList<User> users) {
@@ -152,12 +160,9 @@ public class ViewBookActivity extends AppCompatActivity {
         if (requesters.isEmpty() && actionBook.getCurrentBorrowerID() == null) {
             emptyView.setVisibility(View.VISIBLE);
             rvRequests.setVisibility(View.GONE);
-            ownerHandoverButton.setVisibility(View.GONE);
         } else {
             rvRequests.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
-            ownerHandoverButton.setVisibility(View.VISIBLE);
-
         }
 
         ownerHandoverButton.setOnClickListener(new View.OnClickListener() {
