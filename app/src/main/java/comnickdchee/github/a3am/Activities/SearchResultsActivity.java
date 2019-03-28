@@ -104,7 +104,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         searchResults.clear();
         bookSet.clear();
 
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction()) || Intent.ACTION_VIEW.equals(intent.getAction())) {
             // Save the most recent query for later search suggestion
             String query = intent.getStringExtra(SearchManager.QUERY).toLowerCase();
 
@@ -181,7 +181,6 @@ public class SearchResultsActivity extends AppCompatActivity {
             });
 
         }
-
     }
 
     /**
