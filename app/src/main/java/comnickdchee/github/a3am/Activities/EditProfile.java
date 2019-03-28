@@ -157,10 +157,17 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
 
             case R.id.item2:
                 Toast.makeText(this, "Gallery clicked", Toast.LENGTH_SHORT).show();
-                //findImage();
+                findImage();
                 return true;
         }
         return false;
+    }
+
+    private void findImage(){
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(i,"Select Profile Picture"), CHOSEN_IMAGE);
     }
 
     //Check if the user has camera
@@ -212,6 +219,16 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
             Bundle extras = data.getExtras();
             Bitmap photo = (Bitmap) extras.get("data");
             usernameIV.setImageBitmap(photo);
+        }
+
+        if(requestCode == CHOSEN_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null){
+            bookImage = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), bookImage);
+                usernameIV.setImageBitmap(bitmap);
+            } catch (IOException e){
+                e.printStackTrace();
+            }
         }
     }
     ///////////////////////////////////////////////////////////////end
