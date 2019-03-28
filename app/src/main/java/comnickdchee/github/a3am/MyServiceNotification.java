@@ -24,6 +24,7 @@ public class MyServiceNotification extends com.google.firebase.messaging.Firebas
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // ...
         super.onMessageReceived(remoteMessage);
+        Log.d("Data", remoteMessage.getData().toString());
         createNotificationChannel();
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         //Toast.makeText(this, "You've got a notification!", Toast.LENGTH_SHORT).show();
