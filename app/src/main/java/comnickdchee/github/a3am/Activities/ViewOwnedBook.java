@@ -68,71 +68,71 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
         }
 
         Bundle bundle = getIntent().getExtras();
-        key = bundle.getString("key");
+    key = bundle.getString("key");
         Log.d(key, "keyReceivedViewBooks: ");
 
-        //Downloads the data to get it to our initial view.
-        DatabaseReference ref = database.getReference().child("books").child(key);
+    //Downloads the data to get it to our initial view.
+    DatabaseReference ref = database.getReference().child("books").child(key);
 
-        //Downloads the Image and sets it to our image view.
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(key);
+    //Downloads the Image and sets it to our image view.
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(key);
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Log.e("Tuts+", "uri: " + uri.toString());
-                DownloadLink = uri.toString();
-                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(bookImageEditActivity);
-            }
-        });
+        @Override
+        public void onSuccess(Uri uri) {
+            Log.e("Tuts+", "uri: " + uri.toString());
+            DownloadLink = uri.toString();
+            Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(bookImageEditActivity);
+        }
+    });
 
-        //Rig buttons to apply/delete changes.
-        TextView applyChanges = findViewById(R.id.ApplyChangesEditBook);
-        TextView discardChanges = findViewById(R.id.DiscardChangesEditBook);
+    //Rig buttons to apply/delete changes.
+    TextView applyChanges = findViewById(R.id.ApplyChangesEditBook);
+    TextView discardChanges = findViewById(R.id.DiscardChangesEditBook);
 
         applyChanges.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                DatabaseReference databaseReference = firebaseDatabase.getReference("books").child(key);
+        @Override
+        public void onClick(View view) {
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            DatabaseReference databaseReference = firebaseDatabase.getReference("books").child(key);
 
-                String newTitle = titleBookEditActivity.getText().toString();
-                String newAuthor = authorBookEditActivity.getText().toString();
-                String newISBN = bookISBNEditActivity.getText().toString();
+            String newTitle = titleBookEditActivity.getText().toString();
+            String newAuthor = authorBookEditActivity.getText().toString();
+            String newISBN = bookISBNEditActivity.getText().toString();
 
-                databaseReference.child("title").setValue(newTitle);
-                databaseReference.child("author").setValue(newAuthor);
-                databaseReference.child("isbn").setValue(newISBN);
+            databaseReference.child("title").setValue(newTitle);
+            databaseReference.child("author").setValue(newAuthor);
+            databaseReference.child("isbn").setValue(newISBN);
 
-                if(bookImage != null){
-                    FirebaseUser u = mAuth.getCurrentUser();
+            if(bookImage != null){
+                FirebaseUser u = mAuth.getCurrentUser();
 
-                    StorageReference bookImageRef =
-                            FirebaseStorage.getInstance().getReference("BookImages").child(key);
-                    bookImageRef.putFile(bookImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(ViewOwnedBook.this, "Image uploaded", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    Log.d("", "onClick: ");
-                }
-
-                Toast.makeText(ViewOwnedBook.this, "Changes applied to " + newTitle, Toast.LENGTH_LONG).show();
-
-                finish();
-
+                StorageReference bookImageRef =
+                        FirebaseStorage.getInstance().getReference("BookImages").child(key);
+                bookImageRef.putFile(bookImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(ViewOwnedBook.this, "Image uploaded", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Log.d("", "onClick: ");
             }
-        });
+
+            Toast.makeText(ViewOwnedBook.this, "Changes applied to " + newTitle, Toast.LENGTH_LONG).show();
+
+            finish();
+
+        }
+    });
         discardChanges.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(ViewOwnedBook.this, "Changes discarded to book.", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        });
-    }
+        @Override
+        public void onClick(View view) {
+            Toast.makeText(ViewOwnedBook.this, "Changes discarded to book.", Toast.LENGTH_LONG).show();
+            finish();
+        }
+    });
+}
 
 
     public void showPopup(View v) {

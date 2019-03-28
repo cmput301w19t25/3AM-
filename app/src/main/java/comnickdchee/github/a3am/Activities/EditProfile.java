@@ -2,14 +2,20 @@ package comnickdchee.github.a3am.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,12 +35,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class EditProfile extends AppCompatActivity {
+public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     private String uid;
     private String username;
@@ -53,6 +62,8 @@ public class EditProfile extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private AlertDialog.Builder passAuthenticate;
     private FirebaseUser user;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +90,11 @@ public class EditProfile extends AppCompatActivity {
         addressTV = findViewById(R.id.addressEdit);
         saveButton = findViewById(R.id.saveButton);
 
+        //Disable button if the user has no camera
+        if (!hasCamera()) {
+            usernameIV.setEnabled(false);
+        }
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +102,7 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
-        loadImageFromOwnerID(usernameIV,uid);
+        loadImageFromOwnerID(usernameIV, uid);
         usernameTV.setText(username);
         emailTV.setText(email);
         phoneTV.setText(phone);
@@ -97,7 +113,7 @@ public class EditProfile extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (!email.equals(emailTV.getText().toString()) || !phone.equals(phoneTV.getText().toString())
-                        || !address.equals(addressTV.getText().toString()) ) {
+                        || !address.equals(addressTV.getText().toString())) {
                     if (dataValid()) {
                         createInputPrompt();
                         passAuthenticate.show();
@@ -110,7 +126,57 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
+        /////////////
     }
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.photo_menu);
+        popup.show();
+
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.item1:
+                Toast.makeText(this, "Camera clicked", Toast.LENGTH_SHORT).show();
+                launchCamera(findViewById(android.R.id.content));
+                return true;
+
+            case R.id.item2:
+                Toast.makeText(this, "Gallery clicked", Toast.LENGTH_SHORT).show();
+                //findImage();
+                return true;
+        }
+        return false;
+    }
+
+    //Check if the user has camera
+    private boolean hasCamera() {
+        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
+    }
+
+    //launching the camera
+    public void launchCamera(View view) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //launchs camera
+        //Take picture and pass results along to onActivityResult
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            // bookImage = data.getData();
+            Log.d("CAMERA VALUE RETURNED", "onActivityResult: ");
+            //get photo
+            //circleImageView = (CircleImageView) findViewById()
+            Bundle extras = data.getExtras();
+            Bitmap photo = (Bitmap) extras.get("data");
+            usernameIV.setImageBitmap(photo);
+        }
+    }
+    ////////////////////////////
 
     public Boolean dataValid() {
 
