@@ -26,7 +26,7 @@ public class MyServiceNotification extends com.google.firebase.messaging.Firebas
         super.onMessageReceived(remoteMessage);
         createNotificationChannel();
         Log.d(TAG, "From: " + remoteMessage.getFrom());
-        Toast.makeText(this, "You've got a notification!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "You've got a notification!", Toast.LENGTH_SHORT).show();
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Notification")
                 .setContentText("Testing")
