@@ -102,7 +102,7 @@ public class ViewBookActivity extends AppCompatActivity {
         getPageData();
 
         rvRequests = findViewById(R.id.rvViewBookRequests);
-        ownerHandoverButton = findViewById(R.id.bOwnerHandover);
+
         layoutManager = new LinearLayoutManager(this);
         requestersAdapter = new RequestersAdapter(this, requesters, actionBook);
         rvRequests.setLayoutManager(layoutManager);
@@ -112,30 +112,32 @@ public class ViewBookActivity extends AppCompatActivity {
             @Override
             public void onCallback(Exchange exchange) {
                 try {
-                    PickupCoords coords = exchange.getPickupCoords();
-                    if (coords != null) {
-                        Geocoder geocoder;
-                        List<Address> addresses;
-                        geocoder = new Geocoder(ViewBookActivity.this, Locale.getDefault());
+                    if (exchange != null) {
+                        PickupCoords coords = exchange.getPickupCoords();
+                        if (coords != null) {
+                            Geocoder geocoder;
+                            List<Address> addresses;
+                            geocoder = new Geocoder(ViewBookActivity.this, Locale.getDefault());
 
-                        addresses = geocoder.getFromLocation(coords.getLatitude(),
-                                coords.getLongitude(), 1);
+                            addresses = geocoder.getFromLocation(coords.getLatitude(),
+                                    coords.getLongitude(), 1);
 
-                        Address address = addresses.get(0);
-                        ArrayList<String> addressFragments = new ArrayList<String>();
-                        for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
-                            addressFragments.add(address.getAddressLine(i));
+                            Address address = addresses.get(0);
+                            ArrayList<String> addressFragments = new ArrayList<String>();
+                            for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+                                addressFragments.add(address.getAddressLine(i));
+                            }
+
+                            String locationString = TextUtils.join(", ", addressFragments);
+                            locationText.setText(locationString);
                         }
-
-                        String locationString = TextUtils.join(", ", addressFragments);
-                        locationText.setText(locationString);
                     }
                 } catch (IOException e) {
                 }
             }
         });
 
-
+        ownerHandoverButton = findViewById(R.id.bOwnerHandover);
 
         backend.getRequesters(actionBook, new UserListCallback() {
             @Override
@@ -146,12 +148,15 @@ public class ViewBookActivity extends AppCompatActivity {
             }
         });
 
-        if (requesters.isEmpty()) {
+        // TODO: Get this to show the actual borrower
+        if (requesters.isEmpty() && actionBook.getCurrentBorrowerID() == null) {
             emptyView.setVisibility(View.VISIBLE);
             rvRequests.setVisibility(View.GONE);
+            ownerHandoverButton.setVisibility(View.GONE);
         } else {
             rvRequests.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.GONE);
+            ownerHandoverButton.setVisibility(View.VISIBLE);
 
         }
 
