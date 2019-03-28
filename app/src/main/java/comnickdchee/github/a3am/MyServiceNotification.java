@@ -25,12 +25,14 @@ public class MyServiceNotification extends com.google.firebase.messaging.Firebas
         // ...
         super.onMessageReceived(remoteMessage);
         Log.d("Data", remoteMessage.getData().toString());
+        Log.d("Data", remoteMessage.getNotification().getTitle().toString());
+        String message = remoteMessage.getNotification().getBody().toString();
         createNotificationChannel();
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         //Toast.makeText(this, "You've got a notification!", Toast.LENGTH_SHORT).show();
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Notification")
-                .setContentText("Testing")
+                .setContentTitle(remoteMessage.getNotification().getTitle())
+                .setContentText(message)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         Log.d(TAG, "From: " + remoteMessage.getFrom());

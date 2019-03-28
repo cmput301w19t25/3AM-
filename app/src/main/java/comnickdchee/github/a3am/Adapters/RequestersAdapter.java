@@ -16,11 +16,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Models.Book;
@@ -61,7 +65,21 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
             @Override
             public void onClick(View v) {
                 Log.d(requesters.get(i).getUserID(), "IN RECYCLER USER ID: ");
+
+                String receiverkey = requesters.get(i).getUserID().toString();
+                String receivername = requesters.get(i).getUserName();
+                String senderkey = currentBook.getOwnerID();
+
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+                HashMap<String, String> notificationData = new HashMap<>();
+                notificationData.put("from",mAuth.getCurrentUser().getUid());
+                notificationData.put("type","request");
+
+                reference.child("notificationAccepts").child(receiverkey).child(mAuth.getCurrentUser().getDisplayName()).push().setValue(notificationData);
                 backend.acceptRequest(requesters.get(i), currentBook);
+                
             }
         });
 

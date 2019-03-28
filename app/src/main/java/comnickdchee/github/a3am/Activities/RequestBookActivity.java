@@ -137,10 +137,10 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
                     notificationData.put("from",mAuth.getCurrentUser().getUid());
                     notificationData.put("type","request");
 
-                    reference.child("notificationRequests").child(receiverKey).child(mAuth.getUid()).push().setValue(notificationData);
+                    reference.child("notificationRequests").child(receiverKey).child(mAuth.getCurrentUser().getDisplayName()).push().setValue(notificationData);
 
 
-                    finish();
+
 //                    }
 
                     // TODO: UI fix; change the request button to be non-clickable.
