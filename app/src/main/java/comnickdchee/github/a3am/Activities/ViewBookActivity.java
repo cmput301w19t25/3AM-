@@ -33,6 +33,7 @@ import java.util.Locale;
 
 import comnickdchee.github.a3am.Adapters.RequestersAdapter;
 import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Backend.ExchangeCallback;
 import comnickdchee.github.a3am.Backend.UserListCallback;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
@@ -88,13 +89,39 @@ public class ViewBookActivity extends AppCompatActivity {
 
         getPageData();
 
-
         rvRequests = findViewById(R.id.rvViewBookRequests);
         ownerHandoverButton = findViewById(R.id.bOwnerHandover);
         layoutManager = new LinearLayoutManager(this);
         requestersAdapter = new RequestersAdapter(this, requesters, actionBook);
         rvRequests.setLayoutManager(layoutManager);
         rvRequests.setAdapter(requestersAdapter);
+
+        backend.getExchange(actionBook, new ExchangeCallback() {
+            @Override
+            public void onCallback(Exchange exchange) {
+                try {
+                    PickupCoords coords = exchange.getPickupCoords();
+                    Geocoder geocoder;
+                    List<Address> addresses;
+                    geocoder = new Geocoder(ViewBookActivity.this, Locale.getDefault());
+
+                    addresses = geocoder.getFromLocation(coords.getLatitude(), coords.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                    // Fetch the address lines using getAddressLine,
+                    // join them, and send them to the thread.
+
+                    Address address = addresses.get(0);
+                    ArrayList<String> addressFragments = new ArrayList<String>();
+                    for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+                        addressFragments.add(address.getAddressLine(i));
+                    }
+
+                    String locationString = TextUtils.join(", ", addressFragments);
+                    locationText.setText(locationString);
+                } catch (IOException e) {
+                }
+            }
+        });
+
 
 
         backend.getRequesters(actionBook, new UserListCallback() {
@@ -158,7 +185,6 @@ public class ViewBookActivity extends AppCompatActivity {
 
 
             } catch (IOException e) {
-
             }
 
         }
