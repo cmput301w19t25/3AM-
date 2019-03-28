@@ -1,13 +1,17 @@
 package comnickdchee.github.a3am.Activities;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,9 +34,12 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 
 import comnickdchee.github.a3am.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ViewOwnedBook extends AppCompatActivity {
+public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
     private FirebaseAuth mAuth;
+    CircleImageView circleImageView;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     ImageView bookImageEditActivity;
     Uri bookImage;
     String key;
@@ -53,12 +60,13 @@ public class ViewOwnedBook extends AppCompatActivity {
         EditText authorBookEditActivity = findViewById(R.id.bookAuthorOwnedBook);
         EditText bookISBNEditActivity = findViewById(R.id.bookISBNOwnedBook);
         bookImageEditActivity = findViewById(R.id.bookPictureOwnedBook);
-        bookImageEditActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                findImage();
-            }
-        });
+        circleImageView = (CircleImageView) findViewById(R.id.bookPictureOwnedBook);
+
+        //Disable button if the user has no camera
+        if (!hasCamera()) {
+            circleImageView.setEnabled(false);
+        }
+
         Bundle bundle = getIntent().getExtras();
         key = bundle.getString("key");
         Log.d(key, "keyReceivedViewBooks: ");
@@ -107,6 +115,8 @@ public class ViewOwnedBook extends AppCompatActivity {
                             Toast.makeText(ViewOwnedBook.this, "Image uploaded", Toast.LENGTH_SHORT).show();
                         }
                     });
+                } else {
+                    Log.d("", "onClick: ");
                 }
 
                 Toast.makeText(ViewOwnedBook.this, "Changes applied to " + newTitle, Toast.LENGTH_LONG).show();
@@ -125,10 +135,63 @@ public class ViewOwnedBook extends AppCompatActivity {
     }
 
 
-    //Helper functions to deal with images (findImage..)
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.photo_menu);
+        popup.show();
+
+    }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.item1:
+                Toast.makeText(this, "Camera clicked", Toast.LENGTH_SHORT).show();
+                launchCamera(findViewById(android.R.id.content));
+                return true;
+
+            case R.id.item2:
+                Toast.makeText(this, "Gallery clicked", Toast.LENGTH_SHORT).show();
+                findImage();
+                return true;
+        }
+        return false;
+    }
+
+    private void findImage(){
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(i,"Select Profile Picture"), CHOSEN_IMAGE);
+    }
+
+    //Check if the user has camera
+    private boolean hasCamera() {
+        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
+    }
+
+    //launching the camera
+    public void launchCamera(View view) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //launchs camera
+        //Take picture and pass results along to onActivityResult
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    //if you want to return image taken
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK ) {
+            bookImage = data.getData();
+            Log.d("CAMERA VALUE RETURNED", "onActivityResult: ");
+            //get photo
+            //circleImageView = (CircleImageView) findViewById()
+            Bundle extras = data.getExtras();
+            Bitmap photo = (Bitmap) extras.get("data");
+            circleImageView.setImageBitmap(photo);
+        }
 
         if(requestCode == CHOSEN_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null){
             bookImage = data.getData();
@@ -139,13 +202,6 @@ public class ViewOwnedBook extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }
-
-    private void findImage(){
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(i,"Select Profile Picture"), CHOSEN_IMAGE);
     }
 
 
