@@ -100,12 +100,19 @@ public class NewBookActivity extends AppCompatActivity {
 
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Toast.makeText(NewBookActivity.this, "One or mor fields are empty", Toast.LENGTH_LONG).show();
                 // get all the desired inputs from the user
-                String bookTitle = bookTitleText.getText().toString();
-                String bookAuthor = bookAuthorText.getText().toString();
-                String bookISBN = bookISBNText.getText().toString();
-                addBook(bookTitle, bookAuthor, bookISBN);
-                finish();
+                if (isEmpty(bookTitleText) || isEmpty(bookAuthorText) || isEmpty(bookISBNText)) {
+                    Toast.makeText(NewBookActivity.this, "One or mor fields are empty", Toast.LENGTH_LONG).show();
+
+                } else{
+                    String bookTitle = bookTitleText.getText().toString();
+                    String bookAuthor = bookAuthorText.getText().toString();
+                    String bookISBN = bookISBNText.getText().toString();
+                    addBook(bookTitle, bookAuthor, bookISBN);
+                    finish();
+                }
+
             }
         });
 
@@ -344,6 +351,13 @@ public class NewBookActivity extends AppCompatActivity {
 
                //here u ll get whole response...... :-)
         }
+    }
+
+    /**
+     * For checking if required text fields are left blank.
+     */
+    private boolean isEmpty(TextInputEditText tietText) {
+        return (tietText.getText().toString().matches(""));
     }
 }
 

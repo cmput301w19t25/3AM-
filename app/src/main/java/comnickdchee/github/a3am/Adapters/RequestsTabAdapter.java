@@ -3,6 +3,7 @@ package comnickdchee.github.a3am.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
@@ -24,9 +29,12 @@ import comnickdchee.github.a3am.Activities.ViewBookActivity;
 import comnickdchee.github.a3am.Activities.ViewRBookActivity;
 
 import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Backend.UserCallback;
 import comnickdchee.github.a3am.Models.RequestStatusGroup;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
@@ -67,6 +75,7 @@ public class RequestsTabAdapter extends ExpandableRecyclerViewAdapter<RequestsTa
         // This Binds the child items to the holder
         final Book book = (Book) group.getItems().get(childIndex);
         holder.bind(book);
+        loadImageFromOwnerID(holder.ownerIV,book.getOwnerID());
 
         holder.cvUserInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +88,23 @@ public class RequestsTabAdapter extends ExpandableRecyclerViewAdapter<RequestsTa
                 intent.putExtra("acceptedBook",book);
                 mContext.startActivity(intent);
 
+            }
+        });
+
+    }
+
+    public void loadImageFromOwnerID(ImageView load, String uID){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");
+
+        Log.e("Tuts+", storageRef.toString());
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e("Tuts+", "uri: " + uri.toString());
+                String imgUrl = uri.toString();
+
+                Picasso.with(mContext).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
             }
         });
 
@@ -142,15 +168,18 @@ public class RequestsTabAdapter extends ExpandableRecyclerViewAdapter<RequestsTa
 
     // Here is the class for the RequestsViewHolder that this adapter uses
     public static class RequestsViewHolder extends ChildViewHolder {
+        private CircleImageView ownerIV;
         private TextView tvBookTitle;
         private TextView tvISBN;
         private TextView tvAuthor;
         private TextView tvUserRole;
         private TextView tvOwner;
         private CardView cvUserInfo;
+        private Backend backend = Backend.getBackendInstance();
 
         public RequestsViewHolder(View itemView) {
             super(itemView);
+            ownerIV = itemView.findViewById(R.id.ivUserPhoto);
             tvBookTitle = itemView.findViewById(R.id.tvCardBookTitle);
             tvAuthor = itemView.findViewById(R.id.tvAuthor);
             tvISBN = itemView.findViewById(R.id.tvISBN);
@@ -164,7 +193,12 @@ public class RequestsTabAdapter extends ExpandableRecyclerViewAdapter<RequestsTa
             tvAuthor.setText(book.getAuthor());
             tvISBN.setText(book.getISBN());
             tvUserRole.setText("Owner: ");
-//            tvOwner.setText(book.getOwner().getUserName());
+            backend.getUser(book.getOwnerID(), new UserCallback() {
+                @Override
+                public void onCallback(User user) {
+                    tvOwner.setText(user.getUserName());
+                }
+            });
 
         }
     }
