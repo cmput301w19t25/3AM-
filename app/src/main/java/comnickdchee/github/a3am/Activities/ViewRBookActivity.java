@@ -83,6 +83,12 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_grey_default));
 
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(ViewRBookActivity.this);
+        }
+
         Intent intent = getIntent();
         actionBook = intent.getExtras().getParcelable("acceptedBook");
         String ownerID = actionBook.getOwnerID();
@@ -101,20 +107,19 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
             public void onCallback(Exchange exchange) {
                 if (exchange != null) {
                     if (exchange.getType() == ExchangeType.BorrowerReceive) {
-                        receiveButton.setVisibility(View.VISIBLE);
+                        if (exchange.getPickupCoords() != null) {
+                            receiveButton.setVisibility(View.VISIBLE);
+                        }
                     } else {
                         receiveButton.setVisibility(View.GONE);
                     }
+                } else {
+                    receiveButton.setVisibility(View.GONE);
                 }
             }
         });
 
         backButton = findViewById(R.id.backIV);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
-
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(ViewRBookActivity.this);
-        }
 
         receiveButton.setOnClickListener(new View.OnClickListener() {
             @Override

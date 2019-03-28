@@ -141,6 +141,8 @@ public class ViewBookActivity extends AppCompatActivity {
                             String locationString = TextUtils.join(", ", addressFragments);
                             locationText.setText(locationString);
                         }
+                    } else {
+                        ownerHandoverButton.setVisibility(View.GONE);
                     }
                 } catch (IOException e) {
                 }
