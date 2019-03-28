@@ -248,6 +248,13 @@ public class Backend {
         exchangeRef.setValue(exchange);
     }
 
+    public void updateExchange(Book book, Exchange exchange) {
+        String bookID = book.getBookID();
+        DatabaseReference exchangesRef = mFirebaseDatabase.getReference("exchanges");
+        DatabaseReference exchangeRef = exchangesRef.child(bookID);
+        exchangeRef.setValue(exchange);
+    }
+
     /**
      * Accepts a request from the requester on the activity. This method is
      * implemented in the IOwner interface, and has the following logic:
@@ -257,12 +264,15 @@ public class Backend {
      * Firebase.
      */
     public void acceptRequest(User user, Book book) {
+        Log.d(user.getUserID(), "IN BACKEND FIRST: ");
+
         book.getRequests().clear();
         book.setCurrentBorrowerID(user.getUserID());
         book.setStatus(Status.Accepted);
 
         updateExchange(book, ExchangeType.OwnerHandover);
         updateBookData(book);
+        Log.d(user.getUserID(), "IN BACKEND BEFORE BUG CALL: ");
         updateUserData(user);
     }
 
