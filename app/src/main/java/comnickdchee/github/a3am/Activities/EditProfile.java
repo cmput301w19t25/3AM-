@@ -64,6 +64,11 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
     private FirebaseUser user;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    Uri bookImage;
+    String key;
+    String DownloadLink;
+    //String hotfixBookNamesInDrawable;
+    private static final int CHOSEN_IMAGE = 69;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,9 +130,10 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
 
             }
         });
-
-        /////////////
     }
+
+        ////////////////////////////////////////
+
     public void showPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         popup.setOnMenuItemClickListener(this);
@@ -176,7 +182,7 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
             usernameIV.setImageBitmap(photo);
         }
     }
-    ////////////////////////////
+    ///////////////////////////////////////////////////////////////end
 
     public Boolean dataValid() {
 

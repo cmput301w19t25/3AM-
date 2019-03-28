@@ -1,5 +1,6 @@
 package comnickdchee.github.a3am.Activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -7,6 +8,8 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
@@ -33,6 +36,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
+import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -40,6 +44,8 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
     private FirebaseAuth mAuth;
     CircleImageView circleImageView;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int CAMERA_PERMISSION_CODE = 10;
+
     ImageView bookImageEditActivity;
     Uri bookImage;
     String key;
@@ -173,9 +179,36 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
 
     //launching the camera
     public void launchCamera(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //launchs camera
-        //Take picture and pass results along to onActivityResult
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+
+
+        if (ContextCompat.checkSelfPermission(ViewOwnedBook.this,
+                Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            // Here we can write if we need the camera to do anything extra if we already have permission
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //launchs camera
+            //Take picture and pass results along to onActivityResult
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+        }
+        else
+        {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                // Here we can write if we need the camera to do anything extra if we get the permission
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //launchs camera
+                //Take picture and pass results along to onActivityResult
+                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+            } else {
+                Toast.makeText(this,"Permission Denied for Camera",Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+        }
     }
 
     //if you want to return image taken
