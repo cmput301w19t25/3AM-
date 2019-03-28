@@ -26,19 +26,19 @@
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_add_white_24dp" />
 
-    <Button
-        android:id="@+id/filterbtn"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/filterBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/fabAddBookButton"
-        android:layout_alignBottom="@+id/fabAddBookButton"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="-16dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="0dp"
-        android:layout_toStartOf="@+id/fabAddBookButton"
-        android:elevation="10dp"
-        android:layout_toLeftOf="@+id/fabAddBookButton"
-        android:text="Filter" />
+        android:layout_above="@+id/fabAddBookButton"
+        android:layout_alignEnd="@+id/fabAddBookButton"
+        android:layout_alignRight="@+id/fabAddBookButton"
+        android:layout_marginEnd="0dp"
+        android:backgroundTint="@color/lightGray"
+        android:elevation="1dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="16dp"
+        app:borderWidth="0dp"
+        app:srcCompat="@drawable/ic_filter_list_grey_24dp"/>
 
 </RelativeLayout>
