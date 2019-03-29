@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -65,13 +66,21 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
         mAuth = FirebaseAuth.getInstance();
 
         //FIRST WE SET ALL OUR DATA TO THE EDIT BOOK PAGE.
-        TextInputLayout titleBookEditActivity = findViewById(R.id.bookTitleOwnedBook);
-        TextInputLayout authorBookEditActivity = findViewById(R.id.bookAuthorOwnedBook);
-        TextInputLayout bookISBNEditActivity = findViewById(R.id.bookISBNOwnedBook);
+        Intent intent = getIntent();
+        TextInputEditText titleBookEditActivity = findViewById(R.id.newbooktitle);
+        TextInputEditText authorBookEditActivity = findViewById(R.id.bookauthor);
+        TextInputEditText bookISBNEditActivity = findViewById(R.id.bookISBN);
         bookImageEditActivity = findViewById(R.id.bookPictureOwnedBook);
         //circleImageView = (ImageViewCompat) findViewById(R.id.bookPictureOwnedBook);
 
         // sending intents
+        String title = intent.getStringExtra("title");
+        String author = intent.getStringExtra("author");
+        String isbn = intent.getStringExtra("isbn");
+
+        titleBookEditActivity.setText(title);
+        authorBookEditActivity.setText(author);
+        bookISBNEditActivity.setText(isbn);
 
         //Disable button if the user has no camera
         if (!hasCamera()) {
@@ -107,9 +116,9 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             DatabaseReference databaseReference = firebaseDatabase.getReference("books").child(key);
 
-            String newTitle = titleBookEditActivity.getEditText().toString();
-            String newAuthor = authorBookEditActivity.getEditText().toString();
-            String newISBN = bookISBNEditActivity.getEditText().toString();
+            String newTitle = titleBookEditActivity.getText().toString();
+            String newAuthor = authorBookEditActivity.getText().toString();
+            String newISBN = bookISBNEditActivity.getText().toString();
 
             databaseReference.child("title").setValue(newTitle);
             databaseReference.child("author").setValue(newAuthor);

@@ -81,7 +81,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="55dp"
         android:layout_marginEnd="8dp"
-        app:hintEnabled="true"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bookPictureOwnedBook">
@@ -90,7 +90,6 @@
             android:id="@+id/newbooktitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title of the book"
             android:inputType="text"
             android:singleLine="true"
             android:textColor="@android:color/darker_gray" />
@@ -104,16 +103,15 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        app:hintEnabled="true"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bookTitleOwnedBook">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/tietBookTitle"
+            android:id="@+id/bookauthor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Author of the book"
             android:inputType="text"
             android:singleLine="true"
             android:textColor="@android:color/darker_gray" />
@@ -126,7 +124,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        app:hintEnabled="true"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bookAuthorOwnedBook">
@@ -135,7 +133,6 @@
             android:id="@+id/bookISBN"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="ISBN of the book"
             android:inputType="text"
             android:singleLine="true"
             android:textColor="@android:color/darker_gray" />
