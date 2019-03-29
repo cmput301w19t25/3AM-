@@ -100,7 +100,7 @@ public class NewBookActivity extends AppCompatActivity {
 
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Toast.makeText(NewBookActivity.this, "One or mor fields are empty", Toast.LENGTH_LONG).show();
+                //Toast.makeText(NewBookActivity.this, "One or mor fields are empty", Toast.LENGTH_LONG).show();
                 // get all the desired inputs from the user
                 if (isEmpty(bookTitleText) || isEmpty(bookAuthorText) || isEmpty(bookISBNText)) {
                     Toast.makeText(NewBookActivity.this, "One or mor fields are empty", Toast.LENGTH_LONG).show();
@@ -181,6 +181,13 @@ public class NewBookActivity extends AppCompatActivity {
             String userKey = mAuth.getCurrentUser().getUid();
             Book newBook = new Book(ISBN, title, author, userKey);
             backend.addBook(newBook);
+            if(bookImage!= null){
+                FirebaseUser u = mAuth.getCurrentUser();
+
+                StorageReference bookImageRef =
+                        FirebaseStorage.getInstance().getReference("BookImages").child(newBook.getBookID());
+                bookImageRef.putFile(bookImage);
+            }
         }
     }
 

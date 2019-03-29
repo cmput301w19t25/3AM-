@@ -67,6 +67,8 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
     private TabLayout navTabLayout;
     private DrawerLayout drawer;
     private FirebaseAuth mAuth;
+    boolean initialCall = true;
+
     private FirebaseDatabase Fd;
     private DatabaseReference mDataRef;
     private ActionBarDrawerToggle toggle;
@@ -90,6 +92,8 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         navToolbar = findViewById(R.id.navToolbar);
         setSupportActionBar(navToolbar);
 
+
+        //Check for notifications..
 
 
 
