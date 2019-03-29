@@ -20,11 +20,13 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Backend.ExchangeCallback;
 import comnickdchee.github.a3am.Backend.UserCallback;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Fragments.HomeFragment;
 import comnickdchee.github.a3am.Fragments.MessageFragment;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.Exchange;
 import comnickdchee.github.a3am.Models.ExchangeType;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
@@ -55,11 +57,27 @@ public class OwnerProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         actionBook = intent.getExtras().getParcelable("passedBook");
         String ownerID = actionBook.getOwnerID();
+
         backend.getUser(ownerID, new UserCallback() {
             @Override
             public void onCallback(User user) {
                 owner = user;
                 getPageData();
+            }
+        });
+
+        backend.getExchange(actionBook, new ExchangeCallback() {
+            @Override
+            public void onCallback(Exchange exchange) {
+                if (exchange != null) {
+                    if (exchange.getType() == ExchangeType.BorrowerHandover) {
+                        transactionButton.setVisibility(View.VISIBLE);
+                    } else {
+                        transactionButton.setVisibility(View.GONE);
+                    }
+                } else {
+                    transactionButton.setVisibility(View.GONE);
+                }
             }
         });
 

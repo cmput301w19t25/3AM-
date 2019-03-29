@@ -70,12 +70,11 @@ public class BorrowedProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         actionBook = intent.getExtras().getParcelable("passedBook");
-        String ownerID = actionBook.getOwnerID();
-        backend.getUser(ownerID, new UserCallback() {
+        String borrowerID = actionBook.getCurrentBorrowerID();
+        backend.getUser(borrowerID, new UserCallback() {
             @Override
             public void onCallback(User user) {
                 borrower = user;
-
                 getPageData();
             }
         });
@@ -84,7 +83,7 @@ public class BorrowedProfileActivity extends AppCompatActivity {
             @Override
             public void onCallback(Exchange exchange) {
                 if (exchange != null) {
-                    if (exchange.getType() == ExchangeType.BorrowerHandover) {
+                    if (exchange.getType() == ExchangeType.OwnerReceive) {
                         transactionButton.setVisibility(View.VISIBLE);
                     } else {
                         transactionButton.setVisibility(View.GONE);
