@@ -12,32 +12,40 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/bookDetailsLayout"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+        android:paddingBottom="20dp"
         >
 
         <ImageView
             android:id="@+id/bookImageRequestBook"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
             android:src="@drawable/ic_profile"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.3" />
 
         <TextView
             android:id="@+id/bookTitleTv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:maxLines="10"
             android:text="Sample Book Title"
             android:textColor="@color/white"
             android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/bookImageRequestBook"
             app:layout_constraintTop_toTopOf="@+id/bookImageRequestBook" />
 
@@ -50,16 +58,20 @@
             android:textColor="@color/white"
 
             app:layout_constraintStart_toEndOf="@+id/bookImageRequestBook"
-            app:layout_constraintTop_toBottomOf="@+id/bookTitleTv" />
+            app:layout_constraintTop_toBottomOf="@+id/bookTitleTv"
+            android:layout_marginLeft="8dp" />
 
         <TextView
             android:id="@+id/authorTv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+
             android:text="Sample Author"
             android:textColor="@color/white"
-
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/authorLabelTv"
             app:layout_constraintTop_toBottomOf="@+id/bookTitleTv" />
 
@@ -69,22 +81,25 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="ISBN: "
-            android:textColor="@color/white"
 
+            android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@+id/bookImageRequestBook"
-            app:layout_constraintTop_toBottomOf="@+id/authorLabelTv" />
+            app:layout_constraintTop_toTopOf="@+id/ISBNTv"
+            android:layout_marginLeft="8dp" />
 
         <TextView
             android:id="@+id/ISBNTv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+
             android:text="X-XXXXX-XXXXX"
             android:textColor="@color/white"
-
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ISBNLabelTv"
-            app:layout_constraintTop_toBottomOf="@+id/authorLabelTv"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/authorTv" />
 
         <TextView
             android:id="@+id/statusLabelTv"
@@ -95,7 +110,8 @@
             android:textColor="@color/white"
 
             app:layout_constraintStart_toEndOf="@+id/bookImageRequestBook"
-            app:layout_constraintTop_toBottomOf="@+id/ISBNLabelTv" />
+            app:layout_constraintTop_toBottomOf="@+id/ISBNTv"
+            android:layout_marginLeft="8dp" />
 
         <TextView
             android:id="@+id/statusTv"
@@ -106,15 +122,22 @@
             android:textColor="@color/white"
 
             app:layout_constraintStart_toEndOf="@+id/statusLabelTv"
-            app:layout_constraintTop_toBottomOf="@+id/ISBNLabelTv"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/ISBNTv"
+            android:layout_marginLeft="8dp" />
 
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.constraint.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/bookDetailsLayout"
+        android:layout_below="@id/bookDetailsLayout">
+
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
         >
 
         <Button
@@ -139,13 +162,14 @@
             android:id="@+id/ownedByLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="176dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:text="Owner"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -201,4 +225,6 @@
             app:layout_constraintTop_toBottomOf="@+id/ownerNameRequestBook" />
 
     </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
 </RelativeLayout>

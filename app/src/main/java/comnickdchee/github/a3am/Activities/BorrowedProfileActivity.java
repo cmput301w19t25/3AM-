@@ -51,9 +51,6 @@ public class BorrowedProfileActivity extends AppCompatActivity {
     private Context mContext;
     private Backend backend = Backend.getBackendInstance();
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -113,6 +110,7 @@ public class BorrowedProfileActivity extends AppCompatActivity {
 
     }
 
+    /** Result to check if the ISBN scanned was successful. */
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
         Log.d("ACTIVITY RESULT", "onActivityResult: CALLED");
@@ -121,17 +119,25 @@ public class BorrowedProfileActivity extends AppCompatActivity {
             String isbn = data.getStringExtra("isbn");
             Log.d("ISBN Retrieved", isbn);
 
-            //TODO: DELETE EXCHANGE
             String bookISBN = actionBook.getISBN();
 
+            // Signifies that the transaction is complete. So, we update
+            // the data in Firebase as if no transaction ever happened
             if (isbn.equals(bookISBN)) {
                 actionBook.setStatus(Status.Available);
                 backend.updateBookData(actionBook);
                 backend.deleteExchange(actionBook);
-                Log.d("DELETED EXCHANGE", "onActivityResult: ");
+
+                // Added: Borrower's requested books is updated with
+                // the current book removed from his list
+                borrower.getRequestedBooks().remove(actionBook.getBookID());
+                backend.updateUserData(borrower);
+
+                // Finish the activity
                 finish();
+
             } else {
-                Toast.makeText(this, "ISBN Not Matched with book", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "ISBN not matched with book", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -147,15 +153,11 @@ public class BorrowedProfileActivity extends AppCompatActivity {
         TextView bookAuthor = findViewById(R.id.authorNameTV);
         TextView bookISBN = findViewById(R.id.ISBNTv);
 
-        Log.d(borrower.getUserName(), "onCallback: Borrower");
-
         loadImageFromOwnerID(userPhoto,borrower.getUserID());
         loadImageFromBookID(bookImage, actionBook.getBookID());
         username.setText(borrower.getUserName());
         phone.setText(borrower.getPhoneNumber());
         email.setText(borrower.getEmail());
-        ///TODO: rating.setText(borrower.getRating());
-        Log.d(actionBook.getISBN(), "getPageData: ");
         bookTitle.setText(actionBook.getTitle());
         bookAuthor.setText(actionBook.getAuthor());
         bookISBN.setText(actionBook.getISBN());
