@@ -71,6 +71,8 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
         bookImageEditActivity = findViewById(R.id.bookPictureOwnedBook);
         //circleImageView = (ImageViewCompat) findViewById(R.id.bookPictureOwnedBook);
 
+        // sending intents
+
         //Disable button if the user has no camera
         if (!hasCamera()) {
             bookImageEditActivity.setEnabled(false);
