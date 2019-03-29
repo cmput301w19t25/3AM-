@@ -151,8 +151,19 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
             void clickEdit() {
                 // create intents here and start new activity
 
-             Intent intent = new Intent(mContext, ViewOwnedBook.class);
-             mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, ViewOwnedBook.class);
+                String bookID = mBooks.get(i).getBookID();
+                String BookTitle = mBooks.get(i).getTitle();
+                String author = mBooks.get(i).getAuthor();
+                String ISBN = mBooks.get(i).getISBN();
+
+                Log.d(bookID, "keyFromRecycler: ");
+                intent.putExtra("key", bookID);
+                intent.putExtra("title", BookTitle);
+                intent.putExtra("author", author);
+                intent.putExtra("isbn", ISBN);
+
+                mContext.startActivity(intent);
             }
 
 
