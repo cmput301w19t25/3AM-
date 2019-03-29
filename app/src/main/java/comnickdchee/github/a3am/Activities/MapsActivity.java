@@ -167,7 +167,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
-                            if (task.getResult() != null) {
+
+                          if (task.getResult() != null) {
+
                                 Location currentLocation = (Location) task.getResult();
                                 goToLocationZoom(currentLocation.getLatitude(), currentLocation.getLongitude(), 15f);
                             }
