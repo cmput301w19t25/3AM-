@@ -59,7 +59,7 @@ public class MyBooksFragment extends Fragment {
     private FirebaseAuth mAuth;
 
     ///new filter button added
-    private Button filter;
+    private FloatingActionButton filter;
     //list for filtering
     private ArrayList<Book> orderedList;
 
@@ -95,7 +95,7 @@ public class MyBooksFragment extends Fragment {
         //Pop up menu for book filtering
         //code for filtering application
         orderedList = new ArrayList<>();
-        filter = view.findViewById(R.id.filterbtn);
+        filter = view.findViewById(R.id.filterBtn);
         filter.setSoundEffectsEnabled(false);
         filter.setOnClickListener(new View.OnClickListener() {
             @Override

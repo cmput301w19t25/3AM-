@@ -42,9 +42,9 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
     @Override
     public SearchRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
 
-        // Creates a view based on the mybooks_card.xml
+        // Creates a view based on the search_books_card.xml
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mybooks_card,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_books_card,parent,false);
         SearchRecyclerAdapter.ViewHolder holder  = new SearchRecyclerAdapter.ViewHolder(view);
         return holder;
     }

@@ -7,44 +7,10 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/filterToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/AppTheme.NoActionBar">
-
-
-        <RelativeLayout
-            android:id="@+id/relative1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary">
-
-            <Button
-                android:id="@+id/filterbtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="290dp"
-                android:layout_marginBottom="0dp"
-                android:background="@color/colorPrimary"
-                android:elevation="10dp"
-                android:onClick="showPopup"
-                android:text="FILTER"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="17sp" />
-        </RelativeLayout>
-    </android.support.v7.widget.Toolbar>
-
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/filterToolbar"/>
+        android:layout_height="match_parent" />
 
 
     <android.support.design.widget.FloatingActionButton
@@ -52,12 +18,29 @@
         android:layout_width="123dp"
         android:layout_height="76dp"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
         app:backgroundTint="@color/colorAccent"
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_add_white_24dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/filterBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fabAddBookButton"
+        android:layout_alignEnd="@+id/fabAddBookButton"
+        android:layout_alignRight="@+id/fabAddBookButton"
+        android:layout_marginEnd="0dp"
+        android:backgroundTint="@color/lightGray"
+        android:elevation="1dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="16dp"
+        app:borderWidth="0dp"
+        app:srcCompat="@drawable/ic_filter_list_grey_24dp"/>
 
 </RelativeLayout>

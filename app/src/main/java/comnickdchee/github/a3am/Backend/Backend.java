@@ -256,6 +256,26 @@ public class Backend {
     }
 
     /**
+     * Synchronous method that takes in the book
+     * and uses the book id to retain the exchange information.
+     */
+    public void getExchange(Book book, final ExchangeCallback exchangeCallback) {
+        DatabaseReference exchangesRef = mFirebaseDatabase.getReference("exchanges").child(book.getBookID());
+        exchangesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Exchange exchange = dataSnapshot.getValue(Exchange.class);
+                exchangeCallback.onCallback(exchange);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
      * Accepts a request from the requester on the activity. This method is
      * implemented in the IOwner interface, and has the following logic:
      * The book gets its requesters list cleared, and the current borrower

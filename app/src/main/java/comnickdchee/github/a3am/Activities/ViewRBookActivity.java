@@ -1,8 +1,12 @@
 package comnickdchee.github.a3am.Activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,8 +20,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -26,10 +42,13 @@ import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.RequestersAdapter;
 import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Backend.ExchangeCallback;
 import comnickdchee.github.a3am.Backend.UserCallback;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.Exchange;
 import comnickdchee.github.a3am.Models.ExchangeType;
+import comnickdchee.github.a3am.Models.PickupCoords;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
@@ -40,7 +59,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * requests on a given book that they own. The user can accept
  * and decline requests.
  */
-public class ViewRBookActivity extends AppCompatActivity {
+public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final int ISBN_READ = 42;
     private RecyclerView rvRequests;
@@ -49,6 +68,9 @@ public class ViewRBookActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private Button receiveButton;
     private ImageView backButton;
+    private GoogleMap mGoogleMap;
+    private Marker marker;
+
     private Book actionBook = new Book();
     private User owner = new User();
     private Backend backend = Backend.getBackendInstance();
@@ -59,7 +81,13 @@ public class ViewRBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_r_books);
 
         Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_grey_default));
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(ViewRBookActivity.this);
+        }
 
         Intent intent = getIntent();
         actionBook = intent.getExtras().getParcelable("acceptedBook");
@@ -72,8 +100,26 @@ public class ViewRBookActivity extends AppCompatActivity {
             }
         });
 
-        backButton = findViewById(R.id.backIV);
         receiveButton = findViewById(R.id.receiveBookButton);
+
+        backend.getExchange(actionBook, new ExchangeCallback() {
+            @Override
+            public void onCallback(Exchange exchange) {
+                if (exchange != null) {
+                    if (exchange.getType() == ExchangeType.BorrowerReceive) {
+                        if (exchange.getPickupCoords() != null) {
+                            receiveButton.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        receiveButton.setVisibility(View.GONE);
+                    }
+                } else {
+                    receiveButton.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        backButton = findViewById(R.id.backIV);
 
         receiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,29 +135,6 @@ public class ViewRBookActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-     /*   //button click for owner to specify pick up location
-        button2 = (Button) findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(ViewRBookActivity.this, MapsActivity.class);
-                ViewRBookActivity.this.startActivity(myIntent);
-            }
-        });*/
-
-
-
-
-        /*rvRequests = findViewById(R.id.rvViewBookRequests);
-        layoutManager = new LinearLayoutManager(this);
-        requesters = new ArrayList<String>();
-        requesters.add("Zaheen Rahman");
-        requesters.add("Ismaeel Bin Mohiuddin");
-        requestersAdapter = new RequestersAdapter(this, requesters);
-        rvRequests.setLayoutManager(layoutManager);
-        rvRequests.setAdapter(requestersAdapter);*/
 
     }
 
@@ -191,6 +214,47 @@ public class ViewRBookActivity extends AppCompatActivity {
                 Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
             }
         });
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
+        Log.d("GET PICKUP COORDS", "onMapReady: ");
+        getPickupCoords();
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+    }
+
+    public void getPickupCoords() {
+        if (actionBook != null) {
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            DatabaseReference exchangeRef = firebaseDatabase.getReference("exchanges").child(actionBook.getBookID());
+            exchangeRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Exchange exchange = dataSnapshot.getValue(Exchange.class);
+
+                    if (exchange != null) {
+                        PickupCoords pickupCoords = exchange.getPickupCoords();
+                        if (pickupCoords != null) {
+                            LatLng latLng = new LatLng(pickupCoords.getLatitude(), pickupCoords.getLongitude());
+                            MarkerOptions markerOptions = new MarkerOptions()
+                                    .position(latLng);
+                            marker = mGoogleMap.addMarker(markerOptions);
+                            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
 
     }
 }

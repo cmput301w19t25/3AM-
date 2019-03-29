@@ -1,7 +1,9 @@
 package comnickdchee.github.a3am.Activities;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
@@ -10,10 +12,13 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -51,7 +56,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class NewBookActivity extends AppCompatActivity {
+public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
     ProgressDialog pd;
     private static final int CHOSEN_IMAGE = 69;
     private static final int ISBN_READ = 42;
@@ -70,6 +75,9 @@ public class NewBookActivity extends AppCompatActivity {
     private FloatingActionButton cameraButton;
 
     private ProgressBar mProgressbar;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int CAMERA_PERMISSION_CODE = 10;
 
     // Firebase references to use for saving to database
     private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -100,15 +108,23 @@ public class NewBookActivity extends AppCompatActivity {
 
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                //Toast.makeText(NewBookActivity.this, "One or mor fields are empty", Toast.LENGTH_LONG).show();
                 // get all the desired inputs from the user
-                String bookTitle = bookTitleText.getText().toString();
-                String bookAuthor = bookAuthorText.getText().toString();
-                String bookISBN = bookISBNText.getText().toString();
-                addBook(bookTitle, bookAuthor, bookISBN);
-                finish();
+                if (isEmpty(bookTitleText) || isEmpty(bookAuthorText) || isEmpty(bookISBNText)) {
+                    Toast.makeText(NewBookActivity.this, "One or mor fields are empty", Toast.LENGTH_LONG).show();
+
+                } else{
+                    String bookTitle = bookTitleText.getText().toString();
+                    String bookAuthor = bookAuthorText.getText().toString();
+                    String bookISBN = bookISBNText.getText().toString();
+                    addBook(bookTitle, bookAuthor, bookISBN);
+                    finish();
+                }
+
             }
         });
 
+        //set onclick listener on camera button
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,15 +138,78 @@ public class NewBookActivity extends AppCompatActivity {
             }
         });
 
-        img.setOnClickListener(new View.OnClickListener() {
+        /*img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 findImage();
             }
-        });
+        });*/
 
 
     }
+
+    //shows pop up
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.photo_menu);
+        popup.show();
+
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.item1:
+                Toast.makeText(this, "Camera clicked", Toast.LENGTH_SHORT).show();
+                launchCamera(findViewById(android.R.id.content));
+                return true;
+
+            case R.id.item2:
+                Toast.makeText(this, "Gallery clicked", Toast.LENGTH_SHORT).show();
+                findImage();
+                return true;
+        }
+        return false;
+    }
+
+    //Check if the user has camera
+    private boolean hasCamera() {
+        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
+    }
+
+    //launching the camera
+    public void launchCamera(View view) {
+        if (ContextCompat.checkSelfPermission(NewBookActivity.this,
+                Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            // Here we can write if we need the camera to do anything extra if we already have permission
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //launchs camera
+            //Take picture and pass results along to onActivityResult
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+        }
+        else
+        {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                // Here we can write if we need the camera to do anything extra if we get the permission
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //launchs camera
+                //Take picture and pass results along to onActivityResult
+                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+            } else {
+                Toast.makeText(this,"Permission Denied for Camera",Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -159,6 +238,16 @@ public class NewBookActivity extends AppCompatActivity {
             }
             bookISBNText.setText(isbn);
         }
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK ) {
+            bookImage = data.getData();
+            Log.d("CAMERA VALUE RETURNED", "onActivityResult: ");
+            //get photo
+            //circleImageView = (CircleImageView) findViewById()
+            Bundle extras = data.getExtras();
+            Bitmap photo = (Bitmap) extras.get("data");
+            img.setImageBitmap(photo);
+        }
     }
 
     private void findImage(){
@@ -174,6 +263,13 @@ public class NewBookActivity extends AppCompatActivity {
             String userKey = mAuth.getCurrentUser().getUid();
             Book newBook = new Book(ISBN, title, author, userKey);
             backend.addBook(newBook);
+            if(bookImage!= null){
+                FirebaseUser u = mAuth.getCurrentUser();
+
+                StorageReference bookImageRef =
+                        FirebaseStorage.getInstance().getReference("BookImages").child(newBook.getBookID());
+                bookImageRef.putFile(bookImage);
+            }
         }
     }
 
@@ -344,6 +440,13 @@ public class NewBookActivity extends AppCompatActivity {
 
                //here u ll get whole response...... :-)
         }
+    }
+
+    /**
+     * For checking if required text fields are left blank.
+     */
+    private boolean isEmpty(TextInputEditText tietText) {
+        return (tietText.getText().toString().matches(""));
     }
 }
 

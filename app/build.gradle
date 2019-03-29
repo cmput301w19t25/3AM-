@@ -3,6 +3,8 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
+
+
     defaultConfig {
         applicationId "comnickdchee.github.a3am"
         minSdkVersion 16
