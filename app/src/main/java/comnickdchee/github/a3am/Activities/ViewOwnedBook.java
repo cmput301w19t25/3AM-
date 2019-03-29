@@ -132,6 +132,7 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
             if(bookImage != null){
                 FirebaseUser u = mAuth.getCurrentUser();
 
+
                 StorageReference bookImageRef =
                         FirebaseStorage.getInstance().getReference("BookImages").child(key);
                 bookImageRef.putFile(bookImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

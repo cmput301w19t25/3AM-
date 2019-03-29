@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -174,32 +175,56 @@ public class MyBooksFragment extends Fragment {
             }
         });
 
-        ref.addValueEventListener(new ValueEventListener() {
+        DatabaseReference bookRef = database.getReference().child("books");
+
+        bookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                dataSnapshot.getKey();
 
-                if (dataSnapshot.hasChildren()){
-                    Log.d("DATABASE HAS CHILDREN", "onDataChange: ");
-                } else{
-                    Log.d("DATABASE NO CHILDREN", "onDataChange: ");
-                    BookList.clear();
+                String user = FirebaseAuth.getInstance().getUid();
+
+                for (DataSnapshot child : dataSnapshot.getChildren()){
+                    Book book = child.getValue(Book.class);
+                    if (book != null){
+                        if (book.getOwnerID().equals(user)) {
+                            findBook(book.getBookID());
+                        }
+                    }
                 }
-
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Log.d("TestData", child.getValue().toString());
-                    String key = child.getValue().toString();
-                    findBook(key);
-                }
-                adapter.notifyDataSetChanged();
-
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
+
+//        ref.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                dataSnapshot.getKey();
+//
+//                if (dataSnapshot.hasChildren()){
+//                    Log.d("DATABASE HAS CHILDREN", "onDataChange: ");
+//                } else{
+//                    Log.d("DATABASE NO CHILDREN", "onDataChange: ");
+//                    BookList.clear();
+//                }
+//
+//                for (DataSnapshot child : dataSnapshot.getChildren()) {
+//                    Log.d("TestData", child.getValue().toString());
+//                    String key = child.getValue().toString();
+//                    findBook(key);
+//                }
+//                adapter.notifyDataSetChanged();
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
         //Gets the user's profile picture
 
 
