@@ -148,6 +148,7 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
 
     }
 
+    //shows pop up
     public void showPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         popup.setOnMenuItemClickListener(this);
