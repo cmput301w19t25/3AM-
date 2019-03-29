@@ -166,16 +166,11 @@ public class MyBooksFragment extends Fragment {
                                 return true;
 
                             case R.id.item6:
-
                                 orderedList.addAll(BookList);
-                                
                                 recyclerView.setAdapter(updatedAdapter);
                                 updatedAdapter.notifyDataSetChanged();
 
                                 return true;
-
-
-
 
                             default:
                                 return false;
