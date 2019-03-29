@@ -64,6 +64,7 @@ public class ViewBookActivity extends AppCompatActivity {
     private Button ownerHandoverButton;
     private Button editLocationButton;
     private Backend backend = Backend.getBackendInstance();
+    private Exchange exchange = new Exchange(ExchangeType.OwnerHandover);
     private Book actionBook;
 
     @Override
@@ -187,7 +188,8 @@ public class ViewBookActivity extends AppCompatActivity {
             String bookISBN = actionBook.getISBN();
 
             if (isbn.equals(bookISBN)) {
-                backend.updateExchange(actionBook, ExchangeType.BorrowerReceive);
+                exchange.setType(ExchangeType.BorrowerReceive);
+                backend.updateExchange(actionBook, exchange);
                 finish();
             } else {
                 Toast.makeText(this, "ISBN Not Matched with book", Toast.LENGTH_SHORT).show();
@@ -195,7 +197,7 @@ public class ViewBookActivity extends AppCompatActivity {
 
         } else if (requestCode == LOCATION_CODE && resultCode == RESULT_OK && data != null) {
             LatLng coords = (LatLng) data.getExtras().getParcelable("Location");
-            Exchange exchange = new Exchange(new PickupCoords(coords.latitude, coords.longitude), ExchangeType.OwnerHandover);
+            exchange.setPickupCoords(new PickupCoords(coords.latitude, coords.longitude));
             backend.updateExchange(actionBook, exchange);
 
             try {
