@@ -1,6 +1,9 @@
 package comnickdchee.github.a3am.Activities;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import comnickdchee.github.a3am.Backend.Backend;
@@ -38,7 +42,7 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
     TextView tvBookTitle;
     TextView tvISBN;
     TextView tvStatus;
-    TextView bRequestButton;
+    Button bRequestButton;
     TextView ownerName;
     Button messageOwner;
     String DownloadLink;
@@ -65,6 +69,16 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         ownerImage = findViewById(R.id.userImageSeeOwnerProfile);
         ownerName = findViewById(R.id.ownerNameRequestBook);
 
+        // Init button to be disabled
+        bRequestButton.setEnabled(false);
+        bRequestButton.setText("Requested");
+        Resources res = getResources();
+        Drawable color = res.getDrawable(R.drawable.disabled_button);
+        bRequestButton.setBackground(color);
+
+        String userID = backend.getCurrentUser().getUserID();
+
+
         // TODO: Make this error free.
         Intent intent = getIntent();
         book = (Book) intent.getExtras().getParcelable("SearchBook");
@@ -73,6 +87,17 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         tvBookTitle.setText(book.getTitle());
         tvISBN.setText(book.getISBN());
         tvStatus.setText(book.getStatus().toString());
+        ArrayList<String> requesterList = book.getRequests();
+
+        // Add button back if user has not requested the book before
+        if (!requesterList.contains(userID)) {
+            bRequestButton.setEnabled(true);
+            bRequestButton.setText("Request");
+            res = getResources();
+            color = res.getDrawable(R.drawable.signup_custom);
+            bRequestButton.setBackground(color);
+        }
+
 
 
         Log.d(book.getBookID(), "onCreate: BookID");
@@ -127,6 +152,14 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
 //                    if (!book.getRequests().contains(mAuth.getCurrentUser().getUid())) {
 //                        book.addRequest(mAuth.getCurrentUser().getUid());
 //                        updateRequests(book);
+
+                    // Disables the button since to stop multiple requests
+                    bRequestButton.setEnabled(false);
+                    bRequestButton.setText("Requested");
+                    Resources res = getResources();
+                    Drawable color = res.getDrawable(R.drawable.disabled_button);
+                    bRequestButton.setBackground(color);
+
                     String receiverKey = book.getOwnerID();
                     String senderKey = mAuth.getUid();
                     backend.updateRequests(book);
