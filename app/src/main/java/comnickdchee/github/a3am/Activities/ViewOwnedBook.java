@@ -67,8 +67,10 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
 
         //FIRST WE SET ALL OUR DATA TO THE EDIT BOOK PAGE.
         Intent intent = getIntent();
-        TextView Activitytitle = findViewById(R.id.tvTitle);
-        Activitytitle.setText("Edit Book");
+
+        // Changing view based on activity
+        TextView ActivityTitle = findViewById(R.id.tvTitle);
+        ActivityTitle.setText("Edit Book");
 
         TextInputEditText titleBookEditActivity = findViewById(R.id.tietBookTitle);
         TextInputEditText authorBookEditActivity = findViewById(R.id.tietAuthor);
