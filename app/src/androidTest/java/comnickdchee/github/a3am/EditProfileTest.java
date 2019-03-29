@@ -75,6 +75,7 @@ public class EditProfileTest {
 
     @After
     public void tearDown() throws Exception {
+        myActivity = null;
     }
 
 }
