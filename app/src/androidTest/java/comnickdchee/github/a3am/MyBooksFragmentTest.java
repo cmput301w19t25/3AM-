@@ -34,7 +34,6 @@ public class MyBooksFragmentTest  {
 
     @Before
     public void setUp() throws Exception {
-        //mActivity = mActivityTestRule.getActivity();
         solo = new Solo(getInstrumentation(), mActivityTestRule.getActivity());
 
 
