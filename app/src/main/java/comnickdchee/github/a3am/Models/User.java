@@ -21,6 +21,15 @@ public class User implements IOwner, IBorrower {
     private ArrayList<Exchange> exchanges;  // list of exchanges involving the user
     private Rating rating;                  // wow feature: user rating
     private String userID;
+    private String device_token;
+
+    public String getDevice_token() {
+        return device_token;
+    }
+
+    public void setDevice_token(String device_token) {
+        this.device_token = device_token;
+    }
 
     /** Ctor */
     public User(String userName, String email, String address,

@@ -37,9 +37,9 @@
             app:layout_constraintTop_toTopOf="@+id/ivRequesterPhoto" />
 
         <LinearLayout
-            android:id="@+id/llBookDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:id="@+id/llBookDescription1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toEndOf="@+id/ivRequesterPhoto"
@@ -63,21 +63,24 @@
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="10sp" />
 
-            <TextView
-                android:id="@+id/tvDivider"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text=" | "
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:textSize="10sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llBookDescription2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/llBookDescription1"
+            card_view:layout_constraintStart_toEndOf="@+id/ivRequesterPhoto">
 
             <TextView
                 android:id="@+id/tvISBNTag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="ISBN:"
+                android:text="ISBN: "
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="10sp" />
 
@@ -90,7 +93,6 @@
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="10sp" />
         </LinearLayout>
-
         <LinearLayout
             android:id="@+id/llRequestsField"
             android:layout_width="wrap_content"
@@ -98,7 +100,7 @@
             android:layout_marginStart="8dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toEndOf="@+id/ivRequesterPhoto"
-            app:layout_constraintTop_toBottomOf="@+id/llBookDescription">
+            app:layout_constraintTop_toBottomOf="@+id/llBookDescription2">
 
             <TextView
                 android:id="@+id/tvStatusLabel"

@@ -23,6 +23,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="3AM!"
@@ -32,10 +33,10 @@
         android:windowSoftInputMode="adjustPan">
         <activity android:name=".Activities.EditProfile"></activity>
 
-        <service
-            android:name=".MyServiceNotification"
-            android:enabled="true"
-            android:exported="true" />
+        <service android:name=".MyServiceNotification"><intent-filter>
+            <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+        </intent-filter>
+        </service>
 
         <activity
             android:name=".Activities.messageActivity"
@@ -102,12 +103,12 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-
-        <service android:name="com.google.firebase.messaging.FirebaseMessagingService">
+        <service android:name=".MyServiceNotification">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
     </application>
 
 </manifest>

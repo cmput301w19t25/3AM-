@@ -14,7 +14,7 @@ public class Exchange {
     private String pickup;
     private Date date;
     private ExchangeType type;
-    private LatLng pickupCoords;
+    private PickupCoords pickupCoords;
 
     public Exchange() {}
 
@@ -22,7 +22,7 @@ public class Exchange {
         this.type = type;
     }
 
-    public Exchange(LatLng pickupCoords, ExchangeType type) {
+    public Exchange(PickupCoords pickupCoords, ExchangeType type) {
         this.pickupCoords = pickupCoords;
         this.type = type;
     }
@@ -96,11 +96,11 @@ public class Exchange {
         this.type = type;
     }
 
-    public LatLng getPickupCoords() {
+    public PickupCoords getPickupCoords() {
         return pickupCoords;
     }
 
-    public void setPickupCoords(LatLng pickupCoords) {
+    public void setPickupCoords(PickupCoords pickupCoords) {
         this.pickupCoords = pickupCoords;
     }
 

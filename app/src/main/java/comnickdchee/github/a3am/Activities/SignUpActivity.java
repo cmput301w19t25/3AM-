@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -164,6 +165,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             Log.d("Donkey","Work pls..");
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(getApplicationContext(), "Successful Registration.", Toast.LENGTH_LONG).show();
+                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                            DatabaseReference databaseReference = firebaseDatabase.getReference();
+
+                            String current_token = FirebaseInstanceId.getInstance().getToken();
+                            databaseReference.child("users").child(mAuth.getUid()).child("device_token").setValue(current_token);
 
                             uploadImageToFirebase();
                             mAuth.signOut();
