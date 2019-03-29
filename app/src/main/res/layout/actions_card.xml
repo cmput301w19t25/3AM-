@@ -64,14 +64,17 @@
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="10sp" />
 
-            <TextView
-                android:id="@+id/tvDivider"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text=" | "
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:textSize="10sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llISBN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@+id/ivBookPhoto"
+            app:layout_constraintTop_toBottomOf="@+id/llBookDescription1"
+            android:layout_marginLeft="8dp">
 
             <TextView
                 android:id="@+id/tvISBNTag"
@@ -90,6 +93,7 @@
                 android:text="X-XXXXXX-XXXXXX"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="10sp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -99,7 +103,8 @@
             android:layout_marginStart="8dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toEndOf="@+id/ivBookPhoto"
-            app:layout_constraintTop_toBottomOf="@+id/llBookDescription1">
+            app:layout_constraintTop_toBottomOf="@+id/llISBN"
+            android:layout_marginLeft="8dp">
 
             <TextView
                 android:id="@+id/tvRequestsTag"
