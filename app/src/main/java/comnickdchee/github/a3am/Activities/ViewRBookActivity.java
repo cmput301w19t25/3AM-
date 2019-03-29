@@ -68,6 +68,8 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
     private RecyclerView.LayoutManager layoutManager;
     private Button receiveButton;
     private ImageView backButton;
+    private TextView phoneNumberText;
+    private TextView emailText;
     private SupportMapFragment mapFragment;
     private GoogleMap mGoogleMap;
     private Marker marker;
@@ -89,6 +91,10 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
         if (mapFragment != null) {
             mapFragment.getMapAsync(ViewRBookActivity.this);
         }
+
+        phoneNumberText = findViewById(R.id.tvPhoneNumber);
+        emailText = findViewById(R.id.tvEmail);
+
 
         Intent intent = getIntent();
         actionBook = intent.getExtras().getParcelable("acceptedBook");
@@ -147,6 +153,8 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
 
+
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -194,6 +202,8 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
         bookTitle.setText(actionBook.getTitle());
         bookAuthor.setText(actionBook.getAuthor());
         bookISBN.setText(actionBook.getISBN());
+        phoneNumberText.setText(owner.getPhoneNumber());
+        emailText.setText(owner.getEmail());
 
     }
 
