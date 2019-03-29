@@ -188,13 +188,14 @@ public class ViewBookActivity extends AppCompatActivity {
 
             if (isbn.equals(bookISBN)) {
                 backend.updateExchange(actionBook, ExchangeType.BorrowerReceive);
+                finish();
             } else {
                 Toast.makeText(this, "ISBN Not Matched with book", Toast.LENGTH_SHORT).show();
             }
 
         } else if (requestCode == LOCATION_CODE && resultCode == RESULT_OK && data != null) {
             LatLng coords = (LatLng) data.getExtras().getParcelable("Location");
-            Exchange exchange = new Exchange(new PickupCoords(coords.latitude, coords.longitude), ExchangeType.BorrowerReceive);
+            Exchange exchange = new Exchange(new PickupCoords(coords.latitude, coords.longitude), ExchangeType.OwnerHandover);
             backend.updateExchange(actionBook, exchange);
 
             try {

@@ -127,6 +127,7 @@ public class BorrowedProfileActivity extends AppCompatActivity {
             if (isbn.equals(bookISBN)) {
                 actionBook.setStatus(Status.Available);
                 backend.updateBookData(actionBook);
+                finish();
             } else {
                 Toast.makeText(this, "ISBN Not Matched with book", Toast.LENGTH_SHORT).show();
             }

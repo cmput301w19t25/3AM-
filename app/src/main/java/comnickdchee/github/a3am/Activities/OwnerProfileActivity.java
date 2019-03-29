@@ -126,6 +126,7 @@ public class OwnerProfileActivity extends AppCompatActivity {
 
             if (isbn.equals(bookISBN)) {
                 backend.updateExchange(actionBook, ExchangeType.OwnerReceive);
+                finish();
             } else {
                 Toast.makeText(this, "ISBN Not Matched with book", Toast.LENGTH_SHORT).show();
             }
