@@ -59,7 +59,7 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_owned_book);
+        setContentView(R.layout.activity_new_book);
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         //Gets Current User
@@ -67,10 +67,13 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
 
         //FIRST WE SET ALL OUR DATA TO THE EDIT BOOK PAGE.
         Intent intent = getIntent();
-        TextInputEditText titleBookEditActivity = findViewById(R.id.newbooktitle);
-        TextInputEditText authorBookEditActivity = findViewById(R.id.bookauthor);
-        TextInputEditText bookISBNEditActivity = findViewById(R.id.bookISBN);
-        bookImageEditActivity = findViewById(R.id.bookPictureOwnedBook);
+        TextView Activitytitle = findViewById(R.id.tvTitle);
+        Activitytitle.setText("Edit Book");
+
+        TextInputEditText titleBookEditActivity = findViewById(R.id.tietBookTitle);
+        TextInputEditText authorBookEditActivity = findViewById(R.id.tietAuthor);
+        TextInputEditText bookISBNEditActivity = findViewById(R.id.tietISBN);
+        bookImageEditActivity = findViewById(R.id.ivAddBookPhoto);
         //circleImageView = (ImageViewCompat) findViewById(R.id.bookPictureOwnedBook);
 
         // sending intents
@@ -107,8 +110,8 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
     });
 
     //Rig buttons to apply/delete changes.
-    TextView applyChanges = findViewById(R.id.ApplyChangesEditBook);
-    TextView discardChanges = findViewById(R.id.DiscardChangesEditBook);
+    ImageView applyChanges = findViewById(R.id.ivFinishAddButton);
+    ImageView discardChanges = findViewById(R.id.ivCloseButton);
 
         applyChanges.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -236,6 +239,8 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
             Bundle extras = data.getExtras();
             Bitmap photo = (Bitmap) extras.get("data");
             bookImageEditActivity.setImageBitmap(photo);
+            bookImageEditActivity.setImageURI(bookImage);
+
         }
 
         if(requestCode == CHOSEN_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null){
