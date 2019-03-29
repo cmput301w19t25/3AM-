@@ -136,7 +136,7 @@ public class messageActivity extends AppCompatActivity {
         notificationData.put("from",mAuth.getCurrentUser().getUid());
         notificationData.put("type","message");
 
-        reference.child("notifications").child(receiverKey).child(mAuth.getUid()).push().setValue(notificationData);
+        reference.child("notifications").child(receiverKey).child(mAuth.getCurrentUser().getDisplayName()).push().setValue(notificationData);
 
     }
 
