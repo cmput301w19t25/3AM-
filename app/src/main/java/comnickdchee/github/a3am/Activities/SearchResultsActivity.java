@@ -35,6 +35,7 @@ import java.util.Set;
 
 import comnickdchee.github.a3am.Adapters.BookRecyclerAdapter;
 import comnickdchee.github.a3am.Adapters.SearchRecyclerAdapter;
+import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.MySuggestionProvider;
@@ -53,6 +54,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private ArrayList<Book> authorResults = new ArrayList<>();
     private Set<String> bookSet = new HashSet<>();
     private SearchRecyclerAdapter searchResultsAdapter;
+    private Backend backend = Backend.getBackendInstance();
 
 
     @Override
@@ -124,6 +126,8 @@ public class SearchResultsActivity extends AppCompatActivity {
                     // Iterate through child entries
                     searchResults.clear();
                     bookSet.clear();
+                    ArrayList<String> bookIDLists =  backend.getCurrentUser().getOwnedBooks();
+
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         // Get all the keywords in the query entered by the user
                         // and make a direct check
@@ -166,7 +170,9 @@ public class SearchResultsActivity extends AppCompatActivity {
                         }
                         if (addBook){
                             if (bookStatus == Status.Requested || bookStatus == Status.Available) {
-                                searchResults.add(bookToCompare);
+                                if (!bookIDLists.contains(bookToCompare.getBookID()) ) {
+                                    searchResults.add(bookToCompare);
+                                }
                             }
                         }
 

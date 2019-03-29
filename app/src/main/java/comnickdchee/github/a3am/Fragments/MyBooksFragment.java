@@ -59,7 +59,7 @@ public class MyBooksFragment extends Fragment {
     private FirebaseAuth mAuth;
 
     ///new filter button added
-    private Button filter;
+    private FloatingActionButton filter;
     //list for filtering
     private ArrayList<Book> orderedList;
 
@@ -91,11 +91,10 @@ public class MyBooksFragment extends Fragment {
         adapter.notifyDataSetChanged();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
         //Pop up menu for book filtering
         //code for filtering application
         orderedList = new ArrayList<>();
-        filter = view.findViewById(R.id.filterbtn);
+        filter = view.findViewById(R.id.filterBtn);
         filter.setSoundEffectsEnabled(false);
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,7 +196,6 @@ public class MyBooksFragment extends Fragment {
                 } else{
                     Log.d("DATABASE NO CHILDREN", "onDataChange: ");
                     BookList.clear();
-                    adapter.notifyDataSetChanged();
                 }
 
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -205,6 +203,9 @@ public class MyBooksFragment extends Fragment {
                     String key = child.getValue().toString();
                     findBook(key);
                 }
+                adapter.notifyDataSetChanged();
+
+
             }
 
             @Override
@@ -241,8 +242,10 @@ public class MyBooksFragment extends Fragment {
                 String author = dataSnapshot.child(key).child("author").getValue().toString();
                 String isbn = dataSnapshot.child(key).child("isbn").getValue().toString();
                 String title = dataSnapshot.child(key).child("title").getValue().toString();
+                String status = dataSnapshot.child(key).child("status").getValue().toString();
                 Book b1 = new Book(isbn, title, author);
                 b1.setBookID(bookID);
+                b1.setStatus(Status.valueOf(status));
 
                     /*
                     storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

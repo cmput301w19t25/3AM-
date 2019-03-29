@@ -255,6 +255,13 @@ public class Backend {
         exchangeRef.setValue(exchange);
     }
 
+    public void deleteExchange(Book book) {
+        String bookID = book.getBookID();
+        DatabaseReference exchangeRef = mFirebaseDatabase.getReference("exchanges").child(bookID);
+        exchangeRef.removeValue();
+
+    }
+
     /**
      * Synchronous method that takes in the book
      * and uses the book id to retain the exchange information.
