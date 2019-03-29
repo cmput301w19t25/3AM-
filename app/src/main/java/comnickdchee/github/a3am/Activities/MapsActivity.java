@@ -292,6 +292,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 @Override
                 public void onMarkerDragEnd(Marker marker) {
 
+                    Geocoder gc = new Geocoder(MapsActivity.this);
+                    LatLng ll = marker.getPosition();
+                    List<Address> list = null;
+                    try {
+                       list = gc.getFromLocation(ll.latitude, ll.longitude, 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Address addr = list.get(0);
+                    marker.setTitle(addr.getLocality());
+
+                    //goToLocationZoom(addr.getLatitude(), addr.getLongitude(), 15f);
 
 
                 }
