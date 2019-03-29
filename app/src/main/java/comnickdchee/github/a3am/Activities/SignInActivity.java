@@ -100,7 +100,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 if(task.isSuccessful()){
                     Intent intent = new Intent(SignInActivity.this, HomepageActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
+                    String current_token = FirebaseInstanceId.getInstance().getToken();
                     databaseReference.child("users").child(mAuth.getUid()).child("device_token").setValue(current_token);
 
                     startActivity(intent);

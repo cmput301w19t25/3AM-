@@ -24,6 +24,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Status;
@@ -125,7 +127,20 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
 //                    if (!book.getRequests().contains(mAuth.getCurrentUser().getUid())) {
 //                        book.addRequest(mAuth.getCurrentUser().getUid());
 //                        updateRequests(book);
+                    String receiverKey = book.getOwnerID();
+                    String senderKey = mAuth.getUid();
                     backend.updateRequests(book);
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+                    HashMap<String, String> notificationData = new HashMap<>();
+                    notificationData.put("from",mAuth.getCurrentUser().getUid());
+                    notificationData.put("type","request");
+
+                    reference.child("notificationRequests").child(receiverKey).child(mAuth.getCurrentUser().getDisplayName()).push().setValue(notificationData);
+
+
+
 //                    }
 
                     // TODO: UI fix; change the request button to be non-clickable.
