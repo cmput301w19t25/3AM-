@@ -137,12 +137,12 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
             }
         });
 
-        img.setOnClickListener(new View.OnClickListener() {
+        /*img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 findImage();
             }
-        });
+        });*/
 
 
     }
@@ -235,6 +235,16 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
                 e.printStackTrace();
             }
             bookISBNText.setText(isbn);
+        }
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK ) {
+            bookImage = data.getData();
+            Log.d("CAMERA VALUE RETURNED", "onActivityResult: ");
+            //get photo
+            //circleImageView = (CircleImageView) findViewById()
+            Bundle extras = data.getExtras();
+            Bitmap photo = (Bitmap) extras.get("data");
+            img.setImageBitmap(photo);
         }
     }
 
