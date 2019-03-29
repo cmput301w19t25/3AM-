@@ -24,7 +24,6 @@ public class ViewBookActivityTest {
     public ActivityTestRule<HomepageActivity> mActivityTestRule = new ActivityTestRule<HomepageActivity>(HomepageActivity.class);
     private HomepageActivity mActivity = null;
     private Solo solobooksview;
-    private ViewGroup tabs;
 
 
 

@@ -15,11 +15,18 @@ import com.robotium.solo.Solo;
 
 import org.junit.runner.RunWith;
 
+import androidx.test.espresso.contrib.RecyclerViewActions;
+import comnickdchee.github.a3am.Activities.EditProfile;
 import comnickdchee.github.a3am.Activities.HomepageActivity;
 import comnickdchee.github.a3am.Activities.NewBookActivity;
+import comnickdchee.github.a3am.Activities.ViewOwnedBook;
 import comnickdchee.github.a3am.Fragments.MyBooksFragment;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.*;
 
@@ -54,24 +61,36 @@ public class MyBooksFragmentTest  {
 
         solo.waitForFragmentById(R.id.view_in_fragment);
         //solo.assertCurrentActivity("Wrong Activity", MyBooksFragment.class);
-        solo.clickOnButton(0);
+        //solo.clickOnButton(0);
+        solo.clickOnView(solo.getView(R.id.filterBtn));
         solo.clickOnMenuItem("Available");
 
-        solo.clickOnButton(0);
+        //solo.clickOnButton(0);
+        solo.clickOnView(solo.getView(R.id.filterBtn));
         solo.clickOnMenuItem("Borrowed");
 
-        solo.clickOnButton(0);
+        //solo.clickOnButton(0);
+        solo.clickOnView(solo.getView(R.id.filterBtn));
         solo.clickOnMenuItem("Requested");
 
-        solo.clickOnButton(0);
+       // solo.clickOnButton(0);
+        solo.clickOnView(solo.getView(R.id.filterBtn));
         solo.clickOnMenuItem("Accepted");
 
         //View fab = findViewById(R.id.fabAddBookButton);
-        solo.clickOnView(solo.getView(R.id.fabAddBookButton));
+       // solo.clickInList(0);
+        //onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
+        //onView(withId(R.id.recyclerView))
+               // .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+       // onView(withId(R.id.recyclerView),withText("what")).perform(click());
+
+
 
         //solo.waitForView(R.id.new_book_activity);
-        solo.waitForActivity(NewBookActivity.class);
-        SystemClock.sleep(5000);
+        //solo.waitForActivity(ViewOwnedBook.class);
+        //onView(withId(R.id.ApplyChangesEditBook)).perform(click());
+
+        //SystemClock.sleep(5000);
 
 
     }
