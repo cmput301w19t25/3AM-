@@ -83,7 +83,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/newBookToolbar"
-            app:srcCompat="@drawable/ic_add_to_photos_grey_24dp" />
+            app:srcCompat="@drawable/ic_add_to_photos_grey_24dp"
+            tools:onClick="showPopup" />
 
         <ProgressBar
             android:id="@+id/progressBar2"
