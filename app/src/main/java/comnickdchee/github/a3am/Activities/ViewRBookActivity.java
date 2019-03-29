@@ -68,6 +68,9 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
     private RecyclerView.LayoutManager layoutManager;
     private Button receiveButton;
     private ImageView backButton;
+    private TextView phoneNumberText;
+    private TextView emailText;
+    private SupportMapFragment mapFragment;
     private GoogleMap mGoogleMap;
     private Marker marker;
 
@@ -83,11 +86,15 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_grey_default));
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
 
         if (mapFragment != null) {
             mapFragment.getMapAsync(ViewRBookActivity.this);
         }
+
+        phoneNumberText = findViewById(R.id.tvPhoneNumber);
+        emailText = findViewById(R.id.tvEmail);
+
 
         Intent intent = getIntent();
         actionBook = intent.getExtras().getParcelable("acceptedBook");
@@ -107,14 +114,24 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
             public void onCallback(Exchange exchange) {
                 if (exchange != null) {
                     if (exchange.getType() == ExchangeType.BorrowerReceive) {
+
                         if (exchange.getPickupCoords() != null) {
                             receiveButton.setVisibility(View.VISIBLE);
+                        } else {
+                            if (mapFragment.getView() != null) {
+                                mapFragment.getView().setVisibility(View.GONE);
+                            }
                         }
+
                     } else {
                         receiveButton.setVisibility(View.GONE);
                     }
                 } else {
                     receiveButton.setVisibility(View.GONE);
+
+                    if (mapFragment.getView() != null) {
+                        mapFragment.getView().setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -135,6 +152,8 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
                 finish();
             }
         });
+
+
 
     }
 
@@ -183,6 +202,8 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
         bookTitle.setText(actionBook.getTitle());
         bookAuthor.setText(actionBook.getAuthor());
         bookISBN.setText(actionBook.getISBN());
+        phoneNumberText.setText(owner.getPhoneNumber());
+        emailText.setText(owner.getEmail());
 
     }
 
@@ -221,7 +242,6 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        Log.d("GET PICKUP COORDS", "onMapReady: ");
         getPickupCoords();
     }
 
@@ -241,11 +261,23 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
                     if (exchange != null) {
                         PickupCoords pickupCoords = exchange.getPickupCoords();
                         if (pickupCoords != null) {
+
+                            // Set the visibility here if we have a location
+                            if (mapFragment.getView() != null) {
+                                mapFragment.getView().setVisibility(View.VISIBLE);
+                            }
+
                             LatLng latLng = new LatLng(pickupCoords.getLatitude(), pickupCoords.getLongitude());
                             MarkerOptions markerOptions = new MarkerOptions()
                                     .position(latLng);
                             marker = mGoogleMap.addMarker(markerOptions);
                             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+
+                        // Setting the map fragment to be invisible if no location added
+                        } else {
+                            if (mapFragment.getView() != null) {
+                                mapFragment.getView().setVisibility(View.GONE);
+                            }
                         }
                     }
                 }
