@@ -110,15 +110,15 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         loadImageFromBookID(bookImage, book.getBookID());
         loadImageFromOwnerID(ownerImage, book.getOwnerID());
 
-        messageOwner = findViewById(R.id.buttonMessageOwner);
+        messageOwner = findViewById(R.id.buttonViewProfile);
         messageOwner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(RequestBookActivity.this, "Messaging", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent (getApplicationContext(), messageActivity.class);
+                Intent i = new Intent (getApplicationContext(), UserProfileActivity.class);
                 String key = book.getOwnerID();
                 i.putExtra("key", key);
-                i.putExtra("imgUrl", DownloadLink);
+                //i.putExtra("imgUrl", DownloadLink);
                 Log.d("keyIn",key);
                 startActivity(i);
             }

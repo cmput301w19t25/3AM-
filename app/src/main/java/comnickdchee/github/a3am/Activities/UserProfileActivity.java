@@ -48,7 +48,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         // Get's data pushed into this intent
         Intent intent = getIntent();
-        userID = intent.getStringExtra("uid");
+        userID = intent.getStringExtra("key");
 
 
         // Setting the user Details
