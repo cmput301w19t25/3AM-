@@ -71,8 +71,10 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
 
         // Init button to be disabled
         bRequestButton.setEnabled(false);
-        bRequestButton.setText("...");
-        //bRequestButton.setBackground(Color.parseColor("#444444"));
+        bRequestButton.setText("Requested");
+        Resources res = getResources();
+        Drawable color = res.getDrawable(R.drawable.disabled_button);
+        bRequestButton.setBackground(color);
 
         String userID = backend.getCurrentUser().getUserID();
 
@@ -91,8 +93,8 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         if (!requesterList.contains(userID)) {
             bRequestButton.setEnabled(true);
             bRequestButton.setText("Request");
-            Resources res = getResources();
-            Drawable color = res.getDrawable(R.drawable.signup_custom);
+            res = getResources();
+            color = res.getDrawable(R.drawable.signup_custom);
             bRequestButton.setBackground(color);
         }
 
@@ -150,8 +152,14 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
 //                    if (!book.getRequests().contains(mAuth.getCurrentUser().getUid())) {
 //                        book.addRequest(mAuth.getCurrentUser().getUid());
 //                        updateRequests(book);
+
+                    // Disables the button since to stop multiple requests
                     bRequestButton.setEnabled(false);
                     bRequestButton.setText("Requested");
+                    Resources res = getResources();
+                    Drawable color = res.getDrawable(R.drawable.disabled_button);
+                    bRequestButton.setBackground(color);
+
                     String receiverKey = book.getOwnerID();
                     String senderKey = mAuth.getUid();
                     backend.updateRequests(book);
