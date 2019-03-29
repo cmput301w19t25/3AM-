@@ -303,8 +303,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     Address addr = list.get(0);
                     marker.setTitle(addr.getLocality());
-
-                    //goToLocationZoom(addr.getLatitude(), addr.getLongitude(), 15f);
+                    setMarker(addr.getLocality(), addr.getLatitude(), addr.getLongitude());
+                    goToLocationZoom(addr.getLatitude(), addr.getLongitude(), 15f);
 
 
                 }
