@@ -186,7 +186,6 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
         //TextView phone = findViewById(R.id.phoneTV);
         //TextView email = findViewById(R.id.emailTV);
         TextView username = findViewById(R.id.usernameTV);
-        TextView rating = findViewById(R.id.ratingTV);
         TextView bookTitle = findViewById(R.id.tvViewBookTitle);
         TextView bookAuthor = findViewById(R.id.tvViewBookAuthor);
         TextView bookISBN = findViewById(R.id.tvViewBookISBN);

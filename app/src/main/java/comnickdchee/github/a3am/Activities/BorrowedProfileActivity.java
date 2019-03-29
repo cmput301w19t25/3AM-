@@ -148,7 +148,6 @@ public class BorrowedProfileActivity extends AppCompatActivity {
         TextView phone = findViewById(R.id.phoneTV);
         TextView email = findViewById(R.id.emailTV);
         TextView username = findViewById(R.id.usernameTV);
-        TextView rating = findViewById(R.id.ratingTV);
         TextView bookTitle = findViewById(R.id.bookTitleTV);
         TextView bookAuthor = findViewById(R.id.authorNameTV);
         TextView bookISBN = findViewById(R.id.ISBNTv);
