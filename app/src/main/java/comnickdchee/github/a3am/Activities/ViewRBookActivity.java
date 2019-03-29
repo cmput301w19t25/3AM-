@@ -152,6 +152,7 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
                 actionBook.setCurrentBorrowerID(FirebaseAuth.getInstance().getUid());
                 backend.updateExchange(actionBook, ExchangeType.BorrowerHandover);
                 backend.updateBookData(actionBook);
+                finish();
             } else {
                 Toast.makeText(this, "ISBN Not Matched with book", Toast.LENGTH_SHORT).show();
             }
