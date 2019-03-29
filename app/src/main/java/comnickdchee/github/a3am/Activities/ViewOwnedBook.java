@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.ImageViewCompat;
@@ -64,9 +65,9 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
         mAuth = FirebaseAuth.getInstance();
 
         //FIRST WE SET ALL OUR DATA TO THE EDIT BOOK PAGE.
-        EditText titleBookEditActivity = findViewById(R.id.bookTitleOwnedBook);
-        EditText authorBookEditActivity = findViewById(R.id.bookAuthorOwnedBook);
-        EditText bookISBNEditActivity = findViewById(R.id.bookISBNOwnedBook);
+        TextInputLayout titleBookEditActivity = findViewById(R.id.bookTitleOwnedBook);
+        TextInputLayout authorBookEditActivity = findViewById(R.id.bookAuthorOwnedBook);
+        TextInputLayout bookISBNEditActivity = findViewById(R.id.bookISBNOwnedBook);
         bookImageEditActivity = findViewById(R.id.bookPictureOwnedBook);
         //circleImageView = (ImageViewCompat) findViewById(R.id.bookPictureOwnedBook);
 
@@ -104,9 +105,9 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             DatabaseReference databaseReference = firebaseDatabase.getReference("books").child(key);
 
-            String newTitle = titleBookEditActivity.getText().toString();
-            String newAuthor = authorBookEditActivity.getText().toString();
-            String newISBN = bookISBNEditActivity.getText().toString();
+            String newTitle = titleBookEditActivity.getEditText().toString();
+            String newAuthor = authorBookEditActivity.getEditText().toString();
+            String newISBN = bookISBNEditActivity.getEditText().toString();
 
             databaseReference.child("title").setValue(newTitle);
             databaseReference.child("author").setValue(newAuthor);
