@@ -124,6 +124,7 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
             }
         });
 
+        //set onclick listener on camera button
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
