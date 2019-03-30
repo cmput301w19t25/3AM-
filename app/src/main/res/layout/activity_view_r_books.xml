@@ -117,50 +117,78 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/ownerIV"
-                android:layout_width="57dp"
-                android:layout_height="54dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/ic_profile"
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/userCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/ownerIV"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_profile"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/usernameTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:text="Username"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/ownerIV"
+                    app:layout_constraintStart_toEndOf="@+id/ownerIV"
+                    app:layout_constraintTop_toTopOf="@+id/ownerIV" />
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@color/common_google_signin_btn_text_dark_disabled"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ownerIV"
+                    app:layout_constraintTop_toBottomOf="@+id/ownerIV" />
+
+            </android.support.constraint.ConstraintLayout>
+
 
             <ImageView
                 android:id="@+id/phoneIV"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginLeft="8dp"
                 android:src="@drawable/ic_phone"
                 android:title="Phone"
-                app:layout_constraintEnd_toEndOf="@+id/ownerIV"
-                app:layout_constraintStart_toStartOf="@+id/ownerIV"
-                app:layout_constraintTop_toBottomOf="@+id/divider3" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userCard" />
 
-            <View
-                android:id="@+id/divider3"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@color/common_google_signin_btn_text_dark_disabled"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/ownerIV"
-                app:layout_constraintTop_toBottomOf="@+id/ownerIV" />
 
             <TextView
                 android:id="@+id/tvPhoneNumber"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:fontFamily="@font/open_sans"
                 android:text="+X-XXX-XXX-XXXX"
                 android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="@+id/tvUsernameTag"
+                app:layout_constraintStart_toEndOf="@+id/phoneIV"
                 app:layout_constraintTop_toTopOf="@+id/phoneIV" />
 
             <TextView
@@ -173,30 +201,7 @@
                 app:layout_constraintStart_toStartOf="@+id/tvPhoneNumber"
                 app:layout_constraintTop_toBottomOf="@+id/tvPhoneNumber" />
 
-            <TextView
-                android:id="@+id/tvUsernameTag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:fontFamily="@font/open_sans"
-                android:text="Username: "
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/ownerIV"
-                app:layout_constraintStart_toEndOf="@+id/ownerIV"
-                app:layout_constraintTop_toTopOf="@+id/ownerIV" />
 
-            <TextView
-                android:id="@+id/usernameTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans"
-                android:text="Username"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tvUsernameTag"
-                app:layout_constraintStart_toEndOf="@+id/tvUsernameTag"
-                app:layout_constraintTop_toTopOf="@+id/tvUsernameTag" />
 
             <ImageView
                 android:id="@+id/textIV"

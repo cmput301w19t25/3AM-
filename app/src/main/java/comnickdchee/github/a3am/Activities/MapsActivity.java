@@ -75,6 +75,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,6 +173,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                                 Location currentLocation = (Location) task.getResult();
                                 goToLocationZoom(currentLocation.getLatitude(), currentLocation.getLongitude(), 15f);
+
+                              //add a marker to the current location
+                              Geocoder geocoder = new Geocoder(MapsActivity.this);
+                              Address address2 = null;
+                              List<Address> list2 = new ArrayList<>();
+                              try {
+                                  list2 = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+                                  address2 = list2.get(0);
+                              } catch (IOException e) {
+                                  e.printStackTrace();
+                              }
+                              setMarker(address2.getLocality(), currentLocation.getLatitude(), currentLocation.getLongitude());
                             }
                         } else {
                             Toast.makeText(MapsActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
@@ -262,6 +275,62 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
 
+        /////////
+        //googleMap.getUiSettings().setScrollGesturesEnabled(false);
+        ///////////
+        if(mGoogleMap != null) {
+
+            mGoogleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(LatLng latLng) {
+                    Geocoder gc = new Geocoder(MapsActivity.this);
+                    List<Address> list = null;
+                    try {
+                        list = gc.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Address addr = list.get(0);
+                    marker.setTitle(addr.getLocality());
+                    setMarker(addr.getLocality(), addr.getLatitude(), addr.getLongitude());
+                }
+            });
+
+            mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+                @Override
+                public void onMarkerDragStart(Marker marker) {
+
+                }
+
+                @Override
+                public void onMarkerDrag(Marker marker) {
+
+                }
+
+                @Override
+                public void onMarkerDragEnd(Marker marker) {
+
+                    Geocoder gc = new Geocoder(MapsActivity.this);
+                    LatLng ll = marker.getPosition();
+                    List<Address> list = null;
+                    try {
+                       list = gc.getFromLocation(ll.latitude, ll.longitude, 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Address addr = list.get(0);
+                    marker.setTitle(addr.getLocality());
+                    setMarker(addr.getLocality(), addr.getLatitude(), addr.getLongitude());
+                    //goToLocationZoom(addr.getLatitude(), addr.getLongitude(), 15f);
+
+
+                }
+            });
+        }
+        ///////////
+
         // Gets the device location if permission was granted
         if (mLocationPermissionGranted) {
             getDeviceLocation();
@@ -306,6 +375,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         pinnedLocation = new LatLng(lat, lng);
 
         MarkerOptions options = new MarkerOptions()
+                .draggable(true)
                 .title(locality)
                 .position(pinnedLocation);
 

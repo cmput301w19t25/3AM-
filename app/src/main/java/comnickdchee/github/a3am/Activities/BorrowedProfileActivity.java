@@ -49,6 +49,7 @@ public class BorrowedProfileActivity extends AppCompatActivity {
     private Book actionBook = new Book();
     private User borrower = new User();
     private Context mContext;
+    private Button messageButton;
     private Backend backend = Backend.getBackendInstance();
 
     @Override
@@ -64,6 +65,7 @@ public class BorrowedProfileActivity extends AppCompatActivity {
         backButton = findViewById(R.id.backIV);
         transactionButton = findViewById(R.id.transactionButton);
         transactionButton.setText("Confirm Return");
+        messageButton = findViewById(R.id.message);
 
         Intent intent = getIntent();
         actionBook = intent.getExtras().getParcelable("passedBook");
@@ -73,6 +75,15 @@ public class BorrowedProfileActivity extends AppCompatActivity {
             public void onCallback(User user) {
                 borrower = user;
                 getPageData();
+            }
+        });
+
+        messageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent (getApplicationContext(), messageActivity.class);
+                i.putExtra("key", borrowerID);
+                startActivity(i);
             }
         });
 
@@ -148,7 +159,6 @@ public class BorrowedProfileActivity extends AppCompatActivity {
         TextView phone = findViewById(R.id.phoneTV);
         TextView email = findViewById(R.id.emailTV);
         TextView username = findViewById(R.id.usernameTV);
-        TextView rating = findViewById(R.id.ratingTV);
         TextView bookTitle = findViewById(R.id.bookTitleTV);
         TextView bookAuthor = findViewById(R.id.authorNameTV);
         TextView bookISBN = findViewById(R.id.ISBNTv);
