@@ -39,6 +39,7 @@ public class OwnerProfileActivity extends AppCompatActivity {
     private static final int ISBN_READ = 42;
     private Book actionBook = new Book();
     private User owner = new User();
+    private Button messageButton;
     Button transactionButton;
     private Backend backend = Backend.getBackendInstance();
 
@@ -53,6 +54,7 @@ public class OwnerProfileActivity extends AppCompatActivity {
         backButton = findViewById(R.id.backIV);
         transactionButton = findViewById(R.id.transactionButton);
         transactionButton.setText("Return Book");
+        messageButton = findViewById(R.id.message);
 
         Intent intent = getIntent();
         actionBook = intent.getExtras().getParcelable("passedBook");
@@ -63,6 +65,15 @@ public class OwnerProfileActivity extends AppCompatActivity {
             public void onCallback(User user) {
                 owner = user;
                 getPageData();
+            }
+        });
+
+        messageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent (getApplicationContext(), messageActivity.class);
+                i.putExtra("key", ownerID);
+                startActivity(i);
             }
         });
 
