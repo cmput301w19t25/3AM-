@@ -63,8 +63,7 @@
         </provider>
 
         <activity
-            android:name=".Activities.HomepageActivity"
-            android:launchMode="singleTop">
+            android:name=".Activities.HomepageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
