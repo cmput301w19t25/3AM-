@@ -84,6 +84,8 @@ public class MyBooksFragment extends Fragment {
          */
         fab.setOnClickListener((View v) -> {
             Intent intent = new Intent(view.getContext(), NewBookActivity.class);
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
             startActivityForResult(intent, 1);
         });
 

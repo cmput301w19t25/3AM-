@@ -38,6 +38,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
@@ -49,7 +50,7 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
     ImageViewCompat circleImageView;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int CAMERA_PERMISSION_CODE = 10;
-
+    byte[] bArray;
     ImageView bookImageEditActivity;
     Uri bookImage;
     String key;
@@ -143,6 +144,13 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
                 });
             } else {
                 Log.d("", "onClick: ");
+            }
+            if(bArray != null){
+                FirebaseUser u = mAuth.getCurrentUser();
+
+                StorageReference bookImageRef =
+                        FirebaseStorage.getInstance().getReference("BookImages").child(key);
+                bookImageRef.putBytes(bArray);
             }
 
             Toast.makeText(ViewOwnedBook.this, "Changes applied to " + newTitle, Toast.LENGTH_LONG).show();
@@ -241,6 +249,11 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
             //circleImageView = (CircleImageView) findViewById()
             Bundle extras = data.getExtras();
             Bitmap photo = (Bitmap) extras.get("data");
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.PNG, 100, bos);
+            bArray = bos.toByteArray();
+
             bookImageEditActivity.setImageBitmap(photo);
             bookImageEditActivity.setImageURI(bookImage);
 
@@ -250,6 +263,11 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
             bookImage = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), bookImage);
+
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+                bArray = bos.toByteArray();
+
                 bookImageEditActivity.setImageBitmap(bitmap);
             } catch (IOException e){
                 e.printStackTrace();
