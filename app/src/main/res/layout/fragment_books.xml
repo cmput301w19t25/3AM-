@@ -35,7 +35,7 @@
         android:clickable="true"
         app:backgroundTint="@color/colorAccent"
         app:fabSize="normal"
-        app:srcCompat="@drawable/ic_add_white_24dp" />
+        android:src="@drawable/ic_add_white_24dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/filterBtn"
