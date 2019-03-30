@@ -77,21 +77,6 @@ public class MyBooksFragmentTest  {
         solo.clickOnView(solo.getView(R.id.filterBtn));
         solo.clickOnMenuItem("Accepted");
 
-        //View fab = findViewById(R.id.fabAddBookButton);
-       // solo.clickInList(0);
-        //onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
-        //onView(withId(R.id.recyclerView))
-               // .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-       // onView(withId(R.id.recyclerView),withText("what")).perform(click());
-
-
-
-        //solo.waitForView(R.id.new_book_activity);
-        //solo.waitForActivity(ViewOwnedBook.class);
-        //onView(withId(R.id.ApplyChangesEditBook)).perform(click());
-
-        //SystemClock.sleep(5000);
-
 
     }
 

@@ -55,7 +55,7 @@ public class NewBookActivityTest {
 
         View view = solonewbook.getView(R.id.new_book_activity);
 
-        onView(withId(R.id.tietBookTitle)).perform(ViewActions.typeText("New Title")).perform(closeSoftKeyboard());
+        onView(withId(R.id.tietBookTitle)).perform(ViewActions.typeText("Add Book")).perform(closeSoftKeyboard());
 
         onView(withId(R.id.tietAuthor)).perform(ViewActions.typeText("New Author")).perform(closeSoftKeyboard());
 
