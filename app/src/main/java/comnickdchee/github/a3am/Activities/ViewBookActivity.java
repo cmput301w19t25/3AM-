@@ -229,6 +229,10 @@ public class ViewBookActivity extends AppCompatActivity {
 
         } else if (requestCode == LOCATION_CODE && resultCode == RESULT_OK && data != null) {
             LatLng coords = (LatLng) data.getExtras().getParcelable("Location");
+            if (currentExchange == null) {
+                currentExchange = new Exchange(ExchangeType.OwnerHandover);
+            }
+            
             currentExchange.setPickupCoords(new PickupCoords(coords.latitude, coords.longitude));
             Log.d(currentExchange.getType().toString(), "onActivityResult: ");
             backend.updateExchange(actionBook, currentExchange);
