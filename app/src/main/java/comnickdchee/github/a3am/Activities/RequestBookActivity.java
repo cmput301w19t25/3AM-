@@ -114,11 +114,9 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         messageOwner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(RequestBookActivity.this, "Messaging", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent (getApplicationContext(), UserProfileActivity.class);
                 String key = book.getOwnerID();
                 i.putExtra("key", key);
-                //i.putExtra("imgUrl", DownloadLink);
                 Log.d("keyIn",key);
                 startActivity(i);
             }
