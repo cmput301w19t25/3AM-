@@ -83,6 +83,7 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
     // close or finish activity buttons
     private ImageView closeButton;
     private ImageView addButton;
+    private ImageView deletePhotoButton;
     private FloatingActionButton cameraButton;
 
     private ProgressBar mProgressbar;
@@ -110,6 +111,8 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
         closeButton = findViewById(R.id.ivCloseButton);
         addButton = findViewById(R.id.ivFinishAddButton);
         cameraButton = findViewById(R.id.fabISBN);
+        deletePhotoButton = findViewById(R.id.bDeleteImage);
+        deletePhotoButton.setVisibility(View.GONE);
 
         closeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
