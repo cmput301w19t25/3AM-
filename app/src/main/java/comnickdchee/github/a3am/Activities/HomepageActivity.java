@@ -262,14 +262,14 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         // Initializing for Requests tab
         RequestsList = new ArrayList<>();
         requestedList = new ArrayList<>();
-
-        backend.getRequestedBooks(new BookListCallback() {
-            @Override
-            public void onCallback(ArrayList<Book> books) {
-                requestedList.clear();
-                requestedList.addAll(books);
-            }
-        });
+//
+//        backend.getRequestedBooks(new BookListCallback() {
+//            @Override
+//            public void onCallback(ArrayList<Book> books) {
+//                requestedList.clear();
+//                requestedList.addAll(books);
+//            }
+//        });
 
 //        ArrayList<Book> AcceptedRequests = new ArrayList<>();
 //        ArrayList<Book> pendingRequests = new ArrayList<>();
