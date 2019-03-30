@@ -75,6 +75,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -278,6 +279,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //googleMap.getUiSettings().setScrollGesturesEnabled(false);
         ///////////
         if(mGoogleMap != null) {
+
+            mGoogleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(LatLng latLng) {
+                    Geocoder gc = new Geocoder(MapsActivity.this);
+                    List<Address> list = null;
+                    try {
+                        list = gc.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Address addr = list.get(0);
+                    marker.setTitle(addr.getLocality());
+                    setMarker(addr.getLocality(), addr.getLatitude(), addr.getLongitude());
+                }
+            });
+
             mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
                 @Override
                 public void onMarkerDragStart(Marker marker) {
@@ -304,7 +323,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Address addr = list.get(0);
                     marker.setTitle(addr.getLocality());
                     setMarker(addr.getLocality(), addr.getLatitude(), addr.getLongitude());
-                    goToLocationZoom(addr.getLatitude(), addr.getLongitude(), 15f);
+                    //goToLocationZoom(addr.getLatitude(), addr.getLongitude(), 15f);
 
 
                 }
