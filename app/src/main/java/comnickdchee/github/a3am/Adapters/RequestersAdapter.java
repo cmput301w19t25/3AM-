@@ -63,6 +63,8 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
             public void onClick(View v) {
                 Log.d(requesters.get(i).getUserID(), "IN RECYCLER USER ID: ");
 
+                currentBook.setCurrentBorrowerID(requesters.get(i).getUserID());
+
                 String receiverkey = requesters.get(i).getUserID().toString();
                 String receivername = requesters.get(i).getUserName();
                 String senderkey = currentBook.getOwnerID();

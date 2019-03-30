@@ -34,6 +34,7 @@ import java.util.Locale;
 
 import comnickdchee.github.a3am.Adapters.RequestersAdapter;
 import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Backend.BookCallback;
 import comnickdchee.github.a3am.Backend.ExchangeCallback;
 import comnickdchee.github.a3am.Backend.UserCallback;
 import comnickdchee.github.a3am.Backend.UserListCallback;
@@ -153,6 +154,25 @@ public class ViewBookActivity extends AppCompatActivity {
             }
         });
 
+        backend.getBook(actionBook.getBookID(), new BookCallback() {
+            @Override
+            public void onCallback(Book book) {
+                if (book.getCurrentBorrowerID() != null) {
+                    rvRequests.setVisibility(View.GONE);
+                    borrowerCardView.setVisibility(View.VISIBLE);
+                    // Gets the current borrower and populates the card view
+                    backend.getUser(actionBook.getCurrentBorrowerID(), new UserCallback() {
+                        @Override
+                        public void onCallback(User borrower) {
+                            borrowerUsernameText.setText(borrower.getUserName());
+                            borrowerEmailText.setText(borrower.getEmail());
+                            borrowerPhoneNumberText.setText(borrower.getPhoneNumber());
+                        }
+                    });
+                }
+            }
+        });
+
         backend.getRequesters(actionBook, new UserListCallback() {
             @Override
             public void onCallback(ArrayList<User> users) {
@@ -168,17 +188,7 @@ public class ViewBookActivity extends AppCompatActivity {
                     } else {
                         emptyView.setVisibility(View.GONE);
                         rvRequests.setVisibility(View.GONE);
-                        borrowerCardView.setVisibility(View.VISIBLE);
 
-                        // Gets the current borrower and populates the card view
-                        backend.getUser(actionBook.getCurrentBorrowerID(), new UserCallback() {
-                            @Override
-                            public void onCallback(User borrower) {
-                                borrowerUsernameText.setText(borrower.getUserName());
-                                borrowerEmailText.setText(borrower.getEmail());
-                                borrowerPhoneNumberText.setText(borrower.getPhoneNumber());
-                            }
-                        });
                     }
                 } else {
                     rvRequests.setVisibility(View.VISIBLE);
