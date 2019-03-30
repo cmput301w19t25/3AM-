@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.images.ImageRequest;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,6 +37,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
@@ -49,8 +49,9 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
     ImageViewCompat circleImageView;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int CAMERA_PERMISSION_CODE = 10;
-
-    ImageView bookImageEditActivity;
+    byte[] bArray;
+    private ImageView bookImageEditActivity;
+    private ImageView deletePhotoButton;
     Uri bookImage;
     String key;
     String DownloadLink;
@@ -76,6 +77,8 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
         TextInputEditText authorBookEditActivity = findViewById(R.id.tietAuthor);
         TextInputEditText bookISBNEditActivity = findViewById(R.id.tietISBN);
         bookImageEditActivity = findViewById(R.id.ivAddBookPhoto);
+        deletePhotoButton = findViewById(R.id.bDeleteImage);
+
         //circleImageView = (ImageViewCompat) findViewById(R.id.bookPictureOwnedBook);
 
         // sending intents
@@ -93,7 +96,7 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
         }
 
         Bundle bundle = getIntent().getExtras();
-    key = bundle.getString("key");
+        key = bundle.getString("key");
         Log.d(key, "keyReceivedViewBooks: ");
 
     //Downloads the data to get it to our initial view.
@@ -108,6 +111,21 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
             Log.e("Tuts+", "uri: " + uri.toString());
             DownloadLink = uri.toString();
             Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(bookImageEditActivity);
+        }
+    });
+
+    // Delete the photo attached to the book, where key is the bookID
+    deletePhotoButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            StorageReference bookImageRef =
+                    FirebaseStorage.getInstance().getReference("BookImages").child(key);
+            bookImageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    bookImageEditActivity.setImageResource(R.drawable.ic_add_to_photos_grey_24dp);
+                }
+            });
         }
     });
 
@@ -132,7 +150,6 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
             if(bookImage != null){
                 FirebaseUser u = mAuth.getCurrentUser();
 
-
                 StorageReference bookImageRef =
                         FirebaseStorage.getInstance().getReference("BookImages").child(key);
                 bookImageRef.putFile(bookImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -143,6 +160,13 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
                 });
             } else {
                 Log.d("", "onClick: ");
+            }
+            if(bArray != null){
+                FirebaseUser u = mAuth.getCurrentUser();
+
+                StorageReference bookImageRef =
+                        FirebaseStorage.getInstance().getReference("BookImages").child(key);
+                bookImageRef.putBytes(bArray);
             }
 
             Toast.makeText(ViewOwnedBook.this, "Changes applied to " + newTitle, Toast.LENGTH_LONG).show();
@@ -241,6 +265,11 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
             //circleImageView = (CircleImageView) findViewById()
             Bundle extras = data.getExtras();
             Bitmap photo = (Bitmap) extras.get("data");
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.PNG, 100, bos);
+            bArray = bos.toByteArray();
+
             bookImageEditActivity.setImageBitmap(photo);
             bookImageEditActivity.setImageURI(bookImage);
 
@@ -250,6 +279,11 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
             bookImage = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), bookImage);
+
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+                bArray = bos.toByteArray();
+
                 bookImageEditActivity.setImageBitmap(bitmap);
             } catch (IOException e){
                 e.printStackTrace();

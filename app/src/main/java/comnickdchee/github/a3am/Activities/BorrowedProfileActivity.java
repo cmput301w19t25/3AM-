@@ -136,6 +136,7 @@ public class BorrowedProfileActivity extends AppCompatActivity {
             // the data in Firebase as if no transaction ever happened
             if (isbn.equals(bookISBN)) {
                 actionBook.setStatus(Status.Available);
+                actionBook.setCurrentBorrowerID(null);
                 backend.updateBookData(actionBook);
                 backend.deleteExchange(actionBook);
 
