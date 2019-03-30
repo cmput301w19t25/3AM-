@@ -169,6 +169,8 @@ public class ViewBookActivity extends AppCompatActivity {
                             borrowerPhoneNumberText.setText(borrower.getPhoneNumber());
                         }
                     });
+                } else {
+                    borrowerCardView.setVisibility(View.GONE);
                 }
             }
         });
@@ -219,7 +221,6 @@ public class ViewBookActivity extends AppCompatActivity {
 
             if (isbn.equals(bookISBN)) {
                 currentExchange.setType(ExchangeType.BorrowerReceive);
-                Log.d(Double.toString(currentExchange.getPickupCoords().getLatitude()), "onActivityResult: Latitude");
                 backend.updateExchange(actionBook, currentExchange);
                 finish();
             } else {
