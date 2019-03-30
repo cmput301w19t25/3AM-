@@ -177,7 +177,7 @@ public class MyBooksFragment extends Fragment {
         bookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                orderedList.clear();
                 String user = FirebaseAuth.getInstance().getUid();
 
                 for (DataSnapshot child : dataSnapshot.getChildren()){
