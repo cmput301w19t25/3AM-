@@ -172,7 +172,11 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
              */
             void clickDelete() {
                 Log.d(mBooks.get(i).getBookID(), "FROM ADAPTER: ");
-               backend.deleteBook(mBooks.get(i));
+               if (!backend.deleteBook(mBooks.get(i))) {
+                   Toast.makeText(mContext, "Book cannot be deleted as its either borrowed or a request has been accepted on it", Toast.LENGTH_SHORT).show();
+               } else {
+                   Toast.makeText(mContext, "Book Deleted Successfully!", Toast.LENGTH_SHORT).show();
+               }
                notifyDataSetChanged();
             }
 

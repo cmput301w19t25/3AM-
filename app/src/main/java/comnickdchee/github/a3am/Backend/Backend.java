@@ -86,10 +86,10 @@ public class Backend {
      * Delete the book from both the books table and every requesting user's
      * requested books list.
      */
-    public void deleteBook(Book book) {
+    public Boolean deleteBook(Book book) {
         // Don't let the user delete a book currently being interacted with
         if (book.getStatus() != Status.Available && book.getStatus() != Status.Requested) {
-            return;
+            return false;
         }
 
         Log.d("START HERE", "deleteBook: ");
@@ -129,6 +129,8 @@ public class Backend {
         // Delete the actual book afterwards
         DatabaseReference bookRef = mFirebaseDatabase.getReference("books").child(book.getBookID());
         bookRef.removeValue();
+
+        return true;
     }
 
     /** Returns the current user of the model class. */
