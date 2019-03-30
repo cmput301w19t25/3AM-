@@ -1,7 +1,6 @@
 package comnickdchee.github.a3am.Adapters;
 
 import android.content.Context;
-import android.media.Image;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,11 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,8 +29,7 @@ import comnickdchee.github.a3am.R;
 
 public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.ViewHolder>{
 
-    // private ArrayList<User> requesters;
-    private ArrayList<User> requesters;   // TODO: Change this so that it take in users instead.
+    private ArrayList<User> requesters;
     private Context mContext;
     private Book currentBook;
     private Backend backend = Backend.getBackendInstance();
@@ -80,7 +75,7 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
                 notificationData.put("type","request");
 
                 reference.child("notificationAccepts").child(receiverkey).child(mAuth.getCurrentUser().getDisplayName()).push().setValue(notificationData);
-                backend.acceptRequest(requesters.get(i), currentBook);
+                backend.acceptRequest(requesters.get(viewHolder.getAdapterPosition()), currentBook);
 
             }
         });
@@ -133,9 +128,9 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
 
             // set the views
             requesterImage = itemView.findViewById(R.id.ivRequesterPhoto);
-            requesterName = itemView.findViewById(R.id.tvName);
-            requesterPhoneText = itemView.findViewById(R.id.tvCardPhoneNumber);
-            requesterEmailText = itemView.findViewById(R.id.tvCardEmail);
+            requesterName = itemView.findViewById(R.id.embeddedName);
+            requesterPhoneText = itemView.findViewById(R.id.embeddedCardPhoneNumber);
+            requesterEmailText = itemView.findViewById(R.id.embeddedCardEmail);
 
 
             acceptRequestView = itemView.findViewById(R.id.ivAcceptRequestButton);

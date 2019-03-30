@@ -24,49 +24,49 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvPhoneLabel"
+            android:id="@+id/embeddedPhoneLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
             android:text="Phone: "
             android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@+id/tvName"
-            app:layout_constraintTop_toTopOf="@+id/tvCardPhoneNumber" />
+            app:layout_constraintStart_toStartOf="@+id/embeddedName"
+            app:layout_constraintTop_toTopOf="@+id/embeddedCardPhoneNumber" />
 
         <TextView
-            android:id="@+id/tvEmailLabel"
+            android:id="@+id/embeddedEmailLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
             android:text="Email: "
             android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@+id/tvPhoneLabel"
-            app:layout_constraintTop_toTopOf="@+id/tvCardEmail" />
+            app:layout_constraintStart_toStartOf="@+id/embeddedPhoneLabel"
+            app:layout_constraintTop_toTopOf="@+id/embeddedCardEmail" />
 
         <TextView
-            android:id="@+id/tvCardEmail"
+            android:id="@+id/embeddedCardEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
             android:text="sample@email.com"
             android:textColor="@color/black"
             android:textSize="10sp"
-            app:layout_constraintStart_toEndOf="@+id/tvEmailLabel"
-            app:layout_constraintTop_toBottomOf="@+id/tvCardPhoneNumber" />
+            app:layout_constraintStart_toEndOf="@+id/embeddedEmailLabel"
+            app:layout_constraintTop_toBottomOf="@+id/embeddedCardPhoneNumber" />
 
         <TextView
-            android:id="@+id/tvCardPhoneNumber"
+            android:id="@+id/embeddedCardPhoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
             android:text="+X-XXX-XXX-XXXX"
             android:textColor="@color/black"
             android:textSize="10sp"
-            app:layout_constraintStart_toEndOf="@+id/tvPhoneLabel"
-            app:layout_constraintTop_toBottomOf="@+id/tvName" />
+            app:layout_constraintStart_toEndOf="@+id/embeddedPhoneLabel"
+            app:layout_constraintTop_toBottomOf="@+id/embeddedName" />
 
         <TextView
-            android:id="@+id/tvName"
+            android:id="@+id/embeddedName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

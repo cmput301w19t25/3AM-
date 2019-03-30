@@ -1,15 +1,13 @@
 package comnickdchee.github.a3am.Activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -37,6 +35,7 @@ import java.util.Locale;
 import comnickdchee.github.a3am.Adapters.RequestersAdapter;
 import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Backend.ExchangeCallback;
+import comnickdchee.github.a3am.Backend.UserCallback;
 import comnickdchee.github.a3am.Backend.UserListCallback;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
@@ -58,6 +57,10 @@ public class ViewBookActivity extends AppCompatActivity {
     private RecyclerView rvRequests;
     private TextView emptyView;
     private TextView locationText;
+    private CardView borrowerCardView;
+    private TextView borrowerUsernameText;
+    private TextView borrowerPhoneNumberText;
+    private TextView borrowerEmailText;
     private ArrayList<User> requesters = new ArrayList<>();
     private RequestersAdapter requestersAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -161,6 +164,21 @@ public class ViewBookActivity extends AppCompatActivity {
                     if (actionBook.getCurrentBorrowerID() == null) {
                         emptyView.setVisibility(View.VISIBLE);
                         rvRequests.setVisibility(View.GONE);
+
+                    } else {
+                        emptyView.setVisibility(View.GONE);
+                        rvRequests.setVisibility(View.GONE);
+                        borrowerCardView.setVisibility(View.VISIBLE);
+
+                        // Gets the current borrower and populates the card view
+                        backend.getUser(actionBook.getCurrentBorrowerID(), new UserCallback() {
+                            @Override
+                            public void onCallback(User borrower) {
+                                borrowerUsernameText.setText(borrower.getUserName());
+                                borrowerEmailText.setText(borrower.getEmail());
+                                borrowerPhoneNumberText.setText(borrower.getPhoneNumber());
+                            }
+                        });
                     }
                 } else {
                     rvRequests.setVisibility(View.VISIBLE);
@@ -232,6 +250,10 @@ public class ViewBookActivity extends AppCompatActivity {
         TextView bookTitle = findViewById(R.id.tvViewBookTitle);
         TextView bookAuthor = findViewById(R.id.tvViewBookAuthor);
         TextView bookISBN = findViewById(R.id.tvViewBookISBN);
+        borrowerCardView = findViewById(R.id.cvEmbeddedUser);
+        borrowerUsernameText = findViewById(R.id.embeddedName);
+        borrowerEmailText = findViewById(R.id.embeddedCardEmail);
+        borrowerPhoneNumberText = findViewById(R.id.embeddedCardPhoneNumber);
 
         loadImageFromBookID(bookImage, actionBook.getBookID());
         bookTitle.setText(actionBook.getTitle());

@@ -291,21 +291,24 @@ public class Backend {
      * Firebase.
      */
     public void acceptRequest(User user, Book book) {
-        Log.d(user.getUserID(), "IN BACKEND FIRST: ");
-
         book.getRequests().clear();
         book.setCurrentBorrowerID(user.getUserID());
         book.setStatus(Status.Accepted);
 
         updateExchange(book, ExchangeType.OwnerHandover);
         updateBookData(book);
-        Log.d(user.getUserID(), "IN BACKEND BEFORE BUG CALL: ");
         updateUserData(user);
     }
 
     /** Reject request that follows similar logic to accept request. */
     public void rejectRequest(User user, Book book) {
         book.getRequests().remove(user.getUserID());
+
+        /** Empty */
+        if (book.getRequests().size() == 0) {
+            book.setStatus(Status.Available);
+        }
+
         user.getRequestedBooks().remove(book.getBookID());
 
         updateBookData(book);
