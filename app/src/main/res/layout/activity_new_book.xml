@@ -105,6 +105,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivAddBookPhoto" />
 
+        <ImageView
+            android:id="@+id/bDeleteImage"
+            android:layout_width="30dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            app:layout_constraintStart_toEndOf="@+id/ivAddBookPhoto"
+            app:layout_constraintTop_toTopOf="@+id/ivAddBookPhoto"
+            android:src="@drawable/ic_close_dark_red_24dp" />
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.TextInputLayout

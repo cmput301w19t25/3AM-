@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,15 +55,20 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class MyBooksFragment extends Fragment {
 
-    private ArrayList<Book> BookList;
+    private ArrayList<Book> BookList = new ArrayList<>();
     private BookRecyclerAdapter adapter;
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseAuth mAuth;
+    private Status curStatus;
+    public Boolean filtered = false;
+    private RecyclerView recyclerView;
+
+    private TextView noDataView;
 
     ///new filter button added
     private FloatingActionButton filter;
     //list for filtering
-    private ArrayList<Book> orderedList;
+    private ArrayList<Book> orderedList = new ArrayList<>();
 
 
     @Nullable
@@ -78,6 +84,8 @@ public class MyBooksFragment extends Fragment {
          */
         fab.setOnClickListener((View v) -> {
             Intent intent = new Intent(view.getContext(), NewBookActivity.class);
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
             startActivityForResult(intent, 1);
         });
 
@@ -85,9 +93,14 @@ public class MyBooksFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         DatabaseReference ref = database.getReference().child("users").child(mAuth.getUid()).child("ownedBooks");
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
-        adapter = new BookRecyclerAdapter(getActivity(), BookList);
+        noDataView = view.findViewById(R.id.noDataView);
+
+        recyclerView.setVisibility(View.VISIBLE);
+        noDataView.setVisibility(View.INVISIBLE);
+
+        adapter = new BookRecyclerAdapter(getActivity(), orderedList);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -113,63 +126,41 @@ public class MyBooksFragment extends Fragment {
 
                         switch (menuItem.getItemId()) {
                             case R.id.item2:
-                                for (Book orderedBook : BookList) {
-                                    if (orderedBook.getStatus() == Status.Available) {
-                                        orderedList.add(orderedBook);
-                                    }
-                                }
 
-                                // Bind to adapter and show results
-                                recyclerView.setAdapter(updatedAdapter);
-                                updatedAdapter.notifyDataSetChanged();
+                                curStatus = Status.Available;
+                                filtered = true;
+                                filterData(true);
 
                                 return true;
 
                             case R.id.item3:
-                                for (Book orderedBook : BookList) {
-                                    if (orderedBook.getStatus() == Status.Borrowed) {
-                                        orderedList.add(orderedBook);
-                                    }
-                                }
 
-                                // Bind to adapter and show results
-                                recyclerView.setAdapter(updatedAdapter);
-                                updatedAdapter.notifyDataSetChanged();
-
+                                curStatus = Status.Borrowed;
+                                filtered = true;
+                                filterData(true);
                                 return true;
 
                             case R.id.item4:
 
-                                for (Book orderedBook : BookList) {
-                                    if (orderedBook.getStatus() == Status.Requested) {
-                                        orderedList.add(orderedBook);
-                                    }
-                                }
-
-                                // Bind to adapter and show results
-                                recyclerView.setAdapter(updatedAdapter);
-                                updatedAdapter.notifyDataSetChanged();
+                                curStatus = Status.Requested;
+                                filtered = true;
+                                filterData(true);
 
                                 return true;
 
 
                             case R.id.item5:
 
-                                for (Book orderedBook : BookList) {
-                                    if (orderedBook.getStatus() == Status.Accepted) {
-                                        orderedList.add(orderedBook);
-                                    }
-                                }
-                                // Bind to adapter and show results
-                                recyclerView.setAdapter(updatedAdapter);
-                                updatedAdapter.notifyDataSetChanged();
+                                curStatus = Status.Accepted;
+                                filtered = true;
+                                filterData(true);
 
                                 return true;
 
                             case R.id.item6:
-                                orderedList.addAll(BookList);
-                                recyclerView.setAdapter(updatedAdapter);
-                                updatedAdapter.notifyDataSetChanged();
+
+                                filtered = false;
+                                filterData(false);
 
                                 return true;
 
@@ -198,6 +189,14 @@ public class MyBooksFragment extends Fragment {
                         }
                     }
                 }
+                if (orderedList.size() == 0) {
+                    recyclerView.setVisibility(View.INVISIBLE);
+                    noDataView.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    noDataView.setVisibility(View.INVISIBLE);
+                }
+
             }
 
             @Override
@@ -206,36 +205,36 @@ public class MyBooksFragment extends Fragment {
             }
         });
 
-//        ref.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                dataSnapshot.getKey();
-//
-//                if (dataSnapshot.hasChildren()){
-//                    Log.d("DATABASE HAS CHILDREN", "onDataChange: ");
-//                } else{
-//                    Log.d("DATABASE NO CHILDREN", "onDataChange: ");
-//                    BookList.clear();
-//                }
-//
-//                for (DataSnapshot child : dataSnapshot.getChildren()) {
-//                    Log.d("TestData", child.getValue().toString());
-//                    String key = child.getValue().toString();
-//                    findBook(key);
-//                }
-//                adapter.notifyDataSetChanged();
-//
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        });
-        //Gets the user's profile picture
-
-
         return view;
+    }
+
+    public void filterData (Boolean filtered) {
+
+        orderedList.clear();
+
+        if (!filtered){
+            orderedList.addAll(BookList);
+        }
+
+        for (Book orderedBook : BookList) {
+            if (orderedBook.getStatus() == curStatus) {
+                orderedList.add(orderedBook);
+            }
+        }
+
+        if (orderedList.size() == 0) {
+            recyclerView.setVisibility(View.INVISIBLE);
+            noDataView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            noDataView.setVisibility(View.INVISIBLE);
+        }
+
+        BookRecyclerAdapter updatedAdapter = new BookRecyclerAdapter(getActivity(), orderedList);
+
+        // Bind to adapter and show results
+        recyclerView.setAdapter(updatedAdapter);
+        updatedAdapter.notifyDataSetChanged();
     }
 
 
@@ -267,28 +266,13 @@ public class MyBooksFragment extends Fragment {
                 b1.setBookID(bookID);
                 b1.setStatus(Status.valueOf(status));
 
-                    /*
-                    storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            String DownloadLink = uri.toString();
-                            Log.d("ImageDownload",DownloadLink);
-                            b1.setImage(DownloadLink);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("ImageDownload","Failed");
-
-                        }
-                    });
-                    */
-
                 if (storageRef != null) {
                     b1.setImage(key);
                 }
                 BookList.add(b1);
                 adapter.notifyDataSetChanged();
+
+                filterData(filtered);
             }
 
             @Override

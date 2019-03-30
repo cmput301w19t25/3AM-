@@ -5,6 +5,15 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
+    <TextView
+        android:id="@+id/noDataView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No Books to show"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:visibility="invisible"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

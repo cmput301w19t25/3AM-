@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.PrimitiveIterator;
 
 import comnickdchee.github.a3am.Adapters.ActionsTabAdapter;
 import comnickdchee.github.a3am.Backend.Backend;
@@ -39,6 +41,7 @@ public class ActionsFragment extends Fragment {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser mCurrentUser = mAuth.getCurrentUser();
     private ArrayList<Book> actionsBooksList = new ArrayList<>();
+    private TextView noDataView;
     Backend backend = Backend.getBackendInstance();
 
     public ActionsFragment() {
@@ -52,20 +55,10 @@ public class ActionsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_borrowed, container, false);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        noDataView = view.findViewById(R.id.noDataView);
 
-        // Use the backend singleton to load the requested books,
-        // and then we add the requested books to the list to show on
-        // the fragment's recycler view
-
-        /**
-         * TODO: I will mimic adding a book using the addBook method of the backend singleton,
-         * which will be done first by pushing the user class to the "users" table. Then, we
-         * navigate to this actions fragment and perform add book.
-         */
-
-        // Add the book using the user data and update the tables
-//        Book testBook = new Book("12345", "Harry Potter", "JK Rowling", backend.getFirebaseUser().getUid());
-//        backend.addBook(testBook);
+        recyclerView.setVisibility(View.VISIBLE);
+        noDataView.setVisibility(View.INVISIBLE);
 
         //Create and return the recyclerView
         ActionsTabAdapter adapter = new ActionsTabAdapter(getActivity(), actionsBooksList);
@@ -77,6 +70,13 @@ public class ActionsFragment extends Fragment {
             public void onCallback(ArrayList<Book> books) {
                 actionsBooksList.clear();
                 actionsBooksList.addAll(0,books);
+                if (actionsBooksList.size() == 0) {
+                    recyclerView.setVisibility(View.INVISIBLE);
+                    noDataView.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    noDataView.setVisibility(View.INVISIBLE);
+                }
                 adapter.notifyDataSetChanged();
             }
         });
