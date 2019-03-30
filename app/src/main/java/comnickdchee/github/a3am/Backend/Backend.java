@@ -5,6 +5,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -87,10 +88,9 @@ public class Backend {
      */
     public void deleteBook(Book book) {
         // Don't let the user delete a book currently being interacted with
-//        if (book.getStatus() != Status.Available || book.getStatus() != Status.Requested) {
-//            Log.d("RETURNED", "deleteBook: ");
-//            return;
-//        }
+        if (book.getStatus() != Status.Available && book.getStatus() != Status.Requested) {
+            return;
+        }
 
         Log.d("START HERE", "deleteBook: ");
         Log.d(book.getBookID(), "deleteBook: ");
@@ -291,21 +291,24 @@ public class Backend {
      * Firebase.
      */
     public void acceptRequest(User user, Book book) {
-        Log.d(user.getUserID(), "IN BACKEND FIRST: ");
-
         book.getRequests().clear();
         book.setCurrentBorrowerID(user.getUserID());
         book.setStatus(Status.Accepted);
 
         updateExchange(book, ExchangeType.OwnerHandover);
         updateBookData(book);
-        Log.d(user.getUserID(), "IN BACKEND BEFORE BUG CALL: ");
         updateUserData(user);
     }
 
     /** Reject request that follows similar logic to accept request. */
     public void rejectRequest(User user, Book book) {
         book.getRequests().remove(user.getUserID());
+
+        /** Empty */
+        if (book.getRequests().size() == 0) {
+            book.setStatus(Status.Available);
+        }
+
         user.getRequestedBooks().remove(book.getBookID());
 
         updateBookData(book);
@@ -349,6 +352,22 @@ public class Backend {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 userCallback.onCallback(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    /** Fetches a user's information from Firebase, given their uid. */
+    public void getBook(String bookID, final BookCallback bookCallback) {
+        DatabaseReference usersRef = mFirebaseDatabase.getReference("books");
+        usersRef.child(bookID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Book book = dataSnapshot.getValue(Book.class);
+                bookCallback.onCallback(book);
             }
 
             @Override
