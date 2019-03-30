@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -68,8 +69,12 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
     private RecyclerView.LayoutManager layoutManager;
     private Button receiveButton;
     private ImageView backButton;
+    private TextView phoneNumberText;
+    private TextView emailText;
+    private SupportMapFragment mapFragment;
     private GoogleMap mGoogleMap;
     private Marker marker;
+    private ConstraintLayout userCard;
 
     private Book actionBook = new Book();
     private User owner = new User();
@@ -83,11 +88,18 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_grey_default));
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
 
         if (mapFragment != null) {
             mapFragment.getMapAsync(ViewRBookActivity.this);
         }
+
+
+        // Setting up the view items
+        phoneNumberText = findViewById(R.id.tvPhoneNumber);
+        emailText = findViewById(R.id.tvEmail);
+        userCard = findViewById(R.id.userCard);
+
 
         Intent intent = getIntent();
         actionBook = intent.getExtras().getParcelable("acceptedBook");
@@ -100,6 +112,17 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
 
+
+        // Shows profile when userCard is clicked
+        userCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent (getApplicationContext(), UserProfileActivity.class);
+                i.putExtra("key", ownerID);
+                startActivity(i);
+            }
+        });
+
         receiveButton = findViewById(R.id.receiveBookButton);
 
         backend.getExchange(actionBook, new ExchangeCallback() {
@@ -107,14 +130,24 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
             public void onCallback(Exchange exchange) {
                 if (exchange != null) {
                     if (exchange.getType() == ExchangeType.BorrowerReceive) {
+
                         if (exchange.getPickupCoords() != null) {
                             receiveButton.setVisibility(View.VISIBLE);
+                        } else {
+                            if (mapFragment.getView() != null) {
+                                mapFragment.getView().setVisibility(View.GONE);
+                            }
                         }
+
                     } else {
                         receiveButton.setVisibility(View.GONE);
                     }
                 } else {
                     receiveButton.setVisibility(View.GONE);
+
+                    if (mapFragment.getView() != null) {
+                        mapFragment.getView().setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -135,6 +168,8 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
                 finish();
             }
         });
+
+
 
     }
 
@@ -167,7 +202,6 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
         //TextView phone = findViewById(R.id.phoneTV);
         //TextView email = findViewById(R.id.emailTV);
         TextView username = findViewById(R.id.usernameTV);
-        TextView rating = findViewById(R.id.ratingTV);
         TextView bookTitle = findViewById(R.id.tvViewBookTitle);
         TextView bookAuthor = findViewById(R.id.tvViewBookAuthor);
         TextView bookISBN = findViewById(R.id.tvViewBookISBN);
@@ -183,6 +217,8 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
         bookTitle.setText(actionBook.getTitle());
         bookAuthor.setText(actionBook.getAuthor());
         bookISBN.setText(actionBook.getISBN());
+        phoneNumberText.setText(owner.getPhoneNumber());
+        emailText.setText(owner.getEmail());
 
     }
 
@@ -221,7 +257,6 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        Log.d("GET PICKUP COORDS", "onMapReady: ");
         getPickupCoords();
     }
 
@@ -241,11 +276,23 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
                     if (exchange != null) {
                         PickupCoords pickupCoords = exchange.getPickupCoords();
                         if (pickupCoords != null) {
+
+                            // Set the visibility here if we have a location
+                            if (mapFragment.getView() != null) {
+                                mapFragment.getView().setVisibility(View.VISIBLE);
+                            }
+
                             LatLng latLng = new LatLng(pickupCoords.getLatitude(), pickupCoords.getLongitude());
                             MarkerOptions markerOptions = new MarkerOptions()
                                     .position(latLng);
                             marker = mGoogleMap.addMarker(markerOptions);
                             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+
+                        // Setting the map fragment to be invisible if no location added
+                        } else {
+                            if (mapFragment.getView() != null) {
+                                mapFragment.getView().setVisibility(View.GONE);
+                            }
                         }
                     }
                 }

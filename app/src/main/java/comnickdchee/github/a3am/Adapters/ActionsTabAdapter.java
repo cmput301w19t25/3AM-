@@ -39,6 +39,7 @@ import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Models.Book;
 
+import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.R;
 
 import comnickdchee.github.a3am.Activities.ViewBookActivity;
@@ -79,6 +80,14 @@ public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.Vi
         holder.tvBookTitle.setText(mBookList.get(i).getTitle());
         holder.tvAuthorName.setText(mBookList.get(i).getAuthor());
         holder.tvISBN.setText(mBookList.get(i).getISBN());
+        if (mBookList.get(i).getStatus() == Status.Accepted){
+            holder.tvRequestCount.setVisibility(View.INVISIBLE);
+            holder.tvRequestTag.setText("Request Accepted");
+        } else {
+            holder.tvRequestCount.setText(Integer.toString(mBookList.get(i).getRequests().size()));
+            holder.tvRequestTag.setText("Total Requests: ");
+        }
+
 
         // On click event when a card is clicked
         holder.actionsItemView.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +132,8 @@ public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.Vi
         public ImageView ivBook;
         public TextView tvBookTitle;
         public TextView tvAuthorName;
+        public TextView tvRequestCount;
+        public TextView tvRequestTag;
         public TextView tvISBN;
         public CardView actionsItemView;
 
@@ -132,6 +143,8 @@ public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.Vi
             tvBookTitle = itemView.findViewById(R.id.tvCardBookTitle);
             actionsItemView = itemView.findViewById(R.id.cvActions);
             tvAuthorName = itemView.findViewById(R.id.tvAuthor);
+            tvRequestCount = itemView.findViewById(R.id.tvRequests);
+            tvRequestTag = itemView.findViewById(R.id.tvRequestsTag);
             tvISBN = itemView.findViewById(R.id.tvISBN);
 
         }

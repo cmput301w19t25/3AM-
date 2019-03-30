@@ -4,7 +4,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/item1"
-        android:title="FILTER BY" />
+        android:title="FILTER BY"
+        android:enabled="false"/>
+
+    <item android:id="@+id/item6"
+    android:title="All" />
 
     <item android:id="@+id/item2"
         android:title="Available"/>

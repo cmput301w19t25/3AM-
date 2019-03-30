@@ -4,14 +4,17 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <permission
         android:name="comnickdchee.github.a3am.geolocation.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"/>
+        android:protectionLevel="signature" />
 
     <uses-permission android:name="comnickdchee.github.a3am.permission.MAPS_RECEIVE" />
     <uses-permission android:name="com.goggle.android.providers.gsf.permissions.READ_GSERVICES" />
@@ -31,11 +34,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:windowSoftInputMode="adjustPan">
-        <activity android:name=".Activities.EditProfile"></activity>
+        <activity android:name=".Activities.UserProfileActivity"></activity>
+        <activity android:name=".Activities.EditProfile" />
 
-        <service android:name=".MyServiceNotification"><intent-filter>
-            <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-        </intent-filter>
+        <service android:name=".MyServiceNotification">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
         </service>
 
         <activity
@@ -63,10 +68,10 @@
         </activity>
         <activity
             android:name=".Activities.BorrowedProfileActivity"
-            android:parentActivityName=".Activities.HomepageActivity"></activity>
+            android:parentActivityName=".Activities.HomepageActivity" />
         <activity
             android:name=".Activities.OwnerProfileActivity"
-            android:parentActivityName=".Activities.HomepageActivity"></activity>
+            android:parentActivityName=".Activities.HomepageActivity" />
         <activity android:name=".Activities.SignUpActivity" />
         <activity android:name=".Activities.MapsActivity" />
         <activity android:name=".Activities.ViewBookActivity" />
@@ -103,12 +108,12 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
         <service android:name=".MyServiceNotification">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>
