@@ -130,6 +130,9 @@ public class MyBooksFragment extends Fragment {
                                 if (orderedList.size() == 0) {
                                     recyclerView.setVisibility(View.INVISIBLE);
                                     noDataView.setVisibility(View.VISIBLE);
+                                } else {
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    noDataView.setVisibility(View.INVISIBLE);
                                 }
 
                                 // Bind to adapter and show results
@@ -148,6 +151,9 @@ public class MyBooksFragment extends Fragment {
                                 if (orderedList.size() == 0) {
                                     recyclerView.setVisibility(View.INVISIBLE);
                                     noDataView.setVisibility(View.VISIBLE);
+                                } else {
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    noDataView.setVisibility(View.INVISIBLE);
                                 }
 
                                 // Bind to adapter and show results
@@ -167,6 +173,9 @@ public class MyBooksFragment extends Fragment {
                                 if (orderedList.size() == 0) {
                                     recyclerView.setVisibility(View.INVISIBLE);
                                     noDataView.setVisibility(View.VISIBLE);
+                                } else {
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    noDataView.setVisibility(View.INVISIBLE);
                                 }
 
                                 // Bind to adapter and show results
@@ -187,6 +196,9 @@ public class MyBooksFragment extends Fragment {
                                 if (orderedList.size() == 0) {
                                     recyclerView.setVisibility(View.INVISIBLE);
                                     noDataView.setVisibility(View.VISIBLE);
+                                } else {
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    noDataView.setVisibility(View.INVISIBLE);
                                 }
                                 // Bind to adapter and show results
                                 recyclerView.setAdapter(updatedAdapter);
@@ -200,6 +212,9 @@ public class MyBooksFragment extends Fragment {
                                 if (orderedList.size() == 0) {
                                     recyclerView.setVisibility(View.INVISIBLE);
                                     noDataView.setVisibility(View.VISIBLE);
+                                } else {
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    noDataView.setVisibility(View.INVISIBLE);
                                 }
 
                                 recyclerView.setAdapter(updatedAdapter);

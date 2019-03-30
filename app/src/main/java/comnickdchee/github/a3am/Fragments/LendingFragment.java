@@ -55,6 +55,9 @@ public class LendingFragment extends Fragment {
                 if (lendingBooksList.size() == 0) {
                     recyclerView.setVisibility(View.INVISIBLE);
                     noDataView.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    noDataView.setVisibility(View.INVISIBLE);
                 }
                 Log.d(TAG, "onCallback: " + Integer.toString(books.size()));
                 adapter.notifyDataSetChanged();

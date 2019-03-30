@@ -54,6 +54,9 @@ public class BorrowedFragment extends Fragment {
                 if (borrowedBooksList.size() == 0) {
                     recyclerView.setVisibility(View.INVISIBLE);
                     noDataView.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    noDataView.setVisibility(View.INVISIBLE);
                 }
                 adapter.notifyDataSetChanged();
             }

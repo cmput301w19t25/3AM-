@@ -73,6 +73,9 @@ public class ActionsFragment extends Fragment {
                 if (actionsBooksList.size() == 0) {
                     recyclerView.setVisibility(View.INVISIBLE);
                     noDataView.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    noDataView.setVisibility(View.INVISIBLE);
                 }
                 adapter.notifyDataSetChanged();
             }
