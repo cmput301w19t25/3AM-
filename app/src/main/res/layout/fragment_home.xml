@@ -18,9 +18,9 @@
             app:tabTextColor="#FFF" />
 
         <android.support.v4.view.ViewPager
+            android:id="@+id/pagerHomepage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/pagerHomepage"
             android:layout_below="@id/navTabs">
 
         </android.support.v4.view.ViewPager>

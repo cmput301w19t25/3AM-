@@ -51,6 +51,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         findViewById(R.id.LoginBtn).setOnClickListener(this);
 
         if(mAuth != null && mAuth.getCurrentUser() != null) {
+
             dialog = new ProgressDialog(SignInActivity.this);
             dialog.setMessage("Loading User Data");
             dialog.show();

@@ -148,7 +148,6 @@ public class MyBooksFragment extends Fragment {
 
                                 return true;
 
-
                             case R.id.item5:
 
                                 curStatus = Status.Accepted;
