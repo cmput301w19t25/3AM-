@@ -88,7 +88,7 @@ public class Backend {
      */
     public void deleteBook(Book book) {
         // Don't let the user delete a book currently being interacted with
-        if (book.getStatus() != Status.Available || book.getStatus() != Status.Requested) {
+        if (book.getStatus() != Status.Available && book.getStatus() != Status.Requested) {
             return;
         }
 
