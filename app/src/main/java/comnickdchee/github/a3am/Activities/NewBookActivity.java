@@ -116,7 +116,8 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
 
         closeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                finish();
+                //finish();
+
             }
         });
 
@@ -132,7 +133,8 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
                     String bookAuthor = bookAuthorText.getText().toString();
                     String bookISBN = bookISBNText.getText().toString();
                     addBook(bookTitle, bookAuthor, bookISBN);
-                    finish();
+                    //finish();
+                    onBackPressed();
                 }
 
             }
@@ -346,6 +348,7 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
                         FirebaseStorage.getInstance().getReference("BookImages").child(newBook.getBookID());
                 bookImageRef.putBytes(bArray);
             }
+            Log.d("BookNew","Success book added");
         }
     }
 
