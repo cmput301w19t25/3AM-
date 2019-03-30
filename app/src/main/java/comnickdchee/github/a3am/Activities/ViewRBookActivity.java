@@ -114,10 +114,9 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
             public void onCallback(Exchange exchange) {
                 if (exchange != null) {
                     if (exchange.getType() == ExchangeType.BorrowerReceive) {
+                        receiveButton.setVisibility(View.VISIBLE);
 
-                        if (exchange.getPickupCoords() != null) {
-                            receiveButton.setVisibility(View.VISIBLE);
-                        } else {
+                        if (exchange.getPickupCoords() == null) {
                             if (mapFragment.getView() != null) {
                                 mapFragment.getView().setVisibility(View.GONE);
                             }
