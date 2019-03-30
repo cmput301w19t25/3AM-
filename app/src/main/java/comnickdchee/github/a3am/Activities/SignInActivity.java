@@ -52,7 +52,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
         if(mAuth != null && mAuth.getCurrentUser() != null) {
             dialog = new ProgressDialog(SignInActivity.this);
-            dialog.setTitle("Loading User Data");
+            dialog.setMessage("Loading User Data");
             dialog.show();
             Log.d("akjdhfaljksdfhjklasdf", "onCreate: INSIDE");
             Intent homePage = new Intent(this, HomepageActivity.class);
@@ -69,10 +69,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-
-    public void dismissDialog() {
-        dialog.dismiss();
-    }
 
     private void UserLogin(){
         String email = emailReg.getText().toString().trim();
@@ -107,6 +103,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    dialog = new ProgressDialog(SignInActivity.this);
+                    dialog.setMessage("Loading User Data");
+                    dialog.show();
                     Intent intent = new Intent(SignInActivity.this, HomepageActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     String current_token = FirebaseInstanceId.getInstance().getToken();

@@ -104,7 +104,6 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //dismissDialog();
 
         /*
             Editing data to add in user information for navbar.
