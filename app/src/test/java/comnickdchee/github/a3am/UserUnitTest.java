@@ -2,11 +2,14 @@ package comnickdchee.github.a3am;
 
 import android.media.Image;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
+
+import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Exchange;
 import comnickdchee.github.a3am.Models.Status;
@@ -14,15 +17,19 @@ import comnickdchee.github.a3am.Models.User;
 
 
 public class UserUnitTest {
+    //Backend backend = Backend.getBackendInstance();
     User user1 = new User("Name","example@exm.com",
             "Dubai","0123-123-3456");
+
+    @Before
+
 
     @Test
     public void test_acceptRequests() {
         User user2 = new User("Gorib","mod@exm.com",
                 "Sefat Ullah Dhaka, Bangladesh","0124-123-3456");
         Book book = new Book("12345","Harry Potta","J.K. Rolling",user1);
-        user1.acceptRequest(book,user2);
+        //user1.acceptRequest(book,user2);
         ArrayList<Exchange> exchangeList = user1.getExchangeList();
         Exchange exchange1 = exchangeList.get(exchangeList.size() - 1);
         Exchange exchange2 = new Exchange(user1,user2,"",false,book);
@@ -39,8 +46,8 @@ public class UserUnitTest {
 
     @Test
     public void test_addOwnedBooks(){
-        Book book = new Book("12345","Harry Potta","J.K. Rolling",user1);
-        user1.addOwnedBook(book);
+        Book book = new Book("12345","Harry Potta","J.K. Rolling", user1);
+        backend.addBook(book);
         ArrayList<Book> books = user1.getOwnedBookList();
         Book newBook = books.get(books.size() - 1);
         assertEquals(newBook,book);
@@ -60,8 +67,8 @@ public class UserUnitTest {
         User user2 = new User("Gorib","mod@exm.com",
                 "Dhaka, Bangladesh", "0124-123-3456");
         Book request = new Book("12345","Harry Potta","J.K. Rolling",user2);
-        int requestID = request.getBookID();
-        Exchange exchange = new Exchange(user2, user1, "test location", false, requestID);
+        String requestID = request.getBookID();
+        Exchange exchange = new Exchange(user2, user1, "test location", false, request);
         user1.returnBook(request.getBookID());
 
         assertEquals(Status.Available, request.getStatus());
@@ -123,7 +130,7 @@ public class UserUnitTest {
         book1.setAuthor("J K Rowlings");        //edit author
 
         //check if book descriptions were edited successfully?
-        assertEquals(user3, book1.getCurrentBorrower());
+        assertEquals(user3, book1.getRequestUsers());
         assertEquals("J K Rowlings", book1.getAuthor());
         assertEquals("Harry Potter", book1.getTitle());
     }

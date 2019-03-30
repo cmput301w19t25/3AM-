@@ -27,7 +27,7 @@ public class ChatBoxTest {
         User toUser = user2;
 
         Message message1 = new Message(messageText,  user1,user2, ddate);
-        chatbox.sendMessage(messageText, date, user1,user2);
+        chatbox.sendMessage(messageText,  user1,user2, date );
         ArrayList<Message> messageList = chatbox.getMessages();
 
         Message message2 = messageList.get(2);
