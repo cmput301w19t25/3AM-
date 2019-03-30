@@ -58,6 +58,8 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull RequestersAdapter.ViewHolder viewHolder, final int i) {
         viewHolder.requesterName.setText(requesters.get(i).getUserName());
+        viewHolder.requesterEmailText.setText(requesters.get(i).getEmail());
+        viewHolder.requesterPhoneText.setText(requesters.get(i).getPhoneNumber());
         loadImageFromOwnerID(viewHolder.requesterImage,requesters.get(i).getUserID());
 
         // Accept request.
@@ -121,7 +123,8 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
         // views inside ViewHolder
         public ImageView requesterImage;
         public TextView requesterName;
-        public RatingBar rating;
+        public TextView requesterPhoneText;
+        public TextView requesterEmailText;
         public ImageView acceptRequestView;
         public ImageView rejectRequestView;
 
@@ -131,7 +134,10 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
             // set the views
             requesterImage = itemView.findViewById(R.id.ivRequesterPhoto);
             requesterName = itemView.findViewById(R.id.tvName);
-            rating = itemView.findViewById(R.id.ratingBar);
+            requesterPhoneText = itemView.findViewById(R.id.tvCardPhoneNumber);
+            requesterEmailText = itemView.findViewById(R.id.tvCardEmail);
+
+
             acceptRequestView = itemView.findViewById(R.id.ivAcceptRequestButton);
             rejectRequestView = itemView.findViewById(R.id.ivRejectRequestButton);
         }

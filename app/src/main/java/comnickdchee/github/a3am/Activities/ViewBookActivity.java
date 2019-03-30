@@ -158,8 +158,10 @@ public class ViewBookActivity extends AppCompatActivity {
                 requestersAdapter.notifyDataSetChanged();
 
                 if (requesters.isEmpty()) {
-                    emptyView.setVisibility(View.VISIBLE);
-                    rvRequests.setVisibility(View.GONE);
+                    if (actionBook.getCurrentBorrowerID() == null) {
+                        emptyView.setVisibility(View.VISIBLE);
+                        rvRequests.setVisibility(View.GONE);
+                    }
                 } else {
                     rvRequests.setVisibility(View.VISIBLE);
                     emptyView.setVisibility(View.GONE);
