@@ -44,13 +44,13 @@ public class zDeleteBookTest {
         solo.clickOnImageButton(0);
         solo.clickOnMenuItem("My Books");
 
-        solo.waitForFragmentById(R.id.view_in_fragment);
+        //solo.waitForFragmentById(R.id.view_in_fragment);
 
-        //solo.clickOnView(solo.getView(R.id.ibOption));
+        solo.clickOnView(solo.getView(R.id.ibOption));
 
-        onView(withId(R.id.ibOption)).perform(click());
+        //onView(withId(R.id.ibOption)).perform(click());
         solo.clickOnMenuItem("Delete");
-        solo.sleep(10000);
+        solo.sleep(3000);
 
     }
 

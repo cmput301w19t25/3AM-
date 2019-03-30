@@ -6,6 +6,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.robotium.solo.Solo;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,6 +36,7 @@ public class aSignUpActivityTest {
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private SignUpActivity nActivity = null;
+    private Solo solo;
     //private SignUpActivity mActivity = null;
 
     Instrumentation.ActivityMonitor monitor = getInstrumentation().addMonitor(SignInActivity.class.getName(),null,false);//monitor to show when second activity opens
@@ -66,9 +68,8 @@ public class aSignUpActivityTest {
         onView(withId(R.id.PasswordReg)).perform(typeText("one1234")).perform(closeSoftKeyboard());
         onView(withId(R.id.address)).perform(typeText("421 NY")).perform(closeSoftKeyboard());
         onView(withId(R.id.phoneNumber)).perform(typeText("7778904605")).perform(closeSoftKeyboard());
-        //Thread.sleep(250)
+       // SystemClock.sleep(3000);
 
-        onView(withId(R.id.RegisterConfirm)).perform(click());
     }
 
 }
