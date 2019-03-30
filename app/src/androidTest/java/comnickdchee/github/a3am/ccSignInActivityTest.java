@@ -28,7 +28,7 @@ import static org.junit.Assert.*;
  * use of expresso to test sign in
  */
 
-public class bSignInActivityTest {
+public class ccSignInActivityTest {
     @Rule
     public ActivityTestRule<SignInActivity>bActivityTestRule = new ActivityTestRule<SignInActivity>(SignInActivity.class);
 
