@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -59,6 +60,8 @@ public class MyBooksFragment extends Fragment {
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseAuth mAuth;
 
+    private TextView noDataView;
+
     ///new filter button added
     private FloatingActionButton filter;
     //list for filtering
@@ -86,6 +89,11 @@ public class MyBooksFragment extends Fragment {
 
         DatabaseReference ref = database.getReference().child("users").child(mAuth.getUid()).child("ownedBooks");
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+
+        noDataView = view.findViewById(R.id.noDataView);
+
+        recyclerView.setVisibility(View.VISIBLE);
+        noDataView.setVisibility(View.INVISIBLE);
 
         adapter = new BookRecyclerAdapter(getActivity(), BookList);
         recyclerView.setAdapter(adapter);
@@ -119,6 +127,11 @@ public class MyBooksFragment extends Fragment {
                                     }
                                 }
 
+                                if (orderedList.size() == 0) {
+                                    recyclerView.setVisibility(View.INVISIBLE);
+                                    noDataView.setVisibility(View.VISIBLE);
+                                }
+
                                 // Bind to adapter and show results
                                 recyclerView.setAdapter(updatedAdapter);
                                 updatedAdapter.notifyDataSetChanged();
@@ -130,6 +143,11 @@ public class MyBooksFragment extends Fragment {
                                     if (orderedBook.getStatus() == Status.Borrowed) {
                                         orderedList.add(orderedBook);
                                     }
+                                }
+
+                                if (orderedList.size() == 0) {
+                                    recyclerView.setVisibility(View.INVISIBLE);
+                                    noDataView.setVisibility(View.VISIBLE);
                                 }
 
                                 // Bind to adapter and show results
@@ -146,6 +164,11 @@ public class MyBooksFragment extends Fragment {
                                     }
                                 }
 
+                                if (orderedList.size() == 0) {
+                                    recyclerView.setVisibility(View.INVISIBLE);
+                                    noDataView.setVisibility(View.VISIBLE);
+                                }
+
                                 // Bind to adapter and show results
                                 recyclerView.setAdapter(updatedAdapter);
                                 updatedAdapter.notifyDataSetChanged();
@@ -160,6 +183,11 @@ public class MyBooksFragment extends Fragment {
                                         orderedList.add(orderedBook);
                                     }
                                 }
+
+                                if (orderedList.size() == 0) {
+                                    recyclerView.setVisibility(View.INVISIBLE);
+                                    noDataView.setVisibility(View.VISIBLE);
+                                }
                                 // Bind to adapter and show results
                                 recyclerView.setAdapter(updatedAdapter);
                                 updatedAdapter.notifyDataSetChanged();
@@ -168,6 +196,12 @@ public class MyBooksFragment extends Fragment {
 
                             case R.id.item6:
                                 orderedList.addAll(BookList);
+
+                                if (orderedList.size() == 0) {
+                                    recyclerView.setVisibility(View.INVISIBLE);
+                                    noDataView.setVisibility(View.VISIBLE);
+                                }
+
                                 recyclerView.setAdapter(updatedAdapter);
                                 updatedAdapter.notifyDataSetChanged();
 
