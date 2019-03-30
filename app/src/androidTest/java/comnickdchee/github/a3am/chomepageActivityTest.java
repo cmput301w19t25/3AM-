@@ -23,11 +23,11 @@ import static junit.framework.TestCase.assertTrue;
  */
 
 @RunWith(AndroidJUnit4.class)
-    public class homepageActivityTest extends ActivityTestRule<HomepageActivity> {
+    public class chomepageActivityTest extends ActivityTestRule<HomepageActivity> {
 
     private Solo solo;
 
-    public homepageActivityTest() {
+    public chomepageActivityTest() {
         super(HomepageActivity.class, true, true);
     }
 

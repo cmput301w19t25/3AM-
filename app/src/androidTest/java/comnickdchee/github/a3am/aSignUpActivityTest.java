@@ -28,7 +28,7 @@ import comnickdchee.github.a3am.Activities.SignUpActivity;
  * uses expresso for testing the signup
  */
 
-public class SignUpActivityTest {
+public class aSignUpActivityTest {
     @Rule
     public ActivityTestRule<SignUpActivity> nActivityTestRule = new ActivityTestRule<SignUpActivity>(SignUpActivity.class);
     //public ActivityTestRule<SignInActivity> bActivityTestRule = new ActivityTestRule<SignInActivity>(SignUpActivity.class);

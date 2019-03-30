@@ -13,8 +13,7 @@ import comnickdchee.github.a3am.Activities.HomepageActivity;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 
-public class RequestBook {
-
+public class RequestBookTest {
     @Rule
     public ActivityTestRule<HomepageActivity> mActivityTestRule = new ActivityTestRule<HomepageActivity>(HomepageActivity.class);
     private HomepageActivity requestbook = null;
@@ -27,17 +26,24 @@ public class RequestBook {
     }
 
     @Test
-    public void testSearchView() {
+    public void testRequestBook() {
 
         solo.assertCurrentActivity("Wrong Activity", HomepageActivity.class);
 
         solo.clickOnView(solo.getView(R.id.search));
         solo.enterText(0, "Here I stand"); //make new account and chance this to test borrow
         solo.sleep(800);
+
         solo.pressSoftKeyboardSearchButton();
+        solo.sleep(800);
+
+        solo.clickInRecyclerView(0);
         solo.sleep(1000);
 
-        solo.clickInList(0);
+        solo.waitForView(R.id.requestbook_view);
+        solo.clickOnView(solo.getView(R.id.buttonRequestBook));
+
+
 
     }
 

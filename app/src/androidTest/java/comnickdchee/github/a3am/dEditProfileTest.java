@@ -18,7 +18,7 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.*;
 
-public class EditProfileTest {
+public class dEditProfileTest {
 
     @Rule
     public ActivityTestRule<HomepageActivity> myActivityTestRule = new ActivityTestRule<HomepageActivity>(HomepageActivity.class);
