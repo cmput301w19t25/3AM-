@@ -105,21 +105,26 @@ public class ViewBookActivity extends AppCompatActivity {
         Intent intent = getIntent();
         actionBook = intent.getExtras().getParcelable("ActionBook");
 
+        // Attains a reference to the current activities views
         getPageData();
 
+        // Populate the requester cards recycler view
         rvRequests = findViewById(R.id.rvViewBookRequests);
-
         layoutManager = new LinearLayoutManager(this);
         requestersAdapter = new RequestersAdapter(this, requesters, actionBook);
         rvRequests.setLayoutManager(layoutManager);
         rvRequests.setAdapter(requestersAdapter);
 
+        // Gets the current exchange of the given book, and sets
+        // the appropriate views to be visible when certain
+        // conditions are triggered
         backend.getExchange(actionBook, new ExchangeCallback() {
             @Override
             public void onCallback(Exchange exchange) {
                 try {
                     if (exchange != null) {
                         currentExchange = exchange;
+
                         // Get the status, so we can choose to display the button
                         if (currentExchange.getType() == ExchangeType.OwnerHandover) {
                             ownerHandoverButton.setVisibility(View.VISIBLE);
@@ -127,7 +132,8 @@ public class ViewBookActivity extends AppCompatActivity {
                             ownerHandoverButton.setVisibility(View.GONE);
                         }
 
-
+                        // Get the exchange's pickup coordinates and add them as a string
+                        // to display in the view
                         PickupCoords coords = currentExchange.getPickupCoords();
                         if (coords != null) {
                             Geocoder geocoder;
@@ -154,12 +160,15 @@ public class ViewBookActivity extends AppCompatActivity {
             }
         });
 
+        // Gets the book related to the current activity, and populates
+        // the views accordingly
         backend.getBook(actionBook.getBookID(), new BookCallback() {
             @Override
             public void onCallback(Book book) {
                 if (book.getCurrentBorrowerID() != null) {
                     rvRequests.setVisibility(View.GONE);
                     borrowerCardView.setVisibility(View.VISIBLE);
+
                     // Gets the current borrower and populates the card view
                     backend.getUser(book.getCurrentBorrowerID(), new UserCallback() {
                         @Override
@@ -175,6 +184,8 @@ public class ViewBookActivity extends AppCompatActivity {
             }
         });
 
+        // Gets the current requests of the given book and populates
+        // the recycler view as a result
         backend.getRequesters(actionBook, new UserListCallback() {
             @Override
             public void onCallback(ArrayList<User> users) {
@@ -199,10 +210,11 @@ public class ViewBookActivity extends AppCompatActivity {
             }
         });
 
+        // When pressed, the owner can scan the ISBN code from the book
+        // to confirm that the book has be handed over
         ownerHandoverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Set exchange type
                 Intent intent = new Intent(ViewBookActivity.this, BarcodeScanner.class);
                 startActivityForResult(intent,ISBN_READ);
             }
@@ -210,15 +222,18 @@ public class ViewBookActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method that is fired after we return from either the map activity
+     * or the ISBN scanner, where we handle the appropriate logic.
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-        Log.d("ACTIVITY RESULT", "onActivityResult: CALLED");
 
         if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
             String isbn = data.getStringExtra("isbn");
-            Log.d("ISBN Retrieved", isbn);
             String bookISBN = actionBook.getISBN();
 
+            // Checks if the ISBN matched
             if (isbn.equals(bookISBN)) {
                 currentExchange.setType(ExchangeType.BorrowerReceive);
                 backend.updateExchange(actionBook, currentExchange);
@@ -227,6 +242,7 @@ public class ViewBookActivity extends AppCompatActivity {
                 Toast.makeText(this, "ISBN Not Matched with book", Toast.LENGTH_SHORT).show();
             }
 
+        // Returning from the maps activity
         } else if (requestCode == LOCATION_CODE && resultCode == RESULT_OK && data != null) {
             LatLng coords = (LatLng) data.getExtras().getParcelable("Location");
             if (currentExchange == null) {
@@ -234,17 +250,16 @@ public class ViewBookActivity extends AppCompatActivity {
             }
             
             currentExchange.setPickupCoords(new PickupCoords(coords.latitude, coords.longitude));
-            Log.d(currentExchange.getType().toString(), "onActivityResult: ");
             backend.updateExchange(actionBook, currentExchange);
 
+            // Gets the pickup coordinates set in the map and converts it to a
+            // string to display on the activity
             try {
                 Geocoder geocoder;
                 List<Address> addresses;
                 geocoder = new Geocoder(this, Locale.getDefault());
 
-                addresses = geocoder.getFromLocation(coords.latitude, coords.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-                // Fetch the address lines using getAddressLine,
-                // join them, and send them to the thread.
+                addresses = geocoder.getFromLocation(coords.latitude, coords.longitude, 1);
 
                 Address address = addresses.get(0);
                 ArrayList<String> addressFragments = new ArrayList<String>();
@@ -262,6 +277,10 @@ public class ViewBookActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Popualates the given references with their appropriate data
+     * from the book.
+     */
     public void getPageData() {
         ImageView bookImage = findViewById(R.id.ivViewBookPhoto);
         TextView bookTitle = findViewById(R.id.tvViewBookTitle);
@@ -295,14 +314,13 @@ public class ViewBookActivity extends AppCompatActivity {
         }
     }
 
+    /** Method that populates an Image View using the book's id as a reference. */
     public void loadImageFromBookID(ImageView load, String bookID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(bookID);
-        Log.e("Tuts+", storageRef.toString());
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.e("Tuts+", "uri: " + uri.toString());
                 String DownloadLink = uri.toString();
                 Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
             }
