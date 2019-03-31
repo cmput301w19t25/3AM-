@@ -185,7 +185,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
                 break;
             case R.id.nav_books:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new MyBooksFragment()).commit();
+                        new MyBooksFragment(),"books").commit();
                 pageTitle.setText("My Books");
                 break;
 
