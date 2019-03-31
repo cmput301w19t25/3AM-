@@ -7,12 +7,24 @@
     android:fitsSystemWindows="true"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="46dp"
+        android:background="@drawable/signup_custom"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="Message "
+        android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
     <RelativeLayout
         android:id="@+id/rellay"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/colorGray"
+        android:layout_height="150dp"
+        android:background="@color/colorPrimary"
         android:gravity="bottom"
         android:orientation="vertical"
         android:padding="16dp">
@@ -43,8 +55,7 @@
                 android:id="@+id/UserImage"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="28dp"
                 android:src="@mipmap/ic_launcher_round"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -57,24 +68,11 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:text="Borrower"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/UserImage"
                 app:layout_constraintStart_toEndOf="@+id/UserImage"
                 app:layout_constraintTop_toTopOf="@+id/UserImage" />
-
-            <Button
-                android:id="@+id/message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:text="Message"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/UserImage" />
 
 
         </android.support.constraint.ConstraintLayout>
@@ -216,6 +214,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/emailTV"/>
 
 
+
+
             </android.support.constraint.ConstraintLayout>
 
 
@@ -304,14 +304,14 @@
         android:id="@+id/transactionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/message"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
-        android:background="@color/Blue"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/signup_custom"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:text="Book Returned "
         android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
 
-    </RelativeLayout>
+</RelativeLayout>

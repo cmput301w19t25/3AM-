@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/dark_grey_default"
+        android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:titleTextColor="@color/white"
@@ -33,7 +33,7 @@
             android:id="@+id/clViewBookBackground"
             android:layout_width="match_parent"
             android:layout_height="125dp"
-            android:background="@color/dark_grey_default">
+            android:background="@color/colorPrimary">
 
 
             <ImageView
@@ -43,7 +43,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginTop="4dp"
-                android:src="@drawable/ic_library_books_black_24dp"
+                android:src="@drawable/ic_books"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -352,7 +352,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="24dp"
-        android:background="@color/default_button_color_blue"
+        android:background="@drawable/signup_custom"
         android:elevation="8dp"
         android:fontFamily="@font/open_sans"
         android:paddingLeft="10dp"
