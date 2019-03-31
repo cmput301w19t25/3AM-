@@ -105,9 +105,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    dialog = new ProgressDialog(SignInActivity.this);
-                    dialog.setMessage("Loading User Data");
-                    dialog.show();
                     Intent intent = new Intent(SignInActivity.this, HomepageActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     String current_token = FirebaseInstanceId.getInstance().getToken();
