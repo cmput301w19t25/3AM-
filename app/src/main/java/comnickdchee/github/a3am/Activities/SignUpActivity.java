@@ -35,6 +35,11 @@ import java.io.IOException;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 
+/**
+ * @author zaheen
+ * Signup activity extends AppCompatActivity, implements OnClickListener.
+ * Used to sign the user up after valid inputs.
+ */
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int CHOSEN_IMAGE = 69;
@@ -65,6 +70,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void Register(){
+        /**
+         *  Called upon usage of clicking register button. Checks all field's validities before signing the user up.
+         *  Username, email, password, address, phonenumbers are required.
+         *  Image is optional as per user requirements.
+         */
         username = userName.getText().toString().trim();
         email = emailReg.getText().toString().trim();
         password = passwordReg.getText().toString().trim();
@@ -155,12 +165,18 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void CreateAccount() {
+        /*
+            After register validates all fields we create the user using firebaseAuthentication functions.
+         */
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            /*
+                                Sends user data to firebasedatabase so we can access the user data.
+                             */
                             sendUserData();
                             Log.d("Donkey","Work pls..");
                             // Sign in success, update UI with the signed-in user's information
@@ -168,6 +184,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                             DatabaseReference databaseReference = firebaseDatabase.getReference();
 
+                            /*
+                                Token used for messaging and notification services.
+                             */
                             String current_token = FirebaseInstanceId.getInstance().getToken();
                             databaseReference.child("users").child(mAuth.getUid()).child("device_token").setValue(current_token);
 
@@ -223,13 +242,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void findImage(){
+        /*
+            Finds the image to choose from gallery.
+         */
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(i,"Select Profile Picture"), CHOSEN_IMAGE);
     }
 
-    // TODO: Tidy this up.
     /** Once user data has been created and verified, we add this to the users table. */
     private void sendUserData(){
         // Here, we create a new user since we have verified their credentials.
@@ -249,6 +270,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void uploadImageToFirebase(){
+        /*
+            Checks and uploads image to firebase storage.
+         */
         if (profileImage != null){
             StorageReference profileImageRef =
                     FirebaseStorage.getInstance().getReference("users").child(mAuth.getUid()+".jpg");

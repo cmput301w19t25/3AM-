@@ -16,26 +16,29 @@ import android.widget.Toast;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-//Service to deal with notifications.
+/*
+    @Author zaheen
+    Service to deal with notifications.
+ */
+
+
 public class MyServiceNotification extends com.google.firebase.messaging.FirebaseMessagingService {
 
     String TAG = "Tag";
     @Override
+    /*
+        Once a message is received, decipher and unload payload and then use the data to build an in-App notification.
+     */
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // ...
         super.onMessageReceived(remoteMessage);
-        Log.d("Data", remoteMessage.getData().toString());
-        Log.d("Data", remoteMessage.getNotification().getTitle().toString());
         String message = remoteMessage.getNotification().getBody().toString();
         createNotificationChannel();
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
-        //Toast.makeText(this, "You've got a notification!", Toast.LENGTH_SHORT).show();
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(remoteMessage.getNotification().getTitle())
                 .setContentText(message)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
         int mNotificationID = (int) System.currentTimeMillis();
         NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotifyMgr.notify(mNotificationID, mBuilder.build());

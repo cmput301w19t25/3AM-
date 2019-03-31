@@ -25,7 +25,7 @@ import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 
 /**
- * @author
+ * @author Zaheen
  * SignInActivity extends AppCompatActivity
  * SignInActivity implements View.onClickListener
  * It overrides onCreate and OnClick
@@ -39,10 +39,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-
         mAuth = FirebaseAuth.getInstance();
-
         setContentView(R.layout.activity_sign_in);
         emailReg = (EditText) findViewById(R.id.EmailReg);
         passwordReg = (EditText) findViewById(R.id.PasswordReg);
@@ -50,12 +49,12 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         findViewById(R.id.RegisterBtn).setOnClickListener(this);
         findViewById(R.id.LoginBtn).setOnClickListener(this);
 
+        //Check if user is logged in, then just load.
         if(mAuth != null && mAuth.getCurrentUser() != null) {
-
             dialog = new ProgressDialog(SignInActivity.this);
             dialog.setMessage("Loading User Data");
             dialog.show();
-            Log.d("akjdhfaljksdfhjklasdf", "onCreate: INSIDE");
+            //Log.d("Test", "onCreate: INSIDE");
             Intent homePage = new Intent(this, HomepageActivity.class);
             homePage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             backend.getCurrentUserData(new UserCallback() {
@@ -70,7 +69,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-
+    /*
+        Function to check if user login is valid or not and successfully logs in the user if it is.
+     */
     private void UserLogin(){
         String email = emailReg.getText().toString().trim();
         String password = passwordReg.getText().toString().trim();
