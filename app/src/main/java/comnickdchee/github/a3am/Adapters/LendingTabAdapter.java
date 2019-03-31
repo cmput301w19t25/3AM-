@@ -47,9 +47,7 @@ public class LendingTabAdapter extends RecyclerView.Adapter<LendingTabAdapter.Vi
         this.mBookList = BookList;
         this.mContext = mContext;
     }
-
-
-
+    
     /** Inflates the view to hold the cards
      * ViewGroup is the view on which the adapter will be located
      * i holds the index of that view*/
