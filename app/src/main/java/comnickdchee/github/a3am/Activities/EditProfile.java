@@ -124,7 +124,7 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
         addressTV.setText(address);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
-            
+
             @Override
             public void onClick(View view) {
 
