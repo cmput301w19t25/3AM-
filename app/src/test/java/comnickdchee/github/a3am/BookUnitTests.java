@@ -2,6 +2,9 @@ package comnickdchee.github.a3am;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
@@ -10,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 
 
 public class BookUnitTests {
-
+    private List<Book> BookTest = new ArrayList<Book>();
     User user1 = new User("Name","example@exm.com",
             "Dubai","0123-123-3456");
     private String id;
@@ -26,17 +29,10 @@ public class BookUnitTests {
     public void test_setCurrentBorrower() {
         Book b = new Book("1234567891234", "HarryPotter", "J R R martin");
         id = user1.getUserID();
-        //b.setCurrentBorrower(user1);
-        assertEquals(id,user1);
+        String borrowerid = b.getCurrentBorrowerID();
+        assertEquals(id, borrowerid);
     }
 
-    @Test
-    public void test_addRequests(){
-        Book b = new Book("1234567891234", "HarryPotter", "J R R martin");
-      //  b.addRequest(user1);
-        //User newRequest = b.getRequests().get(b.getRequests().size() - 1);
-        //assertEquals(newRequest,user1);
-    }
 
     @Test
     public void test_getISBN() {
