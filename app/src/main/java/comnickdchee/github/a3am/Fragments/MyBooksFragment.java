@@ -1,14 +1,17 @@
 package comnickdchee.github.a3am.Fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +44,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import comnickdchee.github.a3am.Activities.NewBookActivity;
+import comnickdchee.github.a3am.Activities.SignInActivity;
 import comnickdchee.github.a3am.Adapters.BookRecyclerAdapter;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Status;
@@ -177,7 +181,7 @@ public class MyBooksFragment extends Fragment {
         bookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                orderedList.clear();
                 String user = FirebaseAuth.getInstance().getUid();
 
                 for (DataSnapshot child : dataSnapshot.getChildren()){
@@ -290,8 +294,27 @@ public class MyBooksFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
+
+            ProgressDialog dialog;
+            dialog = new ProgressDialog(this.getActivity());
+            dialog.setMessage("Fetching New Data");
+            dialog.show();
+
             Log.d("MyBooks", "Recyclerview notified");
-            adapter.notifyDataSetChanged();
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    BookRecyclerAdapter updatedAdapter = new BookRecyclerAdapter(getActivity(), orderedList);
+
+                    // Bind to adapter and show results
+                    recyclerView.setAdapter(updatedAdapter);
+                    updatedAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+
+                }
+            }, 2000);
+
         }
 
 
