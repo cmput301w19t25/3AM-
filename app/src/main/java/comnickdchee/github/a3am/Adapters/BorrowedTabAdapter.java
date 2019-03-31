@@ -42,13 +42,18 @@ public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.
     private ArrayList<Book> mBookList;
     private Context mContext;
 
+
+    /** Constructor for this class
+     * Takes in a context and the array list of all the books it needs to show*/
     public BorrowedTabAdapter(Context mContext, ArrayList<Book> BookList) {
         this.mBookList = BookList;
         this.mContext = mContext;
     }
 
 
-
+    /** Inflates the view to hold the cards
+     * ViewGroup is the view on which the adapter will be located
+     * i holds the index of that view*/
     @NonNull
     @Override
     public BorrowedTabAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
@@ -59,6 +64,9 @@ public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.
         return holder;
     }
 
+    /** This populates the cards with the data from the array list
+     * holder refers to the View holder this recycler view is holding
+     * i stores the index for the array list*/
     @Override
     public void onBindViewHolder(BorrowedTabAdapter.ViewHolder holder, final int i) {
 
@@ -85,6 +93,7 @@ public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.
         });
     }
 
+    /** Loads image of user with userID of uID and places it on the load imageView*/
     public void loadImageFromOwnerID(ImageView load, String uID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");
@@ -102,14 +111,15 @@ public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.
 
     }
 
+    /** Returns the size of the mBookList*/
     @Override
-
     public int getItemCount() {
         return mBookList.size();
     }
 
 
-    // Here is the class for the ViewHolder that this adapter uses
+    /** A view Holder to hold the views of each Individual Cards
+     * This is the view holder that th recycler viewer uses*/
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private Backend backend = Backend.getBackendInstance();
         private CircleImageView ownerIV;
@@ -120,6 +130,7 @@ public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.
         private TextView tvOwner;
         private CardView cvUserInfo;
 
+        // The views are initialized here.
         public ViewHolder(View itemView) {
             super(itemView);
             ownerIV = itemView.findViewById(R.id.ivUserPhoto);
@@ -131,6 +142,7 @@ public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.
             cvUserInfo = itemView.findViewById(R.id.cvUserInfo);
         }
 
+        // The Data inside the View Holder are set here
         public void bind(Book book) {
             tvBookTitle.setText(book.getTitle());
             tvAuthor.setText(book.getAuthor());

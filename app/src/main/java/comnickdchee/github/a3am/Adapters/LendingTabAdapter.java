@@ -40,6 +40,9 @@ public class LendingTabAdapter extends RecyclerView.Adapter<LendingTabAdapter.Vi
     private Context mContext;
     private Backend backend = Backend.getBackendInstance();
 
+
+    /** Constructor for this class
+     * Takes in a context and the array list of all the books it needs to show*/
     public LendingTabAdapter(Context mContext, ArrayList<Book> BookList) {
         this.mBookList = BookList;
         this.mContext = mContext;
@@ -47,6 +50,9 @@ public class LendingTabAdapter extends RecyclerView.Adapter<LendingTabAdapter.Vi
 
 
 
+    /** Inflates the view to hold the cards
+     * ViewGroup is the view on which the adapter will be located
+     * i holds the index of that view*/
     @NonNull
     @Override
     public LendingTabAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
@@ -57,6 +63,9 @@ public class LendingTabAdapter extends RecyclerView.Adapter<LendingTabAdapter.Vi
         return holder;
     }
 
+    /** This populates the cards with the data from the array list
+     * holder refers to the View holder this recycler view is holding
+     * i stores the index for the array list*/
     @Override
     public void onBindViewHolder(LendingTabAdapter.ViewHolder holder, final int i) {
 
@@ -65,7 +74,7 @@ public class LendingTabAdapter extends RecyclerView.Adapter<LendingTabAdapter.Vi
         // Puts all the data based on the bind function in the Viewholder
         holder.bind(mBookList.get(i));
         loadImageFromOwnerID(holder.borrowerIV, mBookList.get(i).getCurrentBorrowerID());
-        // On click event when a card is clicked
+        // On click event when a card is clicked. This opens the BorrowedProfileActivity.
         holder.cvUserInfo.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -81,15 +90,14 @@ public class LendingTabAdapter extends RecyclerView.Adapter<LendingTabAdapter.Vi
         });
     }
 
+    /** Loads image of user with userID of uID and places it on the load imageView*/
     public void loadImageFromOwnerID(ImageView load, String uID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");
 
-        Log.e("Tuts+", storageRef.toString());
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.e("Tuts+", "uri: " + uri.toString());
                 String imgUrl = uri.toString();
 
                 Picasso.with(mContext).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
@@ -98,13 +106,14 @@ public class LendingTabAdapter extends RecyclerView.Adapter<LendingTabAdapter.Vi
 
     }
 
+    /** Returns the size of the mBookList*/
     @Override
-
     public int getItemCount() {
         return mBookList.size();
     }
 
-    // Here is the class for the ViewHolder that this adapter uses
+    /** A view Holder to hold the views of each Individual Cards
+     * This is the view holder that th recycler viewer uses*/
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private CircleImageView borrowerIV;
         private TextView tvBookTitle;
@@ -115,6 +124,7 @@ public class LendingTabAdapter extends RecyclerView.Adapter<LendingTabAdapter.Vi
         private CardView cvUserInfo;
         private Backend backend = Backend.getBackendInstance();
 
+        // The views are initialized here.
         public ViewHolder(View itemView) {
             super(itemView);
             borrowerIV = itemView.findViewById(R.id.ivUserPhoto);
@@ -126,6 +136,7 @@ public class LendingTabAdapter extends RecyclerView.Adapter<LendingTabAdapter.Vi
             cvUserInfo = itemView.findViewById(R.id.cvUserInfo);
         }
 
+        // The Data inside the View Holder are set here
         public void bind(Book book) {
             tvBookTitle.setText(book.getTitle());
             tvAuthor.setText(book.getAuthor());

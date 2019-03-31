@@ -33,12 +33,18 @@ public class UserRecyclerAdapter extends RecyclerView.Adapter<UserRecyclerAdapte
     private String type;
     private Context mContext;
 
+    /** Constructor for this class
+     * Takes in a context and the array list of all the exchanges it needs to show
+     * also has a type know whether the user is a owner or a borrower*/
     public UserRecyclerAdapter( Context mContext, String type, ArrayList<Exchange> ExchangeList) {
         this.mExchanges = ExchangeList;
         this.type = type;
         this.mContext = mContext;
     }
 
+    /** Inflates the view to hold the cards
+     * ViewGroup is the view on which the adapter will be located
+     * i holds the index of that view*/
     @NonNull
     @Override
     public UserRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
@@ -53,27 +59,6 @@ public class UserRecyclerAdapter extends RecyclerView.Adapter<UserRecyclerAdapte
     public void onBindViewHolder(UserRecyclerAdapter.ViewHolder holder, final int i) {
         Log.d(TAG, "onBindViewHolder: called.");
 
-//        // one file that contains a bunch of conditions for making a recycler view.
-//        holder.tvBookTitle.setText(mExchanges.get(i).getBook().getTitle());
-//        holder.tvAuthorName.setText(mExchanges.get(i).getBook().getAuthor());
-//        holder.tvISBN.setText(mExchanges.get(i).getBook().getISBN());
-//        if (type == "Owned") {
-//            holder.tvUser.setText(mExchanges.get(i).getBorrower().getUserName());
-//            holder.tvUserRole.setText("Borrower: ");
-//        }
-//        else {
-//            holder.tvUser.setText(mExchanges.get(i).getOwner().getUserName());
-//            holder.tvUserRole.setText("Owner: ");
-//        }
-//
-//        // On click event when a card is clicked
-//        holder.actionsItemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d(TAG, "onClick: clicked on: " + mExchanges.get(i).getBook().getTitle());
-//                Toast.makeText(mContext, mExchanges.get(i).getBook().getTitle(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
 
     @Override
