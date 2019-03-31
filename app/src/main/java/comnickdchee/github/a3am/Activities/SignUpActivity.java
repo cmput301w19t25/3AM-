@@ -202,7 +202,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 Log.d("Reg", "No error");
                 Register();
                 break;
-            
+
 
         }
     }
