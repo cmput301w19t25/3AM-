@@ -334,7 +334,7 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
             backend.addBook(newBook);
             //Log.d("Bookimage", bookImage.toString());
             if(bookImage!= null){
-
+                setResult(RESULT_OK);
                 FirebaseUser u = mAuth.getCurrentUser();
 
                 StorageReference bookImageRef =
@@ -342,13 +342,14 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
                 bookImageRef.putFile(bookImage);
             }
             if(bArray != null){
+
+                setResult(RESULT_OK);
                 FirebaseUser u = mAuth.getCurrentUser();
 
                 StorageReference bookImageRef =
                         FirebaseStorage.getInstance().getReference("BookImages").child(newBook.getBookID());
                 bookImageRef.putBytes(bArray);
             }
-            Log.d("BookNew","Success book added");
         }
     }
 

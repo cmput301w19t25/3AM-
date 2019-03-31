@@ -86,10 +86,10 @@ public class Backend {
      * Delete the book from both the books table and every requesting user's
      * requested books list.
      */
-    public void deleteBook(Book book) {
+    public Boolean deleteBook(Book book) {
         // Don't let the user delete a book currently being interacted with
         if (book.getStatus() != Status.Available && book.getStatus() != Status.Requested) {
-            return;
+            return false;
         }
 
         Log.d("START HERE", "deleteBook: ");
@@ -129,6 +129,8 @@ public class Backend {
         // Delete the actual book afterwards
         DatabaseReference bookRef = mFirebaseDatabase.getReference("books").child(book.getBookID());
         bookRef.removeValue();
+
+        return true;
     }
 
     /** Returns the current user of the model class. */
@@ -561,7 +563,7 @@ public class Backend {
     /** Gets the books that a user is currently requesting. */
     public void getRequestedBooks(final BookListCallback requestedBooksCallback) {
         // Get the current owned books of the user
-        final ArrayList<String> requestedBooksID = mCurrentUser.getRequestedBooks();
+        ArrayList<String> requestedBooksID = mCurrentUser.getRequestedBooks();
         final ArrayList<Book> requestedBooks = new ArrayList<>();
 
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
@@ -572,29 +574,36 @@ public class Backend {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 requestedBooks.clear();
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                getCurrentUserData(new UserCallback() {
+                    @Override
+                    public void onCallback(User user) {
+                        mCurrentUser = user;
 
-                    for (String bookID : requestedBooksID) {
-                        if (data.getKey().equals(bookID)) {
-                            // Fetch book object from Firebase
-                            Book book = data.getValue(Book.class);
-                            if (book != null) {
-                                // Get the requester user data from the book requested list
-                                if (book.getStatus() == Status.Requested || book.getStatus() == Status.Accepted) {
-                                    // Add to the book
-                                    requestedBooks.add(book);
+                        ArrayList<String> requestedBooksID = mCurrentUser.getRequestedBooks();
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            for (String bookID : requestedBooksID) {
+                                if (data.getKey().equals(bookID)) {
+                                    // Fetch book object from Firebase
+                                    Book book = data.getValue(Book.class);
+                                    if (book != null) {
+                                        // Get the requester user data from the book requested list
+                                        if (book.getStatus() == Status.Requested || book.getStatus() == Status.Accepted) {
+                                            // Add to the book
+                                            requestedBooks.add(book);
+                                        }
+                                    }
+
                                 }
                             }
-
                         }
-                    }
-                }
 
-                // Creates a callback on the front-end UI context, where
-                // it can retrieve the data and start populating the recycler
-                // view.
-                setCurrentRequestedBooks(requestedBooks);
-                requestedBooksCallback.onCallback(requestedBooks);
+                        // Creates a callback on the front-end UI context, where
+                        // it can retrieve the data and start populating the recycler
+                        // view.
+                        setCurrentRequestedBooks(requestedBooks);
+                        requestedBooksCallback.onCallback(requestedBooks);
+                    }
+                });
             }
 
             @Override

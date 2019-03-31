@@ -69,7 +69,7 @@
         android:layout_marginRight="16dp"
         android:background="@drawable/round"
         android:ems="10"
-        android:hint="👤   Username"
+        android:hint="👤   Email"
         android:inputType="textEmailAddress"
         android:padding="16dp"
         android:radius="64dp"
