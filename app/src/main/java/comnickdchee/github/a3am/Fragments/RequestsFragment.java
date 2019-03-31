@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -24,6 +26,7 @@ public class RequestsFragment extends Fragment {
     private ArrayList<RequestStatusGroup> Requests = new ArrayList<>();
     private ArrayList<Book> requestList = new ArrayList<>();
     private Backend backend = Backend.getBackendInstance();
+    private TextView noDataView;
 
     public RequestsFragment() {
         // Required empty public constructor
@@ -33,10 +36,15 @@ public class RequestsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_borrowed, container, false);
-
+        Log.d("LOL", "onCreateView: Request Fragment Created");
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        noDataView = view.findViewById(R.id.noDataView);
+
+        recyclerView.setVisibility(View.VISIBLE);
+        noDataView.setVisibility(View.INVISIBLE);
 
         // Passes argument to adapter and sets up recyclerView with that argument
         RequestsTabAdapter adapter = new RequestsTabAdapter(getActivity(), Requests);

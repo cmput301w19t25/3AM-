@@ -1,15 +1,13 @@
 package comnickdchee.github.a3am.Activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -36,7 +34,9 @@ import java.util.Locale;
 
 import comnickdchee.github.a3am.Adapters.RequestersAdapter;
 import comnickdchee.github.a3am.Backend.Backend;
+import comnickdchee.github.a3am.Backend.BookCallback;
 import comnickdchee.github.a3am.Backend.ExchangeCallback;
+import comnickdchee.github.a3am.Backend.UserCallback;
 import comnickdchee.github.a3am.Backend.UserListCallback;
 import comnickdchee.github.a3am.Barcode.BarcodeScanner;
 import comnickdchee.github.a3am.Models.Book;
@@ -58,13 +58,17 @@ public class ViewBookActivity extends AppCompatActivity {
     private RecyclerView rvRequests;
     private TextView emptyView;
     private TextView locationText;
+    private CardView borrowerCardView;
+    private TextView borrowerUsernameText;
+    private TextView borrowerPhoneNumberText;
+    private TextView borrowerEmailText;
     private ArrayList<User> requesters = new ArrayList<>();
     private RequestersAdapter requestersAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private Button ownerHandoverButton;
     private Button editLocationButton;
     private Backend backend = Backend.getBackendInstance();
-    private Exchange exchange = new Exchange(ExchangeType.OwnerHandover);
+    private Exchange currentExchange;
     private Book actionBook;
 
     @Override
@@ -115,16 +119,16 @@ public class ViewBookActivity extends AppCompatActivity {
             public void onCallback(Exchange exchange) {
                 try {
                     if (exchange != null) {
-
+                        currentExchange = exchange;
                         // Get the status, so we can choose to display the button
-                        if (exchange.getType() == ExchangeType.OwnerHandover) {
+                        if (currentExchange.getType() == ExchangeType.OwnerHandover) {
                             ownerHandoverButton.setVisibility(View.VISIBLE);
                         } else {
                             ownerHandoverButton.setVisibility(View.GONE);
                         }
 
 
-                        PickupCoords coords = exchange.getPickupCoords();
+                        PickupCoords coords = currentExchange.getPickupCoords();
                         if (coords != null) {
                             Geocoder geocoder;
                             List<Address> addresses;
@@ -150,6 +154,27 @@ public class ViewBookActivity extends AppCompatActivity {
             }
         });
 
+        backend.getBook(actionBook.getBookID(), new BookCallback() {
+            @Override
+            public void onCallback(Book book) {
+                if (book.getCurrentBorrowerID() != null) {
+                    rvRequests.setVisibility(View.GONE);
+                    borrowerCardView.setVisibility(View.VISIBLE);
+                    // Gets the current borrower and populates the card view
+                    backend.getUser(book.getCurrentBorrowerID(), new UserCallback() {
+                        @Override
+                        public void onCallback(User borrower) {
+                            borrowerUsernameText.setText(borrower.getUserName());
+                            borrowerEmailText.setText(borrower.getEmail());
+                            borrowerPhoneNumberText.setText(borrower.getPhoneNumber());
+                        }
+                    });
+                } else {
+                    borrowerCardView.setVisibility(View.GONE);
+                }
+            }
+        });
+
         backend.getRequesters(actionBook, new UserListCallback() {
             @Override
             public void onCallback(ArrayList<User> users) {
@@ -158,8 +183,15 @@ public class ViewBookActivity extends AppCompatActivity {
                 requestersAdapter.notifyDataSetChanged();
 
                 if (requesters.isEmpty()) {
-                    emptyView.setVisibility(View.VISIBLE);
-                    rvRequests.setVisibility(View.GONE);
+                    if (actionBook.getCurrentBorrowerID() == null) {
+                        emptyView.setVisibility(View.VISIBLE);
+                        rvRequests.setVisibility(View.GONE);
+
+                    } else {
+                        emptyView.setVisibility(View.GONE);
+                        rvRequests.setVisibility(View.GONE);
+
+                    }
                 } else {
                     rvRequests.setVisibility(View.VISIBLE);
                     emptyView.setVisibility(View.GONE);
@@ -188,8 +220,8 @@ public class ViewBookActivity extends AppCompatActivity {
             String bookISBN = actionBook.getISBN();
 
             if (isbn.equals(bookISBN)) {
-                exchange.setType(ExchangeType.BorrowerReceive);
-                backend.updateExchange(actionBook, exchange);
+                currentExchange.setType(ExchangeType.BorrowerReceive);
+                backend.updateExchange(actionBook, currentExchange);
                 finish();
             } else {
                 Toast.makeText(this, "ISBN Not Matched with book", Toast.LENGTH_SHORT).show();
@@ -197,8 +229,13 @@ public class ViewBookActivity extends AppCompatActivity {
 
         } else if (requestCode == LOCATION_CODE && resultCode == RESULT_OK && data != null) {
             LatLng coords = (LatLng) data.getExtras().getParcelable("Location");
-            exchange.setPickupCoords(new PickupCoords(coords.latitude, coords.longitude));
-            backend.updateExchange(actionBook, exchange);
+            if (currentExchange == null) {
+                currentExchange = new Exchange(ExchangeType.OwnerHandover);
+            }
+            
+            currentExchange.setPickupCoords(new PickupCoords(coords.latitude, coords.longitude));
+            Log.d(currentExchange.getType().toString(), "onActivityResult: ");
+            backend.updateExchange(actionBook, currentExchange);
 
             try {
                 Geocoder geocoder;
@@ -230,6 +267,10 @@ public class ViewBookActivity extends AppCompatActivity {
         TextView bookTitle = findViewById(R.id.tvViewBookTitle);
         TextView bookAuthor = findViewById(R.id.tvViewBookAuthor);
         TextView bookISBN = findViewById(R.id.tvViewBookISBN);
+        borrowerCardView = findViewById(R.id.cvEmbeddedUser);
+        borrowerUsernameText = findViewById(R.id.embeddedName);
+        borrowerEmailText = findViewById(R.id.embeddedCardEmail);
+        borrowerPhoneNumberText = findViewById(R.id.embeddedCardPhoneNumber);
 
         loadImageFromBookID(bookImage, actionBook.getBookID());
         bookTitle.setText(actionBook.getTitle());

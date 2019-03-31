@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -73,6 +74,7 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
     private SupportMapFragment mapFragment;
     private GoogleMap mGoogleMap;
     private Marker marker;
+    private ConstraintLayout userCard;
 
     private Book actionBook = new Book();
     private User owner = new User();
@@ -92,8 +94,11 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
             mapFragment.getMapAsync(ViewRBookActivity.this);
         }
 
+
+        // Setting up the view items
         phoneNumberText = findViewById(R.id.tvPhoneNumber);
         emailText = findViewById(R.id.tvEmail);
+        userCard = findViewById(R.id.userCard);
 
 
         Intent intent = getIntent();
@@ -107,6 +112,17 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
 
+
+        // Shows profile when userCard is clicked
+        userCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent (getApplicationContext(), UserProfileActivity.class);
+                i.putExtra("key", ownerID);
+                startActivity(i);
+            }
+        });
+
         receiveButton = findViewById(R.id.receiveBookButton);
 
         backend.getExchange(actionBook, new ExchangeCallback() {
@@ -114,10 +130,9 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
             public void onCallback(Exchange exchange) {
                 if (exchange != null) {
                     if (exchange.getType() == ExchangeType.BorrowerReceive) {
+                        receiveButton.setVisibility(View.VISIBLE);
 
-                        if (exchange.getPickupCoords() != null) {
-                            receiveButton.setVisibility(View.VISIBLE);
-                        } else {
+                        if (exchange.getPickupCoords() == null) {
                             if (mapFragment.getView() != null) {
                                 mapFragment.getView().setVisibility(View.GONE);
                             }
@@ -186,7 +201,6 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
         //TextView phone = findViewById(R.id.phoneTV);
         //TextView email = findViewById(R.id.emailTV);
         TextView username = findViewById(R.id.usernameTV);
-        TextView rating = findViewById(R.id.ratingTV);
         TextView bookTitle = findViewById(R.id.tvViewBookTitle);
         TextView bookAuthor = findViewById(R.id.tvViewBookAuthor);
         TextView bookISBN = findViewById(R.id.tvViewBookISBN);

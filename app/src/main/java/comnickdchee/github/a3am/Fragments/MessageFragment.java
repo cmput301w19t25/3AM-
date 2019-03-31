@@ -47,6 +47,7 @@ public class MessageFragment extends Fragment {
     private ArrayList<ChatBox> chatBoxes = new ArrayList<>();
     MessageRecyclerAdapter messageRecyclerAdapter;
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private TextView noDataView;
     List<Chat> mChat;
     ArrayList<String> uIDs;
     String myid;
@@ -60,6 +61,11 @@ public class MessageFragment extends Fragment {
         init();
         getActivity().setTitle("Messages");
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        noDataView = view.findViewById(R.id.noDataView);
+
+        recyclerView.setVisibility(View.VISIBLE);
+        noDataView.setVisibility(View.INVISIBLE);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         return view;
 
@@ -67,21 +73,7 @@ public class MessageFragment extends Fragment {
 
     // TODO:Remove this init once we have proper data
     public void init() {
-        /*
-        User user1 = new User("SampleUser1","sampleEmail","XXXXX","XXXXXX");
-        User user2 = new User("SampleUser2","sampleEmail","XXXXX","XXXXXX");
 
-        ChatBox chatbox = new ChatBox(user1,user2);
-        chatbox.sendMessage("Hello", user1,user2, new Date());
-        chatbox.sendMessage("Hi", user1,user2, new Date());
-        chatBoxes.add(chatbox);
-
-        ChatBox chatbox2 = new ChatBox(user1,user2);
-        chatbox2.sendMessage("Who are you?",user1,user2,new Date());
-        chatbox2.sendMessage("Specifically waiting and passing my time, watching these haters not come with a rhymr" +
-                "watching these sakas are mimicking gimmicking then they stary falling of one at a time",user1,user2, new Date());
-        chatBoxes.add(chatbox2);
-        */
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.getCurrentUser();
         myid = mAuth.getUid();
@@ -110,6 +102,15 @@ public class MessageFragment extends Fragment {
                     uIDs.remove(myid);
                     Log.d("UIDS",uIDs.toString());
 //                    Log.d("Image", imgUrl);
+
+                    if (uIDs.size() == 0) {
+                        recyclerView.setVisibility(View.INVISIBLE);
+                        noDataView.setVisibility(View.VISIBLE);
+                    } else {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        noDataView.setVisibility(View.INVISIBLE);
+                    }
+
                     messageRecyclerAdapter = new MessageRecyclerAdapter(getActivity(), uIDs);
                     recyclerView.setAdapter(messageRecyclerAdapter);
                     //messageAdapter = new MessageAdapter(messageActivity.this, mChat, imgUrl);

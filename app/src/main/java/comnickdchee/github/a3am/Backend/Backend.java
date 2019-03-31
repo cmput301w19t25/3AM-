@@ -5,6 +5,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -85,12 +86,11 @@ public class Backend {
      * Delete the book from both the books table and every requesting user's
      * requested books list.
      */
-    public void deleteBook(Book book) {
+    public Boolean deleteBook(Book book) {
         // Don't let the user delete a book currently being interacted with
-//        if (book.getStatus() != Status.Available || book.getStatus() != Status.Requested) {
-//            Log.d("RETURNED", "deleteBook: ");
-//            return;
-//        }
+        if (book.getStatus() != Status.Available && book.getStatus() != Status.Requested) {
+            return false;
+        }
 
         Log.d("START HERE", "deleteBook: ");
         Log.d(book.getBookID(), "deleteBook: ");
@@ -129,6 +129,8 @@ public class Backend {
         // Delete the actual book afterwards
         DatabaseReference bookRef = mFirebaseDatabase.getReference("books").child(book.getBookID());
         bookRef.removeValue();
+
+        return true;
     }
 
     /** Returns the current user of the model class. */
@@ -291,21 +293,24 @@ public class Backend {
      * Firebase.
      */
     public void acceptRequest(User user, Book book) {
-        Log.d(user.getUserID(), "IN BACKEND FIRST: ");
-
         book.getRequests().clear();
         book.setCurrentBorrowerID(user.getUserID());
         book.setStatus(Status.Accepted);
 
         updateExchange(book, ExchangeType.OwnerHandover);
         updateBookData(book);
-        Log.d(user.getUserID(), "IN BACKEND BEFORE BUG CALL: ");
         updateUserData(user);
     }
 
     /** Reject request that follows similar logic to accept request. */
     public void rejectRequest(User user, Book book) {
         book.getRequests().remove(user.getUserID());
+
+        /** Empty */
+        if (book.getRequests().size() == 0) {
+            book.setStatus(Status.Available);
+        }
+
         user.getRequestedBooks().remove(book.getBookID());
 
         updateBookData(book);
@@ -349,6 +354,22 @@ public class Backend {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 userCallback.onCallback(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    /** Fetches a user's information from Firebase, given their uid. */
+    public void getBook(String bookID, final BookCallback bookCallback) {
+        DatabaseReference usersRef = mFirebaseDatabase.getReference("books");
+        usersRef.child(bookID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Book book = dataSnapshot.getValue(Book.class);
+                bookCallback.onCallback(book);
             }
 
             @Override
@@ -542,7 +563,7 @@ public class Backend {
     /** Gets the books that a user is currently requesting. */
     public void getRequestedBooks(final BookListCallback requestedBooksCallback) {
         // Get the current owned books of the user
-        final ArrayList<String> requestedBooksID = mCurrentUser.getRequestedBooks();
+        ArrayList<String> requestedBooksID = mCurrentUser.getRequestedBooks();
         final ArrayList<Book> requestedBooks = new ArrayList<>();
 
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
@@ -553,29 +574,36 @@ public class Backend {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 requestedBooks.clear();
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                getCurrentUserData(new UserCallback() {
+                    @Override
+                    public void onCallback(User user) {
+                        mCurrentUser = user;
 
-                    for (String bookID : requestedBooksID) {
-                        if (data.getKey().equals(bookID)) {
-                            // Fetch book object from Firebase
-                            Book book = data.getValue(Book.class);
-                            if (book != null) {
-                                // Get the requester user data from the book requested list
-                                if (book.getStatus() == Status.Requested || book.getStatus() == Status.Accepted) {
-                                    // Add to the book
-                                    requestedBooks.add(book);
+                        ArrayList<String> requestedBooksID = mCurrentUser.getRequestedBooks();
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            for (String bookID : requestedBooksID) {
+                                if (data.getKey().equals(bookID)) {
+                                    // Fetch book object from Firebase
+                                    Book book = data.getValue(Book.class);
+                                    if (book != null) {
+                                        // Get the requester user data from the book requested list
+                                        if (book.getStatus() == Status.Requested || book.getStatus() == Status.Accepted) {
+                                            // Add to the book
+                                            requestedBooks.add(book);
+                                        }
+                                    }
+
                                 }
                             }
-
                         }
-                    }
-                }
 
-                // Creates a callback on the front-end UI context, where
-                // it can retrieve the data and start populating the recycler
-                // view.
-                setCurrentRequestedBooks(requestedBooks);
-                requestedBooksCallback.onCallback(requestedBooks);
+                        // Creates a callback on the front-end UI context, where
+                        // it can retrieve the data and start populating the recycler
+                        // view.
+                        setCurrentRequestedBooks(requestedBooks);
+                        requestedBooksCallback.onCallback(requestedBooks);
+                    }
+                });
             }
 
             @Override

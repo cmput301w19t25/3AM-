@@ -193,13 +193,16 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.AddProfilePicture:
                 Log.d("Image","Image clicked");
                 findImage();
+                break;
             case R.id.userImageSeeOwnerProfile:
                 Log.d("Image","Image clicked");
                 findImage();
+                break;
             case R.id.RegisterConfirm:
                 Log.d("Reg", "No error");
                 Register();
-            break;
+                break;
+
 
         }
     }

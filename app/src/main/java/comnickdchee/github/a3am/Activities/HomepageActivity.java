@@ -104,6 +104,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         /*
             Editing data to add in user information for navbar.
          */
@@ -184,7 +185,7 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
                 break;
             case R.id.nav_books:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new MyBooksFragment()).commit();
+                        new MyBooksFragment(),"books").commit();
                 pageTitle.setText("My Books");
                 break;
 
@@ -261,14 +262,14 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         // Initializing for Requests tab
         RequestsList = new ArrayList<>();
         requestedList = new ArrayList<>();
-
-        backend.getRequestedBooks(new BookListCallback() {
-            @Override
-            public void onCallback(ArrayList<Book> books) {
-                requestedList.clear();
-                requestedList.addAll(books);
-            }
-        });
+//
+//        backend.getRequestedBooks(new BookListCallback() {
+//            @Override
+//            public void onCallback(ArrayList<Book> books) {
+//                requestedList.clear();
+//                requestedList.addAll(books);
+//            }
+//        });
 
 //        ArrayList<Book> AcceptedRequests = new ArrayList<>();
 //        ArrayList<Book> pendingRequests = new ArrayList<>();

@@ -1,5 +1,6 @@
 package comnickdchee.github.a3am.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     FirebaseAuth mAuth;
     EditText emailReg, passwordReg;
     Backend backend = Backend.getBackendInstance();
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,10 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         findViewById(R.id.LoginBtn).setOnClickListener(this);
 
         if(mAuth != null && mAuth.getCurrentUser() != null) {
+
+            dialog = new ProgressDialog(SignInActivity.this);
+            dialog.setMessage("Loading User Data");
+            dialog.show();
             Log.d("akjdhfaljksdfhjklasdf", "onCreate: INSIDE");
             Intent homePage = new Intent(this, HomepageActivity.class);
             homePage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -57,12 +63,12 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 public void onCallback(User user) {
                     startActivity(homePage);
                     finish();
+
                 }
             });
         }
 
     }
-
 
 
     private void UserLogin(){
@@ -103,8 +109,15 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     String current_token = FirebaseInstanceId.getInstance().getToken();
                     databaseReference.child("users").child(mAuth.getUid()).child("device_token").setValue(current_token);
 
-                    startActivity(intent);
-                    finish();
+                    backend.getCurrentUserData(new UserCallback() {
+                        @Override
+                        public void onCallback(User user) {
+                            startActivity(intent);
+                            finish();
+
+                        }
+                    });
+
                 } else {
                     Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
