@@ -112,8 +112,15 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     String current_token = FirebaseInstanceId.getInstance().getToken();
                     databaseReference.child("users").child(mAuth.getUid()).child("device_token").setValue(current_token);
 
-                    startActivity(intent);
-                    finish();
+                    backend.getCurrentUserData(new UserCallback() {
+                        @Override
+                        public void onCallback(User user) {
+                            startActivity(intent);
+                            finish();
+
+                        }
+                    });
+
                 } else {
                     Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
