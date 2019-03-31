@@ -26,10 +26,12 @@ public class LendingFragment extends Fragment {
     private Backend backend = Backend.getBackendInstance();
     private TextView noDataView;
 
+    /** Required empty constructor since its a fragment */
     public LendingFragment() {
         // Required empty public constructor
     }
 
+    /** Creates the view by getting the respective book list and calling the lending tab adapter */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class LendingFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        // gets the data from backend
         backend.getLendingBooks(new BookListCallback() {
             @Override
             public void onCallback(ArrayList<Book> books) {

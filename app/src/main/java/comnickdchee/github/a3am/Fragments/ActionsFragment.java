@@ -44,10 +44,12 @@ public class ActionsFragment extends Fragment {
     private TextView noDataView;
     Backend backend = Backend.getBackendInstance();
 
+    /** Required empty constructor since its a fragment */
     public ActionsFragment() {
         // Required empty public constructor
     }
 
+    /** Creates the view by getting the respective book list and calling the actions tab adapter */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

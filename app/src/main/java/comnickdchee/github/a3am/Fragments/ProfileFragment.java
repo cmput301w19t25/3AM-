@@ -44,6 +44,7 @@ public class ProfileFragment extends Fragment {
     private FloatingActionButton editFAB;
 
 
+    /** Creates the view for the profile fragment */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class ProfileFragment extends Fragment {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(mAuth.getUid()+".jpg");
         Log.d("Ref","Image gotten");
+
         //Gets the textView fields
         TextView ProfileName = (TextView)view.findViewById(R.id.userNameFragmentProfile);
         final TextView Address = (TextView)view.findViewById(R.id.addressEditProfileFragment);
@@ -80,6 +82,7 @@ public class ProfileFragment extends Fragment {
         //Sets the name
         ProfileName.setText(mAuth.getCurrentUser().getDisplayName());
 
+        // Adds a listener for changes in user data
         DatabaseReference ref = database.getReference().child("users").child(mAuth.getUid());
         Log.d("Ref", "onCreateView: "+ ref.toString());
         //Sets the other details from the reference

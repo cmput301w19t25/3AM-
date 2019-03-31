@@ -28,10 +28,12 @@ public class RequestsFragment extends Fragment {
     private Backend backend = Backend.getBackendInstance();
     private TextView noDataView;
 
+    /** Required empty constructor since its a fragment */
     public RequestsFragment() {
         // Required empty public constructor
     }
 
+    /** Creates the view by getting the respective book list and calling the requests tab adapter */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -50,6 +52,7 @@ public class RequestsFragment extends Fragment {
         RequestsTabAdapter adapter = new RequestsTabAdapter(getActivity(), Requests);
         recyclerView.setAdapter(adapter);
 
+        // gets the data from backend
         backend.getRequestedBooks(new BookListCallback() {
             @Override
             public void onCallback(ArrayList<Book> books) {
