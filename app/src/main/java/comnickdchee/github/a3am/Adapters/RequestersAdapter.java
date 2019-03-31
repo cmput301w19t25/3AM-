@@ -1,18 +1,26 @@
 package comnickdchee.github.a3am.Adapters;
 
 import android.content.Context;
-import android.media.Image;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Models.Book;
@@ -21,8 +29,7 @@ import comnickdchee.github.a3am.R;
 
 public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.ViewHolder>{
 
-    // private ArrayList<User> requesters;
-    private ArrayList<User> requesters;   // TODO: Change this so that it take in users instead.
+    private ArrayList<User> requesters;
     private Context mContext;
     private Book currentBook;
     private Backend backend = Backend.getBackendInstance();
@@ -46,12 +53,32 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull RequestersAdapter.ViewHolder viewHolder, final int i) {
         viewHolder.requesterName.setText(requesters.get(i).getUserName());
+        viewHolder.requesterEmailText.setText(requesters.get(i).getEmail());
+        viewHolder.requesterPhoneText.setText(requesters.get(i).getPhoneNumber());
+        loadImageFromOwnerID(viewHolder.requesterImage,requesters.get(i).getUserID());
 
         // Accept request.
         viewHolder.acceptRequestView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backend.acceptRequest(requesters.get(i), currentBook);
+                Log.d(requesters.get(i).getUserID(), "IN RECYCLER USER ID: ");
+
+                currentBook.setCurrentBorrowerID(requesters.get(i).getUserID());
+
+                String receiverkey = requesters.get(i).getUserID().toString();
+                String receivername = requesters.get(i).getUserName();
+                String senderkey = currentBook.getOwnerID();
+
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+                HashMap<String, String> notificationData = new HashMap<>();
+                notificationData.put("from",mAuth.getCurrentUser().getUid());
+                notificationData.put("type","request");
+
+                reference.child("notificationAccepts").child(receiverkey).child(mAuth.getCurrentUser().getDisplayName()).push().setValue(notificationData);
+                backend.acceptRequest(requesters.get(viewHolder.getAdapterPosition()), currentBook);
+
             }
         });
 
@@ -62,6 +89,23 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
                 backend.rejectRequest(requesters.get(viewHolder.getAdapterPosition()), currentBook);
             }
         });
+    }
+
+    public void loadImageFromOwnerID(ImageView load, String uID){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");
+
+        Log.e("Tuts+", storageRef.toString());
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e("Tuts+", "uri: " + uri.toString());
+                String imgUrl = uri.toString();
+
+                Picasso.with(mContext).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+            }
+        });
+
     }
 
     @Override
@@ -76,7 +120,8 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
         // views inside ViewHolder
         public ImageView requesterImage;
         public TextView requesterName;
-        public RatingBar rating;
+        public TextView requesterPhoneText;
+        public TextView requesterEmailText;
         public ImageView acceptRequestView;
         public ImageView rejectRequestView;
 
@@ -85,8 +130,11 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
 
             // set the views
             requesterImage = itemView.findViewById(R.id.ivRequesterPhoto);
-            requesterName = itemView.findViewById(R.id.tvName);
-            rating = itemView.findViewById(R.id.ratingBar);
+            requesterName = itemView.findViewById(R.id.embeddedName);
+            requesterPhoneText = itemView.findViewById(R.id.embeddedCardPhoneNumber);
+            requesterEmailText = itemView.findViewById(R.id.embeddedCardEmail);
+
+
             acceptRequestView = itemView.findViewById(R.id.ivAcceptRequestButton);
             rejectRequestView = itemView.findViewById(R.id.ivRejectRequestButton);
         }

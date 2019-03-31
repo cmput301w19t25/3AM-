@@ -6,6 +6,7 @@ import android.content.Context;
 
 import android.content.Intent;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import android.support.v7.widget.CardView;
@@ -27,12 +28,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 
 
 import comnickdchee.github.a3am.Models.Book;
 
+import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.R;
 
 import comnickdchee.github.a3am.Activities.ViewBookActivity;
@@ -69,9 +76,18 @@ public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.Vi
         Log.d(TAG, "onBindViewHolder: called.");
 
         // one file that contains a bunch of conditions for making a recycler view.
+        loadImageFromBookID(holder.ivBook,mBookList.get(i).getBookID());
         holder.tvBookTitle.setText(mBookList.get(i).getTitle());
         holder.tvAuthorName.setText(mBookList.get(i).getAuthor());
         holder.tvISBN.setText(mBookList.get(i).getISBN());
+        if (mBookList.get(i).getStatus() == Status.Accepted){
+            holder.tvRequestCount.setVisibility(View.INVISIBLE);
+            holder.tvRequestTag.setText("Request Accepted");
+        } else {
+            holder.tvRequestCount.setText(Integer.toString(mBookList.get(i).getRequests().size()));
+            holder.tvRequestTag.setText("Total Requests: ");
+        }
+
 
         // On click event when a card is clicked
         holder.actionsItemView.setOnClickListener(new View.OnClickListener() {
@@ -90,8 +106,22 @@ public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.Vi
         });
     }
 
-    @Override
+    public void loadImageFromBookID(ImageView load, String bookID){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(bookID);
+        Log.e("Tuts+", storageRef.toString());
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e("Tuts+", "uri: " + uri.toString());
+                String DownloadLink = uri.toString();
+                Picasso.with(mContext).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+            }
+        });
 
+    }
+
+    @Override
     public int getItemCount() {
         return mBookList.size();
     }
@@ -102,6 +132,8 @@ public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.Vi
         public ImageView ivBook;
         public TextView tvBookTitle;
         public TextView tvAuthorName;
+        public TextView tvRequestCount;
+        public TextView tvRequestTag;
         public TextView tvISBN;
         public CardView actionsItemView;
 
@@ -111,6 +143,8 @@ public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.Vi
             tvBookTitle = itemView.findViewById(R.id.tvCardBookTitle);
             actionsItemView = itemView.findViewById(R.id.cvActions);
             tvAuthorName = itemView.findViewById(R.id.tvAuthor);
+            tvRequestCount = itemView.findViewById(R.id.tvRequests);
+            tvRequestTag = itemView.findViewById(R.id.tvRequestsTag);
             tvISBN = itemView.findViewById(R.id.tvISBN);
 
         }

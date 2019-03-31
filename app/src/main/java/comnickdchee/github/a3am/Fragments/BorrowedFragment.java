@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,7 @@ public class BorrowedFragment extends Fragment {
     private static final String TAG = "BorrowedFragment";
     private ArrayList<Book> borrowedBooksList = new ArrayList<>();
     private Backend backend = Backend.getBackendInstance();
+    private TextView noDataView;
 
     public BorrowedFragment() {
         // Required empty public constructor
@@ -34,6 +36,10 @@ public class BorrowedFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_borrowed, container, false);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        noDataView = view.findViewById(R.id.noDataView);
+
+        recyclerView.setVisibility(View.VISIBLE);
+        noDataView.setVisibility(View.INVISIBLE);
 
         //Create and return the recyclerView
         BorrowedTabAdapter adapter = new BorrowedTabAdapter(getActivity(),borrowedBooksList);
@@ -45,6 +51,13 @@ public class BorrowedFragment extends Fragment {
             public void onCallback(ArrayList<Book> books) {
                 borrowedBooksList.clear();
                 borrowedBooksList.addAll(0,books);
+                if (borrowedBooksList.size() == 0) {
+                    recyclerView.setVisibility(View.INVISIBLE);
+                    noDataView.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    noDataView.setVisibility(View.INVISIBLE);
+                }
                 adapter.notifyDataSetChanged();
             }
         });

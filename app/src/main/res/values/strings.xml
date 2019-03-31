@@ -4,4 +4,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="PlaceHolder">XXXXXXXXX</string>
+    <string name="option_view_edit">Edit</string>
+    <string name="option_delete">Delete</string>
 </resources>

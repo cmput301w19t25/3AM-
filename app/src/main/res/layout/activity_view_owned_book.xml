@@ -7,19 +7,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/white">
 
-    <EditText
-        android:id="@+id/bookISBNOwnedBook"
-        android:layout_width="256dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="ISBN of the book"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookAuthorOwnedBook" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/pictureContainer"
@@ -40,13 +27,13 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="✕"
-            android:background="@drawable/delete_custom"
             android:textColor="#FFFFFF"
             android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.487" />
+            app:layout_constraintVertical_bias="0.487"
+            android:layout_marginLeft="8dp" />
 
         <TextView
             android:id="@+id/ApplyChangesEditBook"
@@ -57,7 +44,8 @@
             android:textColor="#FFFFFF"
             android:textSize="25sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/EditBookTitle"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginRight="8dp" />
 
         <TextView
             android:id="@+id/EditBookTitle"
@@ -73,62 +61,101 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/bookPictureOwnedBook"
-        android:layout_width="156dp"
-        android:layout_height="156dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:src="@mipmap/ic_launcher_round"
+        android:layout_marginBottom="8dp"
+        android:elevation="10dp"
+        android:onClick="showPopup"
+        android:src="@drawable/ic_add_to_photos_grey_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pictureContainer"
         tools:ignore="ContentDescription" />
 
-    <EditText
-        android:id="@+id/bookTitleOwnedBook"
-        android:layout_width="256dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="Title of the book"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookPictureOwnedBook" />
-
-    <EditText
-        android:id="@+id/bookAuthorOwnedBook"
-        android:layout_width="256dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="Author of the book"
-
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookTitleOwnedBook" />
-
-    <Button
-        android:id="@+id/DeleteBook"
-        android:layout_width="218dp"
-        android:layout_height="48dp"
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="235dp"
+        android:layout_height="20dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/delete_custom"
-        android:text="Delete BOOK"
-        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookISBNOwnedBook" />
+        app:layout_constraintTop_toBottomOf="@+id/bookPictureOwnedBook" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/bookTitleOwnedBook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="8dp"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bookPictureOwnedBook">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/newbooktitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textColor="@android:color/darker_gray" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/bookAuthorOwnedBook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bookTitleOwnedBook">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/bookauthor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textColor="@android:color/darker_gray" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/bookISBNOwnedBook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bookAuthorOwnedBook">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/bookISBN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textColor="@android:color/darker_gray" />
+    </android.support.design.widget.TextInputLayout>
+
+
 </android.support.constraint.ConstraintLayout>
 

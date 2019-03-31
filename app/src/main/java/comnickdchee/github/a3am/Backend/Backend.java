@@ -1,9 +1,13 @@
 package comnickdchee.github.a3am.Backend;
 
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -11,6 +15,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -21,6 +28,7 @@ import comnickdchee.github.a3am.Models.ExchangeType;
 import comnickdchee.github.a3am.Models.IOwner;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
+import comnickdchee.github.a3am.R;
 
 /**
  * Backend class that handles all the logic
@@ -72,6 +80,57 @@ public class Backend {
         mCurrentUser.addOwnedBook(book);
         mCurrentOwnedBooks.add(book);
         updateCurrentUserData();
+    }
+
+    /**
+     * Delete the book from both the books table and every requesting user's
+     * requested books list.
+     */
+    public Boolean deleteBook(Book book) {
+        // Don't let the user delete a book currently being interacted with
+        if (book.getStatus() != Status.Available && book.getStatus() != Status.Requested) {
+            return false;
+        }
+
+        Log.d("START HERE", "deleteBook: ");
+        Log.d(book.getBookID(), "deleteBook: ");
+
+        // Iterate through all the requested books list
+        // and delete the bookIDs from each user's requested list
+        for (String requesterID : book.getRequests()) {
+
+            // Get the current user, update his requested books, and then
+            // push it back to the table
+            getUser(requesterID, new UserCallback() {
+                @Override
+                public void onCallback(User user) {
+                    User requester = user;
+                    requester.getRequestedBooks().remove(book.getBookID());
+                    updateUserData(requester);
+                }
+            });
+        }
+
+        // Delete from the current user my books list
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        String uid = firebaseAuth.getCurrentUser().getUid();
+        getCurrentUserData(new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                mCurrentUser = user;
+                mCurrentUser.getOwnedBooks().remove(book.getBookID());
+                updateCurrentUserData();
+            }
+        });
+
+
+        Log.d("DELETING FROM BOOKS", "deleteBook: ");
+        Log.d(book.getBookID(), "deleteBook: ");
+        // Delete the actual book afterwards
+        DatabaseReference bookRef = mFirebaseDatabase.getReference("books").child(book.getBookID());
+        bookRef.removeValue();
+
+        return true;
     }
 
     /** Returns the current user of the model class. */
@@ -191,6 +250,40 @@ public class Backend {
         exchangeRef.setValue(exchange);
     }
 
+    public void updateExchange(Book book, Exchange exchange) {
+        String bookID = book.getBookID();
+        DatabaseReference exchangesRef = mFirebaseDatabase.getReference("exchanges");
+        DatabaseReference exchangeRef = exchangesRef.child(bookID);
+        exchangeRef.setValue(exchange);
+    }
+
+    public void deleteExchange(Book book) {
+        String bookID = book.getBookID();
+        DatabaseReference exchangeRef = mFirebaseDatabase.getReference("exchanges").child(bookID);
+        exchangeRef.removeValue();
+
+    }
+
+    /**
+     * Synchronous method that takes in the book
+     * and uses the book id to retain the exchange information.
+     */
+    public void getExchange(Book book, final ExchangeCallback exchangeCallback) {
+        DatabaseReference exchangesRef = mFirebaseDatabase.getReference("exchanges").child(book.getBookID());
+        exchangesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Exchange exchange = dataSnapshot.getValue(Exchange.class);
+                exchangeCallback.onCallback(exchange);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     /**
      * Accepts a request from the requester on the activity. This method is
      * implemented in the IOwner interface, and has the following logic:
@@ -212,6 +305,12 @@ public class Backend {
     /** Reject request that follows similar logic to accept request. */
     public void rejectRequest(User user, Book book) {
         book.getRequests().remove(user.getUserID());
+
+        /** Empty */
+        if (book.getRequests().size() == 0) {
+            book.setStatus(Status.Available);
+        }
+
         user.getRequestedBooks().remove(book.getBookID());
 
         updateBookData(book);
@@ -255,6 +354,22 @@ public class Backend {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 userCallback.onCallback(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    /** Fetches a user's information from Firebase, given their uid. */
+    public void getBook(String bookID, final BookCallback bookCallback) {
+        DatabaseReference usersRef = mFirebaseDatabase.getReference("books");
+        usersRef.child(bookID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Book book = dataSnapshot.getValue(Book.class);
+                bookCallback.onCallback(book);
             }
 
             @Override
@@ -448,7 +563,7 @@ public class Backend {
     /** Gets the books that a user is currently requesting. */
     public void getRequestedBooks(final BookListCallback requestedBooksCallback) {
         // Get the current owned books of the user
-        final ArrayList<String> requestedBooksID = mCurrentUser.getRequestedBooks();
+        ArrayList<String> requestedBooksID = mCurrentUser.getRequestedBooks();
         final ArrayList<Book> requestedBooks = new ArrayList<>();
 
         DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
@@ -459,29 +574,36 @@ public class Backend {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 requestedBooks.clear();
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                getCurrentUserData(new UserCallback() {
+                    @Override
+                    public void onCallback(User user) {
+                        mCurrentUser = user;
 
-                    for (String bookID : requestedBooksID) {
-                        if (data.getKey().equals(bookID)) {
-                            // Fetch book object from Firebase
-                            Book book = data.getValue(Book.class);
-                            if (book != null) {
-                                // Get the requester user data from the book requested list
-                                if (book.getStatus() == Status.Requested || book.getStatus() == Status.Accepted) {
-                                    // Add to the book
-                                    requestedBooks.add(book);
+                        ArrayList<String> requestedBooksID = mCurrentUser.getRequestedBooks();
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            for (String bookID : requestedBooksID) {
+                                if (data.getKey().equals(bookID)) {
+                                    // Fetch book object from Firebase
+                                    Book book = data.getValue(Book.class);
+                                    if (book != null) {
+                                        // Get the requester user data from the book requested list
+                                        if (book.getStatus() == Status.Requested || book.getStatus() == Status.Accepted) {
+                                            // Add to the book
+                                            requestedBooks.add(book);
+                                        }
+                                    }
+
                                 }
                             }
-
                         }
-                    }
-                }
 
-                // Creates a callback on the front-end UI context, where
-                // it can retrieve the data and start populating the recycler
-                // view.
-                setCurrentRequestedBooks(requestedBooks);
-                requestedBooksCallback.onCallback(requestedBooks);
+                        // Creates a callback on the front-end UI context, where
+                        // it can retrieve the data and start populating the recycler
+                        // view.
+                        setCurrentRequestedBooks(requestedBooks);
+                        requestedBooksCallback.onCallback(requestedBooks);
+                    }
+                });
             }
 
             @Override
@@ -499,5 +621,4 @@ public class Backend {
     public void setCurrentRequestedBooks(ArrayList<Book> requestedBooks) {
         mCurrentRequestedBooks = requestedBooks;
     }
-
 }

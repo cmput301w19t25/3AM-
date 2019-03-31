@@ -35,7 +35,9 @@ import java.util.Set;
 
 import comnickdchee.github.a3am.Adapters.BookRecyclerAdapter;
 import comnickdchee.github.a3am.Adapters.SearchRecyclerAdapter;
+import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Models.Book;
+import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.MySuggestionProvider;
 import comnickdchee.github.a3am.R;
 
@@ -52,6 +54,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private ArrayList<Book> authorResults = new ArrayList<>();
     private Set<String> bookSet = new HashSet<>();
     private SearchRecyclerAdapter searchResultsAdapter;
+    private Backend backend = Backend.getBackendInstance();
 
 
     @Override
@@ -103,7 +106,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         searchResults.clear();
         bookSet.clear();
 
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction()) || Intent.ACTION_VIEW.equals(intent.getAction())) {
             // Save the most recent query for later search suggestion
             String query = intent.getStringExtra(SearchManager.QUERY).toLowerCase();
 
@@ -123,25 +126,56 @@ public class SearchResultsActivity extends AppCompatActivity {
                     // Iterate through child entries
                     searchResults.clear();
                     bookSet.clear();
+                    ArrayList<String> bookIDLists =  backend.getCurrentUser().getOwnedBooks();
+
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         // Get all the keywords in the query entered by the user
                         // and make a direct check
-                        for (String keyword : queryList) {
-                            Book bookToCompare = data.getValue(Book.class);
-                            if (bookToCompare != null) {
-                                // Save the bookID to fetch intent information
-                                bookToCompare.setBookID(data.getKey());
-                                if (bookToCompare.getTitle().toLowerCase().contains(keyword)) {
-                                    searchResults.add(bookToCompare);
-                                } else if (bookToCompare.getAuthor().toLowerCase().contains(keyword)) {
-                                    searchResults.add(bookToCompare);
-                                } else if (bookToCompare.getISBN().toLowerCase().contains(keyword)) {
-                                    searchResults.add(bookToCompare);
-                                }
+                        Boolean addBook = true;
+                        Book bookToCompare = data.getValue(Book.class);
+                        Status bookStatus = Status.Available;
 
+
+                        for (String keyword : queryList) {
+
+                            keyword = keyword.replace(" ", "");
+
+
+                            if (keyword.equals("")) {
+                                continue;
+                            }
+
+                            if (bookToCompare != null) {
+                                bookToCompare.setBookID(data.getKey());
+                                bookStatus = bookToCompare.getStatus();
+
+
+                                // Save the bookID to fetch intent information
+
+                                keyword = " " + keyword + " ";
+                                String title = " " + bookToCompare.getTitle().toLowerCase() + " ";
+                                String author = " " + bookToCompare.getAuthor().toLowerCase() + " ";
+                                String ISBN = " " + bookToCompare.getISBN().toLowerCase() + " ";
+                                if (!title.contains(keyword) &&
+                                        !author.contains(keyword) &&
+                                        !ISBN.contains(keyword)) {
+
+                                    addBook = false;
+                                }
+                            }
+                            else {
+                                addBook = false;
                                 break;
                             }
                         }
+                        if (addBook){
+                            if (bookStatus == Status.Requested || bookStatus == Status.Available) {
+                                if (!bookIDLists.contains(bookToCompare.getBookID()) ) {
+                                    searchResults.add(bookToCompare);
+                                }
+                            }
+                        }
+
                     }
 
                     searchResultsAdapter.notifyDataSetChanged();
@@ -152,10 +186,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                 }
             });
 
-
-
         }
-
     }
 
     /**

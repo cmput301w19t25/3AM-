@@ -6,6 +6,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.robotium.solo.Solo;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -23,13 +24,19 @@ import static org.junit.Assert.*;
 import comnickdchee.github.a3am.Activities.SignInActivity;
 import comnickdchee.github.a3am.Activities.SignUpActivity;
 
-public class SignUpActivityTest {
+/**
+ * @author Tatenda
+ * uses expresso for testing the signup
+ */
+
+public class aSignUpActivityTest {
     @Rule
     public ActivityTestRule<SignUpActivity> nActivityTestRule = new ActivityTestRule<SignUpActivity>(SignUpActivity.class);
     //public ActivityTestRule<SignInActivity> bActivityTestRule = new ActivityTestRule<SignInActivity>(SignUpActivity.class);
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private SignUpActivity nActivity = null;
+    private Solo solo;
     //private SignUpActivity mActivity = null;
 
     Instrumentation.ActivityMonitor monitor = getInstrumentation().addMonitor(SignInActivity.class.getName(),null,false);//monitor to show when second activity opens
@@ -61,9 +68,8 @@ public class SignUpActivityTest {
         onView(withId(R.id.PasswordReg)).perform(typeText("one1234")).perform(closeSoftKeyboard());
         onView(withId(R.id.address)).perform(typeText("421 NY")).perform(closeSoftKeyboard());
         onView(withId(R.id.phoneNumber)).perform(typeText("7778904605")).perform(closeSoftKeyboard());
-        //Thread.sleep(250)
+       // SystemClock.sleep(3000);
 
-        onView(withId(R.id.RegisterConfirm)).perform(click());
     }
 
 }

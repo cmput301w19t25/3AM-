@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/new_book_activity"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,7 +17,8 @@
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_camera" />
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        android:layout_marginRight="8dp" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -45,7 +47,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvTitle"
-            app:srcCompat="@drawable/ic_close_white_24dp" />
+            android:src="@drawable/ic_close_white_24dp"
+            android:layout_marginLeft="8dp" />
 
         <TextView
             android:id="@+id/tvTitle"
@@ -58,7 +61,8 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/newBookToolbar"
             app:layout_constraintStart_toEndOf="@+id/ivCloseButton"
-            app:layout_constraintTop_toTopOf="@+id/newBookToolbar" />
+            app:layout_constraintTop_toTopOf="@+id/newBookToolbar"
+            android:layout_marginLeft="16dp" />
 
         <ImageView
             android:id="@+id/ivFinishAddButton"
@@ -68,7 +72,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
             app:layout_constraintEnd_toEndOf="@+id/newBookToolbar"
             app:layout_constraintTop_toTopOf="@+id/tvTitle"
-            app:srcCompat="@drawable/ic_check_white_24dp" />
+            android:src="@drawable/ic_check_white_24dp"
+            android:layout_marginRight="8dp" />
 
         <ImageView
             android:id="@+id/ivAddBookPhoto"
@@ -79,11 +84,13 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:elevation="10dp"
+            android:onClick="showPopup"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/newBookToolbar"
-            app:srcCompat="@drawable/ic_add_to_photos_grey_24dp" />
+            android:src="@drawable/ic_add_to_photos_grey_24dp"
+            tools:onClick="showPopup" />
 
         <ProgressBar
             android:id="@+id/progressBar2"
@@ -98,6 +105,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivAddBookPhoto" />
+
+        <ImageView
+            android:id="@+id/bDeleteImage"
+            android:layout_width="30dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            app:layout_constraintStart_toEndOf="@+id/ivAddBookPhoto"
+            app:layout_constraintTop_toTopOf="@+id/ivAddBookPhoto"
+            android:src="@drawable/ic_close_dark_red_24dp" />
 
     </android.support.constraint.ConstraintLayout>
 
