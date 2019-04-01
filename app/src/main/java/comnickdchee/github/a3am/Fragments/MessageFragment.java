@@ -37,7 +37,7 @@ import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 
 /**
- * @author Asma
+ * @author Zaheen
  *  MessageFragment extends Fragment
  *  it overwrites onCreateView
  */
@@ -71,7 +71,10 @@ public class MessageFragment extends Fragment {
 
     }
 
-    // TODO:Remove this init once we have proper data
+    /*
+        Initialize the Adapter for the view.
+     */
+
     public void init() {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();

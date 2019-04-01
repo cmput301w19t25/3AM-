@@ -248,9 +248,6 @@ public class MyBooksFragment extends Fragment {
         BookList.clear();
 
         DatabaseReference ref = database.getReference().child("books");
-        Log.d("TestDataBookDir", ref.toString());
-        Log.d("TestDataBookDir", ref.getKey().toString());
-        Log.d("TestDataBookDir", ref.toString());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -258,9 +255,7 @@ public class MyBooksFragment extends Fragment {
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(key);
                 StorageReference profileImageRef =
                         FirebaseStorage.getInstance().getReference("shelf@gmail.com" + "/" + "dp" + ".jpg");
-                Log.d("TestImageBook", profileImageRef.toString());
 
-                Log.d("TestDataBook", dataSnapshot.child(key).getValue().toString());
                 String bookID = dataSnapshot.child(key).child("bookID").getValue().toString();
                 String author = dataSnapshot.child(key).child("author").getValue().toString();
                 String isbn = dataSnapshot.child(key).child("isbn").getValue().toString();
@@ -287,7 +282,6 @@ public class MyBooksFragment extends Fragment {
         //BookList.clear();
         int i = BookList.size();
         String s = Integer.toString(i);
-        Log.d("TestDataBook", s);
 
     }
 
@@ -301,7 +295,6 @@ public class MyBooksFragment extends Fragment {
             dialog.setMessage("Fetching New Data");
             dialog.show();
 
-            Log.d("MyBooks", "Recyclerview notified");
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override

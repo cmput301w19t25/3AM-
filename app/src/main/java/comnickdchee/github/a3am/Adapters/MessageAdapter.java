@@ -29,7 +29,11 @@ import comnickdchee.github.a3am.Models.Chat;
 import comnickdchee.github.a3am.Models.ChatBox;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
-
+/*
+    @author Zaheen
+    MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder>
+    MessageAdapter decides which message to inflate based on current message.
+ */
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
 
     private static final String TAG = "In_MessageAdapter";
@@ -55,7 +59,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @NonNull
     @Override
     public MessageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
+        // We check which card to pick based on messager.
         // Creates a view based on the mybooks_card.xml
         if(viewType == MSG_TYPE_RIGHT) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_right, parent, false);
@@ -70,12 +74,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public void onBindViewHolder(MessageAdapter.ViewHolder holder, final int position) {
         // This function sets up the data in the cards
 
-        Log.d(TAG, "onBindViewHolderMessage: called.");
-        // TODO: Correctly implement images for the other user's profile pic Below is the code used for Book Fragment's pictures by Zaheen
-//        Log.d("Image", imgUrl);
+        // Log.d(TAG, "onBindViewHolderMessage: called.");
         Chat chat = mChat.get(position);
         holder.showMessage.setText(chat.getMessage());
-
+        // Load the image into profile pictures.
         if(imgUrl != null){
             Picasso.with(mContext).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.profilePhoto);
         }else{
@@ -95,7 +97,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     // A view Holder to hold the views of each Individual Cards
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-
+        //Set the message and photo.
         public ImageView profilePhoto;
         public TextView showMessage;
 

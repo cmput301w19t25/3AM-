@@ -39,7 +39,11 @@ import comnickdchee.github.a3am.ExampleService;
 import comnickdchee.github.a3am.Models.Chat;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
-
+/*
+    @Author Zaheen
+     messageActivity extends AppCompatActivity
+     MessageActivity enables current user to send messages to another user.
+ */
 public class messageActivity extends AppCompatActivity {
     CircleImageView receiverImage;
     TextView recieverUserName;
@@ -172,13 +176,10 @@ public class messageActivity extends AppCompatActivity {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");
 
-        Log.e("Tuts+", storageRef.toString());
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.e("Tuts+", "uri: " + uri.toString());
                 imgUrl = uri.toString();
-
                 Picasso.with(getApplicationContext()).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
             }
         });
