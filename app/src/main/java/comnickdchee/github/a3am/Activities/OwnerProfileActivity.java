@@ -65,6 +65,11 @@ public class OwnerProfileActivity extends AppCompatActivity {
         String ownerID = actionBook.getOwnerID();
 
         backend.getUser(ownerID, new UserCallback() {
+            /**
+             * This method is used initialize owner
+             * @param user takes in an object of type User
+             * @see User
+             */
             @Override
             public void onCallback(User user) {
                 owner = user;

@@ -41,6 +41,10 @@ import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * @Author cmput301w19t25
+ * This class extends AppCompatActivity
+ */
 public class BorrowedProfileActivity extends AppCompatActivity {
 
     ImageView backButton;
@@ -71,6 +75,11 @@ public class BorrowedProfileActivity extends AppCompatActivity {
         actionBook = intent.getExtras().getParcelable("passedBook");
         String borrowerID = actionBook.getCurrentBorrowerID();
         backend.getUser(borrowerID, new UserCallback() {
+            /**
+             * This method is used initialize borrower
+             * @param user takes in an object of type User
+             * @see User
+             */
             @Override
             public void onCallback(User user) {
                 borrower = user;
@@ -79,6 +88,11 @@ public class BorrowedProfileActivity extends AppCompatActivity {
         });
 
         messageButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This method is used to set an onClick listener on message button that opens the messaging
+             * screen when clicked.
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 Intent i = new Intent (getApplicationContext(), messageActivity.class);
@@ -88,6 +102,10 @@ public class BorrowedProfileActivity extends AppCompatActivity {
         });
 
         backend.getExchange(actionBook, new ExchangeCallback() {
+            /**
+             *
+             * @param exchange
+             */
             @Override
             public void onCallback(Exchange exchange) {
                 if (exchange != null) {
@@ -105,6 +123,10 @@ public class BorrowedProfileActivity extends AppCompatActivity {
 
 
         backButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This method is used to set an onClick listener on the back arrow button
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 finish();
@@ -112,6 +134,10 @@ public class BorrowedProfileActivity extends AppCompatActivity {
         });
 
         transactionButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This method is used to set an onClick listener on the scan button that launches the barcode Scanner when clicked
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(BorrowedProfileActivity.this, BarcodeScanner.class);
@@ -154,6 +180,9 @@ public class BorrowedProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method is used to get the data of the book's owner's profile. i.e; phone, email, etc of the book owner
+     */
     public void getPageData() {
         CircleImageView userPhoto = findViewById(R.id.UserImage);
         ImageView bookImage = findViewById(R.id.bookImage);
@@ -175,6 +204,11 @@ public class BorrowedProfileActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method is used to the profile picture of the book owner.
+     * @param load
+     * @param uID
+     */
     public void loadImageFromOwnerID(ImageView load, String uID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");
@@ -192,6 +226,12 @@ public class BorrowedProfileActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * This method is used to load the image of the book.
+     * @param load
+     * @param bookID
+     */
     public void loadImageFromBookID(ImageView load, String bookID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(bookID);
