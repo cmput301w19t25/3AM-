@@ -352,7 +352,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="24dp"
-        android:background="@drawable/signup_custom"
+        android:background="@color/default_button_color_blue"
         android:elevation="8dp"
         android:fontFamily="@font/open_sans"
         android:paddingLeft="10dp"

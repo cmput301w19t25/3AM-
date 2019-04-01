@@ -319,7 +319,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="24dp"
-        android:background="@drawable/signup_custom"
+        android:background="@color/default_button_color_blue"
         android:fontFamily="@font/open_sans"
         android:padding="15dp"
         android:text="Receive Book"
