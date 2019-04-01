@@ -2,7 +2,6 @@ package comnickdchee.github.a3am.Activities;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -13,9 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,12 +29,18 @@ import java.util.HashMap;
 
 import comnickdchee.github.a3am.Backend.Backend;
 import comnickdchee.github.a3am.Models.Book;
-import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Activity that handles requesting books from the user's page
+ * when they click on a book from the search results activity.
+ * This activity enables users to request the owner's book,
+ * view the owner's profile, and message the owner.
+ */
 public class RequestBookActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // View/UI objects
     TextView tvAuthor;
     TextView tvBookTitle;
     TextView tvISBN;
@@ -49,10 +52,14 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
     ImageView bookImage;
     CircleImageView ownerImage;
 
+    // Firebase references
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
-    private final DatabaseReference mDatabaseReference = mFirebaseDatabase.getReference();
+
+    // Model objects
     private Book book;
+
+    // Backend reference
     Backend backend = Backend.getBackendInstance();
 
     @Override
@@ -78,11 +85,11 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
 
         String userID = backend.getCurrentUser().getUserID();
 
-
-        // TODO: Make this error free.
+        // Retrieve the book data passed from the intent
         Intent intent = getIntent();
         book = (Book) intent.getExtras().getParcelable("SearchBook");
 
+        // Populate the views
         tvAuthor.setText(book.getAuthor());
         tvBookTitle.setText(book.getTitle());
         tvISBN.setText(book.getISBN());
@@ -110,6 +117,7 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         loadImageFromBookID(bookImage, book.getBookID());
         loadImageFromOwnerID(ownerImage, book.getOwnerID());
 
+        // Handles the logic for messaging the owner
         messageOwner = findViewById(R.id.buttonViewProfile);
         messageOwner.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +130,7 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
+        // Create a listener that gets the owner's information and populate the given views
         DatabaseReference ref = mFirebaseDatabase.getReference().child("users").child(book.getOwnerID());
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -147,9 +156,6 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
                     // we add them to the array list on the condition
                     // that the current user is not a duplicate, and
                     // we change the view of the button
-//                    if (!book.getRequests().contains(mAuth.getCurrentUser().getUid())) {
-//                        book.addRequest(mAuth.getCurrentUser().getUid());
-//                        updateRequests(book);
 
                     // Disables the button since to stop multiple requests
                     bRequestButton.setEnabled(false);
@@ -158,54 +164,42 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
                     Drawable color = res.getDrawable(R.drawable.disabled_button);
                     bRequestButton.setBackground(color);
 
+                    // Getting the respective uids to coordinate a push notification
                     String receiverKey = book.getOwnerID();
                     String senderKey = mAuth.getUid();
+
+                    // Here, we update the actual request in firebase
                     backend.updateRequests(book);
+
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
                     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+                    // Creating entries in the Firebase table that stores the notification data
                     HashMap<String, String> notificationData = new HashMap<>();
                     notificationData.put("from",mAuth.getCurrentUser().getUid());
                     notificationData.put("type","request");
 
-                    reference.child("notificationRequests").child(receiverKey).child(mAuth.getCurrentUser().getDisplayName()).push().setValue(notificationData);
-
-
-
-//                    }
-
-                    // TODO: UI fix; change the request button to be non-clickable.
+                    reference.child("notificationRequests")
+                            .child(receiverKey)
+                            .child(mAuth.getCurrentUser().getDisplayName())
+                            .push()
+                            .setValue(notificationData);
                 }
 
         }
-    }
-
-    /** Overwrite the data of the original book
-     with the new book in Firebase */
-    private void updateRequests(Book updatedBook) {
-        DatabaseReference booksRef = mDatabaseReference.child("books");
-        // Change this if its status is available
-        if (updatedBook.getStatus().equals(Status.Available)) {
-            updatedBook.setStatus(Status.Requested);
-        }
-
-        // Update the actual contents in Firebase
-        Log.d(updatedBook.getBookID(), "updateRequests: ");
-        booksRef.child(updatedBook.getBookID()).setValue(updatedBook);
     }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
 
+    /** Method that populates an Image View using the book's id as a reference. */
     public void loadImageFromBookID(ImageView load, String bookID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(bookID);
-        Log.e("Tuts+", storageRef.toString());
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.e("Tuts+", "uri: " + uri.toString());
                 String DownloadLink = uri.toString();
                 Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
             }
@@ -213,56 +207,16 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-
+    /** Method that populates an Image View using the book's owner id as a reference. */
     public void loadImageFromOwnerID(ImageView load, String bookID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(book.getOwnerID()+".jpg");
-
-        Log.e("Tuts+", storageRef.toString());
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.e("Tuts+", "uri: " + uri.toString());
                 DownloadLink = uri.toString();
                 Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
             }
         });
-
     }
-
-    /*
-    public void findUserByBookID(String BookID){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference().child("users");
-        Log.d("refRequest", ref.toString());
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren()){
-
-                    if(data.child("owned_books") != null){
-                        //Log.d("refRequestBook", data.getValue().toString());
-                        if(data.child("owned_books").getValue() != null){
-                            Log.d("refRequestBook", data.child("owned_books").getValue().toString());
-                            Log.d("refReq", BookID);
-                            for(DataSnapshot d: data.child("owned_books").getChildren()){
-                                Log.d("refReq", d.getValue().toString().trim());
-                                if(BookID.trim() == d.getValue().toString().trim()){
-                                    Log.d("refReq", "TRUE");
-                                }
-                            }
-                        }
-                    }
-                    //Log.d("refRequestBook", data.getValue().toString());
-                    //Log.d("refRequestBook", data.child("owned_books").getValue().toString());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-    */
 }

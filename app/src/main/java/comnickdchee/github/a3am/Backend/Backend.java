@@ -1,13 +1,8 @@
 package comnickdchee.github.a3am.Backend;
 
-import android.net.Uri;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -15,23 +10,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.Models.Exchange;
 import comnickdchee.github.a3am.Models.ExchangeType;
-import comnickdchee.github.a3am.Models.IOwner;
 import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.Models.User;
-import comnickdchee.github.a3am.R;
 
 /**
- * Backend class that handles all the logic
+ * Backend class that handles most of the logic
  * required to access data and retrieve data from the Firebase
  * database.
  */
@@ -44,13 +33,6 @@ public class Backend {
 
     // Have a direct reference to the user operating the app
     private static User mCurrentUser = new User();
-
-    private static ArrayList<Book> mCurrentOwnedBooks = new ArrayList<>();
-
-    // Current books and requesters of the book. Note that this
-    // doesn't get pushed into Firebase
-    private static ArrayList<Book> mCurrentRequestedBooks = new ArrayList<>();
-    private static ArrayList<Book> mCurrentActionBooks = new ArrayList<>();
 
     /** Empty constructor for singleton. Prevents direct instantiate outside of class. */
     private Backend() {}
@@ -78,7 +60,6 @@ public class Backend {
 
         // Add book to user data, which we can push to the table again
         mCurrentUser.addOwnedBook(book);
-        mCurrentOwnedBooks.add(book);
         updateCurrentUserData();
     }
 
@@ -91,9 +72,6 @@ public class Backend {
         if (book.getStatus() != Status.Available && book.getStatus() != Status.Requested) {
             return false;
         }
-
-        Log.d("START HERE", "deleteBook: ");
-        Log.d(book.getBookID(), "deleteBook: ");
 
         // Iterate through all the requested books list
         // and delete the bookIDs from each user's requested list
@@ -123,9 +101,6 @@ public class Backend {
             }
         });
 
-
-        Log.d("DELETING FROM BOOKS", "deleteBook: ");
-        Log.d(book.getBookID(), "deleteBook: ");
         // Delete the actual book afterwards
         DatabaseReference bookRef = mFirebaseDatabase.getReference("books").child(book.getBookID());
         bookRef.removeValue();
@@ -326,8 +301,6 @@ public class Backend {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         String uid = firebaseUser.getUid();
 
-        DatabaseReference booksRef = mFirebaseDatabase.getReference("books");
-
         // Change this if its status is available
         if (book.getStatus().equals(Status.Available)) {
             book.setStatus(Status.Requested);
@@ -450,7 +423,6 @@ public class Backend {
                 // Creates a callback on the front-end UI context, where
                 // it can retrieve the data and start populating the recycler
                 // view.
-                setCurrentActionBooks(borrowedBooks);
                 borrowedBooksCallback.onCallback(borrowedBooks);
             }
 
@@ -498,7 +470,6 @@ public class Backend {
                 // Creates a callback on the front-end UI context, where
                 // it can retrieve the data and start populating the recycler
                 // view.
-                setCurrentActionBooks(lendingBooks);
                 lendingBooksCallback.onCallback(lendingBooks);
             }
 
@@ -550,7 +521,6 @@ public class Backend {
                 // Creates a callback on the front-end UI context, where
                 // it can retrieve the data and start populating the recycler
                 // view.
-                setCurrentActionBooks(actionBooks);
                 actionBooksCallback.onCallback(actionBooks);
             }
 
@@ -600,7 +570,6 @@ public class Backend {
                         // Creates a callback on the front-end UI context, where
                         // it can retrieve the data and start populating the recycler
                         // view.
-                        setCurrentRequestedBooks(requestedBooks);
                         requestedBooksCallback.onCallback(requestedBooks);
                     }
                 });
@@ -610,15 +579,5 @@ public class Backend {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-    }
-
-    /** Helper that sets the current action books to the array list. */
-    public void setCurrentActionBooks(ArrayList<Book> actionBooks) {
-        mCurrentActionBooks = actionBooks;
-    }
-
-    /** Helper that sets the current requested books of the user. */
-    public void setCurrentRequestedBooks(ArrayList<Book> requestedBooks) {
-        mCurrentRequestedBooks = requestedBooks;
     }
 }

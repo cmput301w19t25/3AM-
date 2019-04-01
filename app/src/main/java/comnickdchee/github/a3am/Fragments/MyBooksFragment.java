@@ -217,11 +217,12 @@ public class MyBooksFragment extends Fragment {
 
         if (!filtered){
             orderedList.addAll(BookList);
-        }
 
-        for (Book orderedBook : BookList) {
-            if (orderedBook.getStatus() == curStatus) {
-                orderedList.add(orderedBook);
+        } else {
+            for (Book orderedBook : BookList) {
+                if (orderedBook.getStatus() == curStatus) {
+                    orderedList.add(orderedBook);
+                }
             }
         }
 
