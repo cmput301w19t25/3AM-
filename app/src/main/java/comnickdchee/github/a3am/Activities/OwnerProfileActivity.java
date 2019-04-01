@@ -33,6 +33,11 @@ import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * @Author cmput301w19t25
+ * This class extends AppCompatActivity
+ * @see AppCompatActivity
+ */
 public class OwnerProfileActivity extends AppCompatActivity {
 
     ImageView backButton;
@@ -61,6 +66,11 @@ public class OwnerProfileActivity extends AppCompatActivity {
         String ownerID = actionBook.getOwnerID();
 
         backend.getUser(ownerID, new UserCallback() {
+            /**
+             * This method is used initialize owner
+             * @param user takes in an object of type User
+             * @see User
+             */
             @Override
             public void onCallback(User user) {
                 owner = user;
@@ -69,6 +79,11 @@ public class OwnerProfileActivity extends AppCompatActivity {
         });
 
         messageButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This method is used to set an onClick listener on message button that opens the messaging
+             * screen when clicked.
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 Intent i = new Intent (getApplicationContext(), messageActivity.class);
@@ -78,6 +93,10 @@ public class OwnerProfileActivity extends AppCompatActivity {
         });
 
         backend.getExchange(actionBook, new ExchangeCallback() {
+            /**
+             * This method checks if there's any exchanges and sets the visibility of the transactionButton accordingly.
+             * @param exchange
+             */
             @Override
             public void onCallback(Exchange exchange) {
                 if (exchange != null) {
@@ -93,6 +112,10 @@ public class OwnerProfileActivity extends AppCompatActivity {
         });
 
         backButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This method is used to set an onClick listener on the back arrow button
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 finish();
@@ -101,6 +124,10 @@ public class OwnerProfileActivity extends AppCompatActivity {
 
 
         transactionButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This method is used to set an onClick listener on the scan button that launches the barcode Scanner when clicked
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(OwnerProfileActivity.this, BarcodeScanner.class);
@@ -108,23 +135,8 @@ public class OwnerProfileActivity extends AppCompatActivity {
             }
         });
 
-
-
-        //getSupportActionBar().setTitle("Owner's Profile");
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //////////
-        //  button1 = (Button) findViewById(R.id.button3);
-      //  button1.setOnClickListener(new View.OnClickListener() {
-
-         /*   @Override
-            public void onClick(View v) {
-
-                Intent myIntent =  getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new MessageFragment()).commit();
-            }
-        });*/
     }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
@@ -145,6 +157,9 @@ public class OwnerProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method is used to get the data of the book's owner's profile. i.e; phone, email, etc of the book owner
+     */
     public void getPageData() {
         CircleImageView userPhoto = findViewById(R.id.UserImage);
         ImageView bookImage = findViewById(R.id.bookImage);
@@ -170,6 +185,11 @@ public class OwnerProfileActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method is used to the profile picture of the book owner.
+     * @param load
+     * @param uID
+     */
     public void loadImageFromOwnerID(ImageView load, String uID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");
@@ -187,6 +207,12 @@ public class OwnerProfileActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * This method is used to load the image of the book.
+     * @param load
+     * @param bookID
+     */
     public void loadImageFromBookID(ImageView load, String bookID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(bookID);

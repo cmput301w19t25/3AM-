@@ -48,6 +48,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static comnickdchee.github.a3am.Activities.ViewOwnedBook.CAMERA_PERMISSION_CODE;
 
+/**
+ * @Author cmput301w19t25
+ *  extends AppComaptActivity
+ *  implements PopupMenu.OnMenuItemClickListener
+ * @see AppCompatActivity
+ * @see PopupMenu.OnMenuItemClickListener
+ *
+ */
 public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     private String uid;
@@ -119,6 +127,7 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
         addressTV.setText(address);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
 
@@ -137,7 +146,15 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
         });
     }
 
-        ////////////////////////////////////////
+
+    /**
+     *
+     * @param v
+     * Initializes new PopupMenu.
+     * This popup menu pops out when the user clicks on the image icon to edit their profile picture.
+     * The menu displays 2 options: 1.Take Photo(using camera) 2.Choose from Gallery
+     * @see PopupMenu
+     */
 
     public void showPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
@@ -147,6 +164,16 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
 
     }
 
+    /**
+     *
+     * @param menuItem
+     * @return true if any of the menu options is clicked
+     * Overrides onMenuItemClick
+     * If the first item of the menu is clicked, then the camera is launched
+     * Else if the second item on the menu is clicked, the gallery opens and the user can select an image
+     *
+     * @see PopupMenu.OnMenuItemClickListener
+     */
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -170,12 +197,21 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
         startActivityForResult(Intent.createChooser(i,"Select Profile Picture"), CHOSEN_IMAGE);
     }
 
-    //Check if the user has camera
+    /**
+     * This method checks whether the user's device has camera or no
+     * @return true or false depending on whether the user's device has camera or no.
+     */
     private boolean hasCamera() {
         return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
     }
 
-    //launching the camera
+    /**
+     *
+     * @param view
+     * This method is for asking the user permission to access their camera. If permission is granted,
+     * then the camera is launched.
+     * If permission is not granted, then ..
+     */
     public void launchCamera(View view) {
         if (ContextCompat.checkSelfPermission(EditProfile.this,
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
@@ -191,6 +227,18 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
 
     }
 
+    /**
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     * Overrides onRequestPermissionsResult
+     * This method checks if permission was granted, if permission was granted then it launches the camera
+     * Otherwise if permission is ot granted, a toast message is displayed; "Permission denied for camera"
+     *
+     * @see AppCompatActivity
+     *
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == CAMERA_PERMISSION_CODE) {
@@ -207,8 +255,14 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
         }
     }
 
-    //if you want to return image taken
-
+    /**
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     * This method overrides onActivityResult
+     * It checks permissions to see whether it is okay to get the photo from the gallery or the camera.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -231,8 +285,13 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
             }
         }
     }
-    ///////////////////////////////////////////////////////////////end
 
+    /**
+     *
+     * This method checks whether the user filled all the required fields.
+     * @return true if the user filled all the requierd fields, returns false if any of the fields is missing.
+     * If one or more fields are not filled, a toast message is displayed; "Please fill all the text fields"
+     */
     public Boolean dataValid() {
 
         if (addressTV.getText().toString().equals("") || phoneTV.getText().toString().equals("") || emailTV.getText().toString().equals("")) {
@@ -244,6 +303,9 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
 
     }
 
+    /**
+     * This method is used to create an input prompt. *****COMMENT PROPERLY!!!
+     */
     public void createInputPrompt() {
         passAuthenticate = new AlertDialog.Builder(this);
         passAuthenticate.setTitle("Reauthenticate Password");
@@ -251,7 +313,6 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         passAuthenticate.setView(input);
-
 
         passAuthenticate.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -268,6 +329,11 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
         });
     }
 
+    /**
+     *                  COMMENT!!!!
+     * @param email
+     * @param password
+     */
     public void Authenticate (String email, String password) {
         AuthCredential credential = EmailAuthProvider.getCredential(email,password);
         user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -295,6 +361,9 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
         });
     }
 
+    /**
+     * This method is used to update user's information. i.e; phoneNum, email, address, etc
+     */
     public void updateOtherInfo() {
         mDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid);
         mDatabase.child("phoneNumber").setValue(phoneTV.getText().toString());
@@ -304,6 +373,12 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
         finish();
     }
 
+    /**
+     *
+     * This method is used to load the selected image.
+     * @param load
+     * @param uID
+     */
     public void loadImageFromOwnerID(ImageView load, String uID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");

@@ -33,6 +33,11 @@ import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
+ * @Author cmput301w19t25
+ * This class extends AppCompatActivity
+ * and implements View.OnClickListener
+ * @see AppCompatActivity
+ * @see View.OnClickListener
  * Activity that handles requesting books from the user's page
  * when they click on a book from the search results activity.
  * This activity enables users to request the owner's book,
@@ -133,12 +138,22 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         // Create a listener that gets the owner's information and populate the given views
         DatabaseReference ref = mFirebaseDatabase.getReference().child("users").child(book.getOwnerID());
         ref.addValueEventListener(new ValueEventListener() {
+            /**
+             * Overrides onDataChange
+             * @param dataSnapshot
+             * gets username from dataSnapshot
+             * uses username to set owner name
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String userName = dataSnapshot.child("userName").getValue().toString().trim();
                 ownerName.setText(userName);
             }
 
+            /**
+             * This method override onCancelled(DatabaseError databaseError)
+             * @param databaseError
+             */
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -147,6 +162,11 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    /**
+     * This method is used to disable the request button once a borrower places a request on a certain book.
+     * This is to avoid having having one user placing more than one request on one book.
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -189,11 +209,20 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    /**
+     * overrides onPinterCaptureChanged
+     * @param hasCapture
+     */
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
 
-    /** Method that populates an Image View using the book's id as a reference. */
+
+    /** Method that populates an Image View using the book's id as a reference.
+     * This method is used to load the picture of the book.
+     * @param load
+     * @param bookID
+     */
     public void loadImageFromBookID(ImageView load, String bookID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(bookID);
@@ -207,7 +236,13 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    /** Method that populates an Image View using the book's owner id as a reference. */
+
+
+    /** Method that populates an Image View using the book's owner id as a reference.
+     * This method is used to load the profile picture of the book owner.
+     * @param load
+     * @param bookID
+     */
     public void loadImageFromOwnerID(ImageView load, String bookID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(book.getOwnerID()+".jpg");

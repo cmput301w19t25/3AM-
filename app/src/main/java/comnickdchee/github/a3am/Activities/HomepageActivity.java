@@ -92,12 +92,10 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         navToolbar = findViewById(R.id.navToolbar);
         setSupportActionBar(navToolbar);
 
-
         //Check for notifications..
 
 
-
-            // Setting the side Navigation Drawer
+        // Setting the side Navigation Drawer
         // source: https://www.youtube.com/watch?v=fGcMLu1GJEc
         pageTitle = findViewById(R.id.tvTitle);
         drawer = findViewById(R.id.drawer_layout);
@@ -262,42 +260,12 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         // Initializing for Requests tab
         RequestsList = new ArrayList<>();
         requestedList = new ArrayList<>();
-//
-//        backend.getRequestedBooks(new BookListCallback() {
-//            @Override
-//            public void onCallback(ArrayList<Book> books) {
-//                requestedList.clear();
-//                requestedList.addAll(books);
-//            }
-//        });
-
-//        ArrayList<Book> AcceptedRequests = new ArrayList<>();
-//        ArrayList<Book> pendingRequests = new ArrayList<>();
-//
-//        for (int i = 0; i < requestedList.size(); ++i) {
-//            if (requestedList.get(i).getStatus() == Status.Accepted) {
-//                AcceptedRequests.add(requestedList.get(i));
-//            } else {
-//                pendingRequests.add(requestedList.get(i));
-//            }
-//        }
-//
-//        // Adding those request to the AcceptedGroup (The First argument determines the name of the Group)
-//        RequestStatusGroup AcceptedGroup = new RequestStatusGroup("Accepted", AcceptedRequests);
-//        RequestsList.add(AcceptedGroup);
-//
-//        // Adding those request to the PendingGroup (The First argument determines the name of the Group)
-//        RequestStatusGroup PendingGroup = new RequestStatusGroup("Pending", pendingRequests);
-//        RequestsList.add(PendingGroup);
-
-        // Request TAB INIT ENDED _____________________________________________
-
 
     }
 
     /**
-     * So that when back button is pressed while navigation drawer is open, we don't exit the activity
-     * immediately instead close the navigation menu drawer first.
+     * This function is used to stop from exiting the activity immediately if the back button is
+     * pressed while the navigation drawer is open. First closes the navigation menu drawer.
      */
     @Override
     public void onBackPressed() {
