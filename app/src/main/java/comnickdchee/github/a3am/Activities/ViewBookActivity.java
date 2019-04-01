@@ -45,6 +45,7 @@ import comnickdchee.github.a3am.Models.ExchangeType;
 import comnickdchee.github.a3am.Models.PickupCoords;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * View Book Activity - Activity that lets owners look at the
@@ -61,6 +62,7 @@ public class ViewBookActivity extends AppCompatActivity {
     private CardView borrowerCardView;
     private TextView borrowerUsernameText;
     private TextView borrowerPhoneNumberText;
+    private CircleImageView borrowerPhoto;
     private TextView borrowerEmailText;
     private ArrayList<User> requesters = new ArrayList<>();
     private RequestersAdapter requestersAdapter;
@@ -78,6 +80,7 @@ public class ViewBookActivity extends AppCompatActivity {
 
         locationText = (TextView) findViewById(R.id.tvLocation);
         emptyView = (TextView) findViewById(R.id.tvEmptyRV);
+        borrowerPhoto = (CircleImageView) findViewById(R.id.ivAcceptedPhoto);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -176,6 +179,7 @@ public class ViewBookActivity extends AppCompatActivity {
                             borrowerUsernameText.setText(borrower.getUserName());
                             borrowerEmailText.setText(borrower.getEmail());
                             borrowerPhoneNumberText.setText(borrower.getPhoneNumber());
+                            loadImageFromOwnerID(borrowerPhoto, borrower.getUserID());
                         }
                     });
                 } else {
@@ -323,6 +327,25 @@ public class ViewBookActivity extends AppCompatActivity {
             public void onSuccess(Uri uri) {
                 String DownloadLink = uri.toString();
                 Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+            }
+        });
+
+    }
+
+    /** This loads the profile picture of user with userID of uID and places the image in the
+     * load imageView */
+    public void loadImageFromOwnerID(ImageView load, String uID){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");
+
+        Log.e("Tuts+", storageRef.toString());
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.e("Tuts+", "uri: " + uri.toString());
+                String imgUrl = uri.toString();
+
+                Picasso.with(getApplicationContext()).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
             }
         });
 

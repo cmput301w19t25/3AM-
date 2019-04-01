@@ -335,10 +335,26 @@ public class Backend {
         });
     }
 
-    /** Fetches a user's information from Firebase, given their uid. */
-    public void getBook(String bookID, final BookCallback bookCallback) {
+    /** Fetches a book's information from Firebase, given their book ID. */
+    public void getSingleBook(String bookID, final BookCallback bookCallback) {
         DatabaseReference usersRef = mFirebaseDatabase.getReference("books");
         usersRef.child(bookID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Book book = dataSnapshot.getValue(Book.class);
+                bookCallback.onCallback(book);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    /** Fetches a book's information from Firebase, given their book ID. */
+    public void getBook(String bookID, final BookCallback bookCallback) {
+        DatabaseReference usersRef = mFirebaseDatabase.getReference("books");
+        usersRef.child(bookID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Book book = dataSnapshot.getValue(Book.class);

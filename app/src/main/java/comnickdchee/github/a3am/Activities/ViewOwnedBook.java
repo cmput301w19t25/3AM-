@@ -196,7 +196,7 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
                     bookImageRef.putFile(bookImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            backend.getBook(key, new BookCallback() {
+                            backend.getSingleBook(key, new BookCallback() {
                                 @Override
                                 public void onCallback(Book book)
                                 {
@@ -228,7 +228,7 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
                     bookImageRef.putBytes(bArray).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            backend.getBook(key, new BookCallback() {
+                            backend.getSingleBook(key, new BookCallback() {
                                 @Override
                                 public void onCallback(Book book)
                                 {
@@ -252,7 +252,7 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
                         }
                     });
                 } else {
-                    backend.getBook(key, new BookCallback() {
+                    backend.getSingleBook(key, new BookCallback() {
                         @Override
                         public void onCallback(Book book)
                         {

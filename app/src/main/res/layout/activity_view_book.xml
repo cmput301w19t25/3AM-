@@ -178,7 +178,7 @@
                         android:minHeight="90dp">
 
                         <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/ivRequesterPhoto"
+                            android:id="@+id/ivAcceptedPhoto"
                             android:layout_width="55dp"
                             android:layout_height="55dp"
                             android:layout_marginStart="16dp"
@@ -242,8 +242,8 @@
                             android:text="Username"
                             android:textColor="@color/dark_grey_default"
                             android:textSize="14sp"
-                            app:layout_constraintStart_toEndOf="@+id/ivRequesterPhoto"
-                            app:layout_constraintTop_toTopOf="@+id/ivRequesterPhoto" />
+                            app:layout_constraintStart_toEndOf="@+id/ivAcceptedPhoto"
+                            app:layout_constraintTop_toTopOf="@+id/ivAcceptedPhoto" />
 
                         <View
                             android:id="@+id/divider"
@@ -254,8 +254,8 @@
                             android:background="@color/common_google_signin_btn_text_dark_disabled"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@+id/ivRequesterPhoto"
-                            app:layout_constraintTop_toBottomOf="@+id/ivRequesterPhoto" />
+                            app:layout_constraintStart_toStartOf="@+id/ivAcceptedPhoto"
+                            app:layout_constraintTop_toBottomOf="@+id/ivAcceptedPhoto" />
 
 
                     </android.support.constraint.ConstraintLayout>
