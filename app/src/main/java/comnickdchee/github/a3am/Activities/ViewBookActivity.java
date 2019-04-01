@@ -168,22 +168,24 @@ public class ViewBookActivity extends AppCompatActivity {
         backend.getBook(actionBook.getBookID(), new BookCallback() {
             @Override
             public void onCallback(Book book) {
-                if (book.getCurrentBorrowerID() != null) {
-                    rvRequests.setVisibility(View.GONE);
-                    borrowerCardView.setVisibility(View.VISIBLE);
+                if (book != null) {
+                    if (book.getCurrentBorrowerID() != null) {
+                        rvRequests.setVisibility(View.GONE);
+                        borrowerCardView.setVisibility(View.VISIBLE);
 
-                    // Gets the current borrower and populates the card view
-                    backend.getUser(book.getCurrentBorrowerID(), new UserCallback() {
-                        @Override
-                        public void onCallback(User borrower) {
-                            borrowerUsernameText.setText(borrower.getUserName());
-                            borrowerEmailText.setText(borrower.getEmail());
-                            borrowerPhoneNumberText.setText(borrower.getPhoneNumber());
-                            loadImageFromOwnerID(borrowerPhoto, borrower.getUserID());
-                        }
-                    });
-                } else {
-                    borrowerCardView.setVisibility(View.GONE);
+                        // Gets the current borrower and populates the card view
+                        backend.getUser(book.getCurrentBorrowerID(), new UserCallback() {
+                            @Override
+                            public void onCallback(User borrower) {
+                                borrowerUsernameText.setText(borrower.getUserName());
+                                borrowerEmailText.setText(borrower.getEmail());
+                                borrowerPhoneNumberText.setText(borrower.getPhoneNumber());
+                                loadImageFromOwnerID(borrowerPhoto, borrower.getUserID());
+                            }
+                        });
+                    } else {
+                        borrowerCardView.setVisibility(View.GONE);
+                    }
                 }
             }
         });
