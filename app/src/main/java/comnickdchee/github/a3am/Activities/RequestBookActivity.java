@@ -36,6 +36,14 @@ import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+
+/**
+ * @Author cmput301w19t25
+ * This class extends AppCompatActivity
+ * and implements View.OnClickListener
+ * @see AppCompatActivity
+ * @see View.OnClickListener
+ */
 public class RequestBookActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView tvAuthor;
@@ -124,12 +132,22 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
 
         DatabaseReference ref = mFirebaseDatabase.getReference().child("users").child(book.getOwnerID());
         ref.addValueEventListener(new ValueEventListener() {
+            /**
+             * Overrides onDataChange
+             * @param dataSnapshot
+             * gets username from dataSnapshot
+             * uses username to set owner name
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String userName = dataSnapshot.child("userName").getValue().toString().trim();
                 ownerName.setText(userName);
             }
 
+            /**
+             * This method override onCancelled(DatabaseError databaseError)
+             * @param databaseError
+             */
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -138,6 +156,10 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    /**
+     *
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -171,9 +193,6 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
                     reference.child("notificationRequests").child(receiverKey).child(mAuth.getCurrentUser().getDisplayName()).push().setValue(notificationData);
 
 
-
-//                    }
-
                     // TODO: UI fix; change the request button to be non-clickable.
                 }
 
@@ -194,10 +213,19 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         booksRef.child(updatedBook.getBookID()).setValue(updatedBook);
     }
 
+    /**
+     * overrides onPinterCaptureChanged
+     * @param hasCapture
+     */
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
 
+    /**
+     * This method is used to load the picture of the book.
+     * @param load
+     * @param bookID
+     */
     public void loadImageFromBookID(ImageView load, String bookID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(bookID);
@@ -214,6 +242,11 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
     }
 
 
+    /**
+     * This method is used to load the profile picture of the book owner.
+     * @param load
+     * @param bookID
+     */
     public void loadImageFromOwnerID(ImageView load, String bookID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(book.getOwnerID()+".jpg");
@@ -230,39 +263,4 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    /*
-    public void findUserByBookID(String BookID){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference().child("users");
-        Log.d("refRequest", ref.toString());
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren()){
-
-                    if(data.child("owned_books") != null){
-                        //Log.d("refRequestBook", data.getValue().toString());
-                        if(data.child("owned_books").getValue() != null){
-                            Log.d("refRequestBook", data.child("owned_books").getValue().toString());
-                            Log.d("refReq", BookID);
-                            for(DataSnapshot d: data.child("owned_books").getChildren()){
-                                Log.d("refReq", d.getValue().toString().trim());
-                                if(BookID.trim() == d.getValue().toString().trim()){
-                                    Log.d("refReq", "TRUE");
-                                }
-                            }
-                        }
-                    }
-                    //Log.d("refRequestBook", data.getValue().toString());
-                    //Log.d("refRequestBook", data.child("owned_books").getValue().toString());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-    */
 }
