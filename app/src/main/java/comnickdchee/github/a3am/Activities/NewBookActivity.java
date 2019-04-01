@@ -65,15 +65,30 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * New Book activity that launches when a user wants to add
+ * a new book to his collection of owned books.
+ */
 public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
+    // Progress Dialog for ISBN scanner
     ProgressDialog pd;
+
+    // Flags for intents
     private static final int CHOSEN_IMAGE = 69;
     private static final int ISBN_READ = 42;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int CAMERA_PERMISSION_CODE = 10;
+    private static final int REQUEST_TAKE_PHOTO = 1;
+
+    // Image uploading variables
     Uri bookImage;
     ImageView img;
     Bitmap photo;
     byte[] bArray;
-    // text fields that user entered
+    private String currentPhotoPath;
+
+
+    // Text fields for user to enter
     private TextInputEditText bookTitleText;
     private TextInputEditText bookAuthorText;
     private TextInputEditText bookISBNText;
@@ -86,10 +101,8 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
     private ImageView deletePhotoButton;
     private FloatingActionButton cameraButton;
 
+    // Progress bar
     private ProgressBar mProgressbar;
-
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int CAMERA_PERMISSION_CODE = 10;
 
     // Firebase references to use for saving to database
     private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -116,55 +129,38 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
 
         closeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //finish();
-
+                onBackPressed();
             }
         });
 
+        // Add button confirms that the all fields were entered
         addButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //Toast.makeText(NewBookActivity.this, "One or mor fields are empty", Toast.LENGTH_LONG).show();
                 // get all the desired inputs from the user
                 if (isEmpty(bookTitleText) || isEmpty(bookAuthorText) || isEmpty(bookISBNText)) {
-                    Toast.makeText(NewBookActivity.this, "One or more fields are empty", Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewBookActivity.this
+                            ,"One or more fields are empty", Toast.LENGTH_LONG).show();
 
                 } else{
                     String bookTitle = bookTitleText.getText().toString();
                     String bookAuthor = bookAuthorText.getText().toString();
                     String bookISBN = bookISBNText.getText().toString();
                     addBook(bookTitle, bookAuthor, bookISBN);
-                    //finish();
                     onBackPressed();
                 }
 
             }
         });
 
-        //set onclick listener on camera button
+        //set onClick listener on camera button
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //ISBN : 9780773547971 --> Should give book title : "Promise and Challenge of Party Primary Elections"
-
                 Intent intent = new Intent(NewBookActivity.this, BarcodeScanner.class);
                 startActivityForResult(intent,ISBN_READ);
-
-
-
             }
         });
-
-        /*img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                findImage();
-            }
-        });*/
-
-
     }
-
-    String currentPhotoPath;
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -172,9 +168,9 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
+                imageFileName,
+                ".jpg",
+                storageDir
         );
 
         // Save a file: path for use with ACTION_VIEW intents
@@ -182,7 +178,7 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
         return image;
     }
 
-    //shows pop up
+    /** Shows popup menu for camera options. */
     public void showPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         popup.setOnMenuItemClickListener(this);
@@ -191,6 +187,7 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
 
     }
 
+    /** Handles logic for camera or gallery. */
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -207,36 +204,44 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
         return false;
     }
 
-    //Check if the user has camera
+    /** Check if the current user has a camera. */
     private boolean hasCamera() {
         return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
     }
 
-    //launching the camera
+    /** Launches the camera. */
     public void launchCamera(View view) {
         if (ContextCompat.checkSelfPermission(NewBookActivity.this,
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            // Here we can write if we need the camera to do anything extra if we already have permission
 
+            // Here we can write if we need the camera
+            // to do anything extra if we already have permission
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    // launches camera
 
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //launchs camera
             //Take picture and pass results along to onActivityResult
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
 
         }
         else
         {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+            ActivityCompat.requestPermissions(this,
+                    new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
         }
 
     }
-    static final int REQUEST_TAKE_PHOTO = 1;
+
+    /**
+     * Request permission to use the camera for both the ISBN scanner and the
+     * taking photos for the camera.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
                 // Here we can write if we need the camera to do anything extra if we get the permission
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //launchs camera
+
                 //Take picture and pass results along to onActivityResult
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     // Create the File where the photo should go
@@ -246,7 +251,8 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
                     } catch (IOException ex) {
                         // Error occurred while creating the File
                     }
-                    // Continue only if the File was successfully created
+
+                    // Continue only if the file was successfully created
                     if (photoFile != null) {
                         bookImage = FileProvider.getUriForFile(this,
                                 "com.example.android.fileprovider",
@@ -269,7 +275,6 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-        Log.d("ACTIVITY RESULT", "onActivityResult: CALLED");
         if(requestCode == CHOSEN_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null){
             bookImage = data.getData();
             try {
@@ -282,7 +287,6 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
 
         if (requestCode == ISBN_READ && resultCode == RESULT_OK && data != null){
             String isbn = data.getStringExtra("isbn");
-            Log.d("ISBN Retrieved", isbn);
             String urlISBN = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
             try {
                 URL url = new URL(urlISBN);
@@ -301,24 +305,25 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
             //circleImageView = (CircleImageView) findViewById()
             Bundle extras = data.getExtras();
             photo = (Bitmap) extras.get("data");
-            //bookImage = getImageUri(this, photo);
-            //Set firebase here.
+
+            //Set firebase here
             Bitmap yourBitmap;
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             photo.compress(Bitmap.CompressFormat.PNG, 100, bos);
             bArray = bos.toByteArray();
 
-            //Log.d("Photo", bookImage.toString());
             img.setImageBitmap(photo);
         }
     }
 
+    /** Finds the image from the gallery. */
     private void findImage(){
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(i,"Select Profile Picture"), CHOSEN_IMAGE);
     }
+
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(currentPhotoPath);
@@ -326,13 +331,13 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
     }
+
     /** Adds book to both the database and user class. */
     private void addBook(String title, String author, String ISBN) {
         if (mAuth.getCurrentUser() != null) {
             String userKey = mAuth.getCurrentUser().getUid();
             Book newBook = new Book(ISBN, title, author, userKey);
             backend.addBook(newBook);
-            //Log.d("Bookimage", bookImage.toString());
             if(bookImage!= null){
                 setResult(RESULT_OK);
                 FirebaseUser u = mAuth.getCurrentUser();
@@ -354,60 +359,9 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
     }
 
     /**
-     * Method responsible for adding book to Firebase database, both under the
-     * owned_books nested table inside the current user's table entry, as well as
-     * the actual books table.
+     * JSonTask class that is used to get information from the given ISBN code.
+     * Source: https://github.com/dm77/barcodescanner
      */
-//    private void addBookToDatabase(Book book) {
-//        if (mAuth.getCurrentUser() != null) {
-//==            String uid = mAuth.getCurrentUser().getUid();
-//
-//            // Generate a bookID for the newly created book
-//            // and add to the user's table
-//            DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
-//            String bookID = usersRef.child(uid).child("ownedBooks").push().getKey();
-//            usersRef.child(uid).child("ownedBooks").push().setValue(bookID);
-//
-//            // Then, we add the book to the book table with all of its proper parameters
-//            mFirebaseDatabase.getReference("books").child(bookID).setValue(book);
-//
-//            if (bookImage != null) {
-//                FirebaseUser u = mAuth.getCurrentUser();
-//
-//                StorageReference bookImageRef =
-//                        FirebaseStorage.getInstance().getReference("BookImages").child(bookID);
-//                bookImageRef.putFile(bookImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                        Handler handler = new Handler();
-//                        handler.postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                mProgressbar.setProgress(0);
-//                            }
-//                        }, 5000);
-//                        Toast.makeText(NewBookActivity.this, "Image uploaded", Toast.LENGTH_SHORT).show();
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(NewBookActivity.this, "Upload failed.", Toast.LENGTH_SHORT).show();
-//                    }
-//                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                        mProgressbar.setVisibility(View.VISIBLE);
-//                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-//                        mProgressbar.setProgress((int)(progress));
-//                    }
-//                });
-//            }
-//        } else {
-//            // TODO: Throw exception here.
-//        }
-//
-//    }
-
     private class JsonTask extends AsyncTask<String, String, ArrayList<String>> {
 
         protected void onPreExecute() {
@@ -441,8 +395,6 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
 
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line+"\n");
-                    //Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-
                 }
 
                 try {
@@ -514,11 +466,6 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
             {
                 Toast.makeText(NewBookActivity.this, "No books found with this ISBN", Toast.LENGTH_SHORT).show();
             }
-
-            //String title = json.getString("title");
-
-
-               //here u ll get whole response...... :-)
         }
     }
 
