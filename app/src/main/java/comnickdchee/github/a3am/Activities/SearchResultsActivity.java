@@ -41,6 +41,11 @@ import comnickdchee.github.a3am.Models.Status;
 import comnickdchee.github.a3am.MySuggestionProvider;
 import comnickdchee.github.a3am.R;
 
+/**
+ * @Author cmput301w19t25
+ * This class extends AppCompatActivity
+ * @see AppCompatActivity
+ */
 public class SearchResultsActivity extends AppCompatActivity {
 
     private Toolbar navToolbar;
@@ -181,6 +186,10 @@ public class SearchResultsActivity extends AppCompatActivity {
                     searchResultsAdapter.notifyDataSetChanged();
                 }
 
+                /**
+                 * overrides onCancelled(DatabaseError databaseError)
+                 * @param databaseError
+                 */
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
