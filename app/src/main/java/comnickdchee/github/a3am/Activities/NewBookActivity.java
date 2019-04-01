@@ -100,7 +100,7 @@ public class NewBookActivity extends AppCompatActivity implements PopupMenu.OnMe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_book);
         Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.darkRed));
 
         bookTitleText = findViewById(R.id.tietBookTitle);
         bookAuthorText = findViewById(R.id.tietAuthor);

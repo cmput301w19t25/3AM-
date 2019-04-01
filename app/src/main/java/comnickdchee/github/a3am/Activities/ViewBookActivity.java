@@ -99,7 +99,7 @@ public class ViewBookActivity extends AppCompatActivity {
 
 
         Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_grey_default));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.darkRed));
 
         // Get the contents of the intent
         Intent intent = getIntent();

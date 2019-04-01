@@ -86,7 +86,7 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
         setContentView(R.layout.activity_view_r_books);
 
         Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_grey_default));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.darkRed));
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
 
@@ -196,7 +196,7 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     public void getPageData() {
-        ImageView userPhoto = findViewById(R.id.ownerIV);
+        CircleImageView userPhoto = findViewById(R.id.ownerIV);
         ImageView bookImage = findViewById(R.id.ivViewBookPhoto);
         //TextView phone = findViewById(R.id.phoneTV);
         //TextView email = findViewById(R.id.emailTV);

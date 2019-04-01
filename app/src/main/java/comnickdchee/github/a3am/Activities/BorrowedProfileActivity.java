@@ -58,7 +58,7 @@ public class BorrowedProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.darkRed));
 
         setContentView(R.layout.activity_user_profile);
 
