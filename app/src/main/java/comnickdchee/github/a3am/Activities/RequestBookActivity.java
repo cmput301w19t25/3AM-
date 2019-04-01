@@ -53,6 +53,7 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
     Button bRequestButton;
     TextView ownerName;
     Button messageOwner;
+    ImageView backButton;
     String DownloadLink;
     ImageView bookImage;
     CircleImageView ownerImage;
@@ -77,6 +78,7 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         tvISBN = findViewById(R.id.ISBNTv);
         tvStatus = findViewById(R.id.statusTv);
         bRequestButton = findViewById(R.id.buttonRequestBook);
+        backButton = findViewById(R.id.backIV2);
         bookImage = findViewById(R.id.bookImageRequestBook);
         ownerImage = findViewById(R.id.userImageSeeOwnerProfile);
         ownerName = findViewById(R.id.ownerNameRequestBook);
@@ -89,6 +91,13 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
         bRequestButton.setBackground(color);
 
         String userID = backend.getCurrentUser().getUserID();
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         // Retrieve the book data passed from the intent
         Intent intent = getIntent();

@@ -63,7 +63,7 @@ public class BorrowedProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.darkRed));
 
         setContentView(R.layout.activity_user_profile);
 
@@ -189,6 +189,7 @@ public class BorrowedProfileActivity extends AppCompatActivity {
         ImageView bookImage = findViewById(R.id.bookImage);
         TextView phone = findViewById(R.id.phoneTV);
         TextView email = findViewById(R.id.emailTV);
+        TextView address = findViewById(R.id.tvAddress);
         TextView username = findViewById(R.id.usernameTV);
         TextView bookTitle = findViewById(R.id.bookTitleTV);
         TextView bookAuthor = findViewById(R.id.authorNameTV);
@@ -199,6 +200,7 @@ public class BorrowedProfileActivity extends AppCompatActivity {
         username.setText(borrower.getUserName());
         phone.setText(borrower.getPhoneNumber());
         email.setText(borrower.getEmail());
+        address.setText(borrower.getAddress());
         bookTitle.setText(actionBook.getTitle());
         bookAuthor.setText(actionBook.getAuthor());
         bookISBN.setText(actionBook.getISBN());

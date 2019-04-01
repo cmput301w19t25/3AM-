@@ -54,7 +54,7 @@ public class OwnerProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.darkRed));
 
         backButton = findViewById(R.id.backIV);
         transactionButton = findViewById(R.id.transactionButton);

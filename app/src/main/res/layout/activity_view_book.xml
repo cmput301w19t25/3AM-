@@ -43,7 +43,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginTop="4dp"
-                android:src="@drawable/ic_books"
+                android:src="@drawable/ic_library_books_white_24dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -154,7 +154,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvViewBookRequests"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="300dp"
                 android:nestedScrollingEnabled="true" />
 
             <android.support.constraint.ConstraintLayout
@@ -352,7 +352,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="24dp"
-        android:background="@drawable/signup_custom"
+        android:background="@color/default_button_color_blue"
         android:elevation="8dp"
         android:fontFamily="@font/open_sans"
         android:paddingLeft="10dp"

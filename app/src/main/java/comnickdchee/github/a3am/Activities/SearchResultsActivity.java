@@ -86,7 +86,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         // Set the window color to be red
         Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.darkRed));
 
         // Called as soon as the the activity is created
         handleIntent(getIntent());
