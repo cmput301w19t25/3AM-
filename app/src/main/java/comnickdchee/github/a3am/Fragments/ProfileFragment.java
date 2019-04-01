@@ -108,7 +108,7 @@ public class ProfileFragment extends Fragment {
                 Log.e("Tuts+", "uri: " + uri.toString());
                 DownloadLink = uri.toString();
                 CircleImageView iv = (CircleImageView) view.findViewById(R.id.profilePictureEditFragment);
-                Picasso.with(getContext()).load(uri.toString()).placeholder(R.drawable.ccc).error(R.drawable.ccc).fit().into(iv);
+                Picasso.with(getContext()).load(uri.toString()).placeholder(R.drawable.ccc).error(R.drawable.ccc).into(iv);
                 //Handle whatever you're going to do with the URL here
             }
         });
