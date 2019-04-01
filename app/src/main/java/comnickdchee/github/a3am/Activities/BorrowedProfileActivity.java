@@ -44,6 +44,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * @Author cmput301w19t25
  * This class extends AppCompatActivity
+ * @see AppCompatActivity
  */
 public class BorrowedProfileActivity extends AppCompatActivity {
 

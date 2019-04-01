@@ -50,7 +50,10 @@ import static comnickdchee.github.a3am.Activities.ViewOwnedBook.CAMERA_PERMISSIO
 
 /**
  * @Author cmput301w19t25
- * implements PopupMenu.OnMenuItemClickListener
+ *  extends AppComaptActivity
+ *  implements PopupMenu.OnMenuItemClickListener
+ * @see AppCompatActivity
+ * @see PopupMenu.OnMenuItemClickListener
  *
  */
 public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
@@ -196,7 +199,7 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
 
     /**
      * This method checks whether the user's device has camera or no
-     * @return true or false depending on whetehr the user's device has camera or no.
+     * @return true or false depending on whether the user's device has camera or no.
      */
     private boolean hasCamera() {
         return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
@@ -311,7 +314,6 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         passAuthenticate.setView(input);
 
-
         passAuthenticate.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -328,7 +330,6 @@ public class EditProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
     }
 
     /**
-     *
      * @param email
      * @param password
      */
