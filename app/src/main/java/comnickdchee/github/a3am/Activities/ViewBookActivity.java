@@ -328,7 +328,7 @@ public class ViewBookActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 String DownloadLink = uri.toString();
-                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.drawable.ic_launcher3slanted).error(R.drawable.ic_launcher3slanted).into(load);
             }
         });
 
@@ -347,7 +347,7 @@ public class ViewBookActivity extends AppCompatActivity {
                 Log.e("Tuts+", "uri: " + uri.toString());
                 String imgUrl = uri.toString();
 
-                Picasso.with(getApplicationContext()).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+                Picasso.with(getApplicationContext()).load(imgUrl).placeholder(R.drawable.ic_launcher3slanted).error(R.drawable.ic_launcher3slanted).into(load);
             }
         });
 

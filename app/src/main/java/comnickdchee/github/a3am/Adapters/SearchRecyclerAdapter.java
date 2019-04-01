@@ -81,7 +81,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                 @Override
                 public void onSuccess(Uri uri) {
                     String DownloadLink = uri.toString();
-                    Picasso.with(mContext).load(DownloadLink).placeholder(R.drawable.ccc).error(R.drawable.ccc).into(holder.ivBook);
+                    Picasso.with(mContext).load(DownloadLink).placeholder(R.drawable.ic_launcher3slanted).error(R.drawable.ic_launcher3slanted).into(holder.ivBook);
                 }
             });
         }

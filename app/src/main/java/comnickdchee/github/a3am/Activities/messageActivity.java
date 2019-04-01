@@ -180,7 +180,7 @@ public class messageActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 imgUrl = uri.toString();
-                Picasso.with(getApplicationContext()).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+                Picasso.with(getApplicationContext()).load(imgUrl).placeholder(R.drawable.ic_launcher3slanted).error(R.drawable.ic_launcher3slanted).into(load);
             }
         });
 

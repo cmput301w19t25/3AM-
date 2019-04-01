@@ -105,7 +105,7 @@ public class BorrowedTabAdapter extends RecyclerView.Adapter<BorrowedTabAdapter.
                 Log.e("Tuts+", "uri: " + uri.toString());
                 String imgUrl = uri.toString();
 
-                Picasso.with(mContext).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+                Picasso.with(mContext).load(imgUrl).placeholder(R.drawable.ic_launcher3slanted).error(R.drawable.ic_launcher3slanted).into(load);
             }
         });
 

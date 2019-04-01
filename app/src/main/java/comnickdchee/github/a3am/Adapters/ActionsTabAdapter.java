@@ -125,7 +125,7 @@ public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.Vi
             public void onSuccess(Uri uri) {
                 Log.e("Tuts+", "uri: " + uri.toString());
                 String DownloadLink = uri.toString();
-                Picasso.with(mContext).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+                Picasso.with(mContext).load(DownloadLink).placeholder(R.drawable.ic_launcher3slanted).error(R.drawable.ic_launcher3slanted).into(load);
             }
         });
 

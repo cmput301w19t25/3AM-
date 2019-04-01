@@ -227,7 +227,7 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
             @Override
             public void onSuccess(Uri uri) {
                 String imgUrl = uri.toString();
-                Picasso.with(getApplicationContext()).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+                Picasso.with(getApplicationContext()).load(imgUrl).placeholder(R.drawable.ic_launcher3slanted).error(R.drawable.ic_launcher3slanted).into(load);
             }
         });
 
@@ -243,7 +243,7 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
             public void onSuccess(Uri uri) {
                 Log.e("Tuts+", "uri: " + uri.toString());
                 String DownloadLink = uri.toString();
-                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.drawable.ic_launcher3slanted).error(R.drawable.ic_launcher3slanted).into(load);
             }
         });
 
