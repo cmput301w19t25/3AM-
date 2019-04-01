@@ -104,7 +104,7 @@ public class BorrowedProfileActivity extends AppCompatActivity {
 
         backend.getExchange(actionBook, new ExchangeCallback() {
             /**
-             *
+             * This method checks if there's any exchanges and sets the visibility of the transactionButton accordingly.
              * @param exchange
              */
             @Override
@@ -206,7 +206,7 @@ public class BorrowedProfileActivity extends AppCompatActivity {
     }
 
     /**
-     * This method is used to the profile picture of the book owner.
+     * This method is used to load the profile picture of the book owner.
      * @param load
      * @param uID
      */

@@ -110,7 +110,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     /**
-     * This method is used to the profile picture of the book owner.
+     * This method is used to load the profile picture of the owner of the book.
      * @param load
      * @param uID
      */

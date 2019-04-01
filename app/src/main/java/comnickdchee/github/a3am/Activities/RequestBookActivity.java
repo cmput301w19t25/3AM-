@@ -157,7 +157,8 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
     }
 
     /**
-     *
+     * This method is used to disable the request button once a borrower places a request on a certain book.
+     * This is to avoid having having one user placing more than one request on one book.
      * @param v
      */
     @Override
@@ -169,9 +170,6 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
                     // we add them to the array list on the condition
                     // that the current user is not a duplicate, and
                     // we change the view of the button
-//                    if (!book.getRequests().contains(mAuth.getCurrentUser().getUid())) {
-//                        book.addRequest(mAuth.getCurrentUser().getUid());
-//                        updateRequests(book);
 
                     // Disables the button since to stop multiple requests
                     bRequestButton.setEnabled(false);

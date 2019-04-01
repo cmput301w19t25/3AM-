@@ -92,12 +92,10 @@ public class HomepageActivity extends AppCompatActivity implements NavigationVie
         navToolbar = findViewById(R.id.navToolbar);
         setSupportActionBar(navToolbar);
 
-
         //Check for notifications..
 
 
-
-            // Setting the side Navigation Drawer
+        // Setting the side Navigation Drawer
         // source: https://www.youtube.com/watch?v=fGcMLu1GJEc
         pageTitle = findViewById(R.id.tvTitle);
         drawer = findViewById(R.id.drawer_layout);

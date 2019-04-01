@@ -94,7 +94,7 @@ public class OwnerProfileActivity extends AppCompatActivity {
 
         backend.getExchange(actionBook, new ExchangeCallback() {
             /**
-             *
+             * This method checks if there's any exchanges and sets the visibility of the transactionButton accordingly.
              * @param exchange
              */
             @Override
