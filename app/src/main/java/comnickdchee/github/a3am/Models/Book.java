@@ -224,6 +224,9 @@ public class Book implements Parcelable {
      * @return requests
      * @see ArrayList
      */
+
+    public void setRequests(ArrayList<String> requesters) { requests = requesters;}
+
     public ArrayList<String> getRequests() {
         return requests;
     }

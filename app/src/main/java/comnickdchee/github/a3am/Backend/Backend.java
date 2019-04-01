@@ -365,7 +365,7 @@ public class Backend {
     /** Fetches a user's information from Firebase, given their uid. */
     public void getBook(String bookID, final BookCallback bookCallback) {
         DatabaseReference usersRef = mFirebaseDatabase.getReference("books");
-        usersRef.child(bookID).addValueEventListener(new ValueEventListener() {
+        usersRef.child(bookID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Book book = dataSnapshot.getValue(Book.class);
