@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -39,6 +40,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import comnickdchee.github.a3am.Adapters.RequestersAdapter;
@@ -62,20 +64,18 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    // Intent request code for ISBN scanner
     private static final int ISBN_READ = 42;
-    private RecyclerView rvRequests;
-    private static ArrayList<String> requesters;
-    private RequestersAdapter requestersAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+
+    // View objects
     private Button receiveButton;
-    private ImageView backButton;
     private TextView phoneNumberText;
     private TextView emailText;
     private SupportMapFragment mapFragment;
     private GoogleMap mGoogleMap;
     private Marker marker;
-    private ConstraintLayout userCard;
 
+    // Model objects
     private Book actionBook = new Book();
     private User owner = new User();
     private Backend backend = Backend.getBackendInstance();
@@ -86,21 +86,23 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
         setContentView(R.layout.activity_view_r_books);
 
         Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_grey_default));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.darkRed));
 
+        // Setting up the map fragment
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
-
         if (mapFragment != null) {
             mapFragment.getMapAsync(ViewRBookActivity.this);
         }
 
-
         // Setting up the view items
         phoneNumberText = findViewById(R.id.tvPhoneNumber);
         emailText = findViewById(R.id.tvEmail);
-        userCard = findViewById(R.id.userCard);
+        ConstraintLayout userCard = findViewById(R.id.userCard);
+        receiveButton = findViewById(R.id.receiveBookButton);
+        ImageView backButton = findViewById(R.id.backIV);
 
 
+        // Get the book data and get the owner that is associated with the user
         Intent intent = getIntent();
         actionBook = intent.getExtras().getParcelable("acceptedBook");
         String ownerID = actionBook.getOwnerID();
@@ -123,35 +125,37 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
 
-        receiveButton = findViewById(R.id.receiveBookButton);
-
+        // Gets the exchange object from the database, where
+        // we set certain views to be visible if certain conditions
+        // are met
         backend.getExchange(actionBook, new ExchangeCallback() {
             @Override
             public void onCallback(Exchange exchange) {
                 if (exchange != null) {
+                    // If the borrower is expected to receive the book, we set it to visible
                     if (exchange.getType() == ExchangeType.BorrowerReceive) {
                         receiveButton.setVisibility(View.VISIBLE);
 
+                        // If coordinates aren't specified, we show them in the map view
                         if (exchange.getPickupCoords() == null) {
                             if (mapFragment.getView() != null) {
                                 mapFragment.getView().setVisibility(View.GONE);
                             }
                         }
-
+                    // Otherwise, we don't let the user press the receive button
                     } else {
                         receiveButton.setVisibility(View.GONE);
                     }
+
+                // Set everything to GONE
                 } else {
                     receiveButton.setVisibility(View.GONE);
-
                     if (mapFragment.getView() != null) {
                         mapFragment.getView().setVisibility(View.GONE);
                     }
                 }
             }
         });
-
-        backButton = findViewById(R.id.backIV);
 
         receiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,49 +199,41 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
+    // Setting up most of the views in the page that don't need listeners
     public void getPageData() {
-        ImageView userPhoto = findViewById(R.id.ownerIV);
+        CircleImageView userPhoto = findViewById(R.id.ownerIV);
         ImageView bookImage = findViewById(R.id.ivViewBookPhoto);
-        //TextView phone = findViewById(R.id.phoneTV);
-        //TextView email = findViewById(R.id.emailTV);
         TextView username = findViewById(R.id.usernameTV);
         TextView bookTitle = findViewById(R.id.tvViewBookTitle);
         TextView bookAuthor = findViewById(R.id.tvViewBookAuthor);
         TextView bookISBN = findViewById(R.id.tvViewBookISBN);
 
-        Log.d(owner.getUserName(), "onCallback: Borrower");
         loadImageFromOwnerID(userPhoto,owner.getUserID());
         loadImageFromBookID(bookImage, actionBook.getBookID());
         username.setText(owner.getUserName());
-        //phone.setText(owner.getPhoneNumber());
-        //email.setText(owner.getEmail());
-        ///TODO: rating.setText(borrower.getRating());
-        Log.d(actionBook.getISBN(), "getPageData: ");
         bookTitle.setText(actionBook.getTitle());
         bookAuthor.setText(actionBook.getAuthor());
         bookISBN.setText(actionBook.getISBN());
         phoneNumberText.setText(owner.getPhoneNumber());
         emailText.setText(owner.getEmail());
-
     }
 
+    /** Method that populates an Image View using the user's id as a reference. */
     public void loadImageFromOwnerID(ImageView load, String uID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");
 
-        Log.e("Tuts+", storageRef.toString());
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.e("Tuts+", "uri: " + uri.toString());
                 String imgUrl = uri.toString();
-
                 Picasso.with(getApplicationContext()).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
             }
         });
 
     }
 
+    /** Method that populates an Image View using the book's id as a reference. */
     public void loadImageFromBookID(ImageView load, String bookID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(bookID);
@@ -253,6 +249,7 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
+    /** Used for showing the map of the owner's specified location. */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
@@ -263,6 +260,11 @@ public class ViewRBookActivity extends AppCompatActivity implements OnMapReadyCa
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
 
+    /**
+     * Method that uses Firebase listeners to get the pickup location.
+     * When a map location has been added to the exchange, we get the exchange pickup
+     * coordinates and set them on the map fragment in real-time.
+     */
     public void getPickupCoords() {
         if (actionBook != null) {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();

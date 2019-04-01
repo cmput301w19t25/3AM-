@@ -24,6 +24,11 @@ import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * @Author cmput301w19t25
+ * This class extends AppCompatActivity
+ * @see AppCompatActivity
+ */
 public class UserProfileActivity extends AppCompatActivity {
 
     ImageView backButton;
@@ -32,6 +37,7 @@ public class UserProfileActivity extends AppCompatActivity {
     TextView userName;
     TextView userPhone;
     TextView userEmail;
+    TextView userAddress;
     String userID;
     Backend backend = Backend.getBackendInstance();
 
@@ -56,13 +62,18 @@ public class UserProfileActivity extends AppCompatActivity {
         userName = findViewById(R.id.usernameTV);
         userPhone = findViewById(R.id.phoneTV);
         userEmail = findViewById(R.id.emailTV);
+        userAddress = findViewById(R.id.tvAddress);
 
         backend.getUser(userID, new UserCallback() {
             @Override
+            /**
+             * This method is used to set the user's info. i.e; phoneNum, email, etc
+             */
             public void onCallback(User user) {
                 userName.setText(user.getUserName());
                 userPhone.setText(user.getPhoneNumber());
                 userEmail.setText(user.getEmail());
+                userAddress.setText(user.getAddress());
                 loadImageFromOwnerID(userPhoto,userID);
             }
         });
@@ -74,6 +85,10 @@ public class UserProfileActivity extends AppCompatActivity {
         messageButton = findViewById(R.id.message);
 
         backButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This method is used to set an onClick listener on the back arrow button
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 finish();
@@ -82,6 +97,11 @@ public class UserProfileActivity extends AppCompatActivity {
 
 
         messageButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This method is used to set an onClick listener on message button that opens the messaging
+             * screen when clicked.
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 Intent i = new Intent (getApplicationContext(), messageActivity.class);
@@ -92,6 +112,11 @@ public class UserProfileActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method is used to load the profile picture of the owner of the book.
+     * @param load
+     * @param uID
+     */
     public void loadImageFromOwnerID(ImageView load, String uID){
 
         // This function takes a imageView and loads the profile picture of user with userID of uID to the imageView

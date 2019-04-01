@@ -50,7 +50,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/signup_custom"
+        android:background="@color/default_button_color_blue"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:text="SET LOCATION"

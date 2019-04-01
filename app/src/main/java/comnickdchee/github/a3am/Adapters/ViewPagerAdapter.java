@@ -24,6 +24,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     
     private ArrayList<Serializable> lists = new ArrayList<>();
 
+    /** Constructor for this class
+     * Takes in a context and the array list of all the data for each of the
+     * pagers in the homepage*/
     public ViewPagerAdapter(FragmentManager fm, ArrayList<Book> BorrowedList, ArrayList<Book> LendingList,
                             ArrayList<Book> ActionsList, ArrayList<RequestStatusGroup>RequestsList) {
         super(fm);
@@ -35,9 +38,12 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         Log.d(TAG, "Added the lists in List");
     }
 
+
+    /**Opens the correct fragment based on which ViewPager item is selected
+     * i - refers to the position of the tab being selected*/
     @Override
     public Fragment getItem(int i) {
-        // TODO: Add list of fragments to switch between tabs.
+
         switch(i) {
             case 0:
                 BorrowedFragment BF =  new BorrowedFragment();
@@ -75,6 +81,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
+    /**We use this to always refresh the viewPage*/
     @Override
     public int getItemPosition(@NonNull Object object) {
         return POSITION_NONE;
@@ -100,7 +107,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
             case 3:
                 return "Requests";
             default:
-                // TODO: Throw exception if we got here.
                 return "None";
         }
     }

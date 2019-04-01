@@ -49,10 +49,13 @@ public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.Vi
 
 
 
-    private static final String TAG = "In_RecyclerViewAdapter";
+    private static final String TAG = " In_RecyclerViewAdapter";
     private ArrayList<Book> mBookList;
     private Context mContext;
 
+
+    /** Constructor for this class
+     * Takes in a context and the array list of all the books it needs to show*/
     public ActionsTabAdapter(Context mContext, ArrayList<Book> BookList) {
         this.mBookList = BookList;
         this.mContext = mContext;
@@ -60,6 +63,9 @@ public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.Vi
 
 
 
+    /** Inflates the view to hold the cards
+     * ViewGroup is the view on which the adapter will be located
+     * i holds the index of that view*/
     @NonNull
     @Override
     public ActionsTabAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
@@ -70,6 +76,9 @@ public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.Vi
         return holder;
     }
 
+    /** This populates the cards with the data from the array list
+     * holder refers to the View holder this recycler view is holding
+     * i stores the index for the array list*/
     @Override
     public void onBindViewHolder(ActionsTabAdapter.ViewHolder holder, final int i) {
 
@@ -106,6 +115,7 @@ public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.Vi
         });
     }
 
+    /** Loads image of book with bookID = bookID and places it on the load imageView*/
     public void loadImageFromBookID(ImageView load, String bookID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(bookID);
@@ -121,11 +131,14 @@ public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.Vi
 
     }
 
+    /** Returns the size of the mBookList*/
     @Override
     public int getItemCount() {
         return mBookList.size();
     }
 
+    /** A view Holder to hold the views of each Individual Cards
+     * This is the view holder that th recycler viewer uses*/
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //Sets the variables to identify each items in the view
 
@@ -137,6 +150,7 @@ public class ActionsTabAdapter extends RecyclerView.Adapter<ActionsTabAdapter.Vi
         public TextView tvISBN;
         public CardView actionsItemView;
 
+        // The views are initialized here.
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivBook = itemView.findViewById(R.id.ivBookPhoto);

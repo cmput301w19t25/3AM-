@@ -49,12 +49,18 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
     private int currentPos;
     private Backend backend = Backend.getBackendInstance();
 
+
+    /** Constructor for this class
+     * Takes in a context and the array list of all the books it needs to show*/
     public BookRecyclerAdapter( Context mContext, ArrayList<Book> BookList) {
         this.mBooks = BookList;
         this.mContext = mContext;
     }
 
 
+    /** Inflates the view to hold the cards
+     * ViewGroup is the view on which the adapter will be located
+     * i holds the index of that view*/
     @NonNull
     @Override
     public BookRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
@@ -66,6 +72,9 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
         return holder;
     }
 
+    /** This populates the cards with the data from the array list
+     * holder refers to the View holder this recycler view is holding
+     * i stores the index for the array list*/
     @Override
     public void onBindViewHolder(BookRecyclerAdapter.ViewHolder holder, final int i) {
         Log.d(TAG, "onBindViewHolder: called.");
@@ -183,19 +192,17 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
         });
     }
 
+    /** Returns the size of the mBook*/
     @Override
     public int getItemCount() {
         return mBooks.size();
     }
 
 
-    // A view Holder to hold the views of each Individual Cards
-
+    /** A view Holder to hold the views of each Individual Cards
+     * This is the view holder that th recycler viewer uses*/
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        //        CircleImageView imageIcon;
-//        TextView username;
-//        RelativeLayout parentLayout;
         public ImageView ivBook;
         public TextView tvBookTitle;
         public TextView tvAuthorName;
@@ -203,9 +210,9 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
         public TextView tvStatus;
         public TextView tvBorrowedBy;
         public CardView actionsItemView;
-        private ImageButton option;                         // options button for Edit/Delete
+        private ImageButton option;          // options button for Edit/Delete
 
-        // The Data inside the View Holder are set here
+        // The Views are initialized here
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivBook = itemView.findViewById(R.id.ivRequesterPhoto);
@@ -216,11 +223,6 @@ public class BookRecyclerAdapter extends RecyclerView.Adapter<BookRecyclerAdapte
             tvBorrowedBy = itemView.findViewById(R.id.tvBorrowedBy);
             actionsItemView = itemView.findViewById(R.id.cvActions);
             option = (ImageButton) itemView.findViewById(R.id.ibOption);
-
-//            imageIcon = itemView.findViewById(R.id.imageIcon);
-//            username = itemView.findViewById(R.id.username);
-//            parentLayout = itemView.findViewById(R.id.parent_layout);
-
 
         }
     }

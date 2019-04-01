@@ -34,12 +34,17 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
     private Book currentBook;
     private Backend backend = Backend.getBackendInstance();
 
+
+    /** Constructor for this class
+     * Takes in a context and the array list of all the users it needs to show
+     * And also a reference for the current book being looked at*/
     public RequestersAdapter(Context _context, ArrayList<User> _requesters, Book _currentBook) {
         this.mContext = _context;
         this.requesters = _requesters;
         this.currentBook = _currentBook;
     }
 
+    /** This creates inflates the recycler with the view held in the view holder*/
     @NonNull
     @Override
     public RequestersAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -50,14 +55,20 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
         return holder;
     }
 
+    /** This function bind all the data to the view holder
+     * i - contains the index
+     * viewHolder is the view Holder which holds the view for a single card*/
     @Override
     public void onBindViewHolder(@NonNull RequestersAdapter.ViewHolder viewHolder, final int i) {
+
+        // Loads teh username, email, phone number and teh image for a single card
         viewHolder.requesterName.setText(requesters.get(i).getUserName());
         viewHolder.requesterEmailText.setText(requesters.get(i).getEmail());
         viewHolder.requesterPhoneText.setText(requesters.get(i).getPhoneNumber());
         loadImageFromOwnerID(viewHolder.requesterImage,requesters.get(i).getUserID());
 
-        // Accept request.
+        // This is run when accept request is clicked. This goes through firebase and updates the
+        // proper data to make the request accepted
         viewHolder.acceptRequestView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +93,8 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
             }
         });
 
-        // Reject request.
+        // This is run when reject request is clicked. This goes through firebase and updates the
+        // proper data to make the request reejcted
         viewHolder.rejectRequestView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +103,8 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
         });
     }
 
+    /** This loads the profile picture of user with userID of uID and places the image in the
+     * load imageView */
     public void loadImageFromOwnerID(ImageView load, String uID){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");
@@ -108,12 +122,13 @@ public class RequestersAdapter extends RecyclerView.Adapter<RequestersAdapter.Vi
 
     }
 
+    /** This gets the size of the requester list */
     @Override
     public int getItemCount() {
         return requesters.size();
     }
 
-    // A view Holder to hold the views of each Individual Cards
+    /** A view Holder to hold the views of each Individual Cards */
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 

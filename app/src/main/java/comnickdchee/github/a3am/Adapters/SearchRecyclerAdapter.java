@@ -25,19 +25,26 @@ import comnickdchee.github.a3am.Activities.RequestBookActivity;
 import comnickdchee.github.a3am.Models.Book;
 import comnickdchee.github.a3am.R;
 
+
+/** This class creates the Recycler View lists when an item is searched*/
 public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAdapter.ViewHolder> {
 
     private static final String TAG = "In_RecyclerViewAdapter";
-
     private ArrayList<Book> mBooks;
     private Context mContext;
 
+    /** Constructor for this class
+     * Takes in a context and the array list of all the books it needs to show*/
     public SearchRecyclerAdapter( Context mContext, ArrayList<Book> BookList) {
         this.mBooks = BookList;
         this.mContext = mContext;
     }
 
 
+
+    /** Inflates the view to hold the cards
+     * ViewGroup is the view on which the adapter will be located
+     * i holds the index of that view*/
     @NonNull
     @Override
     public SearchRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
@@ -49,6 +56,10 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         return holder;
     }
 
+
+    /** This populates the cards with the data from the array list
+     * holder refers to the View holder this recycler view is holding
+     * i stores the index for the array list*/
     @Override
     public void onBindViewHolder(SearchRecyclerAdapter.ViewHolder holder, final int i) {
         Log.d(TAG, "onBindViewHolder: called.");
@@ -62,20 +73,20 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
 //            holder.tvBorrowedBy.setText("Borrowed By: " + mBooks.get(i).getCurrentBorrower());
 //        }
 
+        // Accesses firebase to load the correct image to the Imageview
         FirebaseStorage storage = FirebaseStorage.getInstance();
         if(mBooks.get(i).getBookID() != null) {
             StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("BookImages").child(mBooks.get(i).getBookID());
             storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
-                    Log.e("Tuts+", "uri: " + uri.toString());
                     String DownloadLink = uri.toString();
                     Picasso.with(mContext).load(DownloadLink).placeholder(R.drawable.ccc).error(R.drawable.ccc).into(holder.ivBook);
                 }
             });
         }
 
-        // On click event when a card is clicked
+        // On click event when a card is clicked. It opens the RequestBookActivity.
         holder.actionsItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,19 +99,18 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         });
     }
 
+
+    /** Returns the size of the mBooks list*/
     @Override
     public int getItemCount() {
         return mBooks.size();
     }
 
 
-    // A view Holder to hold the views of each Individual Cards
-
+    /** A view Holder to hold the views of each Individual Cards
+     * This is the view holder that th recycler viewer uses*/
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        //        CircleImageView imageIcon;
-//        TextView username;
-//        RelativeLayout parentLayout;
         public ImageView ivBook;
         public TextView tvBookTitle;
         public TextView tvAuthorName;
@@ -109,7 +119,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         public TextView tvBorrowedBy;
         public CardView actionsItemView;
 
-        // The Data inside the View Holder are set here
+        // The Views are initialized here
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivBook = itemView.findViewById(R.id.ivRequesterPhoto);
@@ -120,12 +130,6 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             tvStatus = itemView.findViewById(R.id.tvStatus);
             tvBorrowedBy = itemView.findViewById(R.id.tvBorrowedBy);
 
-//            imageIcon = itemView.findViewById(R.id.imageIcon);
-//            username = itemView.findViewById(R.id.username);
-//            parentLayout = itemView.findViewById(R.id.parent_layout);
-
-
         }
     }
-
 }

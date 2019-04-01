@@ -41,6 +41,9 @@ public class HomeFragment extends Fragment {
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
     private TabLayout navTabLayout;
+
+
+    /** Creates the Viewpager on the home page fragment */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

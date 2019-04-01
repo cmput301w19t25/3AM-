@@ -36,7 +36,12 @@ import comnickdchee.github.a3am.Models.ChatBox;
 import comnickdchee.github.a3am.Models.User;
 import comnickdchee.github.a3am.R;
 import de.hdodenhof.circleimageview.CircleImageView;
-
+/*
+ * @author Zaheen
+ *  MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecyclerAdapter.ViewHolder>
+ *  it overwrites onCreateView
+ *  Used to view the cards/people you have messages with.
+ */
 public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecyclerAdapter.ViewHolder> {
 
     private static final String TAG = "In_MessageRecyclerViewAdapter";
@@ -69,9 +74,6 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
     @Override
     public void onBindViewHolder(MessageRecyclerAdapter.ViewHolder holder, final int i) {
         // This function sets up the data in the cards
-
-        Log.d("MessageRecycler", "onBindViewHolder: called.");
-        Log.d("MessageRecycler", uIDS.get(i).toString());
 
         setUserNameFromUid(uIDS.get(i),holder.tvUsername);
         loadImageFromOwnerID(uIDS.get(i), holder.ivUserPhoto);
@@ -120,7 +122,6 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
     public void setUserNameFromUid(String UID, TextView t){
         DatabaseReference usersRef = mFirebaseDatabase.getReference("users");
         usersRef = usersRef.child(UID).child("userName");
-        Log.d("Messaging Tab", "getUserNameFromUid: "+usersRef.toString());
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -140,11 +141,9 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReferenceFromUrl("gs://am-d5edb.appspot.com").child("users").child(uID+".jpg");
 
-        Log.e("Tuts+", storageRef.toString());
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.e("Tuts+", "uri: " + uri.toString());
                 imgUrl = uri.toString();
                 Picasso.with(mContext).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
             }
