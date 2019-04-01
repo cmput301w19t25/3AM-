@@ -239,7 +239,7 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onSuccess(Uri uri) {
                 String DownloadLink = uri.toString();
-                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.drawable.ic_launcher3slanted).error(R.drawable.ic_launcher3slanted).into(load);
             }
         });
 
@@ -259,7 +259,7 @@ public class RequestBookActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onSuccess(Uri uri) {
                 DownloadLink = uri.toString();
-                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(load);
+                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.drawable.ic_launcher3slanted).error(R.drawable.ic_launcher3slanted).into(load);
             }
         });
     }

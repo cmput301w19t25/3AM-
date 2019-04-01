@@ -37,7 +37,7 @@ public class MyServiceNotification extends com.google.firebase.messaging.Firebas
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(remoteMessage.getNotification().getTitle())
                 .setContentText(message)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_launcher3slanted)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         int mNotificationID = (int) System.currentTimeMillis();
         NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

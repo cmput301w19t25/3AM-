@@ -34,7 +34,7 @@
             android:layout_height="65dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:src="@drawable/ic_library_books_white_24dp"
+            android:src="@drawable/ic_launcher3slanted"
             app:layout_constraintStart_toEndOf="@+id/backIV"
             app:layout_constraintTop_toBottomOf="@+id/backIV" />
 
@@ -135,7 +135,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    android:src="@drawable/ic_profile"
+                    android:src="@drawable/ic_launcher2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

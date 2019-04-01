@@ -148,7 +148,7 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
             public void onSuccess(Uri uri) {
                 Log.e("Tuts+", "uri: " + uri.toString());
                 DownloadLink = uri.toString();
-                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(bookImageEditActivity);
+                Picasso.with(getApplicationContext()).load(DownloadLink).placeholder(R.drawable.ic_launcher3slanted).error(R.drawable.ic_launcher3slanted).into(bookImageEditActivity);
             }
         });
 

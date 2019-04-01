@@ -79,9 +79,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         holder.showMessage.setText(chat.getMessage());
         // Load the image into profile pictures.
         if(imgUrl != null){
-            Picasso.with(mContext).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.profilePhoto);
+            Picasso.with(mContext).load(imgUrl).placeholder(R.drawable.ic_launcher3slanted).error(R.drawable.ic_launcher3slanted).into(holder.profilePhoto);
         }else{
-            Picasso.with(mContext).load(imgUrl).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(holder.profilePhoto);
+            Picasso.with(mContext).load(imgUrl).placeholder(R.drawable.ic_launcher3slanted).error(R.drawable.ic_launcher3slanted).into(holder.profilePhoto);
         }
 
         // On click event when a card is clicked
