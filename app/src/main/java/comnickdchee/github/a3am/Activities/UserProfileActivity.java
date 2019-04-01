@@ -32,6 +32,7 @@ public class UserProfileActivity extends AppCompatActivity {
     TextView userName;
     TextView userPhone;
     TextView userEmail;
+    TextView userAddress;
     String userID;
     Backend backend = Backend.getBackendInstance();
 
@@ -56,6 +57,7 @@ public class UserProfileActivity extends AppCompatActivity {
         userName = findViewById(R.id.usernameTV);
         userPhone = findViewById(R.id.phoneTV);
         userEmail = findViewById(R.id.emailTV);
+        userAddress = findViewById(R.id.tvAddress);
 
         backend.getUser(userID, new UserCallback() {
             @Override
@@ -63,6 +65,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 userName.setText(user.getUserName());
                 userPhone.setText(user.getPhoneNumber());
                 userEmail.setText(user.getEmail());
+                userAddress.setText(user.getAddress());
                 loadImageFromOwnerID(userPhoto,userID);
             }
         });
