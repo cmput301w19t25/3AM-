@@ -86,6 +86,7 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
     ProgressDialog pd;
 
     private static final int CHOSEN_IMAGE = 69;
+    private Boolean deletedImageBool = false;
 
     Uri bookImage;
     String key;
@@ -101,7 +102,7 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
         setContentView(R.layout.activity_new_book);
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-
+        deletedImageBool = false;
         // Gets current user
         mAuth = FirebaseAuth.getInstance();
 
@@ -155,14 +156,8 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
         deletePhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StorageReference bookImageRef =
-                        FirebaseStorage.getInstance().getReference("BookImages").child(key);
-                bookImageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        bookImageEditActivity.setImageResource(R.drawable.ic_add_to_photos_grey_24dp);
-                    }
-                });
+                deletedImageBool = true;
+                bookImageEditActivity.setImageResource(R.drawable.ic_add_to_photos_grey_24dp);
             }
 
         });
@@ -188,7 +183,7 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                 DatabaseReference databaseReference = firebaseDatabase.getReference("books").child(key);
 
-                if(bookImage != null){
+                if(bookImage != null && !deletedImageBool){
                     FirebaseUser u = mAuth.getCurrentUser();
 
                     StorageReference bookImageRef =
@@ -208,19 +203,13 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
                                     book.setAuthor(newAuthor);
                                     book.setISBN(newISBN);
 
-                                    String owner = book.getOwnerID();
-
-                                    book.setOwnerID(owner + " ");
-                                    backend.updateBookData(book);
-
-                                    book.setOwnerID(owner);
                                     backend.updateBookData(book);
                                 }
                             });
                         }
                     });
                 }
-                else if(bArray != null){
+                else if(bArray != null && !deletedImageBool){
                     FirebaseUser u = mAuth.getCurrentUser();
 
                     StorageReference bookImageRef =
@@ -240,18 +229,38 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
                                     book.setAuthor(newAuthor);
                                     book.setISBN(newISBN);
 
-                                    String owner = book.getOwnerID();
-
-                                    book.setOwnerID(owner + " ");
                                     backend.updateBookData(book);
 
-                                    book.setOwnerID(owner);
+                                }
+                            });
+                        }
+                    });
+                } else if (deletedImageBool) {
+                    StorageReference bookImageRef =
+                            FirebaseStorage.getInstance().getReference("BookImages").child(key);
+                    bookImageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            backend.getSingleBook(key, new BookCallback() {
+                                @Override
+                                public void onCallback(Book book)
+                                {
+                                    String newTitle = bookTitleText.getText().toString();
+                                    String newAuthor = bookAuthorText.getText().toString();
+                                    String newISBN = bookISBNText.getText().toString();
+
+                                    book.setTitle(newTitle);
+                                    book.setAuthor(newAuthor);
+                                    book.setISBN(newISBN);
+
                                     backend.updateBookData(book);
                                 }
                             });
                         }
                     });
-                } else {
+                }
+
+                else {
                     backend.getSingleBook(key, new BookCallback() {
                         @Override
                         public void onCallback(Book book)
@@ -368,6 +377,7 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK ) {
             bookImage = data.getData();
+            deletedImageBool = false;
             Bundle extras = data.getExtras();
             Bitmap photo = (Bitmap) extras.get("data");
 
@@ -397,6 +407,7 @@ public class ViewOwnedBook extends AppCompatActivity implements PopupMenu.OnMenu
         // Check if we got back an image from the camera
         if(requestCode == CHOSEN_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null){
             bookImage = data.getData();
+            deletedImageBool = false;
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), bookImage);
 
