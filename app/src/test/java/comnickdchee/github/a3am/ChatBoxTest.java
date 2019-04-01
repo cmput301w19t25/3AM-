@@ -16,21 +16,18 @@ public class ChatBoxTest {
     private ArrayList<Message> list = new ArrayList<Message>();
 
     @Test
-    public void test_sendMessage(String messageText, Date date, User sender, User receive) {
-
+    public void test_sendMessage() {
+        Date date =  new Date();
         User user1 = new User("username1", "email.yahoo.com", "2132-52Ave","780-111-2222" );
         User user2 = new User("userName2",  "email@gmailcom",  "1111-25Ave","780-111-4444");
         ChatBox chatbox = new ChatBox(user1,user2);
-        messageText = "hello";
         Date ddate = new Date();
         User fromUser = user1;
         User toUser = user2;
-
-        Message message1 = new Message(messageText,  user1,user2, ddate);
-        chatbox.sendMessage(messageText, date, user1,user2);
+        Message messageText = new Message("hello", fromUser,toUser,ddate);
+        list.add(messageText);
+        chatbox.sendMessage("hello",  user1,user2, date );
         ArrayList<Message> messageList = chatbox.getMessages();
-
-        Message message2 = messageList.get(2);
-        assertEquals(message2, message1);
+        assertTrue(list.contains(messageText));
     }
 }
